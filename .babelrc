@@ -1,0 +1,76 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "corejs": "2",
+        "useBuiltIns": "entry",
+        "targets": ["> 5%", "ie 9"],
+        "modules": "commonjs"
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": {
+          "version": 3,
+          "proposals": true
+        }
+      }
+    ],
+    "@babel/plugin-transform-modules-commonjs",
+    "@babel/plugin-syntax-dynamic-import",
+    "react-hot-loader/babel",
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        // "decoratorsBeforeExport": true,
+        "legacy": true
+      }
+    ],
+    ["@babel/plugin-proposal-private-methods",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd",
+        "libraryDirectory": "lib",
+        "style": true
+      },
+      "antd"
+    ],
+    [
+      "import",
+      {
+        "libraryName": "@ant-design/icons",
+        "libraryDirectory": "es/icons",
+        "camel2DashComponentName": false
+      },
+      "@ant-design/icons"
+    ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        [
+          "istanbul",
+          {
+            "useInlineSourceMaps": false
+          }
+        ]
+      ]
+    }
+  }
+}

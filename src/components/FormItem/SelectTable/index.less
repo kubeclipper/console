@@ -1,0 +1,76 @@
+/*
+ * Copyright 2021 KubeClipper Authors.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+@import '~styles/variables';
+
+.sl-select-table {
+}
+.search-wrapper {
+  margin-bottom: 16px;
+}
+
+.image-tabs {
+  height: 40px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0 auto;
+  }
+  :global {
+    .ant-radio-button-wrapper {
+      border: none;
+      color: @color-text-body;
+      width: 70px;
+      height: 50px;
+      overflow: hidden;
+      text-align: center;
+    }
+    .ant-radio-button-wrapper:not(:first-child)::before {
+      width: 0;
+    }
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      color: @primary-color;
+      font-weight: bold;
+    }
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):focus-within {
+      box-shadow: none;
+    }
+  }
+}
+.image-tab-label {
+  font-size: 10px;
+}
+.normal-tabs {
+  margin-bottom: 8px;
+}
+.pagination-footer {
+  :global {
+    .ant-select {
+      width: unset;
+      min-width: 80px;
+    }
+  }
+}
+.sl-select-table-backend {
+  :global {
+    .ant-table-footer {
+      padding: 8px 16px;
+      background: #fff;
+    }
+  }
+}

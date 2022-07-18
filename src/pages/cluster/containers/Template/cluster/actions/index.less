@@ -1,0 +1,94 @@
+/*
+ * Copyright 2021 KubeClipper Authors.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+@import '~styles/variables';
+
+.warn-text {
+  width: 560px;
+  min-height: 90px;
+  background: rgba(199, 222, 239, 0.5);
+  border-radius: 3px;
+  border: 1px solid #c7deef;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  font-weight: 400;
+  color: #3686b2;
+}
+
+.upgrade-tip {
+  color: #3686b2;
+  .text {
+    margin-left: 36px;
+  }
+}
+
+.item {
+  .remove-btn {
+    display: none;
+    position: absolute;
+    right: 16px;
+    z-index: 2;
+  }
+
+  &:hover {
+    .remove-btn {
+      display: inline;
+    }
+  }
+}
+
+.wrapper {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  padding-top: @body-padding;
+  :global {
+    .ant-spin-nested-loading {
+      height: 100%;
+    }
+    .ant-spin-container {
+      height: 100%;
+    }
+  }
+}
+
+.form {
+  margin-left: @body-padding * 2;
+  margin-right: @body-padding * 2;
+  background-color: #fff;
+  height: calc(100% - 48px);
+  overflow-y: auto;
+  :global {
+    .ant-form-item-label > label {
+      margin-left: 12px;
+    }
+    .ant-form-item-label > .ant-form-item-required {
+      margin-left: 0;
+    }
+  }
+
+  :global {
+    .ant-card {
+      margin: 5px;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .ant-card-body {
+      padding-bottom: 0;
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "extends": ["eslint-config-ali/react", "prettier", "plugin:react-hooks/recommended"],
+  "parser": "babel-eslint",
+  "plugins": ["cypress", "react-hooks"],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "cypress/globals": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "legacyDecorators": true
+    }
+  },
+  "rules": {
+    "comma-dangle": [
+      "error"
+    ],
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "no-void": "warn",
+    "new-cap": [
+      "warn",
+      {
+        "newIsCap": true,
+        "properties": false
+      }
+    ],
+    "no-plusplus": "off",
+    "no-mixed-operators": [
+      "error",
+      {
+        "allowSamePrecedence": true
+      }
+    ],
+    "no-fallthrough": [
+      "error",
+      {
+        "commentPattern": "break[\\s\\w]*omitted"
+      }
+    ],
+    "no-nested-ternary": "warn",
+    "no-console": ["error", {
+      "allow": ["warn", "error"]
+    }],
+    "no-param-reassign": "off",
+    "no-unused-expressions": "off",
+    "eqeqeq": "error",
+    // "react/prop-types": "off",
+    "react/forbid-prop-types": "off",
+    "no-script-url": 0,
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
+    "no-extend-native": [
+      "error",
+      {
+        "exceptions": [
+          "Object",
+          "String"
+        ]
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js", ".jsx"
+        ]
+      }
+    ],
+    "react/jsx-wrap-multilines": 0,
+    "react/prop-types": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "import/no-unresolved": [
+      2,
+      {
+        "ignore": [
+          "^@/",
+          "^umi/",
+          "^src",
+          "^layouts",
+          "^components",
+          "^containers",
+          "^stores",
+          "^utils",
+          "^pages",
+          "^core",
+          "^asset",
+          "^styles",
+          "^hooks",
+          "^resources"
+        ]
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        "optionalDependencies": true
+      }
+    ],
+    "import/prefer-default-export": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "jsx-a11y/click-events-have-key-events": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "linebreak-style": 0,
+    "react/no-array-index-key": 0,
+    "camelcase": "off",
+    "array-bracket-spacing": "off",
+    "space-before-function-paren": "off",
+    "arrow-parens": "off",
+    "react-hooks/rules-of-hooks": "error",
+    // "react-hooks/exhaustive-deps": "warn"
+  },
+  "globals": {
+    "t": true,
+    "globals": true,
+    "request": true,
+    "global_config": true
+  }
+}

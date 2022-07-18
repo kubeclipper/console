@@ -1,0 +1,197 @@
+/*
+ * Copyright 2021 KubeClipper Authors.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+import React from 'react';
+import Base from 'containers/BaseDetail';
+import { useRootStore } from 'stores';
+import { get, isEmpty } from 'lodash';
+import { componentStatus } from 'resources/cluster';
+import ActionButton from 'components/Tables/Base/ActionButton';
+import Delete from '../../actions/RemovePlugin';
+import { getAction } from 'utils/allowed';
+import { toJS } from 'mobx';
+import { useParams } from 'react-router';
+
+function Plugins() {
+  const { clusterStore: store } = useRootStore();
+  const { id } = useParams();
+
+  const plugin = toJS(get(store.detail, 'plugin'));
+  const kubesphere = plugin.filter((item) => item.name === 'kubesphere');
+
+  const KSCard = kubesphere.map((item) => {
+    const { config } = item;
+    const options = [
+      {
+        label: t('Access Methods'),
+        dataIndex: 'mastersByIp',
+        render: (data, { externalIP }) => {
+          const { port } = config.console;
+          const AccessMethods = [
+            {
+              title: 'masters',
+              datas: data,
+            },
+          ];
+
+          externalIP &&
+            AccessMethods.push({
+              title: 'fip',
+              datas: [{ ip: externalIP }],
+            });
+
+          return (
+            <div>
+              {AccessMethods.map(({ title, datas }, index) => (
+                <div style={{ display: 'flex' }} key={index}>
+                  <div style={{ width: '60px' }}>{title}：</div>
+                  <div>
+                    {datas.map(({ ip }, _index) => {
+                      const url = `http://${ip}:${port}`;
+                      return (
+                        <a
+                          style={{ display: 'block' }}
+                          // eslint-disable-next-line react/jsx-no-target-blank
+                          target="_blank"
+                          href={url}
+                          key={_index}
+                        >
+                          {url}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        },
+      },
+      {
+        label: t('Healthy Status'),
+        dataIndex: 'componentsHealthy',
+        render: (data) => {
+          const current = data.find((it) => it.name === 'kubesphere');
+          return componentStatus[current?.status];
+        },
+      },
+      {
+        label: t('Storage Class'),
+        dataIndex: 'kubesphere.storageClass',
+      },
+      {
+        label: t('Cluster Role'),
+        dataIndex: 'kubesphere.clusterRole',
+      },
+      {
+        label: t('Cluster Type'),
+        dataIndex: 'kubesphere.clusterType',
+      },
+      {
+        label: t('ES'),
+        dataIndex: 'kubesphere.es',
+        render: () =>
+          get(config, 'es') && !isEmpty(config.es)
+            ? t('Enabled')
+            : t('Not Config'),
+      },
+      {
+        label: t('Monitor'),
+        dataIndex: 'kubesphere.monitor',
+        render: () =>
+          get(config, 'monitor') && !isEmpty(config.monitor)
+            ? t('Enabled')
+            : t('Not Config'),
+      },
+      {
+        label: t('Alert'),
+        dataIndex: 'kubesphere.plugin.enableAlert',
+        format: 'Enable',
+      },
+      {
+        label: t('AppStore'),
+        dataIndex: 'kubesphere.plugin.enableAppStore',
+        format: 'Enable',
+      },
+      {
+        label: t('Audit'),
+        dataIndex: 'kubesphere.plugin.enableAudit',
+        format: 'Enable',
+      },
+      {
+        label: t('Devops'),
+        dataIndex: 'kubesphere.plugin.enableDevops',
+        format: 'Enable',
+      },
+      {
+        label: t('Event'),
+        dataIndex: 'kubesphere.plugin.enableEvent',
+        format: 'Enable',
+      },
+      {
+        label: t('Logging'),
+        dataIndex: 'kubesphere.plugin.enableLogging',
+        format: 'Enable',
+      },
+      {
+        label: t('MetricServer'),
+        dataIndex: 'kubesphere.plugin.enableMetricServer',
+        format: 'Enable',
+      },
+      {
+        label: t('Network'),
+        dataIndex: 'kubesphere.plugin.enableNetwork',
+        format: 'Enable',
+      },
+      {
+        label: t('ServiceMesh'),
+        dataIndex: 'kubesphere.plugin.enableServiceMesh',
+        format: 'Enable',
+      },
+    ];
+    return {
+      title: t('PaaS Platform'),
+      options,
+      cardButton: () => {
+        const buttonProps = {
+          id: 'kubesphere',
+          isAllowed: true,
+          title: t('Remove'),
+          buttonType: 'link',
+          actionType: 'confirm',
+          danger: true,
+          item: {
+            name: id,
+            component: [item],
+            uninstall: true,
+            title: t('Remove Plugin'),
+          },
+        };
+
+        const action = getAction(Delete, [], {});
+        return <ActionButton {...buttonProps} action={action} />;
+      },
+    };
+  });
+
+  const currentProps = {
+    cards: [...KSCard],
+    store,
+  };
+
+  return <Base {...currentProps} />;
+}
+
+export default Plugins;
