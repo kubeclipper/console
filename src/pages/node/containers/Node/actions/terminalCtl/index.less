@@ -1,0 +1,81 @@
+/*
+ * Copyright 2021 KubeClipper Authors.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+@import '~styles/variables';
+
+.kubectl {
+  display: flex;
+  height: 100%;
+}
+
+.pane {
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
+.tipWrapper {
+  width: 338px;
+  margin-left: 12px;
+}
+
+.terminalWrapper {
+  height: 100%;
+  flex: 1;
+  padding: 8px;
+  border-radius: @border-radius;
+  border: 1px solid @border-color;
+}
+
+.terminal {
+  height: 100%;
+  overflow: hidden;
+  & > * {
+    box-sizing: border-box;
+  }
+}
+
+.summary {
+  h6 {
+    margin-top: 12px;
+    margin-bottom: 8px;
+    line-height: 20px;
+    font-weight: 600;
+    color: @dark-color07;
+  }
+
+  dt,
+  dd {
+    display: inline-block;
+    padding: 6px 12px;
+    line-height: 20px;
+  }
+  dt {
+    font-size: 12px;
+    color: @dark-color01;
+    width: 40%;
+    &:after {
+      content: ':';
+    }
+  }
+  dd {
+    width: 60%;
+    vertical-align: top;
+    font-family: @font-family-id;
+    font-size: 12px;
+    line-height: 20px;
+    color: @dark-color07;
+    word-wrap: break-word;
+  }
+}

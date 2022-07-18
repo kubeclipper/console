@@ -1,0 +1,165 @@
+/*
+ * Copyright 2021 KubeClipper Authors.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+.left {
+  border: 1px solid #f0f0f0;
+  padding: 0 !important;
+  min-height: 444px;
+  max-height: 600px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  flex: none;
+  padding: 8px 12px 9px;
+  color: rgba(0, 0, 0, 0.85);
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+
+  .selected {
+    margin-left: 10px;
+  }
+  .title {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+.body {
+  padding: 6px 0;
+  min-height: 160px;
+  overflow-y: auto;
+  .group {
+    width: 100%;
+  }
+
+  :global {
+    .ant-input-affix-wrapper {
+      border: 1px dashed #d9d9d9;
+      width: 92%;
+    }
+    .ant-input-search-icon::before {
+      display: none;
+    }
+  }
+
+  .loading {
+    position: relative;
+    left: 50%;
+    top: 80px;
+  }
+}
+
+.target-container {
+  padding: 6px 0;
+  border: 1px solid #f0f0f0;
+  min-height: 120px;
+
+  .item {
+    padding-left: 40px;
+    .delete {
+      // display: none;
+    }
+
+    &:hover {
+      .delete {
+        color: #0068ff;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.item {
+  padding: 6px 12px;
+  line-height: 12px;
+  &:hover {
+    background: #f5f5f5;
+  }
+
+  .hostname,
+  .extra {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .hostname {
+    margin-bottom: 4px;
+    text-align: left;
+  }
+
+  .extra {
+    color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  > div {
+    flex: 1;
+  }
+  .btn {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .target {
+    text-align: center;
+  }
+
+  > :not(:last-child) {
+    margin-bottom: 20px;
+  }
+
+  .body {
+    max-height: 200px;
+  }
+}
+
+.delete {
+  margin-left: 10px;
+}
+
+.select-list {
+  border: 1px solid #f0f0f0;
+  height: 100%;
+
+  :global {
+    .ant-empty-normal {
+      margin: 10px 0;
+    }
+  }
+}
+.source {
+  border: 0;
+}
+
+.transfer-operation {
+  display: flex;
+  flex-direction: column;
+
+  :first-child {
+    margin-bottom: 5px;
+  }
+}
+
+.search {
+  margin: 0 12px 5px 12px;
+}

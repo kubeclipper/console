@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kubeclipper-console-deploy
+  namespace: kubeclipper
+  labels:
+    app: kubeclipper-console-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubeclipper-console-deploy
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: kubeclipper-console-deploy
+    spec:
+      volumes:
+        - name: volume-ayqss2
+          configMap:
+            name: kubeclipper-console-nginx-conf
+            defaultMode: 420
+      containers:
+        - name: container-ty4lo8
+          image: 'caas4/kubeclipper-console:latest'
+          ports:
+            - name: tcp-80
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: volume-ayqss2
+              readOnly: true
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+
