@@ -1,0 +1,63 @@
+# 1.setup node env
+# 2.build
+# 3.upload to oss
+
+name: build
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'release*'
+  schedule:
+    - cron: '0 0 * * *'
+
+# This ensures that previous jobs for the branch are canceled when the branch is updated.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and upload
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get branch name
+        id: extract_branch
+        shell: bash
+        run: echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
+
+      - name: Setup node env and build
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12.13
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
+
+      - name: Build
+        run: |
+            yarn install
+            yarn run build
+
+      - name: Compress
+        run: |
+          pushd dist
+          ls -F | xargs tar -zcvf kc-console.tar.gz
+          popd
+
+      - name: Setup ossutil
+        uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint:  ${{ secrets.OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.OSS_ACCESS_KEY }}
+          access-key-secret: ${{ secrets.OSS_ACCESS_SECRET }}
+      - name: Upload to oss
+        run: |
+          ossutil cp -rf dist/kc-console.tar.gz oss://${{ secrets.OSS_BUCKET }}/kc-console/${{ steps.extract_branch.outputs.branch }}/

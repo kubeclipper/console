@@ -1,0 +1,63 @@
+# 1.setup node env
+# 2.build
+# 3.release
+
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup node env and build
+        uses: actions/setup-node@v3
+        with:
+          node-version: 12.13
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
+
+      - name: Extract Tag
+        id: extract_tag
+        run:  echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+
+      - name: Build
+        run: |
+          yarn install
+          yarn run build
+
+      - name: Compress
+        run: |
+          pushd dist
+          ls -F | xargs tar -zcvf kc-console.tar.gz
+          popd
+
+      - name: Generate Release file
+        run: echo ${{ github.sha }} > Release.txt
+
+      - name: Cat Release file
+        run: cat Release.txt
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(steps.extract_tag.outputs.version, 'v')
+        with:
+          files: |
+            Release.txt
+            dist/kc-console.tar.gz
+          body_path: ${{ github.workspace }}/CHANGELOG/CHANGELOG-${{ steps.extract_tag.outputs.version }}.md
+          # note you'll typically need to create a personal access token
+          # with permissions to create releases in the other repo
+          token: ${{ secrets.GH_TOKEN }}
