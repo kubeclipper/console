@@ -185,9 +185,10 @@ export default class Create extends StepAction {
       // image
       offline,
       localRegistry,
-      kubernetesVersion,
       certSANs,
       etcdDataDir,
+      kubernetesVersionOnline,
+      kubernetesVersionOffline,
       // container runtime
       containerRuntimeType,
       dockerInsecureRegistry,
@@ -195,7 +196,8 @@ export default class Create extends StepAction {
       dockerVersion,
       containerdInsecureRegistry,
       containerdRootDir,
-      containerdVersion,
+      containerdVersionOnline,
+      containerdVersionOffline,
       // backupPoint,
       // network
       dnsDomain,
@@ -227,7 +229,9 @@ export default class Create extends StepAction {
       certSANs: arrayInputValue(certSANs),
       localRegistry,
       workerNodeVip,
-      kubernetesVersion,
+      kubernetesVersion: offline
+        ? kubernetesVersionOffline
+        : kubernetesVersionOnline,
       containerRuntime: {
         containerRuntimeType,
         ...(containerRuntimeType === 'docker'
@@ -240,7 +244,9 @@ export default class Create extends StepAction {
             }
           : {
               containerd: {
-                version: containerdVersion,
+                version: offline
+                  ? containerdVersionOffline
+                  : containerdVersionOnline,
                 insecureRegistry: this.getRegistry(containerdInsecureRegistry),
                 rootDir: containerdRootDir,
               },

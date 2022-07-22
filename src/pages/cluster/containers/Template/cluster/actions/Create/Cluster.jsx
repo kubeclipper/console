@@ -86,10 +86,15 @@ export default class Cluster extends BaseForm {
     this.backupPointStore = backupPointStore;
     this.templatesStore = templatesStore;
 
-    this.getVersion();
     this.getCommonRegistry();
     this.getBackupPoint();
     this.getEditVals();
+    this.getVersion();
+  }
+
+  async getVersion() {
+    await this.store.fetchVersion({ limit: -1 });
+    this.updateDefaultValue();
   }
 
   async getEditVals() {
@@ -120,13 +125,23 @@ export default class Cluster extends BaseForm {
     if (id) {
       return {};
     }
+    const [firstK8sOnline] = this.getMetaVersion('k8s', 'onlineVersion');
+    const [firstK8sOffline] = this.getMetaVersion('k8s', 'offlineVersion');
+    const [firstContainerdOnline] = this.getMetaVersion(
+      'containerd',
+      'onlineVersion'
+    );
+    const [firstContainerdOffline] = this.getMetaVersion(
+      'containerd',
+      'offlineVersion'
+    );
 
-    const [firstK8s] = this.getMetaVersion('k8s');
-    const [firstContainerd] = this.getMetaVersion('containerd');
     return {
       ...BASEPARAMS,
-      kubernetesVersion: firstK8s?.value,
-      containerdVersion: firstContainerd?.value,
+      kubernetesVersionOnline: firstK8sOnline?.value,
+      kubernetesVersionOffline: firstK8sOffline?.value,
+      containerdVersionOffline: firstContainerdOffline?.value,
+      containerdVersionOnline: firstContainerdOnline?.value,
     };
   }
 
@@ -144,11 +159,6 @@ export default class Cluster extends BaseForm {
     };
   }
 
-  async getVersion() {
-    await this.store.fetchVersion({ limit: -1 });
-    this.updateDefaultValue();
-  }
-
   async getCommonRegistry() {
     await this.templateStore.fetchList();
     this.updateDefaultValue();
@@ -156,6 +166,7 @@ export default class Cluster extends BaseForm {
 
   async getBackupPoint() {
     await this.backupPointStore.fetchList();
+    this.updateDefaultValue();
   }
 
   get getBackupPointOptions() {
@@ -166,12 +177,8 @@ export default class Cluster extends BaseForm {
     return options;
   }
 
-  getMetaVersion(type) {
-    const versionTitle = this.isOffLine ? 'offlineVersion' : 'onlineVersion';
-
-    const data = toJS(this.store[versionTitle]).filter(
-      ({ name }) => name === type
-    );
+  getMetaVersion(type, online = 'offlineVersion') {
+    const data = toJS(this.store[online]).filter(({ name }) => name === type);
 
     return (data || []).map(({ version }) => ({
       value: version,
@@ -490,11 +497,22 @@ export default class Cluster extends BaseForm {
           onChange: this.onK8SRegistryChange,
         },
         {
-          name: 'kubernetesVersion',
+          name: 'kubernetesVersionOffline',
           label: t('K8S Version'),
-          type: this.isOffLine ? 'select' : 'select-input',
-          options: this.getMetaVersion('k8s'),
+          type: 'select',
+          required: true,
+          options: this.getMetaVersion('k8s', 'offlineVersion'),
           onChange: this.onK8SVersionChange,
+          hidden: !this.isOffLine,
+        },
+        {
+          name: 'kubernetesVersionOnline',
+          label: t('K8S Version'),
+          type: 'select',
+          required: true,
+          options: this.getMetaVersion('k8s', 'onlineVersion'),
+          onChange: this.onK8SVersionChange,
+          hidden: this.isOffLine,
         },
         {
           name: 'etcdDataDir',
@@ -566,11 +584,20 @@ export default class Cluster extends BaseForm {
         },
         // containerd
         {
-          name: 'containerdVersion',
+          name: 'containerdVersionOffline',
           label: t('Containerd Version'),
           type: 'select',
-          options: this.getMetaVersion('containerd'),
-          hidden: this.isDocker,
+          options: this.getMetaVersion('containerd', 'offlineVersion'),
+          hidden: this.isDocker || !this.isOffLine,
+          required: true,
+        },
+        {
+          name: 'containerdVersionOnline',
+          label: t('Containerd Version'),
+          type: 'select',
+          options: this.getMetaVersion('containerd', 'onlineVersion'),
+          hidden: this.isDocker || this.isOffLine,
+          required: true,
         },
         {
           name: 'containerdRootDir',

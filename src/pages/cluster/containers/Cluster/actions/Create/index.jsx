@@ -93,6 +93,7 @@ export default class Create extends StepAction {
 
     this.fetchComponents();
     this.fetchTemplates();
+    this.fetchVersion();
   }
 
   async fetchComponents() {
@@ -103,6 +104,10 @@ export default class Create extends StepAction {
   async fetchTemplates() {
     const templates = await this.templatesStore.fetchAll();
     this.updateData({ templates });
+  }
+
+  async fetchVersion() {
+    await this.store.fetchVersion({ limit: -1 });
   }
 
   get successText() {
@@ -165,7 +170,8 @@ export default class Create extends StepAction {
       // image
       offline,
       localRegistry,
-      kubernetesVersion,
+      kubernetesVersionOffline,
+      kubernetesVersionOnline,
       certSANs,
       etcdDataDir,
       // container runtime
@@ -175,7 +181,8 @@ export default class Create extends StepAction {
       dockerVersion,
       containerdInsecureRegistry,
       containerdRootDir,
-      containerdVersion,
+      containerdVersionOnline,
+      containerdVersionOffline,
       backupPoint,
       // network
       dnsDomain,
@@ -230,7 +237,9 @@ export default class Create extends StepAction {
         workers: formatNodesWithLabel(values).worker || [],
         localRegistry,
         workerNodeVip,
-        kubernetesVersion,
+        kubernetesVersion: offline
+          ? kubernetesVersionOffline
+          : kubernetesVersionOnline,
         containerRuntime: {
           containerRuntimeType,
           ...(containerRuntimeType === 'docker'
@@ -243,7 +252,9 @@ export default class Create extends StepAction {
               }
             : {
                 containerd: {
-                  version: containerdVersion,
+                  version: offline
+                    ? containerdVersionOffline
+                    : containerdVersionOnline,
                   insecureRegistry: this.getRegistry(
                     containerdInsecureRegistry
                   ),

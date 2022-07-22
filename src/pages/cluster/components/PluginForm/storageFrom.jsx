@@ -88,9 +88,10 @@ const PluginForm = (props) => {
 
       // plugin template
       if (useTemplate) {
-        const pluginTemplate = templates.filter(
-          (template) => template.pluginName === item.name
-        );
+        const pluginTemplate = [
+          ...templates.filter((template) => template.pluginName === item.name),
+          { name: 'notUseTemplate', templateName: t('Do not use Template') },
+        ];
         set(item.schema, 'properties.pluginTemplate', {
           title: t('Plugin Template'),
           type: 'string',
@@ -132,7 +133,11 @@ const PluginForm = (props) => {
 
   const handleTabChange = async (tab, index) => {
     let isError = false;
-    for (const item of state[current]) {
+    const currentForms = tabs.find(
+      (item) => item.name === current
+    ).formInstances;
+
+    for (const item of currentForms) {
       if (item.formData.enable) {
         // eslint-disable-next-line no-await-in-loop
         const errfields = await item.submit();
@@ -146,26 +151,37 @@ const PluginForm = (props) => {
 
   const handleFRChange = (name, formInstance, formData, index) => {
     if (typeof formData === 'object' && formData.pluginTemplate) {
-      const { flatData = {} } = templates.find(
-        (item) => item.id === formData.pluginTemplate
-      );
-      if (!isMatch(formData, flatData)) {
-        formInstance.setValues({
-          ...formData,
-          pluginTemplate: '',
-        });
+      if (formData.pluginTemplate !== 'notUseTemplate') {
+        const { flatData = {} } = templates.find(
+          (item) => item.id === formData.pluginTemplate
+        );
+        if (!isMatch(formData, flatData)) {
+          formInstance.setValues({
+            ...formData,
+            pluginTemplate: '',
+          });
+        }
       }
     }
 
     if (typeof formData === 'string') {
-      const [{ flatData = {} }] = templates.filter(
-        (item) => item.name === formData
-      );
-      formInstance.setValues({
-        ...flatData,
-        pluginTemplate: formData,
-        enable: true,
-      });
+      if (formData === 'notUseTemplate') {
+        const { baseFormData } = tabs.find((item) => item.name === current);
+        formInstance.setValues({
+          ...baseFormData,
+          pluginTemplate: 'notUseTemplate',
+          enable: true,
+        });
+      } else {
+        const [{ flatData = {} }] = templates.filter(
+          (item) => item.name === formData
+        );
+        formInstance.setValues({
+          ...flatData,
+          pluginTemplate: formData,
+          enable: true,
+        });
+      }
     }
 
     let enableStorage = [];

@@ -149,12 +149,23 @@ const ClusterTemplateMapper = (item) => {
     IPv6AutoDetection,
   });
 
+  const offline = get(config, 'offline');
+  const kubernetesVersion = get(config, 'kubernetesVersion');
+  const kubernetesVersionOnline = !offline && kubernetesVersion;
+  const kubernetesVersionOffline = offline && kubernetesVersion;
+
+  const containerdVersion = get(config, 'containerRuntime.containerd.version');
+  const containerdVersionOnline = !offline && containerdVersion;
+  const containerdVersionOffline = offline && containerdVersion;
+
   const result = {
-    offline: get(config, 'offline'),
+    offline,
     certSANs: get(config, 'certSANs'),
     localRegistry: get(config, 'localRegistry'),
     workerNodeVip: get(config, 'workerNodeVip'),
-    kubernetesVersion: get(config, 'kubernetesVersion'),
+    kubernetesVersion,
+    kubernetesVersionOnline,
+    kubernetesVersionOffline,
     containerRuntimeType: get(config, 'containerRuntime.containerRuntimeType'),
     dockerVersion: get(config, 'containerRuntime.docker.dockerVersion'),
     dockerInsecureRegistry: get(
@@ -162,11 +173,14 @@ const ClusterTemplateMapper = (item) => {
       'containerRuntime.docker.insecureRegistry'
     ),
     dockerRootDir: get(config, 'containerRuntime.docker.rootDir'),
-    containerdVersion: get(config, 'containerRuntime.containerd.dockerVersion'),
+    containerdVersion,
+    containerdVersionOnline,
+    containerdVersionOffline,
     containerdInsecureRegistry: get(
       config,
-      'containerRuntime.containerd.insecureRegistry'
-    ),
+      'containerRuntime.containerd.insecureRegistry',
+      []
+    ).filter((val) => !!val),
     containerdRootDir: get(config, 'containerRuntime.containerd.rootDir'),
     // networking
     serviceSubnet: get(config, 'networking.serviceSubnet'),

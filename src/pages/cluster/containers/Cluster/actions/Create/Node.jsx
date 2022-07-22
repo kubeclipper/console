@@ -203,8 +203,14 @@ export default class Node extends BaseForm {
 
   onTemplateChange = (template) => {
     const { templates = [] } = this.props.context;
-    const { flatData } = templates.find((item) => item.id === template);
-    this.updateContext({ ...flatData, useTemplate: true });
+    const { flatData, templateName } = templates.find(
+      (item) => item.id === template
+    );
+    this.updateContext({
+      ...flatData,
+      useTemplate: true,
+      templateName,
+    });
   };
 
   handleTaintChange = (values) => {

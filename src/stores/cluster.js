@@ -91,6 +91,11 @@ class ClusterStore extends BaseStore {
   }
 
   async fetchVersion(params) {
+    this.fetchOnlineVersion(params);
+    this.fetchOfflineVersion(params);
+  }
+
+  async fetchOnlineVersion(params) {
     const onlineResult = await request.get(
       `${APIVERSION.config}/componentmeta`,
       {
@@ -98,7 +103,11 @@ class ClusterStore extends BaseStore {
         online: true,
       }
     );
+    const onlineData = get(onlineResult, 'items') || [];
+    this.onlineVersion = onlineData || [];
+  }
 
+  async fetchOfflineVersion(params) {
     const offlineResult = await request.get(
       `${APIVERSION.config}/componentmeta`,
       {
@@ -106,14 +115,8 @@ class ClusterStore extends BaseStore {
         online: false,
       }
     );
-
-    const onlineData = get(onlineResult, 'items') || [];
     const offlineData = get(offlineResult, 'items') || [];
-
-    this.onlineVersion = onlineData || [];
     this.offlineVersion = offlineData || [];
-
-    return onlineData;
   }
 
   async upgrade(data, { cluster }) {

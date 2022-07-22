@@ -17,7 +17,7 @@
 import React, { useEffect, useReducer } from 'react';
 import { observer } from 'mobx-react';
 import Tabs from 'components/Tabs';
-import { cloneDeep, isEmpty, get, set } from 'lodash';
+import { cloneDeep, isEmpty, get, set, isMatch } from 'lodash';
 import RenderForm from './RenderForm';
 import { Context } from './Context';
 import KubesphereTips from 'pages/cluster/components/KubesphereTips';
@@ -68,10 +68,10 @@ const PluginForm = (props) => {
 
       // plugin template
       if (useTemplate) {
-        const pluginTemplate = templates.filter(
-          (template) => template.pluginName === item.name
-        );
-
+        const pluginTemplate = [
+          ...templates.filter((template) => template.pluginName === item.name),
+          { name: 'notUseTemplate', templateName: t('Do not use Template') },
+        ];
         set(item.schema, 'properties.pluginTemplate', {
           title: t('Plugin Template'),
           type: 'string',
@@ -110,15 +110,38 @@ const PluginForm = (props) => {
   };
 
   const handleFRChange = (name, formInstance, formData) => {
+    if (typeof formData === 'object' && formData.pluginTemplate) {
+      if (formData.pluginTemplate !== 'notUseTemplate') {
+        const { flatData = {} } = templates.find(
+          (item) => item.id === formData.pluginTemplate
+        );
+        if (!isMatch(formData, flatData)) {
+          formInstance.setValues({
+            ...formData,
+            pluginTemplate: '',
+          });
+        }
+      }
+    }
+
     if (typeof formData === 'string') {
-      const [{ flatData = {} }] = templates.filter(
-        (item) => item.name === formData
-      );
-      formInstance.setValues({
-        ...flatData,
-        pluginTemplate: formData,
-        enable: true,
-      });
+      if (formData === 'notUseTemplate') {
+        const { baseFormData } = tabs.find((item) => item.name === current);
+        formInstance.setValues({
+          ...baseFormData,
+          pluginTemplate: 'notUseTemplate',
+          enable: true,
+        });
+      } else {
+        const [{ flatData = {} }] = templates.filter(
+          (item) => item.name === formData
+        );
+        formInstance.setValues({
+          ...flatData,
+          pluginTemplate: formData,
+          enable: true,
+        });
+      }
     }
 
     tabs.forEach((item) => {

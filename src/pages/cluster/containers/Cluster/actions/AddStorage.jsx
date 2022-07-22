@@ -83,9 +83,10 @@ const Storage = (props) => {
           }
         }
 
-        const pluginTemplate = _templates.filter(
-          (template) => template.pluginName === item.name
-        );
+        const pluginTemplate = [
+          ..._templates.filter((template) => template.pluginName === item.name),
+          { name: 'notUseTemplate', templateName: t('Do not use Template') },
+        ];
         set(item.schema, 'properties.pluginTemplate', {
           title: t('Plugin Template'),
           type: 'string',
@@ -116,7 +117,6 @@ const Storage = (props) => {
         ...state,
         tabs: newTabs,
         current: newTabs.find((item) => !item?.disabled)?.name,
-        tags: ['nfs-sc'],
         baseStorage: _baseStorage,
         storageComps,
         templates: _templates,
@@ -141,26 +141,37 @@ const Storage = (props) => {
 
   const handleFRChange = (name, formInstance, formData, index) => {
     if (typeof formData === 'object' && formData.pluginTemplate) {
-      const { flatData = {} } = templates.find(
-        (item) => item.id === formData.pluginTemplate
-      );
-      if (!isMatch(formData, flatData)) {
-        formInstance.setValues({
-          ...formData,
-          pluginTemplate: '',
-        });
+      if (formData.pluginTemplate !== 'notUseTemplate') {
+        const { flatData = {} } = templates.find(
+          (item) => item.id === formData.pluginTemplate
+        );
+        if (!isMatch(formData, flatData)) {
+          formInstance.setValues({
+            ...formData,
+            pluginTemplate: '',
+          });
+        }
       }
     }
 
     if (typeof formData === 'string') {
-      const [{ flatData = {} }] = templates.filter(
-        (item) => item.name === formData
-      );
-      formInstance.setValues({
-        ...flatData,
-        pluginTemplate: formData,
-        enable: true,
-      });
+      if (formData === 'notUseTemplate') {
+        const { baseFormData } = tabs.find((item) => item.name === current);
+        formInstance.setValues({
+          ...baseFormData,
+          pluginTemplate: 'notUseTemplate',
+          enable: true,
+        });
+      } else {
+        const [{ flatData = {} }] = templates.filter(
+          (item) => item.name === formData
+        );
+        formInstance.setValues({
+          ...flatData,
+          pluginTemplate: formData,
+          enable: true,
+        });
+      }
     }
 
     let enableStorage = [];
@@ -170,6 +181,9 @@ const Storage = (props) => {
       if (item.name === name) {
         item.formData[index] = formData;
         item.formInstances[index] = formInstance;
+        if (!item.baseFormData) {
+          item.baseFormData = cloneDeep(formData);
+        }
       }
 
       if (item.disabled) {
@@ -241,7 +255,6 @@ function AddStorage() {
       storageComps: [],
       templates: [],
 
-      tags: [],
       options: [],
       confirmDisabled: true,
     }
@@ -261,7 +274,6 @@ function AddStorage() {
     }
 
     setState({
-      ...state,
       confirmDisabled: enable,
     });
   }, [enableStorage]);

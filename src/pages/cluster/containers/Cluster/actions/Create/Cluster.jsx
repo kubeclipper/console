@@ -56,7 +56,6 @@ export default class Cluster extends BaseForm {
     this.templateStore = templateStore;
     this.backupPointStore = backupPointStore;
 
-    this.getVersion();
     this.getCommonRegistry();
     this.getBackupPoint();
   }
@@ -68,19 +67,31 @@ export default class Cluster extends BaseForm {
   }
 
   get defaultValue() {
-    const [firstK8s] = this.getMetaVersion('k8s');
-    const [firstContainerd] = this.getMetaVersion('containerd');
+    const [firstK8sOnline] = this.getMetaVersion('k8s', 'onlineVersion');
+    const [firstK8sOffline] = this.getMetaVersion('k8s', 'offlineVersion');
+    const [firstContainerdOnline] = this.getMetaVersion(
+      'containerd',
+      'onlineVersion'
+    );
+    const [firstContainerdOffline] = this.getMetaVersion(
+      'containerd',
+      'offlineVersion'
+    );
 
     return {
-      offline: true,
+      offline: !!this.state.offline,
       localRegistry: '',
-      kubernetesVersion: firstK8s?.value,
+      // kubernetesVersion: firstK8s.value,
+      kubernetesVersionOnline: firstK8sOnline.value,
+      kubernetesVersionOffline: firstK8sOffline.value,
       etcdDataDir: '/var/lib/etcd',
       // containerRuntime
       containerRuntimeType: 'containerd',
       dockerVersion: '19.03.12',
       dockerRootDir: '/var/lib/docker',
-      containerdVersion: firstContainerd?.value,
+      // containerdVersion: firstContainerd.value,
+      containerdVersionOffline: firstContainerdOffline.value,
+      containerdVersionOnline: firstContainerdOnline.value,
       containerdRootDir: '/var/lib/containerd',
       // 网络
       dnsDomain: 'cluster.local',
@@ -115,11 +126,6 @@ export default class Cluster extends BaseForm {
     };
   }
 
-  async getVersion() {
-    await this.store.fetchVersion({ limit: -1 });
-    this.updateDefaultValue();
-  }
-
   async getCommonRegistry() {
     await this.templateStore.fetchList();
     this.updateDefaultValue();
@@ -137,12 +143,8 @@ export default class Cluster extends BaseForm {
     return options;
   }
 
-  getMetaVersion(type) {
-    const versionTitle = this.isOffLine ? 'offlineVersion' : 'onlineVersion';
-
-    const data = toJS(this.store[versionTitle]).filter(
-      ({ name }) => name === type
-    );
+  getMetaVersion(type, online = 'offlineVersion') {
+    const data = toJS(this.store[online]).filter(({ name }) => name === type);
 
     return (data || []).map(({ version }) => ({
       value: version,
@@ -150,7 +152,7 @@ export default class Cluster extends BaseForm {
     }));
   }
 
-  getRegistryOptions() {
+  get getRegistryOptions() {
     const data = toJS(this.templateStore.list.data);
     return (data || []).map(({ host }) => ({
       value: host,
@@ -439,37 +441,48 @@ export default class Cluster extends BaseForm {
               value: true,
             },
           ],
-          tip: t(
-            '"Online" to automatically pull image from the k8s official website gcr.k8s.io; "Offline" to specify other image sources.'
-          ),
+          extra: this.isOffLine
+            ? t(
+                'Offline installation: the public network environment is not required, and the configuration package is pulled from the local warehouse.'
+              )
+            : t(
+                'Online installation: the public network environment is required, and the configuration package is downloaded from the official website.'
+              ),
         },
         {
           name: 'localRegistry',
           label: t('LocalRegistry'),
           type: 'select-input',
           placeholder: t('Please input localRegistry'),
-          options: this.getRegistryOptions(),
+          options: this.getRegistryOptions,
           maxLength: 256,
-          tip: t(
-            "The registry for image of k8s's own components, if not input, the built-in image will be used."
-          ),
           validator: this.checkk8sRegistry,
           onChange: this.onK8SRegistryChange,
+          extra: this.isOffLine
+            ? t(
+                'The image is pulled from the local warehouse by default. You can also fill in other offline image warehouses. The components will inherit the warehouse address by default. Please ensure that there are relevant component images in the warehouse; The component will also provide independent image warehouse parameters. After setting, the component image will be pulled from this address.'
+              )
+            : t(
+                'Images are pulled from the official image warehouse by default, such as k8s images from k8s gcr. IO pull, calico from docker IO pull. You can also fill in other image warehouses, and the components will inherit the warehouse address by default. Please ensure that there are relevant component images in the warehouse; The component will also provide independent image warehouse parameters. After setting, the component image will be pulled from this address.'
+              ),
         },
         {
-          name: 'kubernetesVersion',
+          name: 'kubernetesVersionOffline',
           label: t('K8S Version'),
           type: 'select',
-          options: this.getMetaVersion('k8s'),
+          required: true,
+          options: this.getMetaVersion('k8s', 'offlineVersion'),
           onChange: this.onK8SVersionChange,
-          rules: [
-            {
-              pattern: /^v\d+(?:\.\d+){2}$/,
-              message: t(
-                'Please enter the version in correct format, such as vX.Y.Z'
-              ),
-            },
-          ],
+          hidden: !this.isOffLine,
+        },
+        {
+          name: 'kubernetesVersionOnline',
+          label: t('K8S Version'),
+          type: 'select',
+          required: true,
+          options: this.getMetaVersion('k8s', 'onlineVersion'),
+          onChange: this.onK8SVersionChange,
+          hidden: this.isOffLine,
         },
         {
           name: 'etcdDataDir',
@@ -543,19 +556,20 @@ export default class Cluster extends BaseForm {
         },
         // containerd
         {
-          name: 'containerdVersion',
+          name: 'containerdVersionOffline',
           label: t('Containerd Version'),
           type: 'select',
-          options: this.getMetaVersion('containerd'),
-          hidden: this.isDocker,
-          rules: [
-            {
-              pattern: /^\d+(?:\.\d+){2}$/,
-              message: t(
-                'Please enter the version in correct format, such as X.Y.Z'
-              ),
-            },
-          ],
+          options: this.getMetaVersion('containerd', 'offlineVersion'),
+          hidden: this.isDocker || !this.isOffLine,
+          required: true,
+        },
+        {
+          name: 'containerdVersionOnline',
+          label: t('Containerd Version'),
+          type: 'select',
+          options: this.getMetaVersion('containerd', 'onlineVersion'),
+          hidden: this.isDocker || this.isOffLine,
+          required: true,
         },
         {
           name: 'containerdRootDir',
