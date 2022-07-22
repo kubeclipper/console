@@ -43,6 +43,6 @@ export default class Delete extends ConfirmAction {
 
   onSubmit = (item) => {
     const { id } = item || this.item;
-    return templatesStore.delete(id);
+    return templatesStore.delete({ id });
   };
 }

@@ -39,13 +39,19 @@ export const Forms = forwardRef((props, ref) => {
       if (typeof hidden === 'boolean' && hidden) {
         return '';
       }
+
       return (
         <Col
           span={24 / (it.colNum || 1)}
           key={`form-item-col-${index}`}
           id={`form-item-col-${_name}`}
         >
-          <FormItem {...it} key={`form-item-${index}`} />
+          <FormItem
+            labelCol={labelCol}
+            wrapperCol={wrapperCol}
+            {...it}
+            key={`form-item-${index}`}
+          />
         </Col>
       );
     });
@@ -70,8 +76,6 @@ export const Forms = forwardRef((props, ref) => {
       colon={false}
       labelAlign="left"
       name={name}
-      labelCol={labelCol}
-      wrapperCol={wrapperCol}
       initialValues={initialValues}
       onValuesChange={onValuesChange}
     >
