@@ -101,7 +101,13 @@ export class ConfirmStep extends BaseForm {
 
   containerRuntimeItem() {
     const {
-      context: { containerRuntimeType, dockerVersion, containerdVersion },
+      context: {
+        offline,
+        containerRuntimeType,
+        dockerVersion,
+        containerdVersionOnline,
+        containerdVersionOffline,
+      },
     } = this.props;
     const isDocker = containerRuntimeType === 'docker';
 
@@ -122,7 +128,7 @@ export class ConfirmStep extends BaseForm {
     return [
       {
         label: t('Containerd Version'),
-        value: containerdVersion,
+        value: offline ? containerdVersionOffline : containerdVersionOnline,
       },
       ...this.notFilled(t('Containerd Data Path'), 'containerdRootDir'),
       ...this.notFilled(
@@ -220,9 +226,9 @@ export class ConfirmStep extends BaseForm {
   getClusterItems = () => {
     const { context } = this.props;
     const {
-      name,
       offline,
-      kubernetesVersion,
+      kubernetesVersionOnline,
+      kubernetesVersionOffline,
       containerRuntimeType,
       dnsDomain,
       cniType,
@@ -232,11 +238,8 @@ export class ConfirmStep extends BaseForm {
       IPVersion,
       mtu,
     } = context;
+
     return [
-      {
-        label: t('Cluster Name'),
-        value: name,
-      },
       ...this.notFilled(t('Description'), 'description'),
       ...this.notFilled(t('External Access IP'), 'externalIP'),
       {
@@ -246,7 +249,7 @@ export class ConfirmStep extends BaseForm {
       ...this.notFilled(t('LocalRegistry'), 'localRegistry'),
       {
         label: t('K8S Version'),
-        value: kubernetesVersion,
+        value: offline ? kubernetesVersionOffline : kubernetesVersionOnline,
       },
       ...this.notFilled(t('ETCD Data Dir'), 'etcdDataDir'),
       ...this.notFilled(t('CertSANs'), 'certSANs', arrayInputValue),
@@ -328,6 +331,8 @@ export class ConfirmStep extends BaseForm {
 
   get formItems() {
     const { context } = this.props;
+    const { name, templateName } = context;
+
     // eslint-disable-next-line no-console
     console.log('context', context);
 
@@ -343,6 +348,14 @@ export class ConfirmStep extends BaseForm {
             this.goStep(0);
           },
           items: [
+            {
+              label: t('Cluster Name'),
+              value: name,
+            },
+            {
+              label: t('Template Name'),
+              value: templateName,
+            },
             {
               label: t('Master Node'),
               value: this.getNodesName().master,

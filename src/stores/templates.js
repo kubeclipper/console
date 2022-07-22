@@ -72,4 +72,8 @@ export default class TemplatesStore extends BaseStore {
 
     return ObjectMapper[this.module](template);
   }
+
+  patch(params, datas) {
+    return this.submitting(request.put(this.getDetailUrl(params), datas));
+  }
 }

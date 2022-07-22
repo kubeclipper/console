@@ -41,9 +41,9 @@ class SaveAsTemplate extends ModalAction {
     return t('Create Template');
   }
 
-  static isRunning = (item) => item.status === 'Running';
+  static isInstalling = (item) => item.status === 'Installing';
 
-  static allowed = (item) => Promise.resolve(this.isRunning(item));
+  static allowed = (item) => Promise.resolve(!this.isInstalling(item));
 
   get formItems() {
     return [

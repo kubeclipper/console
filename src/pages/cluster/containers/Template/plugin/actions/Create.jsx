@@ -95,6 +95,7 @@ export default function AddPlugin() {
         oldVals = _originData;
       }
 
+      delete pluginComps.schema.properties.isDefaultSC;
       if (pluginComps.name === 'kubesphere') {
         delete pluginComps.schema.properties.storageClass;
       }

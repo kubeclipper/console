@@ -66,9 +66,10 @@ const Plugin = (props) => {
           });
 
         // plugin template
-        const pluginTemplate = _templates.filter(
-          (template) => template.pluginName === item.name
-        );
+        const pluginTemplate = [
+          ..._templates.filter((template) => template.pluginName === item.name),
+          { name: 'notUseTemplate', templateName: t('Do not use Template') },
+        ];
 
         set(item.schema, 'properties.pluginTemplate', {
           title: t('Plugin Template'),
@@ -108,26 +109,37 @@ const Plugin = (props) => {
 
   const handleFRChange = (name, formInstance, formData, index) => {
     if (typeof formData === 'object' && formData.pluginTemplate) {
-      const { flatData = {} } = templates.find(
-        (item) => item.id === formData.pluginTemplate
-      );
-      if (!isMatch(formData, flatData)) {
-        formInstance.setValues({
-          ...formData,
-          pluginTemplate: '',
-        });
+      if (formData.pluginTemplate !== 'notUseTemplate') {
+        const { flatData = {} } = templates.find(
+          (item) => item.id === formData.pluginTemplate
+        );
+        if (!isMatch(formData, flatData)) {
+          formInstance.setValues({
+            ...formData,
+            pluginTemplate: '',
+          });
+        }
       }
     }
 
     if (typeof formData === 'string') {
-      const [{ flatData = {} }] = templates.filter(
-        (item) => item.name === formData
-      );
-      formInstance.setValues({
-        ...flatData,
-        pluginTemplate: formData,
-        enable: true,
-      });
+      if (formData === 'notUseTemplate') {
+        const { baseFormData } = tabs.find((item) => item.name === current);
+        formInstance.setValues({
+          ...baseFormData,
+          pluginTemplate: 'notUseTemplate',
+          enable: true,
+        });
+      } else {
+        const [{ flatData = {} }] = templates.filter(
+          (item) => item.name === formData
+        );
+        formInstance.setValues({
+          ...flatData,
+          pluginTemplate: formData,
+          enable: true,
+        });
+      }
     }
 
     tabs.forEach((item) => {
