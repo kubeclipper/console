@@ -62,14 +62,14 @@ class SaveAsTemplate extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { type } = this.item;
-    const config = this.item[type];
+    const { type, pluginName, pluginVersion, pluginCategory } = this.item;
+    const config = this.item[type] || this.item.component;
 
     const params = {
       ...values,
-      pluginName: 'kubernetes',
-      pluginVersion: 'v1',
-      pluginCategory: 'kubernetes',
+      pluginName: pluginName || 'kubernetes',
+      pluginVersion: pluginVersion || 'v1',
+      pluginCategory: pluginCategory || 'kubernetes',
     };
 
     return this.store.create(params, config);

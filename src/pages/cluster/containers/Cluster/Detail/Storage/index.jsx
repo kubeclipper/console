@@ -19,6 +19,7 @@ import { useRootStore } from 'stores';
 import { componentStatus } from 'resources/cluster';
 import ActionButton from 'components/Tables/Base/ActionButton';
 import Delete from '../../actions/RemovePlugin';
+import SaveAsTemplate from '../../actions/SaveAsTemplate';
 import { getAction } from 'utils/allowed';
 import { toJS } from 'mobx';
 import { useParams } from 'react-router';
@@ -54,11 +55,28 @@ export default function Storage() {
 
     options = [...options, ...customOption];
 
+    const { version, category, name } = store.components.find(
+      (component) => component.name === item.name
+    );
     return {
       title: item.name,
       options,
       cardButton: () => {
-        const buttonProps = {
+        const saveAsTemplateButtonProps = {
+          id: `${item.name}-${index}`,
+          isAllowed: true,
+          title: t('Save as template'),
+          buttonType: 'link',
+          actionType: 'modal',
+          item: {
+            component: item,
+            pluginName: name,
+            pluginVersion: version,
+            pluginCategory: category,
+          },
+        };
+
+        const deleteButtonProps = {
           id: `${item.name}-${index}`,
           isAllowed: true,
           title: t('Remove'),
@@ -73,8 +91,18 @@ export default function Storage() {
           },
         };
 
-        const action = getAction(Delete, [], {});
-        return <ActionButton {...buttonProps} action={action} />;
+        const saveAsTemplateAction = getAction(SaveAsTemplate, [], {});
+        const deleteAction = getAction(Delete, [], {});
+
+        return (
+          <>
+            <ActionButton
+              {...saveAsTemplateButtonProps}
+              action={saveAsTemplateAction}
+            />
+            <ActionButton {...deleteButtonProps} action={deleteAction} />
+          </>
+        );
       },
     };
   });

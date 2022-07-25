@@ -20,6 +20,7 @@ import { get, isEmpty } from 'lodash';
 import { componentStatus } from 'resources/cluster';
 import ActionButton from 'components/Tables/Base/ActionButton';
 import Delete from '../../actions/RemovePlugin';
+import SaveAsTemplate from '../../actions/SaveAsTemplate';
 import { getAction } from 'utils/allowed';
 import { toJS } from 'mobx';
 import { useParams } from 'react-router';
@@ -161,12 +162,31 @@ function Plugins() {
         format: 'Enable',
       },
     ];
+
+    const { version, category, name } = store.components.find(
+      (component) => component.name === item.name
+    );
+
     return {
       title: t('PaaS Platform'),
       options,
       cardButton: () => {
-        const buttonProps = {
-          id: 'kubesphere',
+        const saveAsTemplateButtonProps = {
+          id: item.name,
+          isAllowed: true,
+          title: t('Save as template'),
+          buttonType: 'link',
+          actionType: 'modal',
+          item: {
+            component: item,
+            pluginName: name,
+            pluginVersion: version,
+            pluginCategory: category,
+          },
+        };
+
+        const deleteButtonProps = {
+          id: item.name,
           isAllowed: true,
           title: t('Remove'),
           buttonType: 'link',
@@ -180,8 +200,18 @@ function Plugins() {
           },
         };
 
-        const action = getAction(Delete, [], {});
-        return <ActionButton {...buttonProps} action={action} />;
+        const saveAsTemplateAction = getAction(SaveAsTemplate, [], {});
+        const deleteAction = getAction(Delete, [], {});
+
+        return (
+          <>
+            <ActionButton
+              {...saveAsTemplateButtonProps}
+              action={saveAsTemplateAction}
+            />
+            <ActionButton {...deleteButtonProps} action={deleteAction} />
+          </>
+        );
       },
     };
   });
