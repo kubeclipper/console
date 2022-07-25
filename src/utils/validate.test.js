@@ -19,7 +19,7 @@ import {
   nameValidate,
   macAddressValidate,
   portRangeValidate,
-  passwordValidate,
+  // passwordValidate,
 } from './validate';
 
 describe('test vaildate', () => {
@@ -63,18 +63,18 @@ describe('test vaildate', () => {
     expect(val2).rejects.toThrow();
   });
 
-  it('passwordValidate', async () => {
-    const val = await passwordValidate(
-      {
-        field: 'password',
-      },
-      123456,
-      {
-        password: 123456,
-        confirmPassword: 123456,
-      }
-    );
+  // it('passwordValidate', async () => {
+  //   const val = await passwordValidate(
+  //     {
+  //       field: 'password',
+  //     },
+  //     123456,
+  //     {
+  //       password: 123456,
+  //       confirmPassword: 123456,
+  //     }
+  //   );
 
-    expect(val).toBe();
-  });
+  //   expect(val).toBe();
+  // });
 });
