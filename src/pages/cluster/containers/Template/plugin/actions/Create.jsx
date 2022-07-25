@@ -163,28 +163,12 @@ export default function AddPlugin() {
         type: 'input',
         placeholder: t('Please input Template name'),
         required: true,
-        labelCol: {
-          xs: { span: 7 },
-          sm: { span: 5 },
-        },
-        wrapperCol: {
-          xs: { span: 10 },
-          sm: { span: 8 },
-        },
       },
       {
         name: 'templateDescription',
         label: t('Description'),
         type: 'input',
         placeholder: t('Please input description!'),
-        labelCol: {
-          xs: { span: 7 },
-          sm: { span: 5 },
-        },
-        wrapperCol: {
-          xs: { span: 10 },
-          sm: { span: 8 },
-        },
       },
     ],
     [
@@ -194,7 +178,7 @@ export default function AddPlugin() {
         component: <Plugin state={state} setState={setState} />,
         wrapperCol: {
           xs: { span: 24 },
-          sm: { span: 19 },
+          sm: { span: 16 },
         },
       },
     ],
@@ -208,6 +192,14 @@ export default function AddPlugin() {
           formItems={formItems}
           name={state.name}
           initialValues={state.templateInitVal}
+          labelCol={{
+            xs: { span: 7 },
+            sm: { span: 5 },
+          }}
+          wrapperCol={{
+            xs: { span: 10 },
+            sm: { span: 11 },
+          }}
         />
         <Footer onOK={onOK} />
       </div>

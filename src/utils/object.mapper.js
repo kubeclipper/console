@@ -389,13 +389,11 @@ const TemplatesMapper = (item) => {
   } else {
     flatData = get(item, 'config');
   }
-
+  const name = get(item, 'metadata.annotations["kubeclipper.io/display-name"]');
   const result = {
     ...getBaseInfo(item),
-    templateName: get(
-      item,
-      'metadata.annotations["kubeclipper.io/display-name"]'
-    ),
+    name,
+    templateName: name,
     templateDescription: get(
       item,
       'metadata.annotations["kubeclipper.io/description"]'
