@@ -134,8 +134,7 @@ yarn run build:test
 docker run --rm -d -p 8089:80 --name kubeclipper-console-test -v ~/${distPath}:/usr/share/nginx/html -v ~/${nginx_conf_path}:/etc/nginx/conf.d/default.conf nginx
 ```
 
-distPath 为打包生成的 dist 文件夹路径。
-注： 映射端口与 baseUrl 中保持一致。
+distPath 为打包生成的 dist 文件夹路径。 注： 映射端口与 baseUrl 中保持一致。
 
 测试项目启动后，以下命令跑 e2e 测试。
 
@@ -179,8 +178,7 @@ server {
 
 ## 单元测试使用
 
-终端运行 `yarn run test:unit`, 会执行目录下测试文件，并进入监听模式
-![Coverage](images/unit_command_line.jpg)
+终端运行 `yarn run test:unit`, 会执行目录下测试文件，并进入监听模式 ![Coverage](images/unit_command_line.jpg)
 
 以下命令， 用于监听代码改动时，执行测试
 
@@ -201,10 +199,9 @@ Watch Usage
 
 ## 单元测试覆盖率
 
-终端运行 `yarn run test:unit:coverage`,
-会匹配项目下
+终端运行 `yarn run test:unit:coverage`, 会匹配项目下
 
-- \_\_tests\_\_ 文件夹
+- tests 文件夹
 - \*.{spec,test}.{js,jsx,ts,tsx} 文件
 
 执行单元测试 并在根目录下生成`unitCoverage`覆盖率报告，访问`coverage/lcov-report/index.html`即可查看
