@@ -180,7 +180,12 @@ const ClusterTemplateMapper = (item) => {
       config,
       'containerRuntime.containerd.insecureRegistry',
       []
-    ).filter((val) => !!val),
+    )
+      .filter((val) => !!val)
+      .map((val, index) => ({
+        value: val,
+        index,
+      })),
     containerdRootDir: get(config, 'containerRuntime.containerd.rootDir'),
     // networking
     serviceSubnet: get(config, 'networking.serviceSubnet'),
