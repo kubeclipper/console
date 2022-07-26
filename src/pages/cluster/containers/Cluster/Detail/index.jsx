@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import TabDetail from 'containers/TabDetail';
 import { useRootStore } from 'stores';
 import { clusterStatus, transitionStatus } from 'resources/cluster';
@@ -42,6 +42,13 @@ const StatusTitle = () => (
 
 function ClusterDetail() {
   const { clusterStore: store } = useRootStore();
+
+  useEffect(() => {
+    async function fetchComponents() {
+      store.fetchComponents();
+    }
+    fetchComponents();
+  }, []);
 
   const currentProps = {
     name: t('ClusterDetail'),
