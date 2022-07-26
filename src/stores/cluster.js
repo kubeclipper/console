@@ -71,7 +71,6 @@ class ClusterStore extends BaseStore {
     );
     const data = result;
     this.components = data || [];
-
     return data;
   }
 

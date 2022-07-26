@@ -17,7 +17,7 @@
 import React from 'react';
 import Tips from 'components/Tips';
 
-const KubesphereTips = () => {
+export default () => {
   const data = [
     {
       content: t('1. At least one storage is required to install PaaS.'),
@@ -51,5 +51,3 @@ const KubesphereTips = () => {
     />
   );
 };
-
-export default KubesphereTips;

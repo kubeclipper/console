@@ -346,7 +346,6 @@ export default class BaseStepForm extends React.Component {
 
   render() {
     const { current } = this.state;
-
     return (
       <div className={classnames(styles.wrapper, this.className)}>
         <Spin spinning={this.isSubmitting}>

@@ -329,6 +329,17 @@ export class ConfirmStep extends BaseForm {
     return result;
   };
 
+  get hasPlugin() {
+    const {
+      context: { components },
+    } = this.props;
+    const hasPlugin =
+      (components || []).filter(({ category }) => category !== 'storage')
+        .length > 0;
+
+    return hasPlugin;
+  }
+
   get formItems() {
     const { context } = this.props;
     const { name, templateName } = context;
@@ -397,17 +408,19 @@ export class ConfirmStep extends BaseForm {
           items: this.getStorageItems(),
         },
       ],
-      [
-        {
-          name: 'plugin',
-          type: 'descriptions',
-          title: t('Plugins Config'),
-          onClick: () => {
-            this.goStep(3);
-          },
-          items: this.getPluginsItems(),
-        },
-      ],
+      ...(this.hasPlugin
+        ? [
+            {
+              name: 'plugin',
+              type: 'descriptions',
+              title: t('Plugins Config'),
+              onClick: () => {
+                this.goStep(3);
+              },
+              items: this.getPluginsItems(),
+            },
+          ]
+        : []),
     ];
   }
 }

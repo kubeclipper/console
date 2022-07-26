@@ -27,7 +27,7 @@ import { useRootStore } from 'stores';
 
 import styles from './index.less';
 
-const PluginForm = (props) => {
+const StorageForm = (props) => {
   const {
     templates = [],
     useTemplate = false,
@@ -303,4 +303,4 @@ const PluginForm = (props) => {
   );
 };
 
-export default observer(PluginForm);
+export default observer(StorageForm);

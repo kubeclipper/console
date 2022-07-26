@@ -33,6 +33,6 @@ export default function MStep(props) {
         </Steps>
       </div>
     ),
-    [current]
+    [current, steps]
   );
 }
