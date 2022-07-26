@@ -17,7 +17,7 @@
 import React, { useEffect, useReducer, useRef } from 'react';
 import Tabs from 'components/Tabs';
 import styles from './index.less';
-import RenderForm from '../../../components/PluginForm/RenderForm';
+import RenderForm from '../../../components/plugin/RenderForm';
 import { cloneDeep, uniq, omit, set, assign, isArray, isMatch } from 'lodash';
 import { useParams, useHistory } from 'react-router-dom';
 import { filterComponents } from 'utils/schemaForm';

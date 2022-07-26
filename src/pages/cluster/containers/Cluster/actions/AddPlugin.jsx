@@ -19,8 +19,8 @@ import { cloneDeep, omit, isArray, get, set, isMatch } from 'lodash';
 import { Forms } from 'components/Form';
 import classnames from 'classnames';
 import styles from './index.less';
-import RenderForm from '../../../components/PluginForm/RenderForm';
-import { Context } from 'pages/cluster/components/PluginForm/Context';
+import RenderForm from '../../../components/plugin/RenderForm';
+import { Context } from '@/pages/cluster/components/plugin/Context';
 import Tips from '@/pages/cluster/components/Tips';
 import Notify from 'components/Notify';
 

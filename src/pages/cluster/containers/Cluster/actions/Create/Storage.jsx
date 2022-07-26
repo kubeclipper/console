@@ -18,7 +18,7 @@ import { observer } from 'mobx-react';
 import Base from 'components/Form';
 import { rootStore } from 'stores';
 import { filter } from 'lodash';
-import StorageForm from 'pages/cluster/components/PluginForm/StorageFrom';
+import StorageForm from 'pages/cluster/components/plugin/StorageForm';
 
 @observer
 export default class Storage extends Base {

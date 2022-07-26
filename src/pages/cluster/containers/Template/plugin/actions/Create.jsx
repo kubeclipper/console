@@ -18,8 +18,8 @@ import { useParams, useHistory } from 'react-router';
 import { useRootStore } from 'stores';
 import { set, cloneDeep } from 'lodash';
 import classnames from 'classnames';
-import RenderForm from 'pages/cluster/components/PluginForm/RenderForm';
-import { Context } from 'pages/cluster/components/PluginForm/Context';
+import RenderForm from '@/pages/cluster/components/plugin/RenderForm';
+import { Context } from '@/pages/cluster/components/plugin/Context';
 import Tips from '@/pages/cluster/components/Tips';
 
 import Notify from 'components/Notify';
