@@ -16,7 +16,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import BaseForm from 'components/Form';
-import PluginForm from 'pages/cluster/components/PluginForm';
+import PluginForm from '@/pages/cluster/components/plugin/PluginForm';
 import { rootStore } from 'stores';
 import { toJS } from 'mobx';
 
