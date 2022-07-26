@@ -20,7 +20,7 @@ import { set, cloneDeep } from 'lodash';
 import classnames from 'classnames';
 import RenderForm from 'pages/cluster/components/PluginForm/RenderForm';
 import { Context } from 'pages/cluster/components/PluginForm/Context';
-import KubesphereTips from 'pages/cluster/components/KubesphereTips';
+import Tips from '@/pages/cluster/components/Tips';
 
 import Notify from 'components/Notify';
 import Footer from 'components/Footer';
@@ -42,7 +42,7 @@ const Plugin = (props) => {
 
   return (
     <Context.Provider value={{ context: setState }}>
-      {current === 'kubesphere' && <KubesphereTips />}
+      {current === 'kubesphere' && <Tips />}
       <RenderForm
         schema={currentPlugin?.schema}
         name={currentPlugin?.name}

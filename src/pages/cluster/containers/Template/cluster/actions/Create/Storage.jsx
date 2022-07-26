@@ -19,7 +19,7 @@ import Base from 'components/Form';
 import { rootStore } from 'stores';
 import { toJS } from 'mobx';
 import { filter } from 'lodash';
-import StorageForm from 'pages/cluster/components/PluginForm/storageFrom';
+import StorageForm from 'pages/cluster/components/PluginForm/StorageFrom';
 
 @observer
 export default class Storage extends Base {

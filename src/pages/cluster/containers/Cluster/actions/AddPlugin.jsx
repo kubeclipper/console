@@ -21,7 +21,7 @@ import classnames from 'classnames';
 import styles from './index.less';
 import RenderForm from '../../../components/PluginForm/RenderForm';
 import { Context } from 'pages/cluster/components/PluginForm/Context';
-import KubesphereTips from 'pages/cluster/components/KubesphereTips';
+import Tips from '@/pages/cluster/components/Tips';
 import Notify from 'components/Notify';
 
 import Tabs from 'components/Tabs';
@@ -179,7 +179,7 @@ const Plugin = (props) => {
         {tabs.map((item) =>
           item.schemas.map((_item, _index) => (
             <>
-              {item.name === 'kubesphere' && <KubesphereTips />}
+              {item.name === 'kubesphere' && <Tips />}
               <RenderForm
                 schema={_item}
                 name={current}

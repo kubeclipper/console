@@ -20,7 +20,7 @@ import Tabs from 'components/Tabs';
 import { cloneDeep, isEmpty, get, set, isMatch } from 'lodash';
 import RenderForm from './RenderForm';
 import { Context } from './Context';
-import KubesphereTips from 'pages/cluster/components/KubesphereTips';
+import Tips from 'pages/cluster/components/Tips';
 
 const PluginForm = (props) => {
   const {
@@ -33,7 +33,7 @@ const PluginForm = (props) => {
     onChange,
   } = props;
   const enabledStorageClass = get(context, 'storage.enableStorage') || [];
-  const modules = components.filter((m) => m.name === 'kubesphere');
+  const modules = components.filter((m) => m.category !== 'storage');
 
   const [state, setState] = useReducer(
     (_state, newState) => ({ ..._state, ...newState }),
@@ -177,6 +177,34 @@ const PluginForm = (props) => {
 
   if (isEmpty(tabs)) return null;
 
+  const TabItem = ({ tab }) => (
+    <>
+      {tab.category === 'paas' && <Tips />}
+      <ItemForm tab={tab} />
+    </>
+  );
+
+  const ItemForm = ({ tab }) => {
+    if (
+      isEmpty(enabledStorageClass) &&
+      (tab?.dependence || []).includes('storage')
+    ) {
+      return null;
+    }
+
+    return (
+      <RenderForm
+        schema={tab.schema}
+        name={current}
+        value={tab.formData || {}}
+        onChange={(name, formInstance, formData) =>
+          handleFRChange(name, formInstance, formData)
+        }
+        onMount={onMount}
+      />
+    );
+  };
+
   return (
     <Context.Provider value={{ context, updateContext }}>
       <Tabs
@@ -186,20 +214,7 @@ const PluginForm = (props) => {
         styles={{ paddingLeft: '10px' }}
       >
         {tabs.map((tab) => (
-          <>
-            <KubesphereTips />
-            {!isEmpty(enabledStorageClass) && (
-              <RenderForm
-                schema={tab.schema}
-                name={current}
-                value={tab.formData || {}}
-                onChange={(name, formInstance, formData) =>
-                  handleFRChange(name, formInstance, formData)
-                }
-                onMount={onMount}
-              />
-            )}
-          </>
+          <TabItem tab={tab} />
         ))}
       </Tabs>
     </Context.Provider>
