@@ -19,7 +19,7 @@ import { Switch } from 'antd';
 import FR from 'components/FormRender';
 import { useForm } from 'form-render';
 import { get, isEmpty } from 'lodash';
-import { Context } from '@/pages/cluster/components/plugin/Context';
+import { Context } from 'pages/cluster/components/plugin/Context';
 
 import styles from './index.less';
 
