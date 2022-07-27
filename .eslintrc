@@ -86,7 +86,6 @@
       2,
       {
         "ignore": [
-          "^@/",
           "^umi/",
           "^src",
           "^layouts",
