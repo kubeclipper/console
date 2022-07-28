@@ -30,7 +30,9 @@ export default class BaseStore {
 
   isSubmitting = false;
 
-  constructor() {
+  constructor(rootStore) {
+    this.rootStore = rootStore;
+
     makeObservable(this, {
       list: observable,
       detail: observable,
