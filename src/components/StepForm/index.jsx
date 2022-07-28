@@ -183,7 +183,7 @@ export default class BaseStepForm extends React.Component {
   }
 
   get currentRefInstance() {
-    return this.currentRef.current;
+    return this.currentRef?.current;
   }
 
   setFormRefs() {
@@ -249,6 +249,11 @@ export default class BaseStepForm extends React.Component {
   };
 
   onClickPrev = () => {
+    if (!this.currentRefInstance) {
+      this.updateDataOnPrev();
+      return;
+    }
+
     this.currentRefInstance.checkFormInput(
       this.updateDataOnPrev,
       this.updateDataOnPrev,
