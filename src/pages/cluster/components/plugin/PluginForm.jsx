@@ -177,34 +177,6 @@ const PluginForm = (props) => {
 
   if (isEmpty(tabs)) return null;
 
-  const TabItem = ({ tab }) => (
-    <>
-      {tab.category === 'paas' && <Tips />}
-      <ItemForm tab={tab} />
-    </>
-  );
-
-  const ItemForm = ({ tab }) => {
-    if (
-      isEmpty(enabledStorageClass) &&
-      (tab?.dependence || []).includes('storage')
-    ) {
-      return null;
-    }
-
-    return (
-      <RenderForm
-        schema={tab.schema}
-        name={current}
-        value={tab.formData || {}}
-        onChange={(name, formInstance, formData) =>
-          handleFRChange(name, formInstance, formData)
-        }
-        onMount={onMount}
-      />
-    );
-  };
-
   return (
     <Context.Provider value={{ context, updateContext }}>
       <Tabs
@@ -214,7 +186,21 @@ const PluginForm = (props) => {
         styles={{ paddingLeft: '10px' }}
       >
         {tabs.map((tab) => (
-          <TabItem tab={tab} />
+          <>
+            {tab.category === 'PAAS' && <Tips />}
+            {!isEmpty(enabledStorageClass) &&
+              (tab?.dependence || []).includes('storage') && (
+                <RenderForm
+                  schema={tab.schema}
+                  name={current}
+                  value={tab.formData || {}}
+                  onChange={(name, formInstance, formData) =>
+                    handleFRChange(name, formInstance, formData)
+                  }
+                  onMount={onMount}
+                />
+              )}
+          </>
         ))}
       </Tabs>
     </Context.Provider>

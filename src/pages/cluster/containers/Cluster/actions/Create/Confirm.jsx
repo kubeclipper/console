@@ -408,7 +408,7 @@ export class ConfirmStep extends BaseForm {
           items: this.getStorageItems(),
         },
       ],
-      ...(this.hasPlugin
+      this.hasPlugin
         ? [
             {
               name: 'plugin',
@@ -420,7 +420,7 @@ export class ConfirmStep extends BaseForm {
               items: this.getPluginsItems(),
             },
           ]
-        : []),
+        : [],
     ];
   }
 }
