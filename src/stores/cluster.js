@@ -16,12 +16,11 @@
 
 import { get } from 'lodash';
 import { APIVERSION } from 'utils/constants';
-import { rootStore } from '.';
 import { getLocalStorageItem } from 'utils/localStorage';
 
 import BaseStore from './base';
 
-class ClusterStore extends BaseStore {
+export default class ClusterStore extends BaseStore {
   nodes = [];
 
   components = [];
@@ -38,7 +37,7 @@ class ClusterStore extends BaseStore {
     `${this.apiVersion}/clusters/${cluster}/plugins`;
 
   async detailDidFetch(detail) {
-    const nodeList = await rootStore.nodeStore.fetchListResult();
+    const nodeList = await this.rootStore.nodeStore.fetchListResult();
 
     this.nodes = nodeList;
 
@@ -133,5 +132,3 @@ class ClusterStore extends BaseStore {
     );
   }
 }
-
-export default ClusterStore;
