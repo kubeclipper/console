@@ -28,18 +28,25 @@ export default class WebSocketStore {
     });
   }
 
+  get host() {
+    return process.env.NODE_ENV === 'development'
+      ? devIp
+      : window.location.host;
+  }
+
+  get websocketUrl() {
+    return (url) =>
+      `${getWebSocketProtocol(window.location.protocol)}://${this.host}/${url}`;
+  }
+
   watch(url) {
     if (this.wsClient) {
       this.wsClient.close(true);
     }
-    const host =
-      process.env.NODE_ENV === 'development' ? devIp : window.location.host;
-    this.wsClient = new SocketClient(
-      `${getWebSocketProtocol(window.location.protocol)}://${host}/${url}`,
-      {
-        onmessage: this.receive,
-      }
-    );
+
+    this.wsClient = new SocketClient(this.websocketUrl(url), {
+      onmessage: this.receive,
+    });
   }
 
   receive = (data) => {
