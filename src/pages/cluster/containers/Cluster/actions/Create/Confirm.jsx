@@ -233,7 +233,7 @@ export class ConfirmStep extends BaseForm {
       dnsDomain,
       cniType,
       calicoMode,
-      ipvs,
+      proxyMode,
       IPManger,
       IPVersion,
       mtu,
@@ -272,8 +272,8 @@ export class ConfirmStep extends BaseForm {
         value: calicoMode,
       },
       {
-        label: t('Ipvs'),
-        value: ipvs,
+        label: t('proxyMode'),
+        value: proxyMode,
       },
       {
         label: t('IPManger'),
@@ -349,7 +349,7 @@ export class ConfirmStep extends BaseForm {
 
     const { worker = null } = this.getNodesName();
 
-    return [
+    const formItems = [
       [
         {
           name: 'node',
@@ -408,20 +408,21 @@ export class ConfirmStep extends BaseForm {
           items: this.getStorageItems(),
         },
       ],
-      this.hasPlugin
-        ? [
-            {
-              name: 'plugin',
-              type: 'descriptions',
-              title: t('Plugins Config'),
-              onClick: () => {
-                this.goStep(3);
-              },
-              items: this.getPluginsItems(),
-            },
-          ]
-        : [],
     ];
+    this.hasPlugin &&
+      formItems.push([
+        {
+          name: 'plugin',
+          type: 'descriptions',
+          title: t('Plugins Config'),
+          onClick: () => {
+            this.goStep(3);
+          },
+          items: this.getPluginsItems(),
+        },
+      ]);
+
+    return formItems;
   }
 }
 
