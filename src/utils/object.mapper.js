@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { get, omit, merge, intersectionBy } from 'lodash';
+import { get, omit, merge, intersectionBy, has } from 'lodash';
 import { status as nodeStatus } from 'resources/node';
 import { formatRoleRules, safeParseJSON } from 'utils';
 import { INTERNAL_ROLE_DES } from 'utils/constants';
@@ -99,30 +99,36 @@ const ClusterMapper = (item) => {
   const STORAGES = ['nfs-provisioner', 'ceph-csi', 'cinder'];
   const PLUGINS = ['kubesphere'];
 
-  const ITEM = item[item.type];
-
   const components = Object.fromEntries(
-    ITEM.components?.map((c) => [c.name, c.config]) || []
+    item.addons?.map((c) => [c.name, c.config]) || []
   );
 
-  const kubeComponents = get(ITEM, 'kubeComponents') || {};
-  const { masters, workers = [], nodes = [] } = ITEM;
+  const { masters, workers = [], nodes = [] } = item;
   const mastersByIp = intersectionBy(nodes, masters, 'id');
+  const offline = has(item.metadata.annotations, 'kubeclipper.io/offline');
+  const isDualStack = get(item, 'networking.ipFamily') === 'IPv4+IPv6';
+  const [podIPv4CIDR, podIPv6CIDR] = get(item, 'networking.pods.cidrBlocks');
+  const [serviceSubnet, serviceSubnetV6] = get(
+    item,
+    'networking.services.cidrBlocks'
+  );
   const result = {
     ...getBaseInfo(item),
     ...item,
-    ...ITEM,
     ...components,
     nodeList: [...masters, ...workers],
     mastersByIp,
+    offline,
+    isDualStack,
+    podIPv4CIDR,
+    podIPv6CIDR,
+    serviceSubnet,
+    serviceSubnetV6,
     externalIP: get(item, 'metadata.labels["kubeclipper.io/externalIP"]'),
-    kubeComponents,
-    cni: kubeComponents.cni,
-    kubeProxy: kubeComponents.kubeProxy,
-    status: get(item, 'status.status'),
+    status: get(item, 'status.phase'),
     componentsHealthy: get(item, 'status.componentConditions') || [],
-    plugin: filterComponents(ITEM.components, PLUGINS) || [],
-    storage: filterComponents(ITEM.components, STORAGES) || [],
+    plugin: filterComponents(item.components, PLUGINS) || [],
+    storage: filterComponents(item.components, STORAGES) || [],
     region: get(item, 'metadata.labels["topology.kubeclipper.io/region"]'),
     description: get(
       item,

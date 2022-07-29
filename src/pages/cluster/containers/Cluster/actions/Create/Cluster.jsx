@@ -98,8 +98,8 @@ export default class Cluster extends BaseForm {
       workerNodeVip: '169.254.169.100',
       cniType: 'calico',
       calicoMode: 'Overlay-Vxlan-All',
-      ipvs: true,
-      IPVersion: 'ipv4',
+      IPVersion: 'IPv4',
+      proxyMode: 'ipvs',
       IPManger: true,
       podIPv4CIDR: '172.25.0.0/24',
       podIPv6CIDR: 'fd05::/120',
@@ -202,7 +202,7 @@ export default class Cluster extends BaseForm {
   get isDualStack() {
     const { IPVersion } = this.state;
 
-    return IPVersion === 'dualStack';
+    return IPVersion === 'IPv4+IPv6';
   }
 
   checkIpOrDomain = (rule, value) => {
@@ -634,13 +634,24 @@ export default class Cluster extends BaseForm {
           hidden: !this.isCalico,
         },
         {
-          name: 'ipvs',
-          label: t('Ipvs'),
-          type: 'check',
-          content: t('Enable Ipvs'),
-          tip: t(
-            'IPVS (IP Virtual Server) is built on the upper layer of Netfilter and as a part of the Linux kernel to achieve load balancing at the transport layer. It is recommended to enable it.'
-          ),
+          name: 'proxyMode',
+          label: t('proxyMode'),
+          type: 'radio',
+          optionType: 'default',
+          options: [
+            {
+              label: 'ipvs',
+              value: 'ipvs',
+            },
+            {
+              label: 'iptables',
+              value: 'iptables',
+            },
+            {
+              label: 'ebpf',
+              value: 'ebpf',
+            },
+          ],
         },
         {
           name: 'IPManger',
@@ -659,11 +670,11 @@ export default class Cluster extends BaseForm {
           options: [
             {
               label: 'IPv4',
-              value: 'ipv4',
+              value: 'IPv4',
             },
             {
               label: t('IPv4 IPv6 Dual Stack'),
-              value: 'dualStack',
+              value: 'IPv4+IPv6',
             },
           ],
         },

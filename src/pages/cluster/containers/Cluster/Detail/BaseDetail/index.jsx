@@ -34,60 +34,57 @@ function BaseDetail() {
     return [
       {
         label: t('Container Runtime'),
-        dataIndex: 'containerRuntime.containerRuntimeType',
+        dataIndex: 'containerRuntime.type',
       },
       {
         label: isDocker ? t('Docker Version') : t('Containerd Version'),
         dataIndex: 'containerRuntime',
-        render: () => containerRuntime[type].version,
+        render: () => containerRuntime.version,
       },
       {
         label: t('Docker Data Path'),
         dataIndex: 'containerRuntime.docker',
-        render: () => containerRuntime[type].rootDir,
+        render: () => containerRuntime.rootDir,
       },
       {
         label: isDocker ? t('Docker Registry') : t('Containerd Registry'),
         dataIndex: 'containerRuntime.docker',
-        render: () => containerRuntime[type].insecureRegistry,
+        render: () => containerRuntime.insecureRegistry,
       },
     ];
   };
 
-  const networkItem = () => {
-    const isDualStack = get(store.detail, 'cni.calico.dualStack');
-    return [
-      {
-        label: t('IP Version'),
-        dataIndex: 'cni.calico.dualStack',
-        render: (data) => (data ? t('IPv4 IPv6 Dual Stack') : t('IPv4')),
-      },
-      {
-        label: t('Service Subnet'),
-        dataIndex: 'networking.serviceSubnet',
-      },
-      {
-        label: t('Pod V4 Cidr'),
-        dataIndex: 'cni.podIPv4CIDR',
-      },
-      {
-        label: t('IpV4 Autodetection'),
-        dataIndex: 'cni.calico.IPv4AutoDetection',
-      },
-      ...(isDualStack
-        ? [
-            {
-              label: t('Pod V6 Cidr'),
-              dataIndex: 'cni.podIPv6CIDR',
-            },
-            {
-              label: t('IpV6 Autodetection'),
-              dataIndex: 'cni.calico.IPv6AutoDetection',
-            },
-          ]
-        : []),
-    ];
-  };
+  const networkItem = () => [
+    {
+      label: t('IP Version'),
+      dataIndex: 'isDualStack',
+      render: (data) => (data ? t('IPv4 IPv6 Dual Stack') : t('IPv4')),
+    },
+    {
+      label: t('Service Subnet'),
+      dataIndex: 'serviceSubnet',
+    },
+    {
+      label: t('Pod V4 Cidr'),
+      dataIndex: 'podIPv4CIDR',
+    },
+    {
+      label: t('IpV4 Autodetection'),
+      dataIndex: 'cni.calico.IPv4AutoDetection',
+    },
+    ...(store.detail.isDualStack
+      ? [
+          {
+            label: t('Pod V6 Cidr'),
+            dataIndex: 'podIPv6CIDR',
+          },
+          {
+            label: t('IpV6 Autodetection'),
+            dataIndex: 'cni.calico.IPv6AutoDetection',
+          },
+        ]
+      : []),
+  ];
 
   const baseInfoCard = () => {
     const options = [
@@ -125,7 +122,7 @@ function BaseDetail() {
       },
       {
         label: t('ETCD Data Dir'),
-        dataIndex: 'kubeComponents.etcd.dataDir',
+        dataIndex: 'etcd.dataDir',
       },
       {
         label: t('CertSANs'),
@@ -179,7 +176,7 @@ function BaseDetail() {
       },
       {
         label: t('WorkerNode Vip'),
-        dataIndex: '_originData.workerNodeVip',
+        dataIndex: 'networking.workerNodeVip',
       },
       {
         label: t('CNI Type'),
@@ -188,11 +185,6 @@ function BaseDetail() {
       {
         label: t('Network Plugin Version'),
         dataIndex: 'cni.calico.version',
-      },
-      {
-        label: t('Enable Ipvs'),
-        dataIndex: 'kubeProxy.ipvs',
-        valueRender: 'yesNo',
       },
       {
         label: t('IPManger'),
@@ -206,7 +198,7 @@ function BaseDetail() {
       ...networkItem(),
       {
         label: t('MTU'),
-        dataIndex: 'cni.mtu',
+        dataIndex: 'cni.calico.mtu',
       },
     ];
     return {
