@@ -15,17 +15,25 @@
  */
 
 import BaseStore from './base';
+import { makeObservable, observable } from 'mobx';
 
 export default class LogStore extends BaseStore {
   logdata = '';
 
   isExpand = false;
 
-  isOpen = false;
-
   cumulativeSize = 0;
 
   isStepFinished = false;
+
+  constructor(props) {
+    super(props);
+
+    makeObservable(this, {
+      isExpand: observable,
+      logdata: observable,
+    });
+  }
 
   async fetchStepLog(params) {
     const res = await request.get(`${this.apiVersion}/logs`, params);
