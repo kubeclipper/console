@@ -26,7 +26,7 @@ const statusMap = {
   Upgrading: 'processing',
   BackingUp: 'processing',
   Restoring: 'processing',
-  Deleting: 'processing',
+  Terminating: 'processing',
   up: 'success',
   active: 'success',
   available: 'success',
