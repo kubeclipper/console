@@ -78,9 +78,9 @@ export default class ClusterStore extends BaseStore {
    * @param {Array} components 组件列表
    * @param {Boolean} uninstall 卸载 true，安装 false
    */
-  async patchComponents(id, components, uninstall) {
+  async patchComponents(id, addons, uninstall) {
     const result = await request.patch(this.patchComponentsUrl(id), {
-      components,
+      addons,
       uninstall,
     });
 
