@@ -13,6 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { dayOfWeekOption } from 'resources/date';
 
 export const backupStatus = {
   creating: t('Creating'),
@@ -64,4 +65,37 @@ export const backupColumns = [
 export const backupTableProps = {
   searchFilters: backupFilters,
   columns: backupColumns,
+};
+
+export const circleDayofFirstLevel = [
+  {
+    label: t('Every Day'),
+    key: 'day',
+    value: '0 0 * * *',
+  },
+  {
+    label: t('Every Week'),
+    key: 'dayOfWeek',
+    value: '0 0 * * 0',
+  },
+  {
+    label: t('Every Month'),
+    key: 'dayOfMonth',
+    value: '0 0 1 * *',
+  },
+];
+
+export const circleDayofSecondLevel = {
+  day: [],
+  dayOfWeek: dayOfWeekOption,
+  dayOfMonth: [
+    ...[...Array(31)].map((_, index) => ({
+      label: index + 1,
+      value: index + 1,
+    })),
+    {
+      label: t('LastDayOfMonth'),
+      value: 'L',
+    },
+  ],
 };

@@ -31,6 +31,7 @@ export const Forms = forwardRef((props, ref) => {
     name,
     initialValues,
     onValuesChange,
+    labelAlign = 'left',
   } = props;
 
   const renderFormItems = (items) =>
@@ -74,7 +75,7 @@ export const Forms = forwardRef((props, ref) => {
     <Form
       ref={ref}
       colon={false}
-      labelAlign="left"
+      labelAlign={labelAlign}
       name={name}
       initialValues={initialValues}
       onValuesChange={onValuesChange}
@@ -172,6 +173,10 @@ export default class BaseForm extends React.Component {
   // eslint-disable-next-line react/sort-comp
   get module() {
     return '';
+  }
+
+  get labelAlign() {
+    return 'right';
   }
 
   get authKey() {
@@ -510,6 +515,7 @@ export default class BaseForm extends React.Component {
               formItems={this.formItems}
               labelCol={this.labelCol}
               wrapperCol={this.wrapperCol}
+              labelAlign={this.labelAlign}
               name={this.name}
               initialValues={this.formDefaultValue}
               onValuesChange={this.onValuesChange}

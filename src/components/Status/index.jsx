@@ -66,7 +66,7 @@ function Status(props) {
 }
 
 Status.propTypes = {
-  status: PropTypes.string,
+  status: PropTypes.any,
   text: PropTypes.string,
 };
 

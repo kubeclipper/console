@@ -130,6 +130,7 @@
     "cidr-regex": "^3.1.1",
     "classnames": "^2.2.6",
     "cookie": "^0.4.1",
+    "cron-parser": "^4.5.0",
     "cypress-localstorage-commands": "^1.4.5",
     "escape-html": "^1.0.3",
     "file-loader": "^6.0.0",

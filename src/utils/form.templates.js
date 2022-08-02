@@ -53,11 +53,21 @@ const getDnsTemplate = () => ({
   },
 });
 
+const getScheduledBackupTemplate = () => ({
+  kind: 'CronBackup',
+  metadata: {
+    name: '',
+    labels: {},
+  },
+  spec: {},
+});
+
 const FORM_TEMPLATES = {
   users: getUserTemplate,
   roles: getRoleTemplate,
   backups: getBackupTemplate,
   dns: getDnsTemplate,
+  scheduledBackup: getScheduledBackupTemplate,
 };
 
 export default FORM_TEMPLATES;

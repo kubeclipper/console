@@ -421,6 +421,17 @@ const TemplatesMapper = (item) => {
   return result;
 };
 
+const CronBackupMapper = (item) => {
+  const type = get(item, 'spec.schedule') ? 'Repeat' : 'OnlyOnce';
+  return {
+    ...getBaseInfo(item),
+    ...get(item, 'spec'),
+    type,
+    enabled: has(item.metadata.labels, 'kubeclipper.io/cronBackupEnable'),
+    _originData: item,
+  };
+};
+
 export default {
   nodes: NodesMapper,
   clusters: ClusterMapper,
@@ -434,6 +445,7 @@ export default {
   dns: DnsMapper,
   oauth2: Oauth2Mapper,
   backupPoints: BackupPointMapper,
+  cronBackups: CronBackupMapper,
   templates: TemplatesMapper,
   clusterTemplate: ClusterTemplateMapper,
 };

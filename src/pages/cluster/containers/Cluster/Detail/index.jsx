@@ -25,6 +25,7 @@ import Plugins from './Plugins';
 import NodesList from './NodesList';
 import Operation from './Operation';
 import BackUp from './Backup';
+import ScheduledBackup from './ScheduledBackup';
 import actionConfigs from '../actions';
 
 const StatusTitle = () => (
@@ -89,6 +90,11 @@ function ClusterDetail() {
         title: t('BackUp'),
         key: 'BackUp',
         component: BackUp,
+      },
+      {
+        title: t('Scheduled Backup'),
+        key: 'ScheduledBackup',
+        component: ScheduledBackup,
       },
     ],
     detailInfos: [

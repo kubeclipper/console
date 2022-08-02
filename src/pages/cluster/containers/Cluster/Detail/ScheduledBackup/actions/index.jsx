@@ -13,39 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import Add from './Add';
 import Delete from './Delete';
-import LinkLog from './LinkLog';
-import Create from './Create';
-import Backup from './Backup';
-import Restore from './Restore';
 import Edit from './Edit';
-import Upgrade from './Upgrade';
-import Reset from './Reset';
-import LinkAddStorage from './LinkAddStorage';
-import LinkAddPlugin from './LinkAddPlugin';
-import SaveAsTemplate from './SaveAsTemplate';
-import Terminal from './Terminal';
-import ScheduledBackup from './ScheduledBackup';
+import Enable from './Enable';
+import Disable from './Disable';
 
 const actionConfigs = {
   rowActions: {
-    firstAction: LinkLog,
+    firstAction: Edit,
     moreActions: [
-      { action: Edit },
-      { action: Backup },
-      { action: ScheduledBackup },
-      { action: Restore },
-      { action: Upgrade },
-      { action: LinkAddStorage },
-      { action: LinkAddPlugin },
-      { action: SaveAsTemplate },
-      { action: Terminal },
-      { action: Reset },
-      { action: Delete },
+      {
+        action: Enable,
+      },
+      {
+        action: Disable,
+      },
+      {
+        action: Delete,
+      },
     ],
   },
   batchActions: [Delete],
-  primaryActions: [Create],
+  primaryActions: [Add],
 };
 
 export default actionConfigs;
