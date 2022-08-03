@@ -35,11 +35,7 @@ export default class Backup extends ModalAction {
   static checkNotice = (item) => {
     const { backupPoint } = item;
     if (!backupPoint) {
-      Notify.error(
-        t(
-          'The current cluster does not have a backup point set and cannot be backed up'
-        )
-      );
+      Notify.error(t('Please add a backup point in the edit cluster'));
       return false;
     }
     return true;

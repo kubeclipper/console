@@ -33,6 +33,7 @@ import moment from 'moment';
 import JSEncrypt from 'jsencrypt';
 import { MODULE_ROUTE } from 'utils/constants';
 import { getLocalStorageItem } from 'utils/localStorage';
+import { parseExpression } from 'cron-parser';
 
 import { SIZE_VALUE, SECOND_IN_TIME_UNIT } from './constants';
 
@@ -644,4 +645,42 @@ export function encodeProperty(components, enabledComponents) {
     }
   });
   return enabledComponents;
+}
+
+/**
+ * 解析 cron
+ * @param {string} cron 例： '3 4 * * *'
+ * @returns
+ */
+export function formatCron(cron) {
+  const baseCron = parseExpression('* * * * *');
+  const { dayOfMonth: baseDayOfMonth, dayOfWeek: baseDayOfWeek } =
+    baseCron.fields;
+  const { dayOfMonth, dayOfWeek, hour, minute } = parseExpression(cron).fields;
+  const time = moment({
+    hour: hour[0],
+    minute: minute[0],
+  }).format('HH:mm');
+  if (dayOfMonth.length < baseDayOfMonth.length) {
+    return {
+      cycle: 'Every Month',
+      values: dayOfMonth,
+      localsFormat: 'dayOfMonth',
+      time,
+    };
+  }
+  if (dayOfWeek.length < baseDayOfWeek.length) {
+    return {
+      cycle: 'Every Week',
+      values: dayOfWeek,
+      localsFormat: 'dayOfWeek',
+      time,
+    };
+  }
+  return {
+    cycle: 'Every Day',
+    values: [],
+    localsFormat: '',
+    time,
+  };
 }

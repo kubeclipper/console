@@ -130,7 +130,7 @@ export default class BaseStore {
       console.log(e);
     }
 
-    this.updateList(more, params, data, result);
+    this.updateList(more, params, newData, result);
     return newData;
   }
 

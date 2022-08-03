@@ -425,7 +425,7 @@ const BaseTable = (props) => {
             render,
             copyable,
             tip,
-            isStatus,
+            isStatus = false,
             extraNameIndex,
             extraNameCopyable,
             ...rest

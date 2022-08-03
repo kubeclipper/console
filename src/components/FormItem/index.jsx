@@ -47,6 +47,7 @@ import TaintInput from './TaintInput';
 import LabelInput from './LabelInput';
 import Tags from './Tags';
 import SelectWithInput from './SelectWithInput';
+import SelectCycle from './SelectCycle';
 import Divider from './Divider';
 import DNSRecord from './DNSRecord';
 
@@ -56,6 +57,7 @@ export const type2component = {
   select: Select,
   divider: Divider,
   'short-divider': Divider,
+  'select-cycle': SelectCycle,
   radio: Radio,
   'select-table': SelectTable,
   'input-number': InputNumber,
@@ -77,6 +79,7 @@ export const type2component = {
   tab: Tab,
   tags: Tags,
   'time-picker': TimePicker,
+  'date-picker': DatePicker,
   metadata: Metadata,
   'taint-input': TaintInput,
   'label-input': LabelInput,
