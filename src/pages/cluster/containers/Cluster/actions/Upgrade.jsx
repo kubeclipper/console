@@ -171,7 +171,7 @@ export default class Upgrade extends ModalAction {
               const v = versionCompare(currentVersion, value);
               const c = versionCross(currentVersion, value);
 
-              if (v >= 0 || !c) {
+              if (v >= 0 || c) {
                 return Promise.reject(t('Target version error'));
               }
               return Promise.resolve(true);
