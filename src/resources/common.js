@@ -37,20 +37,20 @@ export const computeAutoDetectionReversion = (values) => {
       return {
         pod_network_underlay_v6: 'first-found',
         IPv6AutoDetection: '',
-        IPVersion: 'ipv4',
+        IPVersion: 'IPv4',
       };
     } else if (val === 'first-found') {
       return {
         pod_network_underlay_v6: 'first-found',
         IPv6AutoDetection: '',
-        IPVersion: 'dualStack',
+        IPVersion: 'IPv4+IPv6',
       };
     } else {
       const [underlay, IPv6AutoDetection] = val.split('=');
       return {
         pod_network_underlay_v6: underlay,
         IPv6AutoDetection,
-        IPVersion: 'dualStack',
+        IPVersion: 'IPv4+IPv6',
       };
     }
   }

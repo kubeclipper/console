@@ -153,7 +153,7 @@ export class ConfirmStep extends BaseForm {
         serviceSubnetV6,
       },
     } = this.props;
-    const isDualStack = IPVersion === 'dualStack';
+    const isDualStack = IPVersion === 'IPv4+IPv6';
     if (isDualStack) {
       return [
         {

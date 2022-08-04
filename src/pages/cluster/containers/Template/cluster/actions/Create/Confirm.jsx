@@ -135,7 +135,7 @@ export class ConfirmStep extends BaseForm {
         serviceSubnetV6,
       },
     } = this.props;
-    const isDualStack = IPVersion === 'dualStack';
+    const isDualStack = IPVersion === 'IPv4+IPv6';
     if (isDualStack) {
       return [
         {
@@ -215,7 +215,7 @@ export class ConfirmStep extends BaseForm {
       dnsDomain,
       cniType,
       calicoMode,
-      ipvs,
+      proxyMode,
       IPManger,
       IPVersion,
       mtu,
@@ -253,8 +253,8 @@ export class ConfirmStep extends BaseForm {
         value: calicoMode,
       },
       {
-        label: t('Ipvs'),
-        value: ipvs,
+        label: t('proxyMode'),
+        value: proxyMode,
       },
       {
         label: t('IPManger'),
