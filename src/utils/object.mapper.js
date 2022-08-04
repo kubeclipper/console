@@ -142,27 +142,26 @@ const ClusterMapper = (item) => {
 
 const ClusterTemplateMapper = (item) => {
   const { config } = item;
-  const IPv4AutoDetection = get(
-    config,
-    'kubeComponents.cni.calico.IPv4AutoDetection'
-  );
-  const IPv6AutoDetection = get(
-    config,
-    'kubeComponents.cni.calico.IPv6AutoDetection'
-  );
+  const IPv4AutoDetection = get(config, 'cni.calico.IPv4AutoDetection');
+  const IPv6AutoDetection = get(config, 'cni.calico.IPv6AutoDetection');
   const podNetwork = computeAutoDetectionReversion({
     IPv4AutoDetection,
     IPv6AutoDetection,
   });
+  const [podIPv4CIDR, podIPv6CIDR] = get(config, 'networking.pods.cidrBlocks');
+  const [serviceSubnet, serviceSubnetV6] = get(
+    config,
+    'networking.services.cidrBlocks'
+  );
+  const isDualStack = get(item, 'networking.ipFamily') === 'IPv4+IPv6';
 
   const offline = get(config, 'offline');
   const kubernetesVersion = get(config, 'kubernetesVersion');
   const kubernetesVersionOnline = !offline && kubernetesVersion;
   const kubernetesVersionOffline = offline && kubernetesVersion;
 
-  const containerdVersion = get(config, 'containerRuntime.containerd.version');
-  const containerdVersionOnline = !offline && containerdVersion;
-  const containerdVersionOffline = offline && containerdVersion;
+  const containerRuntimeVersion = get(config, 'containerRuntime.version');
+  const containerRuntimeType = get(config, 'containerRuntime.type');
 
   const result = {
     offline,
@@ -172,45 +171,45 @@ const ClusterTemplateMapper = (item) => {
     kubernetesVersion,
     kubernetesVersionOnline,
     kubernetesVersionOffline,
-    containerRuntimeType: get(config, 'containerRuntime.containerRuntimeType'),
-    dockerVersion: get(config, 'containerRuntime.docker.dockerVersion'),
-    dockerInsecureRegistry: get(
+    containerRuntimeType,
+    [`${containerRuntimeType}Version`]: containerRuntimeVersion,
+    [`${containerRuntimeType}VersionOnline`]:
+      !offline && containerRuntimeVersion,
+    [`${containerRuntimeType}VersionOffline`]:
+      offline && containerRuntimeVersion,
+
+    [`${containerRuntimeType}RootDir`]: get(config, 'containerRuntime.rootDir'),
+    [`${containerRuntimeType}InsecureRegistry`]: get(
       config,
-      'containerRuntime.docker.insecureRegistry'
-    ),
-    dockerRootDir: get(config, 'containerRuntime.docker.rootDir'),
-    containerdVersion,
-    containerdVersionOnline,
-    containerdVersionOffline,
-    containerdInsecureRegistry: get(
-      config,
-      'containerRuntime.containerd.insecureRegistry',
-      []
+      'containerRuntime.insecureRegistry'
     )
       .filter((val) => !!val)
       .map((val, index) => ({
         value: val,
         index,
       })),
-    containerdRootDir: get(config, 'containerRuntime.containerd.rootDir'),
     // networking
-    serviceSubnet: get(config, 'networking.serviceSubnet'),
+    podIPv4CIDR,
+    podIPv6CIDR,
+    serviceSubnet,
+    serviceSubnetV6,
+    isDualStack,
+    IPVersion: get(config, 'networking.ipFamily'),
     dnsDomain: get(config, 'networking.dnsDomain'),
     podSubnet: get(config, 'networking.podSubnet'),
-    // kubeComponents
-    ipvs: get(config, 'kubeComponents.kubeProxy.ipvs'),
-    etcdDataDir: get(config, 'kubeComponents.etcd.dataDir'),
-    cniType: get(config, 'kubeComponents.cni.type'),
-    podIPv4CIDR: get(config, 'kubeComponents.cni.podIPv4CIDR'),
-    podIPv6CIDR: get(config, 'kubeComponents.cni.podIPv6CIDR'),
-    mtu: get(config, 'kubeComponents.cni.mtu'),
-    IPv4AutoDetection,
-    IPv6AutoDetection,
-    calicoMode: get(config, 'kubeComponents.cni.calico.mode'),
-    dualStack: get(config, 'kubeComponents.cni.calico.dualStack'),
-    IPManger: get(config, 'kubeComponents.cni.calico.IPManger'),
+    proxyMode: get(config, 'networking.proxyMode'),
+    // etcd
+    etcdDataDir: get(config, 'etcd.dataDir'),
+    // cni
+    cniType: get(config, 'cni.type'),
+    mtu: get(config, 'cni.calico.mtu'),
+    IPv4AutoDetection: get(config, 'cni.calico.IPv4AutoDetection'),
+    IPv6AutoDetection: get(config, 'cni.calico.IPv6AutoDetection'),
+    calicoMode: get(config, 'cni.calico.mode'),
+    IPManger: get(config, 'cni.calico.IPManger'),
     availableComponents: get(config, 'components'),
     ...podNetwork,
+    _originData: item,
   };
 
   return result;

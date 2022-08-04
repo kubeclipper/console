@@ -28,6 +28,9 @@ import {
   isNumber,
 } from 'utils/validate';
 import {
+  clusterParams,
+  IPVersionOptions,
+  proxyModeOptions,
   containerRuntimeOption,
   networkPluginOption,
   calicoModeOption,
@@ -47,34 +50,6 @@ const {
   backupPointStore,
   templatesStore,
 } = rootStore;
-
-const BASEPARAMS = {
-  offline: true,
-  localRegistry: '',
-  // kubernetesVersion: firstK8s?.value,
-  etcdDataDir: '/var/lib/etcd',
-  // containerRuntime
-  containerRuntimeType: 'containerd',
-  dockerVersion: '19.03.12',
-  dockerRootDir: '/var/lib/docker',
-  // containerdVersion: firstContainerd?.value,
-  containerdRootDir: '/var/lib/containerd',
-  // 网络
-  dnsDomain: 'cluster.local',
-  workerNodeVip: '169.254.169.100',
-  cniType: 'calico',
-  calicoMode: 'Overlay-Vxlan-All',
-  ipvs: true,
-  IPVersion: 'ipv4',
-  IPManger: true,
-  podIPv4CIDR: '172.25.0.0/24',
-  podIPv6CIDR: 'fd05::/120',
-  pod_network_underlay: 'first-found',
-  pod_network_underlay_v6: 'first-found',
-  mtu: 1440,
-  serviceSubnet: '10.96.0.0/16',
-  serviceSubnetV6: 'fd03::/112',
-};
 
 @observer
 export default class Cluster extends BaseForm {
@@ -137,7 +112,7 @@ export default class Cluster extends BaseForm {
     );
 
     return {
-      ...BASEPARAMS,
+      ...clusterParams,
       kubernetesVersionOnline: firstK8sOnline?.value,
       kubernetesVersionOffline: firstK8sOffline?.value,
       containerdVersionOffline: firstContainerdOffline?.value,
@@ -236,7 +211,7 @@ export default class Cluster extends BaseForm {
   get isDualStack() {
     const { IPVersion } = this.state;
 
-    return IPVersion === 'dualStack';
+    return IPVersion === 'IPv4+IPv6';
   }
 
   checkIpOrDomain = (rule, value) => {
@@ -660,13 +635,11 @@ export default class Cluster extends BaseForm {
           hidden: !this.isCalico,
         },
         {
-          name: 'ipvs',
-          label: t('Ipvs'),
-          type: 'check',
-          content: t('Enable Ipvs'),
-          tip: t(
-            'IPVS (IP Virtual Server) is built on the upper layer of Netfilter and as a part of the Linux kernel to achieve load balancing at the transport layer. It is recommended to enable it.'
-          ),
+          name: 'proxyMode',
+          label: t('proxyMode'),
+          type: 'radio',
+          optionType: 'default',
+          options: proxyModeOptions,
         },
         {
           name: 'IPManger',
@@ -682,16 +655,7 @@ export default class Cluster extends BaseForm {
           label: t('IP Version'),
           type: 'radio',
           optionType: 'default',
-          options: [
-            {
-              label: 'IPv4',
-              value: 'ipv4',
-            },
-            {
-              label: t('IPv4 IPv6 Dual Stack'),
-              value: 'dualStack',
-            },
-          ],
+          options: IPVersionOptions,
         },
         {
           name: 'pod_network_underlay',

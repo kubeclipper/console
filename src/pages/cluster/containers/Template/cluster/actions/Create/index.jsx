@@ -206,7 +206,7 @@ export default class Create extends StepAction {
       IPVersion,
       calicoMode,
       cniType,
-      ipvs,
+      proxyMode,
       podIPv4CIDR,
       podIPv6CIDR,
       serviceSubnet,
@@ -218,9 +218,9 @@ export default class Create extends StepAction {
       // labels,
     } = values;
 
-    const dualStack = IPVersion === 'dualStack';
-    // podSubnet 等于 podIPv4CIDR 和 podIPv6CIDR 逗号分隔合并
-    const podSubnet = dualStack ? `${podIPv4CIDR},${podIPv6CIDR}` : podIPv4CIDR;
+    const isIPv4 = IPVersion === 'IPv4';
+    const servicesCidr = isIPv4 ? [podIPv4CIDR] : [podIPv4CIDR, podIPv6CIDR];
+    const podCidr = isIPv4 ? [serviceSubnet] : [serviceSubnet, serviceSubnetV6];
     const { IPv4AutoDetection, IPv6AutoDetection } =
       computeAutoDetection(values);
 
@@ -233,54 +233,48 @@ export default class Create extends StepAction {
         ? kubernetesVersionOffline
         : kubernetesVersionOnline,
       containerRuntime: {
-        containerRuntimeType,
+        type: containerRuntimeType,
         ...(containerRuntimeType === 'docker'
           ? {
-              docker: {
-                version: dockerVersion,
-                insecureRegistry: this.getRegistry(dockerInsecureRegistry), // dockerInsecureRegistry,
-                rootDir: dockerRootDir,
-              },
+              version: dockerVersion,
+              insecureRegistry: this.getRegistry(dockerInsecureRegistry), // dockerInsecureRegistry,
+              rootDir: dockerRootDir,
             }
           : {
-              containerd: {
-                version: offline
-                  ? containerdVersionOffline
-                  : containerdVersionOnline,
-                insecureRegistry: this.getRegistry(containerdInsecureRegistry),
-                rootDir: containerdRootDir,
-              },
+              version: offline
+                ? containerdVersionOffline
+                : containerdVersionOnline,
+              insecureRegistry: this.getRegistry(containerdInsecureRegistry),
+              rootDir: containerdRootDir,
             }),
       },
       networking: {
-        serviceSubnet: dualStack
-          ? `${serviceSubnet},${serviceSubnetV6}`
-          : serviceSubnet,
+        ipFamily: IPVersion,
+        services: {
+          cidrBlocks: servicesCidr,
+        },
         dnsDomain,
-        podSubnet,
+        pods: {
+          cidrBlocks: podCidr,
+        },
+        workerNodeVip,
+        proxyMode,
       },
-      kubeComponents: {
-        kubeProxy: {
-          ipvs,
-        },
-        etcd: {
-          dataDir: etcdDataDir,
-        },
-        cni: {
-          type: cniType,
-          podIPv4CIDR,
-          podIPv6CIDR,
+      kubeProxy: {},
+      etcd: {
+        dataDir: etcdDataDir,
+      },
+      cni: {
+        type: cniType,
+        calico: {
+          IPv4AutoDetection,
+          IPv6AutoDetection,
+          mode: calicoMode,
+          IPManger,
           mtu,
-          calico: {
-            IPv4AutoDetection,
-            IPv6AutoDetection,
-            mode: calicoMode,
-            dualStack,
-            IPManger,
-          },
         },
       },
-      components: this.getComponents(values),
+      addons: this.getComponents(values),
     };
 
     // eslint-disable-next-line no-console

@@ -28,6 +28,9 @@ import {
   isNumber,
 } from 'utils/validate';
 import {
+  clusterParams,
+  IPVersionOptions,
+  proxyModeOptions,
   containerRuntimeOption,
   networkPluginOption,
   calicoModeOption,
@@ -79,35 +82,12 @@ export default class Cluster extends BaseForm {
     );
 
     return {
+      ...clusterParams,
       offline: !!this.state.offline,
-      localRegistry: '',
-      // kubernetesVersion: firstK8s.value,
       kubernetesVersionOnline: firstK8sOnline.value,
       kubernetesVersionOffline: firstK8sOffline.value,
-      etcdDataDir: '/var/lib/etcd',
-      // containerRuntime
-      containerRuntimeType: 'containerd',
-      dockerVersion: '19.03.12',
-      dockerRootDir: '/var/lib/docker',
-      // containerdVersion: firstContainerd.value,
       containerdVersionOffline: firstContainerdOffline.value,
       containerdVersionOnline: firstContainerdOnline.value,
-      containerdRootDir: '/var/lib/containerd',
-      // 网络
-      dnsDomain: 'cluster.local',
-      workerNodeVip: '169.254.169.100',
-      cniType: 'calico',
-      calicoMode: 'Overlay-Vxlan-All',
-      IPVersion: 'IPv4',
-      proxyMode: 'ipvs',
-      IPManger: true,
-      podIPv4CIDR: '172.25.0.0/24',
-      podIPv6CIDR: 'fd05::/120',
-      pod_network_underlay: 'first-found',
-      pod_network_underlay_v6: 'first-found',
-      mtu: 1440,
-      serviceSubnet: '10.96.0.0/16',
-      serviceSubnetV6: 'fd03::/112',
       ...this.props.context,
     };
   }
@@ -638,20 +618,7 @@ export default class Cluster extends BaseForm {
           label: t('proxyMode'),
           type: 'radio',
           optionType: 'default',
-          options: [
-            {
-              label: 'ipvs',
-              value: 'ipvs',
-            },
-            {
-              label: 'iptables',
-              value: 'iptables',
-            },
-            {
-              label: 'ebpf',
-              value: 'ebpf',
-            },
-          ],
+          options: proxyModeOptions,
         },
         {
           name: 'IPManger',
@@ -667,16 +634,7 @@ export default class Cluster extends BaseForm {
           label: t('IP Version'),
           type: 'radio',
           optionType: 'default',
-          options: [
-            {
-              label: 'IPv4',
-              value: 'IPv4',
-            },
-            {
-              label: t('IPv4 IPv6 Dual Stack'),
-              value: 'IPv4+IPv6',
-            },
-          ],
+          options: IPVersionOptions,
         },
         {
           name: 'pod_network_underlay',

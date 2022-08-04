@@ -89,8 +89,8 @@ export default class ClusterStore extends BaseStore {
   }
 
   async fetchVersion(params) {
-    this.fetchOnlineVersion(params);
-    this.fetchOfflineVersion(params);
+    await this.fetchOnlineVersion(params);
+    await this.fetchOfflineVersion(params);
   }
 
   async fetchOnlineVersion(params) {

@@ -18,6 +18,31 @@ import { Link } from 'react-router-dom';
 import { getRoles, nodeEnum } from 'resources/node';
 import RenderOption from 'components/RenderOption';
 
+export const clusterParams = {
+  offline: true,
+  localRegistry: '',
+  etcdDataDir: '/var/lib/etcd',
+  containerRuntimeType: 'containerd',
+  dockerVersion: '19.03.12',
+  dockerRootDir: '/var/lib/docker',
+  containerdRootDir: '/var/lib/containerd',
+  // 网络
+  dnsDomain: 'cluster.local',
+  workerNodeVip: '169.254.169.100',
+  cniType: 'calico',
+  calicoMode: 'Overlay-Vxlan-All',
+  IPVersion: 'IPv4',
+  proxyMode: 'ipvs',
+  IPManger: true,
+  podIPv4CIDR: '172.25.0.0/24',
+  podIPv6CIDR: 'fd05::/120',
+  pod_network_underlay: 'first-found',
+  pod_network_underlay_v6: 'first-found',
+  mtu: 1440,
+  serviceSubnet: '10.96.0.0/16',
+  serviceSubnetV6: 'fd03::/112',
+};
+
 export const isMaster = (role) => {
   if (getRoles(role).includes('master')) return true;
 
@@ -219,7 +244,7 @@ export const computeAutoDetection = (values) => {
     IPv6AutoDetection: v6,
   } = values;
 
-  const dualStack = IPVersion === 'dualStack';
+  const dualStack = IPVersion === 'IPv4+IPv6';
 
   function ipAutoDetection(underlay, ip) {
     if (underlay === 'first-found') return 'first-found';
@@ -280,5 +305,31 @@ export const columns = [
     title: t('Create Time'),
     dataIndex: 'createTime',
     valueRender: 'toLocalTime',
+  },
+];
+
+export const IPVersionOptions = [
+  {
+    label: 'IPv4',
+    value: 'IPv4',
+  },
+  {
+    label: t('IPv4 IPv6 Dual Stack'),
+    value: 'IPv4+IPv6',
+  },
+];
+
+export const proxyModeOptions = [
+  {
+    label: 'ipvs',
+    value: 'ipvs',
+  },
+  {
+    label: 'iptables',
+    value: 'iptables',
+  },
+  {
+    label: 'ebpf',
+    value: 'ebpf',
   },
 ];
