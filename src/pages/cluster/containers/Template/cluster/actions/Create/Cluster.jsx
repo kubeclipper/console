@@ -491,11 +491,18 @@ export default class Cluster extends BaseForm {
         },
         {
           name: 'etcdDataDir',
-          label: t('ETCD Data Dir'),
+          label: t('{name} Data Dir', { name: 'ETCD' }),
           type: 'input',
           maxLength: 256,
-          placeholder: t('Please input ETCD data dir'),
-          tip: t('ETCD Data Dir'),
+          placeholder: t('Please input {name} data dir', { name: 'ETCD' }),
+          tip: t('{name} Data Dir', { name: 'ETCD' }),
+        },
+        {
+          name: 'kubectlDataDir',
+          label: t('{name} Data Dir', { name: 'kubectl' }),
+          type: 'input',
+          maxLength: 256,
+          placeholder: t('Please input {name} data dir', { name: 'kubectl' }),
         },
         // certSANs 数组string， 填 ip 和域名
         {

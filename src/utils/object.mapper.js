@@ -200,6 +200,8 @@ const ClusterTemplateMapper = (item) => {
     proxyMode: get(config, 'networking.proxyMode'),
     // etcd
     etcdDataDir: get(config, 'etcd.dataDir'),
+    // kubectl
+    kubectlDataDir: get(config, 'kubelet.rootDir'),
     // cni
     cniType: get(config, 'cni.type'),
     mtu: get(config, 'cni.calico.mtu'),

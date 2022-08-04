@@ -187,6 +187,7 @@ export default class Create extends StepAction {
       kubernetesVersionOnline,
       certSANs,
       etcdDataDir,
+      kubectlDataDir,
       // container runtime
       containerRuntimeType,
       dockerInsecureRegistry,
@@ -287,6 +288,9 @@ export default class Create extends StepAction {
       kubeProxy: {},
       etcd: {
         dataDir: etcdDataDir,
+      },
+      kubelet: {
+        rootDir: kubectlDataDir,
       },
       cni: {
         type: cniType,
