@@ -75,7 +75,9 @@ export default function Footer(props) {
   };
 
   const CreateQuickly = () => {
-    if (isCreateQuickly && current !== steps.length - 1) {
+    const isFirstStep = current === 0;
+    const isEndStep = current === steps.length - 1;
+    if (isCreateQuickly && !isFirstStep && !isEndStep) {
       return (
         <Button type="primary" onClick={onClickCreateQuickly}>
           {t('Create Quickly')}
