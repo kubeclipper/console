@@ -232,7 +232,11 @@ export class ConfirmStep extends BaseForm {
         label: t('K8S Version'),
         value: offline ? kubernetesVersionOffline : kubernetesVersionOnline,
       },
-      ...this.notFilled(t('ETCD Data Dir'), 'etcdDataDir'),
+      ...this.notFilled(t('{name} Data Dir', { name: 'ETCD' }), 'etcdDataDir'),
+      ...this.notFilled(
+        t('{name} Data Dir', { name: 'kubectl' }),
+        'kubectlDataDir'
+      ),
       ...this.notFilled(t('CertSANs'), 'certSANs', arrayInputValue),
       {
         label: t('Container Runtime'),

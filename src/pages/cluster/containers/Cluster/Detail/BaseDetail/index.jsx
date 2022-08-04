@@ -121,7 +121,7 @@ function BaseDetail() {
         dataIndex: 'backupPoint',
       },
       {
-        label: t('ETCD Data Dir'),
+        label: t('{name} Data Dir', { name: 'ETCD' }),
         dataIndex: 'etcd.dataDir',
       },
       {
