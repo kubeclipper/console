@@ -305,7 +305,7 @@ export default class BaseStepForm extends React.Component {
   };
 
   onClickCreateQuickly = async () => {
-    const lastLength = this.formRefs.length - 1 - this.state.current;
+    const lastLength = this.steps.length - 1 - this.state.current;
     for (let i = 0; i < lastLength; i++) {
       // eslint-disable-next-line no-await-in-loop
       const result = await this.onClickNextForAsync();

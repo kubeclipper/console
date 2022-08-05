@@ -46,8 +46,7 @@ export default class Create extends StepAction {
   }
 
   get isCreateQuickly() {
-    const { useTemplate = false } = this.state.data;
-    return useTemplate;
+    return true;
   }
 
   get listUrl() {
