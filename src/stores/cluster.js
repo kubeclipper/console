@@ -94,27 +94,31 @@ export default class ClusterStore extends BaseStore {
   }
 
   async fetchOnlineVersion(params) {
-    const onlineResult = await request.get(
-      `${APIVERSION.config}/componentmeta`,
-      {
-        ...params,
-        online: true,
-      }
-    );
-    const onlineData = get(onlineResult, 'items') || [];
-    this.onlineVersion = onlineData || [];
+    try {
+      const onlineResult = await request.get(
+        `${APIVERSION.config}/componentmeta`,
+        {
+          ...params,
+          online: true,
+        }
+      );
+      const onlineData = get(onlineResult, 'items') || [];
+      this.onlineVersion = onlineData || [];
+    } catch (e) {}
   }
 
   async fetchOfflineVersion(params) {
-    const offlineResult = await request.get(
-      `${APIVERSION.config}/componentmeta`,
-      {
-        ...params,
-        online: false,
-      }
-    );
-    const offlineData = get(offlineResult, 'items') || [];
-    this.offlineVersion = offlineData || [];
+    try {
+      const offlineResult = await request.get(
+        `${APIVERSION.config}/componentmeta`,
+        {
+          ...params,
+          online: false,
+        }
+      );
+      const offlineData = get(offlineResult, 'items') || [];
+      this.offlineVersion = offlineData || [];
+    } catch (e) {}
   }
 
   async upgrade(data, { cluster }) {

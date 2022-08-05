@@ -84,10 +84,10 @@ export default class Cluster extends BaseForm {
     return {
       ...clusterParams,
       offline: !!this.state.offline,
-      kubernetesVersionOnline: firstK8sOnline.value,
-      kubernetesVersionOffline: firstK8sOffline.value,
-      containerdVersionOffline: firstContainerdOffline.value,
-      containerdVersionOnline: firstContainerdOnline.value,
+      kubernetesVersionOnline: firstK8sOnline?.value,
+      kubernetesVersionOffline: firstK8sOffline?.value,
+      containerdVersionOffline: firstContainerdOffline?.value,
+      containerdVersionOnline: firstContainerdOnline?.value,
       ...this.props.context,
     };
   }
