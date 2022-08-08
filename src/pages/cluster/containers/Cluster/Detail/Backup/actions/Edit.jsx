@@ -72,7 +72,11 @@ class Edit extends ModalAction {
     const { id: cluster } = this.containerProps.detail;
     const { description } = values;
 
-    set(formTemplate, 'description', description);
+    set(
+      formTemplate,
+      'metadata.annotations["kubeclipper.io/description"]',
+      description
+    );
 
     return this.store.edit(
       { id: name, cluster, resourceVersion },
