@@ -209,7 +209,7 @@ const ClusterTemplateMapper = (item) => {
     IPv6AutoDetection: get(config, 'cni.calico.IPv6AutoDetection'),
     calicoMode: get(config, 'cni.calico.mode'),
     IPManger: get(config, 'cni.calico.IPManger'),
-    availableComponents: get(config, 'components'),
+    availableComponents: get(config, 'addons'),
     ...podNetwork,
     _originData: item,
   };

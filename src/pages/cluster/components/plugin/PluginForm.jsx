@@ -101,7 +101,11 @@ const PluginForm = (props) => {
       };
     });
 
-    setState({ ...state, tabs: newTabs, current: modules[0]?.name });
+    if (context?.plugins?.state) {
+      setState(context.plugins.state);
+    } else {
+      setState({ ...state, tabs: newTabs, current: modules[0]?.name });
+    }
   }, []);
 
   const handleTabChange = (tab, index) => {
@@ -155,10 +159,7 @@ const PluginForm = (props) => {
 
     const forms = cloneDeep(value?.forms) || {};
     forms[name] = formInstance;
-    onChange({ forms, currentForms: formInstance });
-    updateContext({
-      plugins: { forms, currentForms: formInstance },
-    });
+    onChange({ forms, currentForms: formInstance, state });
   };
 
   /**
