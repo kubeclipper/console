@@ -111,7 +111,11 @@ export default class Backup extends ModalAction {
     const formTemplate = FORM_TEMPLATES.backups();
 
     set(formTemplate, 'metadata.name', name);
-    set(formTemplate, 'description', description);
+    set(
+      formTemplate,
+      'metadata.annotations["kubeclipper.io/description"]',
+      description
+    );
 
     return this.store.create(formTemplate, { cluster: this.cluster });
   };

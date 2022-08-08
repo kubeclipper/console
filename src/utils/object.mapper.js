@@ -326,6 +326,8 @@ const BackUpMapper = (item) => ({
   ...item,
   ...getBaseInfo(item),
   status: get(item, 'backupStatus.status'),
+  kubernetesVersion: get(item, 'backupStatus.kubernetesVersion'),
+  description: get(item, 'metadata.annotations["kubeclipper.io/description"]'),
   cluster: get(item, 'metadata.labels["kubeclipper.io/cluster"]'),
   _originData: getOriginData(item),
 });
