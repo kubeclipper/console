@@ -20,6 +20,7 @@ import Create from '../containers/Cluster/actions/Create';
 import AddStorage from '../containers/Cluster/actions/AddStorage';
 import AddPlugin from '../containers/Cluster/actions/AddPlugin';
 import BackupPoint from '../containers/BackupPoint';
+import PlatformConfig from '../containers/PlatformConfig';
 
 import Template from '../containers/Template';
 import ClusterTemplate from '../containers/Template/cluster/actions/Create';
@@ -57,6 +58,11 @@ export default [
       {
         path: `${PATH}/plugin-template/edit/:plugin/:name`,
         component: PluginTemplate,
+        exact: true,
+      },
+      {
+        path: `${PATH}/platform-config`,
+        component: PlatformConfig,
         exact: true,
       },
       { path: `${PATH}/:id`, component: ClusterDetail, exact: true },

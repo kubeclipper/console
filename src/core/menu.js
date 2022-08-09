@@ -16,7 +16,6 @@
 import React from 'react';
 import {
   GlobalOutlined,
-  SettingOutlined,
   UserOutlined,
   NodeCollapseOutlined,
   ClusterOutlined,
@@ -113,6 +112,13 @@ const renderMenu = (t) => {
             },
           ],
         },
+        {
+          path: '/cluster/platform-config',
+          name: t('Platform Configuration'),
+          key: '/cluster/platform-config',
+          level: 1,
+          module: 'clusters',
+        },
       ],
     },
     {
@@ -191,21 +197,6 @@ const renderMenu = (t) => {
               module: 'roles',
             },
           ],
-        },
-      ],
-    },
-    {
-      path: '/configuration',
-      name: t('Platform Configuration'),
-      key: '/configuration',
-      icon: <SettingOutlined />,
-      children: [
-        {
-          path: '/configuration/platform-config',
-          name: t('Platform Configuration'),
-          key: '/configuration/platform-config',
-          level: 1,
-          module: 'platform',
         },
       ],
     },
