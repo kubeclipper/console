@@ -29,9 +29,6 @@ const Cluster = lazy(() =>
   import(/* webpackChunkName: "Cluster" */ 'cluster/App.jsx')
 );
 const Node = lazy(() => import(/* webpackChunkName: "Node" */ 'node/App.jsx'));
-const Configs = lazy(() =>
-  import(/* webpackChunkName: "configuration" */ 'configuration/App.jsx')
-);
 const Access = lazy(() =>
   import(/* webpackChunkName: "access" */ 'access/App.jsx')
 );
@@ -64,10 +61,6 @@ export default [
       {
         path: '/access',
         component: Access,
-      },
-      {
-        path: '/configuration',
-        component: Configs,
       },
       {
         path: '/auth',
