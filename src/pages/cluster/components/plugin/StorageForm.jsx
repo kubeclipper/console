@@ -152,9 +152,8 @@ const StorageForm = (props) => {
   const handleFRChange = (name, formInstance, formData, index) => {
     if (typeof formData === 'object' && formData.pluginTemplate) {
       if (formData.pluginTemplate !== 'notUseTemplate') {
-        const { flatData = {} } = templates.find(
-          (item) => item.id === formData.pluginTemplate
-        );
+        const { flatData = {} } =
+          templates.find((item) => item.id === formData.pluginTemplate) || {};
         if (!isMatch(formData, flatData)) {
           formInstance.setValues({
             ...formData,
