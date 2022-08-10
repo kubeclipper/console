@@ -17,6 +17,7 @@
 import { get } from 'lodash';
 import { APIVERSION } from 'utils/constants';
 import { getLocalStorageItem } from 'utils/localStorage';
+import ObjectMapper from 'utils/object.mapper';
 
 import BaseStore from './base';
 
@@ -36,14 +37,18 @@ export default class ClusterStore extends BaseStore {
   patchComponentsUrl = (cluster) =>
     `${this.apiVersion}/clusters/${cluster}/plugins`;
 
-  async detailDidFetch(detail) {
-    const nodeList = await this.rootStore.nodeStore.fetchListResult();
+  get nodeMapper() {
+    return ObjectMapper.nodes || ((data) => data);
+  }
 
-    this.nodes = nodeList;
+  async detailDidFetch(detail) {
+    const result = await this.rootStore.nodeStore.fetchListResult();
+    const data = this.getListData(result, this.nodeMapper);
+    this.nodes = data;
 
     return {
       ...detail,
-      nodes: nodeList,
+      nodes: data,
     };
   }
 

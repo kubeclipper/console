@@ -102,7 +102,6 @@ const ClusterMapper = (item) => {
   const components = Object.fromEntries(
     item.addons?.map((c) => [c.name, c.config]) || []
   );
-
   const { masters, workers = [], nodes = [] } = item;
   const mastersByIp = intersectionBy(nodes, masters, 'id');
   const offline = has(item.metadata.annotations, 'kubeclipper.io/offline');
