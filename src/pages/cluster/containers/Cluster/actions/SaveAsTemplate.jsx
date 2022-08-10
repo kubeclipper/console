@@ -41,6 +41,20 @@ class SaveAsTemplate extends ModalAction {
     return t('Create Template');
   }
 
+  get item() {
+    const { item } = this.props;
+    const { isPlugin } = item;
+    if (!isPlugin) {
+      return {
+        pluginName: 'kubernetes',
+        pluginVersion: 'v1',
+        pluginCategory: 'kubernetes',
+        component: item._originData,
+      };
+    }
+    return item;
+  }
+
   static isInstalling = (item) => item.status === 'Installing';
 
   static allowed = (item) => Promise.resolve(!this.isInstalling(item));
@@ -62,16 +76,16 @@ class SaveAsTemplate extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { addons, pluginName, pluginVersion, pluginCategory } = this.item;
+    const { component, pluginName, pluginVersion, pluginCategory } = this.item;
 
     const params = {
       ...values,
-      pluginName: pluginName || 'kubernetes',
-      pluginVersion: pluginVersion || 'v1',
-      pluginCategory: pluginCategory || 'kubernetes',
+      pluginName,
+      pluginVersion,
+      pluginCategory,
     };
 
-    return this.store.create(params, addons);
+    return this.store.create(params, component);
   };
 }
 

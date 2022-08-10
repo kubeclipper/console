@@ -55,6 +55,15 @@ export default class Create extends StepAction {
     return 'cluster-create';
   }
 
+  get hasPlugin() {
+    const hasPlugin =
+      (this.clusterStore?.components || []).filter(
+        ({ category }) => category !== 'storage'
+      ).length > 0;
+
+    return hasPlugin;
+  }
+
   get steps() {
     return [
       {
@@ -65,10 +74,14 @@ export default class Create extends StepAction {
         title: t('Storage Config'),
         component: Storage,
       },
-      {
-        title: t('Plugin Manage'),
-        component: Plugin,
-      },
+      ...(this.hasPlugin
+        ? [
+            {
+              title: t('Plugin Manage'),
+              component: Plugin,
+            },
+          ]
+        : []),
       {
         title: t('Confirm Config'),
         component: Confirm,

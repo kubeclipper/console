@@ -180,7 +180,8 @@ const ClusterTemplateMapper = (item) => {
     [`${containerRuntimeType}RootDir`]: get(config, 'containerRuntime.rootDir'),
     [`${containerRuntimeType}InsecureRegistry`]: get(
       config,
-      'containerRuntime.insecureRegistry'
+      'containerRuntime.insecureRegistry',
+      []
     )
       .filter((val) => !!val)
       .map((val, index) => ({
