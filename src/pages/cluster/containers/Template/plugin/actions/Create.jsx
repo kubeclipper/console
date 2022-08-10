@@ -100,6 +100,7 @@ export default function AddPlugin() {
         delete pluginComps.schema.properties.storageClass;
       }
       // pluginComps.schema.required = [];
+      formRef.current.setFieldsValue(templateInitVal);
 
       setState({
         ...state,
@@ -110,7 +111,6 @@ export default function AddPlugin() {
         pluginInitVal,
         oldVals,
       });
-      formRef.current.setFieldsValue(templateInitVal);
     }
 
     init();
@@ -145,7 +145,7 @@ export default function AddPlugin() {
 
     try {
       if (state.isEdit) {
-        await templatesStore.patch(name, state.oldVals);
+        await templatesStore.patch({ id: name }, state.oldVals);
       } else {
         await templatesStore.create(params, state.pluginInitVal);
       }

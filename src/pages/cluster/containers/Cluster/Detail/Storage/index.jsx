@@ -69,10 +69,11 @@ export default function Storage() {
           buttonType: 'link',
           actionType: 'modal',
           item: {
-            component: item,
+            component: item.config,
             pluginName: name,
             pluginVersion: version,
             pluginCategory: category,
+            isPlugin: true,
           },
         };
 

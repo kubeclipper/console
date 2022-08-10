@@ -182,6 +182,7 @@ function Plugins() {
             pluginName: name,
             pluginVersion: version,
             pluginCategory: category,
+            isPlugin: true,
           },
         };
 
