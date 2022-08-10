@@ -159,10 +159,13 @@ export default class BaseStore {
     const result = await request.get(this.getDetailUrl({ id }));
     const detail = this.mapper(get(result, this.responseKey) || result);
 
-    let newDetail = [];
+    let data;
+    let newDetail = null;
     try {
-      newDetail = await this.detailDidFetch(detail, { id });
+      data = await this.detailDidFetch(detail, { id });
+      newDetail = this.mapper(data);
     } catch (e) {
+      newDetail = this.mapper(detail);
       // eslint-disable-next-line no-console
       console.log(e);
     }
