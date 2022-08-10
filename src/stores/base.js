@@ -157,7 +157,7 @@ export default class BaseStore {
       this.isLoading = true;
     }
     const result = await request.get(this.getDetailUrl({ id }));
-    const detail = this.mapper(get(result, this.responseKey) || result);
+    const detail = get(result, this.responseKey) || result;
 
     let data;
     let newDetail = null;
