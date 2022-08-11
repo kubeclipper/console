@@ -18,7 +18,7 @@ import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
 import actionConfigs from './actions';
 
-export default function CommonRegistry() {
+export default function LocalRegistry() {
   const { templateStore: store } = useRootStore();
 
   const columns = [
@@ -41,9 +41,9 @@ export default function CommonRegistry() {
 
   const currentProps = {
     columns,
-    authKey: 'commonRegistry',
-    module: 'commonRegistry',
-    name: t('Common Registry'),
+    authKey: 'localRegistry',
+    module: 'localRegistry',
+    name: t('LocalRegistry'),
     searchFilters: [],
     actionConfigs,
     store,

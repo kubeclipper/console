@@ -488,7 +488,6 @@
   "Kubernetes Healthy": "Kubernetes 健康状态",
   "The registry for image, such as the insecure registry in the daemon.json of docker.": "存放镜像仓库的地址，如：docker 的 daemon.json 文件中的 insecure registry。",
   "Healthy Status": "健康状态",
-  "Common Registry": "常用仓库",
   "Registry Address": "仓库地址",
   "Registry IP Address": "仓库 IP 地址",
   "Remarks Column": "备注名",

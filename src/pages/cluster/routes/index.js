@@ -20,7 +20,7 @@ import Create from '../containers/Cluster/actions/Create';
 import AddStorage from '../containers/Cluster/actions/AddStorage';
 import AddPlugin from '../containers/Cluster/actions/AddPlugin';
 import BackupPoint from '../containers/BackupPoint';
-import PlatformConfig from '../containers/PlatformConfig';
+import LocalRegistry from '../containers/LocalRegistry';
 
 import Template from '../containers/Template';
 import ClusterTemplate from '../containers/Template/cluster/actions/Create';
@@ -61,8 +61,8 @@ export default [
         exact: true,
       },
       {
-        path: `${PATH}/platform-config`,
-        component: PlatformConfig,
+        path: `${PATH}/local-registry`,
+        component: LocalRegistry,
         exact: true,
       },
       { path: `${PATH}/:id`, component: ClusterDetail, exact: true },
