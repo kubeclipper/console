@@ -14,6 +14,9 @@
  *  limitations under the License.
  */
 import { dayOfWeekOption } from 'resources/date';
+import moment from 'moment';
+import { parseInt, set, cloneDeep } from 'lodash';
+import { parseExpression, fieldsToExpression } from 'cron-parser';
 
 export const backupStatus = {
   creating: t('Creating'),
@@ -98,4 +101,46 @@ export const circleDayofSecondLevel = {
       value: 'L',
     },
   ],
+};
+
+export const formatFormTemplates = (formTemplate, values) => {
+  const { id, name, type, time, cycle, date, maxBackupNum } = values;
+
+  set(formTemplate, 'metadata.name', name);
+  id && set(formTemplate, 'spec.clusterName', id);
+
+  if (type === 'OnlyOnce') {
+    const runAt = moment(date).format();
+    set(formTemplate, 'spec.runAt', runAt);
+  } else {
+    const { firstLevelSelected, secondLevelSelected } = cycle;
+    const interval = parseExpression(firstLevelSelected.value);
+    const fields = cloneDeep(interval.fields);
+
+    if (secondLevelSelected?.value) {
+      const { value: secondVal } = secondLevelSelected;
+      fields[firstLevelSelected.key] = [
+        secondVal === 'L' ? 'L' : parseInt(secondVal, 10),
+      ];
+    }
+
+    const selectedHour = moment(time).hour();
+    const selectedMinute = moment(time).minute();
+    const selectedSecond = moment(time).second();
+    fields.hour = [selectedHour];
+    fields.minute = [selectedMinute];
+    fields.second = [selectedSecond];
+    const modifiedInterval = fieldsToExpression(fields);
+    const schedule = modifiedInterval.stringify();
+    const spec = {
+      schedule,
+      maxBackupNum,
+    };
+    set(formTemplate, 'spec', {
+      ...formTemplate.spec,
+      ...spec,
+    });
+  }
+
+  return formTemplate;
 };

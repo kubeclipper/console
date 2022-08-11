@@ -22,6 +22,7 @@ import classnames from 'classnames';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import PropTypes from 'prop-types';
+import FORM_TEMPLATES from 'utils/form.templates';
 
 export const Forms = forwardRef((props, ref) => {
   const {
@@ -256,7 +257,7 @@ export default class BaseForm extends React.Component {
   }
 
   get formTemplate() {
-    return {};
+    return FORM_TEMPLATES[this.module]();
   }
 
   get okBtnText() {

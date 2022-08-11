@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import { observer } from 'mobx-react';
-import { parseExpression, fieldsToExpression } from 'cron-parser';
 import moment from 'moment';
-import { set } from 'lodash';
 import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
+import { formatCron } from 'utils';
+import { formatFormTemplates } from 'resources/backup';
 
 const { cornBackupStore: store, clusterStore } = rootStore;
 
@@ -30,7 +30,7 @@ class Edit extends ModalAction {
 
   static buttonText = t('Edit');
 
-  static title = t('Scheduled Backup');
+  static title = t('Edit');
 
   static policy = 'clusters:edit';
 
@@ -45,13 +45,28 @@ class Edit extends ModalAction {
   }
 
   get defaultValue() {
-    const { name, type } = this.item;
+    const { name, type, maxBackupNum, schedule, runAt } = this.item;
 
-    return {
-      name,
+    const baseDefault = {
       backupPoint: clusterStore.detail.backupPoint,
+      name,
       type,
     };
+
+    if (type === 'OnlyOnce') {
+      return {
+        ...baseDefault,
+        date: moment(runAt, 'YYYY-MM-DD HH:mm:ss'),
+      };
+    } else {
+      const { time } = formatCron(schedule);
+
+      return {
+        ...baseDefault,
+        time: moment(time, 'HH:mm'),
+        maxBackupNum,
+      };
+    }
   }
 
   get currentType() {
@@ -95,6 +110,7 @@ class Edit extends ModalAction {
         name: 'time',
         label: t('Time'),
         type: 'time-picker',
+        format: 'HH:mm',
         hidden: this.currentType !== 'Repeat',
         required: true,
       },
@@ -109,39 +125,8 @@ class Edit extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const formTemplate = this.item._originData;
-    const { name, type, time, cycle, date, maxBackupNum } = values;
-
-    if (type === 'OnlyOnce') {
-      const runAt = moment(date).format();
-      set(formTemplate, 'spec.runAt', runAt);
-    } else {
-      const { firstLevelSelected, secondLevelSelected } = cycle;
-      const interval = parseExpression(firstLevelSelected.value);
-      const fields = JSON.parse(JSON.stringify(interval.fields));
-      if (secondLevelSelected?.value) {
-        fields[firstLevelSelected.key] = [
-          parseInt(secondLevelSelected.value, 10),
-        ];
-      }
-
-      const selectedHour = moment(time).hour();
-      const selectedMinute = moment(time).minute();
-      const selectedSecond = moment(time).second();
-      fields.hour = [selectedHour];
-      fields.minute = [selectedMinute];
-      fields.second = [selectedSecond];
-      const modifiedInterval = fieldsToExpression(fields);
-      const schedule = modifiedInterval.stringify();
-      const spec = {
-        schedule,
-        maxBackupNum,
-      };
-      set(formTemplate, 'spec', {
-        ...formTemplate.spec,
-        ...spec,
-      });
-    }
+    const formTemplate = formatFormTemplates(this.item._originData, values);
+    const { name } = values;
 
     return store.edit({ id: name }, formTemplate);
   };
