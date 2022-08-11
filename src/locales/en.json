@@ -488,7 +488,6 @@
   "Kubernetes Healthy": "Kubernetes Healthy",
   "The registry for image, such as the insecure registry in the daemon.json of docker.": "The registry for image, such as the insecure registry in the daemon.json of docker.",
   "Healthy Status": "Healthy Status",
-  "Common Registry": "Common Registry",
   "Registry Address": "Registry Address",
   "Registry IP Address": "Registry IP Address",
   "Remarks Column": "Remarks Column",

@@ -113,9 +113,9 @@ const renderMenu = (t) => {
           ],
         },
         {
-          path: '/cluster/platform-config',
-          name: t('Platform Configuration'),
-          key: '/cluster/platform-config',
+          path: '/cluster/local-registry',
+          name: t('LocalRegistry'),
+          key: '/cluster/local-registry',
           level: 1,
           module: 'clusters',
         },
