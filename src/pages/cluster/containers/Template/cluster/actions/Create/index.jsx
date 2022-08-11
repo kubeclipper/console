@@ -48,7 +48,8 @@ export default class Create extends StepAction {
   }
 
   get name() {
-    return t('Create Template');
+    const isEdit = this.props.match.params?.id;
+    return isEdit ? t('Edit Template') : t('Create Template');
   }
 
   get className() {
