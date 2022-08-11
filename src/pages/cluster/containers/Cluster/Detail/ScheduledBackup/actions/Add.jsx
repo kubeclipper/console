@@ -15,7 +15,7 @@
  */
 import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { parseInt, set } from 'lodash';
+import { parseInt, set, cloneDeep } from 'lodash';
 import { rootStore } from 'stores';
 import { parseExpression, fieldsToExpression } from 'cron-parser';
 import moment from 'moment';
@@ -151,7 +151,8 @@ class Add extends ModalAction {
     } else {
       const { firstLevelSelected, secondLevelSelected } = cycle;
       const interval = parseExpression(firstLevelSelected.value);
-      const fields = JSON.parse(JSON.stringify(interval.fields));
+      const fields = cloneDeep(interval.fields);
+
       if (secondLevelSelected?.value) {
         fields[firstLevelSelected.key] = [
           parseInt(secondLevelSelected.value, 10),
