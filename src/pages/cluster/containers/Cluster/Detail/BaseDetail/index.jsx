@@ -109,7 +109,7 @@ function BaseDetail() {
         dataIndex: 'offline',
         render: (_, data) => {
           const { offline, localRegistry = '' } = data;
-          return offline ? `${t('Offline')} ${localRegistry}` : t('Online');
+          return `${offline ? t('Offline') : t('Online')} ${localRegistry}`;
         },
       },
       {
