@@ -54,17 +54,21 @@ export default class ModalAction extends BaseForm {
     return Promise.resolve();
   }
 
+  get instanceName() {
+    return this.item?.name || this.values?.name;
+  }
+
   get successText() {
     return t('{action} {name} successfully.', {
-      action: this.name,
-      name: this.item.name,
+      action: this.name.toLowerCase(),
+      name: this.instanceName,
     });
   }
 
   get errorText() {
     return t('Unable to {action} {name}.', {
-      action: this.name,
-      name: this.item.name,
+      action: this.name.toLowerCase(),
+      name: this.instanceName,
     });
   }
 
@@ -75,7 +79,7 @@ export default class ModalAction extends BaseForm {
   get item() {
     const { item } = this.props;
 
-    return item || { name: '' };
+    return item || this.containerProps.detail || { name: '' };
   }
 
   get defaultValue() {
