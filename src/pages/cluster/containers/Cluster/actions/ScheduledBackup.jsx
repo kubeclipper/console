@@ -15,13 +15,10 @@
  */
 import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { parseInt, set } from 'lodash';
 import { rootStore } from 'stores';
-import { parseExpression, fieldsToExpression } from 'cron-parser';
-import moment from 'moment';
 import Notify from 'components/Notify';
 import { cronTypeOption } from 'resources/date';
-import FORM_TEMPLATES from 'utils/form.templates';
+import { formatFormTemplates } from 'resources/backup';
 
 @observer
 class ScheduledBackup extends ModalAction {
@@ -140,43 +137,13 @@ class ScheduledBackup extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const formTemplate = FORM_TEMPLATES[this.module]();
     const { id } = this.item;
-    const { name, type, time, cycle, date, maxBackupNum } = values;
+    const { name } = values;
+    const formTemplate = formatFormTemplates(this.formTemplate, {
+      id,
+      ...values,
+    });
 
-    set(formTemplate, 'metadata.name', name);
-    set(formTemplate, 'spec.clusterName', id);
-
-    if (type === 'OnlyOnce') {
-      const runAt = moment(date).format();
-      set(formTemplate, 'spec.runAt', runAt);
-    } else {
-      const { firstLevelSelected, secondLevelSelected } = cycle;
-      const interval = parseExpression(firstLevelSelected.value);
-      const fields = JSON.parse(JSON.stringify(interval.fields));
-      if (secondLevelSelected?.value) {
-        fields[firstLevelSelected.key] = [
-          parseInt(secondLevelSelected.value, 10),
-        ];
-      }
-
-      const selectedHour = moment(time).hour();
-      const selectedMinute = moment(time).minute();
-      const selectedSecond = moment(time).second();
-      fields.hour = [selectedHour];
-      fields.minute = [selectedMinute];
-      fields.second = [selectedSecond];
-      const modifiedInterval = fieldsToExpression(fields);
-      const schedule = modifiedInterval.stringify();
-      const spec = {
-        schedule,
-        maxBackupNum,
-      };
-      set(formTemplate, 'spec', {
-        ...formTemplate.spec,
-        ...spec,
-      });
-    }
     return this.store.create(formTemplate, { name });
   };
 }
