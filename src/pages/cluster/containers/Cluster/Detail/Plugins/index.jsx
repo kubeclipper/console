@@ -127,7 +127,7 @@ function Plugins() {
         format: 'Enable',
       },
       {
-        label: t('Audit'),
+        label: t('Audit Log'),
         dataIndex: 'kubesphere.plugin.enableAudit',
         format: 'Enable',
       },
