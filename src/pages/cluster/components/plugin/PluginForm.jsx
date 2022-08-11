@@ -15,14 +15,17 @@
  */
 
 import React, { useEffect, useReducer } from 'react';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import Tabs from 'components/Tabs';
 import { cloneDeep, isEmpty, get, set, isMatch } from 'lodash';
 import RenderForm from './RenderForm';
 import { Context } from './Context';
 import Tips from 'pages/cluster/components/Tips';
+import { useRootStore } from 'stores';
 
 const PluginForm = (props) => {
+  const { clusterStore: store } = useRootStore();
   const {
     templates = [],
     useTemplate = false,
@@ -167,7 +170,30 @@ const PluginForm = (props) => {
    * setValues 方法会导致值回显失效，使用 setValueByPath
    * @param {*} form
    */
-  const onMount = (form) => {
+  const onMount = async (form) => {
+    await store.fetchList({ limit: -1 });
+
+    const isHost = ({ addons = [] }) => {
+      const result = addons.some(
+        ({ config, name }) =>
+          name === 'kubesphere' && config.clusterRole === 'host'
+      );
+
+      if (result) {
+        return true;
+      }
+
+      return false;
+    };
+    const hostCluster = toJS(store.list.data).filter(isHost);
+    const hostEnum = hostCluster.map(({ id }) => id);
+
+    form.setSchemaByPath('HostClusterName', {
+      widget: 'select',
+      enum: hostEnum,
+      enumNames: hostEnum,
+    });
+
     const defaultStorage = get(context, 'defaultStorage');
 
     form.setValueByPath(

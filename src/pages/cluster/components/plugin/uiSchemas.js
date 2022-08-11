@@ -22,7 +22,7 @@ export const uiSchemas = [
         enable: {
           default: false,
           priority: 0,
-          title: 'Kubesphere Setting',
+          title: 'Kubesphere',
           type: 'boolean',
         },
         clusterRole: {
