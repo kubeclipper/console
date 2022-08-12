@@ -133,6 +133,7 @@ class RootStore {
       {},
       {
         withoutToken: true,
+        checkToken: false,
       }
     );
     return ObjectMapper.oauth2(resp);
@@ -157,11 +158,12 @@ class RootStore {
     };
 
     // eslint-disable-next-line no-mixed-operators
-    const expire = new Date().getTime() + Number(expires_in) * 1000;
+    const expire = Number(expires_in) * 1000;
     const token = {
       token: access_token,
       refreshToken: refresh_token,
       expire,
+      expires: new Date().getTime() + expire,
     };
 
     setLocalStorageItem('token', token, expire);
@@ -299,11 +301,13 @@ class RootStore {
       throw new Error(resp?.message);
     }
 
+    const expire = Number(expires_in) * 1000;
     newToken = {
       token: access_token,
       refreshToken: refresh_token,
       // eslint-disable-next-line no-mixed-operators
-      expire: new Date().getTime() + Number(expires_in) * 1000,
+      expire,
+      expires: new Date().getTime() + expire,
     };
 
     return newToken;
