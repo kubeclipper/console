@@ -63,6 +63,10 @@ export default class ConfirmAction {
     return t('Cancel');
   }
 
+  get isAsyncAction() {
+    return false;
+  }
+
   // eslint-disable-next-line no-unused-vars
   policy = (item) => ({});
 
@@ -113,6 +117,16 @@ export default class ConfirmAction {
 
   submitSuccessMsg = (data) => {
     const name = this.getName(data);
+
+    if (this.isAsyncAction) {
+      return firstUpperCase(
+        t(
+          'The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.',
+          { action: this.actionName || this.title, name }
+        )
+      );
+    }
+
     return firstUpperCase(
       t('{action} {name} successfully.', {
         action: this.actionName || this.title,

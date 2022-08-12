@@ -95,7 +95,6 @@
   "Password": "Password",
   "Permanent": "Permanent",
   "Phone Number": "Phone Number",
-  "Platform Configuration": "Platform Configuration",
   "Please enter a legal ip or domain, such as: 10.0.0.1、baidu.com、www.google.com": "Please enter a legal ip or domain, such as: 10.0.0.1、baidu.com、www.google.com",
   "Please enter a legal ip or domain, such as: 3001:db8::200、baidu.com、www.google.com": "Please enter a legal ip or domain, such as: 3001:db8::200、baidu.com、www.google.com",
   "Please enter a valid Phone Number": "Please enter a valid Phone Number",
@@ -534,5 +533,6 @@
   "LastDayOfMonth": "LastDayOfMonth",
   "proxyMode": "proxyMode",
   "Audit Log": "Audit Log",
-  "delete": "delete"
+  "delete": "delete",
+  "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.": "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result."
 }
