@@ -38,6 +38,12 @@ function BaseLayout(props) {
   const [state, setState] = useReducer(reducer, initialState);
 
   useEffect(() => {
+    if (rootStore.components.length === 0) {
+      rootStore.fetchComponents();
+    }
+  }, [rootStore]);
+
+  useEffect(() => {
     if (!rootStore.user) {
       const user = getLocalStorageItem('user');
 

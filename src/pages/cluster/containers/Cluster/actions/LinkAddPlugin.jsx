@@ -13,9 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { observer } from 'mobx-react';
 import { LinkAction } from 'containers/Action';
+import { rootStore } from 'stores';
 
-export default class LinkAddPlugin extends LinkAction {
+class LinkAddPlugin extends LinkAction {
   static title = t('Add Plugin');
 
   static isStatusRunning(item) {
@@ -25,7 +27,12 @@ export default class LinkAddPlugin extends LinkAction {
     return false;
   }
 
-  static allowed = (item) => Promise.resolve(this.isStatusRunning(item));
+  static hasPlugin() {
+    return rootStore.hasPlugin;
+  }
+
+  static allowed = (item) =>
+    Promise.resolve(this.isStatusRunning(item) && this.hasPlugin());
 
   static path(item) {
     return `/cluster/add-plugin/${item.name}`;
@@ -33,3 +40,5 @@ export default class LinkAddPlugin extends LinkAction {
 
   static policy = 'clusters:edit';
 }
+
+export default observer(LinkAddPlugin);
