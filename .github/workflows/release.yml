@@ -44,20 +44,22 @@ jobs:
           ls -F | xargs tar -zcvf kc-console.tar.gz
           popd
 
-      - name: Generate Release file
-        run: echo ${{ github.sha }} > Release.txt
-
-      - name: Cat Release file
-        run: cat Release.txt
+      - name: Setup ossutil
+        uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint:  ${{ secrets.OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.OSS_ACCESS_KEY }}
+          access-key-secret: ${{ secrets.OSS_ACCESS_SECRET }}
+      - name: Upload to oss
+        run: |
+          ossutil cp -rf dist/kc-console.tar.gz oss://${{ secrets.OSS_BUCKET }}/kc-console/${{ steps.extract_tag.outputs.version }}/
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(steps.extract_tag.outputs.version, 'v')
         with:
           files: |
-            Release.txt
             dist/kc-console.tar.gz
-          body_path: ${{ github.workspace }}/CHANGELOG/CHANGELOG-${{ steps.extract_tag.outputs.version }}.md
           # note you'll typically need to create a personal access token
           # with permissions to create releases in the other repo
           token: ${{ secrets.GH_TOKEN }}
