@@ -29,7 +29,7 @@ class Edit extends ModalAction {
 
   static title = t('Edit BackupPoint');
 
-  static policy = 'clusters:edit';
+  static policy = 'backuppoints:edit';
 
   static allowed = () => Promise.resolve(true);
 

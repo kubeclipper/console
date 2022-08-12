@@ -40,7 +40,7 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete Registry');
   }
 
-  policy = () => 'platform:edit';
+  policy = () => 'registries:edit';
 
   onSubmit = (_, __, props) => {
     const datas = toJS(store.list.data);

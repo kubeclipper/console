@@ -29,7 +29,7 @@ class Add extends ModalAction {
 
   static title = t('Add');
 
-  static policy = 'platform:edit';
+  static policy = 'registries:edit';
 
   get name() {
     return t('Add');

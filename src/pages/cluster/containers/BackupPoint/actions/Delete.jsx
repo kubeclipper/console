@@ -39,7 +39,7 @@ export default class DeleteAction extends ConfirmAction {
     return t('Delete BackupPoint');
   }
 
-  policy = 'clusters:delete';
+  policy = 'backuppoints:edit';
 
   onSubmit = (item) => {
     const { name } = item;

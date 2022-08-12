@@ -73,7 +73,7 @@ const renderMenu = (t) => {
           name: t('BackupPoint'),
           key: 'backup-point',
           level: 1,
-          module: 'clusters',
+          module: 'backuppoints',
         },
         {
           path: '/cluster/template',
@@ -117,7 +117,7 @@ const renderMenu = (t) => {
           name: t('LocalRegistry'),
           key: '/cluster/local-registry',
           level: 1,
-          module: 'clusters',
+          module: 'registries',
         },
       ],
     },
