@@ -36,15 +36,15 @@ export default class RemovePlugin extends ConfirmAction {
     return t('Remove');
   }
 
-  policy = 'dns:delete';
+  get isAsyncAction() {
+    return true;
+  }
 
-  confirmContext = (data) => {
+  policy = 'clusters:edit';
+
+  getName = (data) => {
     const [component] = data.component;
-
-    return t('Are you sure to { action } {name}?', {
-      action: data.title,
-      name: component.name || '',
-    });
+    return component.name || '';
   };
 
   onSubmit = async (item) => {

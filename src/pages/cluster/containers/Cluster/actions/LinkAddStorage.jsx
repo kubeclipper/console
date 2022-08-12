@@ -31,5 +31,5 @@ export default class LinkAddStorage extends LinkAction {
     return `/cluster/add-storage/${item.name}`;
   }
 
-  policy = 'clusters:view';
+  policy = 'clusters:edit';
 }

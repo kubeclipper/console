@@ -29,7 +29,7 @@ class SaveAsTemplate extends ModalAction {
 
   static title = t('Save as template');
 
-  static policy = 'clusters:create';
+  static policy = 'clusters:edit';
 
   static listUrl = '/cluster';
 

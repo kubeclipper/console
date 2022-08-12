@@ -33,7 +33,7 @@ class ScheduledBackup extends ModalAction {
 
   static title = t('Scheduled Backup');
 
-  static policy = 'clusters:create';
+  static policy = 'clusters:edit';
 
   static actionType = 'notice';
 

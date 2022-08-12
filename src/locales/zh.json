@@ -95,7 +95,6 @@
   "Password": "密码",
   "Permanent": "永久",
   "Phone Number": "手机号码",
-  "Platform Configuration": "平台配置",
   "Please enter a legal ip or domain, such as: 10.0.0.1、baidu.com、www.google.com": "请输入合法的域名或者ip，如：10.0.0.1、baidu.com、www.google.com",
   "Please enter a legal ip or domain, such as: 3001:db8::200、baidu.com、www.google.com": "请输入合法的域名或者ip，如：3001:db8::200、baidu.com、www.google.com",
   "Please enter a valid Phone Number": "请输入一个有效的手机号",
@@ -534,5 +533,6 @@
   "LastDayOfMonth": "月末",
   "proxyMode": "代理模式",
   "Audit Log": "审计日志",
-  "delete": "删除"
+  "delete": "删除",
+  "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.": "{name} {action}操作已经执行，请等待操作完成或者手动刷新页面展示最终结果。"
 }
