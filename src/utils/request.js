@@ -49,13 +49,13 @@ module.exports = methods.reduce(
 
 async function checkToken(callback) {
   const token = getLocalStorageItem('token') || {};
-  const { expire = '' } = token;
-
-  if (expire) {
+  const { expires = '', expire = '' } = token;
+  if (expires) {
     const current = new Date().getTime();
 
-    const TIME_DELAY = 10 * 60 * 1000; // ahead of 10 minutes refresh token, aviod time difference between client and server
-    if (expire <= current + TIME_DELAY) {
+    // eslint-disable-next-line no-mixed-operators
+    const TIME_DELAY = expire - 10 * 1000;
+    if (expires <= current + TIME_DELAY) {
       const resp = await rootStore.getNewToken(token);
 
       setLocalStorageItem('token', resp, resp.expire);
