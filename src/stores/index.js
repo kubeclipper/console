@@ -22,6 +22,7 @@ import { get, uniq, isArray } from 'lodash';
 import { makeAutoObservable } from 'mobx';
 import ObjectMapper from 'utils/object.mapper';
 import jwtDecode from 'jwt-decode';
+import { APIVERSION } from 'utils/constants';
 import root from './root';
 
 export const routingStore = new RouterStore();
@@ -48,6 +49,10 @@ class RootStore {
   openKeys = [];
 
   config = {};
+
+  components = [];
+
+  hasPlugin = true;
 
   /**
    * routing
@@ -316,6 +321,31 @@ class RootStore {
   async getConfigs() {
     const res = await request.get('/api/config.kubeclipper.io/v1/configz');
     this.config = res;
+  }
+
+  async fetchComponents(params = {}) {
+    let lang = getLocalStorageItem('lang') || 'zh';
+    if (lang === 'zh-cn') {
+      lang = 'zh';
+    }
+    const result = await request.get(
+      `${APIVERSION.config}/components?lang=${lang}`,
+      params
+    );
+    const data = result;
+
+    this.components = data || [];
+    this.updateHasPlugin(data);
+
+    return data;
+  }
+
+  updateHasPlugin(components) {
+    const hasPlugin =
+      components.filter(({ category }) => category !== 'storage').length > 0;
+    this.hasPlugin = hasPlugin;
+
+    return hasPlugin;
   }
 }
 /* Store end */
