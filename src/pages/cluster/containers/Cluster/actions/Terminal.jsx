@@ -35,6 +35,8 @@ export default class ConnectTerminal {
 
   static isRunning = (item) => item.status === 'Running';
 
+  static policy = 'clusters:access';
+
   static allowed = (item) => Promise.resolve(this.isRunning(item));
 
   static openTerminal = async (val) => {

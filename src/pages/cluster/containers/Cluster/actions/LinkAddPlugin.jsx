@@ -31,5 +31,5 @@ export default class LinkAddPlugin extends LinkAction {
     return `/cluster/add-plugin/${item.name}`;
   }
 
-  policy = 'clusters:edit';
+  static policy = 'clusters:edit';
 }

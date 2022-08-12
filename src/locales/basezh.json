@@ -65,5 +65,15 @@
   "DNS Delete": "删除 DNS",
   "DNS_DELETE_DESC": "删除 DNS 解析",
   "DNS Create": "创建 DNS",
-  "DNS_CREATE_DESC": "创建 DNS 解析"
+  "DNS_CREATE_DESC": "创建 DNS 解析",
+  "Registry View": "查看镜像仓库",
+  "REGISTRY_VIEW_DESC": "查看平台镜像仓库",
+  "Registry Edit": "编辑镜像仓库",
+  "REGISTRY_EDIT_DESC": "编辑平台镜像仓库",
+  "Cluster Access": "访问 Kubectl",
+  "CLUSTER_ACCESS_DESC": "连接终端访问 kubectl console",
+  "BackupPoint View": "查看备份点",
+  "BACKUPPOINT_VIEW_DESC": "查看集群备份点",
+  "BackupPoint Edit": "编辑备份点",
+  "BACKUPPOINT_EDIT_DESC": "编辑集群备份点"
 }

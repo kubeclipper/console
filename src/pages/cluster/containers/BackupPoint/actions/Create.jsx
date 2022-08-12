@@ -30,7 +30,7 @@ class CreateForm extends ModalAction {
 
   static title = t('Create');
 
-  static policy = 'clusters:create';
+  static policy = 'backuppoints:edit';
 
   get name() {
     return t('Create');
