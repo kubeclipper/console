@@ -96,6 +96,7 @@ function filterComponents(array, filters) {
  * @returns
  */
 const ClusterMapper = (item) => {
+  const { metadata, networking } = item;
   const STORAGES = ['nfs-provisioner', 'ceph-csi', 'cinder'];
   const PLUGINS = ['kubesphere'];
 
@@ -104,14 +105,15 @@ const ClusterMapper = (item) => {
   );
   const { masters, workers = [], nodes = [] } = item;
   const mastersByIp = intersectionBy(nodes, masters, 'id');
-  const offline = has(item.metadata.annotations, 'kubeclipper.io/offline');
-  const isDualStack = get(item, 'networking.ipFamily') === 'IPv4+IPv6';
-  const [podIPv4CIDR, podIPv6CIDR] = get(item, 'networking.pods.cidrBlocks');
+  const offline = has(metadata.annotations, 'kubeclipper.io/offline');
+  const isDualStack = get(networking, 'ipFamily') === 'IPv4+IPv6';
+  const [podIPv4CIDR, podIPv6CIDR] = get(networking, 'pods.cidrBlocks');
   const [serviceSubnet, serviceSubnetV6] = get(
-    item,
-    'networking.services.cidrBlocks'
+    networking,
+    'services.cidrBlocks'
   );
-  const result = {
+
+  return {
     ...getBaseInfo(item),
     ...item,
     ...components,
@@ -123,20 +125,16 @@ const ClusterMapper = (item) => {
     podIPv6CIDR,
     serviceSubnet,
     serviceSubnetV6,
-    externalIP: get(item, 'metadata.labels["kubeclipper.io/externalIP"]'),
+    externalIP: get(metadata, 'labels["kubeclipper.io/externalIP"]'),
     status: get(item, 'status.phase'),
     componentsHealthy: get(item, 'status.componentConditions') || [],
     plugin: filterComponents(item.addons, PLUGINS) || [],
     storage: filterComponents(item.addons, STORAGES) || [],
-    region: get(item, 'metadata.labels["topology.kubeclipper.io/region"]'),
-    description: get(
-      item,
-      'metadata.annotations["kubeclipper.io/description"]'
-    ),
-    backupPoint: get(item, 'metadata.labels["kubeclipper.io/backupPoint"]'),
+    region: get(metadata, 'labels["topology.kubeclipper.io/region"]'),
+    description: get(metadata, 'annotations["kubeclipper.io/description"]'),
+    backupPoint: get(metadata, 'labels["kubeclipper.io/backupPoint"]'),
     _originData: getOriginData(item),
   };
-  return result;
 };
 
 const ClusterTemplateMapper = (item) => {
@@ -154,7 +152,8 @@ const ClusterTemplateMapper = (item) => {
   );
   const isDualStack = get(item, 'networking.ipFamily') === 'IPv4+IPv6';
 
-  const offline = get(config, 'offline');
+  const offline = has(config.metadata, 'annotations["kubeclipper.io/offline"]');
+
   const kubernetesVersion = get(config, 'kubernetesVersion');
   const kubernetesVersionOnline = !offline && kubernetesVersion;
   const kubernetesVersionOffline = offline && kubernetesVersion;
@@ -162,7 +161,7 @@ const ClusterTemplateMapper = (item) => {
   const containerRuntimeVersion = get(config, 'containerRuntime.version');
   const containerRuntimeType = get(config, 'containerRuntime.type');
 
-  const result = {
+  return {
     offline,
     certSANs: get(config, 'certSANs'),
     localRegistry: get(config, 'localRegistry'),
@@ -213,8 +212,6 @@ const ClusterTemplateMapper = (item) => {
     ...podNetwork,
     _originData: item,
   };
-
-  return result;
 };
 
 /**
@@ -393,35 +390,32 @@ const BackupPointMapper = (item) => {
 };
 
 const TemplatesMapper = (item) => {
-  const componentName = get(
-    item,
-    'metadata.labels["kubeclipper.io/componentName"]'
-  );
+  const { metadata } = item;
+  const componentName = get(metadata, 'labels["kubeclipper.io/componentName"]');
   let flatData = {};
+
   if (componentName === 'kubernetes') {
     flatData = ClusterTemplateMapper(item);
   } else {
     flatData = get(item, 'config');
   }
-  const name = get(item, 'metadata.annotations["kubeclipper.io/display-name"]');
-  const result = {
+
+  const name = get(metadata, 'annotations["kubeclipper.io/display-name"]');
+
+  return {
     ...getBaseInfo(item),
     name,
     templateName: name,
     templateDescription: get(
-      item,
-      'metadata.annotations["kubeclipper.io/description"]'
+      metadata,
+      'annotations["kubeclipper.io/description"]'
     ),
-    pluginName: get(item, 'metadata.labels["kubeclipper.io/componentName"]'),
-    pluginVersion: get(
-      item,
-      'metadata.labels["kubeclipper.io/componentVersion"]'
-    ),
-    pluginCategory: get(item, 'metadata.labels["kubeclipper.io/category"]'),
+    pluginName: get(metadata, 'labels["kubeclipper.io/componentName"]'),
+    pluginVersion: get(metadata, 'labels["kubeclipper.io/componentVersion"]'),
+    pluginCategory: get(metadata, 'labels["kubeclipper.io/category"]'),
     flatData,
     _originData: item,
   };
-  return result;
 };
 
 const CronBackupMapper = (item) => {

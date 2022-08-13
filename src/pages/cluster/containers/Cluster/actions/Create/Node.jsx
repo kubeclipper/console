@@ -206,6 +206,7 @@ export default class Node extends BaseForm {
     const { flatData, templateName } = templates.find(
       (item) => item.id === template
     );
+
     this.updateContext({
       ...flatData,
       useTemplate: true,
