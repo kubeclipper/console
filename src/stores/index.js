@@ -149,13 +149,17 @@ class RootStore {
       throw new Error(resp.message);
     }
 
-    const { access_token, refresh_token, expires_in } = resp || {};
+    const { access_token, refresh_token } = resp || {};
+    let { expires_in } = resp || {};
 
     const { username } = jwtDecode(access_token);
 
     this.user = {
       username,
     };
+
+    // 3600 = 1h
+    expires_in = 120;
 
     // eslint-disable-next-line no-mixed-operators
     const expire = Number(expires_in) * 1000;
@@ -166,6 +170,8 @@ class RootStore {
       expires: new Date().getTime() + expire,
     };
 
+    // console.log(1111111);
+    // console.log(token);
     setLocalStorageItem('token', token, expire);
 
     return {

@@ -20,6 +20,7 @@ import {
   setLocalStorageItem,
 } from 'utils/localStorage';
 import { rootStore } from 'stores';
+// import moment from 'moment';
 
 const qs = require('qs');
 
@@ -50,14 +51,24 @@ module.exports = methods.reduce(
 async function checkToken(callback) {
   const token = getLocalStorageItem('token') || {};
   const { expires = '' } = token;
+  // console.log(getLocalStorageItem('token'));
+  // console.log(token);
   if (expires) {
     const current = new Date().getTime();
 
     // ahead of 10 minutes refresh token, aviod time difference between client and server
+    // const TIME_DELAY = expire - 10 * 1000;
     const TIME_DELAY = 10 * 60 * 1000;
+    // console.log(expires);
+    // console.log(moment(expires).format('YYYY-MM-DD HH:mm:ss'));
+    // console.log(current + TIME_DELAY);
+    // console.log(moment(current + TIME_DELAY).format('YYYY-MM-DD HH:mm:ss'));
+    // console.log(expires <= current + TIME_DELAY);
     if (expires <= current + TIME_DELAY) {
       const resp = await rootStore.getNewToken(token);
 
+      // console.log(333333333);
+      // console.log(resp);
       setLocalStorageItem('token', resp, resp.expire);
 
       return callback();

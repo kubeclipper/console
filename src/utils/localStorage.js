@@ -13,12 +13,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+// import moment from 'moment';
+
 export const getLocalStorageItem = (key) => {
   const item = localStorage.getItem(key);
-
   try {
     const { value, expires } = JSON.parse(item);
-
+    if (key === 'token') {
+      // console.log('getLocalStorageItem');
+      // console.log(item);
+      // console.log(moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'));
+      // console.log(moment(expires).format('YYYY-MM-DD HH:mm:ss'));
+      return value;
+    }
     if (Date.now() > expires) {
       localStorage.removeItem(key);
       return null;

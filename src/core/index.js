@@ -37,6 +37,7 @@ window.globals = new GlobalValue();
 
 // request error handler
 window.onunhandledrejection = function (e) {
+  // console.log(e);
   if (e && (e.status === 'Failure' || e.status >= 400)) {
     if (e.status === 401) {
       // session timeout handler, except app store page.
