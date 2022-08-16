@@ -199,6 +199,7 @@ export default class Create extends StepAction {
       containerdRootDir,
       containerdVersionOnline,
       containerdVersionOffline,
+      backupPoint,
       // backupPoint,
       // network
       dnsDomain,
@@ -214,8 +215,8 @@ export default class Create extends StepAction {
       serviceSubnetV6,
       mtu,
       // cluster
-      // description,
-      // externalIP,
+      description,
+      externalIP,
       // labels,
     } = values;
 
@@ -225,8 +226,22 @@ export default class Create extends StepAction {
     const { IPv4AutoDetection, IPv6AutoDetection } =
       computeAutoDetection(values);
 
+    const offlineAnnotations = offline ? { 'kubeclipper.io/offline': '' } : {};
+    const externalIPLabel = externalIP
+      ? { 'kubeclipper.io/externalIP': externalIP }
+      : {};
+
     const config = {
-      offline,
+      metadata: {
+        labels: {
+          'kubeclipper.io/backupPoint': backupPoint,
+          ...externalIPLabel,
+        },
+        annotations: {
+          'kubeclipper.io/description': description,
+          ...offlineAnnotations,
+        },
+      },
       certSANs: arrayInputValue(certSANs),
       localRegistry,
       workerNodeVip,
