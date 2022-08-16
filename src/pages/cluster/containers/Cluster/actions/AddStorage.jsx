@@ -20,18 +20,21 @@ import styles from './index.less';
 import RenderForm from '../../../components/plugin/RenderForm';
 import { cloneDeep, uniq, omit, set, assign, isArray, isMatch } from 'lodash';
 import { useParams, useHistory } from 'react-router-dom';
-import { filterComponents } from 'utils/schemaForm';
 import { encodeProperty } from 'utils';
 import Notify from 'components/Notify';
 
 import classnames from 'classnames';
 import { Forms } from 'components/Form';
 import { useRootStore } from 'stores';
-import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import Footer from 'components/Footer';
 
-const Storage = (props) => {
-  const { clusterStore: store, templatesStore } = useRootStore();
+const Storage = observer((props) => {
+  const {
+    clusterStore: store,
+    templatesStore,
+    storageComponents,
+  } = useRootStore();
   const { state, setState } = props;
   const { id } = useParams();
   const { current, tabs, baseStorage, templates } = state;
@@ -59,12 +62,7 @@ const Storage = (props) => {
         .map((item) => item?.name)
         .filter((item) => !!item);
 
-      const comps = await store.fetchComponents();
-      let storageComps = toJS(comps || []).filter(
-        (it) => it.category === 'storage'
-      );
-      storageComps = filterComponents(storageComps);
-      const newTabs = cloneDeep(storageComps).map((item) => {
+      const newTabs = cloneDeep(storageComponents).map((item) => {
         const { properties = {} } = item.schema;
 
         delete properties.isDefaultSC;
@@ -118,12 +116,12 @@ const Storage = (props) => {
         tabs: newTabs,
         current: newTabs.find((item) => !item?.disabled)?.name,
         baseStorage: _baseStorage,
-        storageComps,
+        storageComps: storageComponents,
         templates: _templates,
       });
     }
     init();
-  }, []);
+  }, [storageComponents]);
 
   const handleTabChange = async (tab) => {
     let isError = false;
@@ -235,7 +233,7 @@ const Storage = (props) => {
       ))}
     </Tabs>
   );
-};
+});
 
 function AddStorage() {
   const history = useHistory();
@@ -402,4 +400,4 @@ function AddStorage() {
   );
 }
 
-export default AddStorage;
+export default observer(AddStorage);

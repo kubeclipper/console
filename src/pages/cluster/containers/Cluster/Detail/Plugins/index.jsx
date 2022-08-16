@@ -26,7 +26,7 @@ import { toJS } from 'mobx';
 import { useParams } from 'react-router';
 
 function Plugins() {
-  const { clusterStore: store } = useRootStore();
+  const { clusterStore: store, components } = useRootStore();
   const { id } = useParams();
 
   const plugin = toJS(get(store.detail, 'plugin'));
@@ -163,7 +163,7 @@ function Plugins() {
       },
     ];
 
-    const { version, category, name } = store.components.find(
+    const { version, category, name } = components.find(
       (component) => component.name === item.name
     );
 

@@ -32,21 +32,23 @@ import { useParams, useHistory } from 'react-router';
 const Plugin = (props) => {
   const { state, setState } = props;
   const { current, tabs, templates } = state;
-  const { clusterStore: store, templatesStore } = useRootStore();
+  const {
+    clusterStore: store,
+    templatesStore,
+    pluginComponents,
+  } = useRootStore();
   const { id } = useParams();
 
   useEffect(() => {
     async function init() {
-      const comps = await store.fetchComponents();
       const _templates = await templatesStore.fetchAll();
-      const pluginComps = comps.filter((it) => it.category !== 'storage');
 
       const { storage = [] } = await store.updateDetail({ id });
       const enabledStorageClass = storage
         .map((item) => item?.config?.scName)
         .filter((item) => !!item);
 
-      const newTabs = cloneDeep(pluginComps).map((item) => {
+      const newTabs = cloneDeep(pluginComponents).map((item) => {
         const { properties = {} } = item.schema;
 
         for (const key in properties) {
@@ -95,13 +97,13 @@ const Plugin = (props) => {
       setState({
         ...state,
         tabs: newTabs,
-        current: pluginComps[0]?.name,
+        current: pluginComponents[0]?.name,
         templates: _templates,
       });
     }
 
     init();
-  }, []);
+  }, [pluginComponents]);
 
   const handleTabChange = (tab) => {
     setState({ ...state, current: tab });

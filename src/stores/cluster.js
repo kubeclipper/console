@@ -16,7 +16,6 @@
 
 import { get } from 'lodash';
 import { APIVERSION } from 'utils/constants';
-import { getLocalStorageItem } from 'utils/localStorage';
 import ObjectMapper from 'utils/object.mapper';
 
 import BaseStore from './base';
@@ -62,20 +61,6 @@ export default class ClusterStore extends BaseStore {
   async addOrRemoveNode(id, params) {
     const res = await request.put(`${this.getDetailUrl({ id })}/nodes`, params);
     return res;
-  }
-
-  async fetchComponents(params = {}) {
-    let lang = getLocalStorageItem('lang') || 'zh';
-    if (lang === 'zh-cn') {
-      lang = 'zh';
-    }
-    const result = await request.get(
-      `${APIVERSION.config}/components?lang=${lang}`,
-      params
-    );
-    const data = result;
-    this.components = data || [];
-    return data;
   }
 
   /**

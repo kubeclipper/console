@@ -23,6 +23,7 @@ import { makeAutoObservable } from 'mobx';
 import ObjectMapper from 'utils/object.mapper';
 import jwtDecode from 'jwt-decode';
 import { APIVERSION } from 'utils/constants';
+import { filterComponents } from 'utils/schemaForm';
 import root from './root';
 
 export const routingStore = new RouterStore();
@@ -51,6 +52,12 @@ class RootStore {
   config = {};
 
   components = [];
+
+  storageComponents = [];
+
+  pluginComponents = [];
+
+  componentsLoading = false;
 
   hasPlugin = true;
 
@@ -334,16 +341,25 @@ class RootStore {
     );
     const data = result;
 
-    this.components = data || [];
-    this.updateHasPlugin(data);
+    this.components = filterComponents(data) || [];
+    this.updateCustomComponents(data);
 
     return data;
   }
 
-  updateHasPlugin(components) {
-    const hasPlugin =
-      components.filter(({ category }) => category !== 'storage').length > 0;
+  updateCustomComponents(components) {
+    const storageComponents = components.filter(
+      ({ category }) => category === 'storage'
+    );
+    const pluginComponents = components.filter(
+      ({ category }) => category !== 'storage'
+    );
+    const hasPlugin = pluginComponents.length > 0;
+
+    this.storageComponents = filterComponents(storageComponents);
+    this.pluginComponents = filterComponents(pluginComponents);
     this.hasPlugin = hasPlugin;
+    this.componentsLoading = true;
 
     return hasPlugin;
   }
