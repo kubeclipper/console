@@ -150,9 +150,21 @@ const ClusterTemplateMapper = (item) => {
     config,
     'networking.services.cidrBlocks'
   );
-  const isDualStack = get(item, 'networking.ipFamily') === 'IPv4+IPv6';
+  const isDualStack = get(config, 'networking.ipFamily') === 'IPv4+IPv6';
 
   const offline = has(config.metadata, 'annotations["kubeclipper.io/offline"]');
+  const description = get(
+    config.metadata,
+    'annotations["kubeclipper.io/description"]'
+  );
+  const externalIP = get(
+    config.metadata,
+    'labels["kubeclipper.io/externalIP"]'
+  );
+  const backupPoint = get(
+    config.metadata,
+    'labels["kubeclipper.io/backupPoint"]'
+  );
 
   const kubernetesVersion = get(config, 'kubernetesVersion');
   const kubernetesVersionOnline = !offline && kubernetesVersion;
@@ -163,6 +175,9 @@ const ClusterTemplateMapper = (item) => {
 
   return {
     offline,
+    description,
+    externalIP,
+    backupPoint,
     certSANs: get(config, 'certSANs'),
     localRegistry: get(config, 'localRegistry'),
     workerNodeVip: get(config, 'workerNodeVip'),
