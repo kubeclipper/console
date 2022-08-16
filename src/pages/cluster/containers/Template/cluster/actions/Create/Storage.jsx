@@ -17,7 +17,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import Base from 'components/Form';
 import { rootStore } from 'stores';
-import { toJS } from 'mobx';
 import { filter } from 'lodash';
 import StorageForm from 'pages/cluster/components/plugin/StorageForm';
 
@@ -45,14 +44,6 @@ export default class Storage extends Base {
 
   get isFormRender() {
     return true;
-  }
-
-  get components() {
-    const components = toJS(this.props.context.components || []).filter(
-      (it) => it.category === 'storage'
-    );
-
-    return components;
   }
 
   get tags() {
@@ -92,7 +83,6 @@ export default class Storage extends Base {
           label: '',
           component: (
             <StorageForm
-              components={this.components}
               context={this.props.context}
               updateContext={this.updateContext}
               onChange={this.handleOnchange}
