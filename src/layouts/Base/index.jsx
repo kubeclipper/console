@@ -38,6 +38,11 @@ function BaseLayout(props) {
   const [state, setState] = useReducer(reducer, initialState);
 
   useEffect(() => {
+    rootStore.fetchComponents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (!rootStore.user) {
       const user = getLocalStorageItem('user');
 

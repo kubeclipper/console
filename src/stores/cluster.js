@@ -64,7 +64,7 @@ export default class ClusterStore extends BaseStore {
     return res;
   }
 
-  async fetchComponents(params) {
+  async fetchComponents(params = {}) {
     let lang = getLocalStorageItem('lang') || 'zh';
     if (lang === 'zh-cn') {
       lang = 'zh';
