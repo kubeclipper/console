@@ -18,6 +18,7 @@ import { useRootStore } from 'stores';
 import { getAllowedResults, getActionList } from 'utils/allowed';
 import { useDeepCompareEffect } from 'hooks';
 import DropdownActions from './DropdownActions';
+import { observer } from 'mobx-react';
 
 const ItemAction = ({
   actions,
@@ -27,7 +28,7 @@ const ItemAction = ({
   firstActionClassName,
 }) => {
   const [results, setResults] = useState([]);
-  const { routing } = useRootStore();
+  const { routing, hasPlugin } = useRootStore();
 
   const { actionList, firstAction, moreActions } = getActionList(
     actions,
@@ -47,7 +48,7 @@ const ItemAction = ({
     }
 
     updateResult();
-  }, [containerProps, item]);
+  }, [containerProps, item, hasPlugin]);
 
   return (
     <DropdownActions
@@ -63,4 +64,4 @@ const ItemAction = ({
   );
 };
 
-export default ItemAction;
+export default observer(ItemAction);
