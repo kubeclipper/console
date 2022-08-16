@@ -25,7 +25,7 @@ import { toJS } from 'mobx';
 import { useParams } from 'react-router';
 
 export default function Storage() {
-  const { clusterStore: store } = useRootStore();
+  const { clusterStore: store, components } = useRootStore();
   const { id } = useParams();
 
   const cards = store.detail.storage.map((item, index) => {
@@ -55,7 +55,7 @@ export default function Storage() {
 
     options = [...options, ...customOption];
 
-    const { version, category, name } = store.components.find(
+    const { version, category, name } = components.find(
       (component) => component.name === item.name
     );
     return {

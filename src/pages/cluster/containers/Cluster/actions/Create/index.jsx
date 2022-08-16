@@ -62,12 +62,11 @@ export default class Create extends StepAction {
   }
 
   get hasPlugin() {
-    const hasPlugin =
-      (this.store?.components || []).filter(
-        ({ category }) => category !== 'storage'
-      ).length > 0;
+    return rootStore.hasPlugin;
+  }
 
-    return hasPlugin;
+  get components() {
+    return rootStore.components;
   }
 
   get steps() {
@@ -103,14 +102,8 @@ export default class Create extends StepAction {
     this.store = rootStore.clusterStore;
     this.templatesStore = rootStore.templatesStore;
 
-    this.fetchComponents();
     this.fetchTemplates();
     this.fetchVersion();
-  }
-
-  async fetchComponents() {
-    const components = await this.store.fetchComponents();
-    this.updateData({ components });
   }
 
   async fetchTemplates() {
@@ -128,12 +121,7 @@ export default class Create extends StepAction {
 
   getRegistry = (registry) => flatten(arrayInputValue(registry));
 
-  getComponents = ({
-    storage = {},
-    plugins = {},
-    components = [],
-    defaultStorage = '',
-  }) => {
+  getComponents = ({ storage = {}, plugins = {}, defaultStorage = '' }) => {
     const enabledComponents = [];
     get(storage, 'tabs', []).forEach(({ name, formData }) => {
       (formData || []).forEach((item) => {
@@ -167,11 +155,11 @@ export default class Create extends StepAction {
     });
 
     enabledComponents.forEach((c) => {
-      const item = components.find(({ name }) => name === c.name);
+      const item = this.components.find(({ name }) => name === c.name);
       c.version = item.version;
     });
 
-    return encodeProperty(components, enabledComponents);
+    return encodeProperty(this.components, enabledComponents);
   };
 
   onSubmit = (values) => {

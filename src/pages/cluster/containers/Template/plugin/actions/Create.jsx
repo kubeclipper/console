@@ -27,6 +27,7 @@ import Footer from 'components/Footer';
 import { Forms } from 'components/Form';
 
 import styles from './index.less';
+import { observer } from 'mobx-react';
 
 const Plugin = (props) => {
   const { state, setState } = props;
@@ -56,9 +57,9 @@ const Plugin = (props) => {
   );
 };
 
-export default function AddPlugin() {
+function AddPlugin() {
   const history = useHistory();
-  const { clusterStore: store, templatesStore } = useRootStore();
+  const { components, templatesStore } = useRootStore();
   const formRef = useRef();
   const { plugin, name = '' } = useParams();
 
@@ -78,8 +79,10 @@ export default function AddPlugin() {
 
   useEffect(() => {
     async function init() {
-      const comps = await store.fetchComponents();
-      const pluginComps = cloneDeep(comps.find((it) => it.name === plugin));
+      const pluginComps = cloneDeep(
+        components.find((it) => it.name === plugin)
+      );
+
       let templateInitVal = {};
       let pluginInitVal = {};
       let oldVals = {};
@@ -206,3 +209,5 @@ export default function AddPlugin() {
     </div>
   );
 }
+
+export default observer(AddPlugin);

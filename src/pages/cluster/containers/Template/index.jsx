@@ -13,26 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRootStore } from 'stores';
 import Tab from 'containers/Tab';
 import ClusterTemplate from './cluster';
 import PluginTemplate from './plugin';
-import { filterComponents } from 'utils/schemaForm';
+import { observer } from 'mobx-react';
 
 const TemplateManagement = () => {
-  const { templatesStore, clusterStore } = useRootStore();
-  const [components, setcomponents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    async function init() {
-      let _components = await clusterStore.fetchComponents();
-      _components = filterComponents(_components);
-      setcomponents(_components);
-      setLoading(true);
-    }
-    init();
-  }, []);
+  const { templatesStore, components, componentsLoading } = useRootStore();
 
   const PluginComponents = components.map((item) => ({
     title: `${item?.name} ${t('Template')}`,
@@ -55,7 +44,7 @@ const TemplateManagement = () => {
     ],
   };
 
-  return loading && <Tab {...currentProps} />;
+  return componentsLoading && <Tab {...currentProps} />;
 };
 
-export default TemplateManagement;
+export default observer(TemplateManagement);

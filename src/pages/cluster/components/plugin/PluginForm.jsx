@@ -25,18 +25,16 @@ import Tips from 'pages/cluster/components/Tips';
 import { useRootStore } from 'stores';
 
 const PluginForm = (props) => {
-  const { clusterStore: store } = useRootStore();
+  const { clusterStore: store, pluginComponents } = useRootStore();
   const {
     templates = [],
     useTemplate = false,
-    components,
     context,
     updateContext,
     value,
     onChange,
   } = props;
   const enabledStorageClass = get(context, 'storage.enableStorage') || [];
-  const modules = components.filter((m) => m.category !== 'storage');
 
   const [state, setState] = useReducer(
     (_state, newState) => ({ ..._state, ...newState }),
@@ -49,7 +47,7 @@ const PluginForm = (props) => {
   const { current, tabs } = state;
 
   useEffect(() => {
-    const newTabs = cloneDeep(modules).map((item) => {
+    const newTabs = cloneDeep(pluginComponents).map((item) => {
       const { properties = {} } = item.schema;
 
       for (const key in properties) {
@@ -107,9 +105,9 @@ const PluginForm = (props) => {
     if (context?.plugins?.state) {
       setState(context.plugins.state);
     } else {
-      setState({ ...state, tabs: newTabs, current: modules[0]?.name });
+      setState({ ...state, tabs: newTabs, current: pluginComponents[0]?.name });
     }
-  }, []);
+  }, [pluginComponents]);
 
   const handleTabChange = (tab, index) => {
     // const form = value.currentForms;

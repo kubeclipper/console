@@ -18,6 +18,7 @@ import { observer } from 'mobx-react';
 import BaseForm from 'components/Form';
 import { arrayInputValue } from 'utils';
 import { get, flatten, isEmpty } from 'lodash';
+import { rootStore } from 'stores';
 
 export class ConfirmStep extends BaseForm {
   init() {}
@@ -334,14 +335,7 @@ export class ConfirmStep extends BaseForm {
   };
 
   get hasPlugin() {
-    const {
-      context: { components },
-    } = this.props;
-    const hasPlugin =
-      (components || []).filter(({ category }) => category !== 'storage')
-        .length > 0;
-
-    return hasPlugin;
+    return rootStore.hasPlugin;
   }
 
   get formItems() {
