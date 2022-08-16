@@ -57,12 +57,11 @@ export default class Create extends StepAction {
   }
 
   get hasPlugin() {
-    const hasPlugin =
-      (this.clusterStore?.components || []).filter(
-        ({ category }) => category !== 'storage'
-      ).length > 0;
+    return rootStore.hasPlugin;
+  }
 
-    return hasPlugin;
+  get components() {
+    return rootStore.components;
   }
 
   get steps() {
@@ -91,17 +90,9 @@ export default class Create extends StepAction {
   }
 
   init() {
-    this.clusterStore = rootStore.clusterStore;
     this.templatesStore = rootStore.templatesStore;
 
-    this.fetchComponents();
     this.getEditVals();
-  }
-
-  async fetchComponents() {
-    const components = await this.clusterStore.fetchComponents();
-
-    this.updateData({ components });
   }
 
   async getEditVals() {
@@ -142,12 +133,7 @@ export default class Create extends StepAction {
     return enabledComponents;
   }
 
-  getComponents = ({
-    storage = {},
-    plugins = {},
-    components = [],
-    defaultStorage = '',
-  }) => {
+  getComponents = ({ storage = {}, plugins = {}, defaultStorage = '' }) => {
     const enabledComponents = [];
     get(storage, 'tabs', []).forEach(({ name, formData }) => {
       (formData || []).forEach((item) => {
@@ -181,11 +167,11 @@ export default class Create extends StepAction {
     });
 
     enabledComponents.forEach((c) => {
-      const item = components.find(({ name }) => name === c.name);
+      const item = this.components.find(({ name }) => name === c.name);
       c.version = item.version;
     });
 
-    return this.encodeProperty(components, enabledComponents);
+    return this.encodeProperty(this.components, enabledComponents);
   };
 
   onSubmit = (values) => {

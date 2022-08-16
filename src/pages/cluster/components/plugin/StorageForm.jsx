@@ -18,7 +18,6 @@ import React, { useEffect, useReducer } from 'react';
 import { observer } from 'mobx-react';
 import Tabs from 'components/Tabs';
 import { cloneDeep, uniq, get, set, isMatch } from 'lodash';
-import { filterComponents } from 'utils/schemaForm';
 import RenderForm from './RenderForm';
 import { Divider, Button } from 'antd';
 import { Context } from './Context';
@@ -36,7 +35,7 @@ const StorageForm = (props) => {
     onChange,
     store,
   } = props;
-  const { clusterStore } = useRootStore();
+  const { storageComponents } = useRootStore();
 
   const [state, setState] = useReducer(
     (_state, newState) => ({ ..._state, ...newState }),
@@ -61,12 +60,7 @@ const StorageForm = (props) => {
   };
 
   useEffect(() => {
-    let components = clusterStore.components.filter(
-      (it) => it.category === 'storage'
-    );
-    components = filterComponents(components);
-
-    const newTabs = cloneDeep(components).map((item) => {
+    const newTabs = cloneDeep(storageComponents).map((item) => {
       const { name } = item;
       const { properties = {} } = item.schema;
 
@@ -126,10 +120,14 @@ const StorageForm = (props) => {
     if (context.storage) {
       setState(context.storage);
     } else {
-      const data = { ...state, tabs: newTabs, current: components[0]?.name };
+      const data = {
+        ...state,
+        tabs: newTabs,
+        current: storageComponents[0]?.name,
+      };
       setState(data);
     }
-  }, []);
+  }, [storageComponents]);
 
   const handleTabChange = async (tab, index) => {
     let isError = false;

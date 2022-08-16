@@ -18,7 +18,6 @@ import { observer } from 'mobx-react';
 import BaseForm from 'components/Form';
 import PluginForm from 'pages/cluster/components/plugin/PluginForm';
 import { rootStore } from 'stores';
-import { toJS } from 'mobx';
 
 @observer
 export default class Plugin extends BaseForm {
@@ -44,14 +43,6 @@ export default class Plugin extends BaseForm {
     return true;
   }
 
-  get components() {
-    const components = toJS(this.props.context.components || []).filter(
-      (it) => it.category !== 'storage'
-    );
-
-    return components;
-  }
-
   get templates() {
     return this.props.context.templates || [];
   }
@@ -64,7 +55,6 @@ export default class Plugin extends BaseForm {
           label: '',
           component: (
             <PluginForm
-              components={this.components}
               context={this.props.context}
               updateContext={this.updateContext}
               templates={this.templates}
