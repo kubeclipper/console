@@ -18,7 +18,8 @@ import moment from 'moment';
 import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import { formatCron } from 'utils';
-import { formatFormTemplates } from 'resources/backup';
+import { circleDayofFirstLevel, formatFormTemplates } from 'resources/backup';
+import * as dateOption from 'resources/date';
 
 const { cornBackupStore: store, clusterStore } = rootStore;
 
@@ -59,12 +60,23 @@ class Edit extends ModalAction {
         date: moment(runAt, 'YYYY-MM-DD HH:mm:ss'),
       };
     } else {
-      const { time } = formatCron(schedule);
+      const { time, localsFormat, firstVal } = formatCron(schedule);
+
+      const firstLevelSelected = circleDayofFirstLevel.find(
+        (item) => item.key === localsFormat
+      );
 
       return {
         ...baseDefault,
         time: moment(time, 'HH:mm'),
         maxBackupNum,
+        cycle: {
+          firstLevelSelected,
+          secondLevelSelected: {
+            label: dateOption?.[firstLevelSelected.key]?.[firstVal],
+            value: firstVal,
+          },
+        },
       };
     }
   }
