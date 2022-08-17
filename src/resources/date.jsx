@@ -29,7 +29,7 @@ export const dayOfWeek = {
   4: t('Thursday'),
   5: t('Friday'),
   6: t('Saturday'),
-  7: t('Sunday'),
+  0: t('Sunday'),
 };
 
 export const dayOfWeekOption = [
@@ -59,7 +59,7 @@ export const dayOfWeekOption = [
   },
   {
     label: t('Sunday'),
-    value: 7,
+    value: 0,
   },
 ];
 

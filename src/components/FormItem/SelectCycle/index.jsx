@@ -23,16 +23,16 @@ import {
 const { Option } = Select;
 
 export default function SelectCycle(props) {
-  const { onChange } = props;
+  const { onChange, value } = props;
 
   const [firstLevelSelected, setFirstLevelSelected] = useState(
-    circleDayofFirstLevel[0]
+    value?.firstLevelSelected || circleDayofFirstLevel[0]
   );
   const [secondLevels, setSecondLevels] = useState(
     circleDayofSecondLevel[firstLevelSelected.key]
   );
   const [secondLevelSelected, setSecondLevelSelected] = useState(
-    secondLevels[0]
+    value?.secondLevelSelected || secondLevels[0]
   );
 
   const handleFirstLevelChange = (_, data) => {
@@ -65,7 +65,7 @@ export default function SelectCycle(props) {
       {secondLevels.length ? (
         <Select
           style={{ width: 120, marginLeft: 20 }}
-          value={secondLevelSelected?.value}
+          defaultValue={secondLevelSelected?.label}
           onChange={onSecondLevelChange}
         >
           {secondLevels.map(({ value: _value, label }) => (
