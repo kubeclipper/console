@@ -665,6 +665,7 @@ export function formatCron(cron) {
     return {
       cycle: 'Every Month',
       values: dayOfMonth,
+      firstVal: dayOfMonth[0],
       localsFormat: 'dayOfMonth',
       time,
     };
@@ -673,6 +674,7 @@ export function formatCron(cron) {
     return {
       cycle: 'Every Week',
       values: dayOfWeek,
+      firstVal: dayOfWeek[0],
       localsFormat: 'dayOfWeek',
       time,
     };
@@ -680,7 +682,8 @@ export function formatCron(cron) {
   return {
     cycle: 'Every Day',
     values: [],
-    localsFormat: '',
+    firstVal: null,
+    localsFormat: 'day',
     time,
   };
 }
