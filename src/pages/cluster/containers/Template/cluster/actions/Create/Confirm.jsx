@@ -18,6 +18,7 @@ import { observer } from 'mobx-react';
 import BaseForm from 'components/Form';
 import { arrayInputValue } from 'utils';
 import { get, flatten, isEmpty } from 'lodash';
+import { rootStore } from 'stores';
 
 export class ConfirmStep extends BaseForm {
   init() {}
@@ -48,6 +49,10 @@ export class ConfirmStep extends BaseForm {
 
   get defaultValue() {
     return {};
+  }
+
+  get hasPlugin() {
+    return rootStore.hasPlugin;
   }
 
   notFilled(label, key, func) {
@@ -291,7 +296,7 @@ export class ConfirmStep extends BaseForm {
 
   getStorageItems = () => {
     const { context } = this.props;
-    const storagesTabs = get(context, 'storage.tabs') || [];
+    const storagesTabs = get(context, 'storageTabs') || [];
 
     const result = [];
 
@@ -312,7 +317,7 @@ export class ConfirmStep extends BaseForm {
     // eslint-disable-next-line no-console
     console.log('context', context);
 
-    return [
+    const formItems = [
       [
         {
           name: 'cluster',
@@ -335,7 +340,10 @@ export class ConfirmStep extends BaseForm {
           items: this.getStorageItems(),
         },
       ],
-      [
+    ];
+
+    this.hasPlugin &&
+      formItems.push([
         {
           name: 'plugin',
           type: 'descriptions',
@@ -345,8 +353,9 @@ export class ConfirmStep extends BaseForm {
           },
           items: this.getPluginsItems(),
         },
-      ],
-    ];
+      ]);
+
+    return formItems;
   }
 }
 

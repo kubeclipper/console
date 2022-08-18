@@ -51,8 +51,8 @@ export default class Storage extends Base {
   }
 
   get tags() {
-    const { enableStorage } = this.props.context;
-    return filter(enableStorage, (item) => item.length) || [];
+    const { storageEnable } = this.props.context;
+    return filter(storageEnable, (item) => item.length) || [];
   }
 
   get tagsOption() {
