@@ -350,7 +350,7 @@ export default class BaseStepForm extends React.Component {
   }
 
   render() {
-    const { current } = this.state;
+    const { current, data } = this.state;
     return (
       <div className={classnames(styles.wrapper, this.className)}>
         <Spin spinning={this.isSubmitting}>
@@ -361,6 +361,7 @@ export default class BaseStepForm extends React.Component {
             steps={this.steps}
             handle={this.stepHandle}
             isCreateQuickly={this.isCreateQuickly}
+            useTemplate={data?.useTemplate}
           />
         </Spin>
       </div>
