@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import Tabs from 'components/Tabs';
-import { cloneDeep, uniq, get, set, isMatch } from 'lodash';
+import { cloneDeep, uniq, set, isMatch, isEmpty } from 'lodash';
 import RenderForm from './RenderForm';
 import { Divider, Button } from 'antd';
 import { Context } from './Context';
@@ -32,22 +32,15 @@ const StorageForm = (props) => {
     useTemplate = false,
     context,
     updateContext,
-    onChange,
     store,
   } = props;
   const { storageComponents } = useRootStore();
-
-  const [state, setState] = useReducer(
-    (_state, newState) => ({ ..._state, ...newState }),
-    {
-      current: '',
-      tabs: [],
-      tabIndex: 0,
-      currentForms: [],
-      enableStorage: [],
-    }
-  );
-  const { current, tabs, tabIndex } = state;
+  const {
+    storageCurrent = '',
+    storageTabs = [],
+    storageTabIndex = 0,
+    availableComponents,
+  } = context;
 
   const checkScNameRepeat = (rule, value, callback) => {
     const scNames = uniq(store.scNames);
@@ -60,6 +53,8 @@ const StorageForm = (props) => {
   };
 
   useEffect(() => {
+    if (!isEmpty(storageTabs)) return;
+
     const newTabs = cloneDeep(storageComponents).map((item) => {
       const { name } = item;
       const { properties = {} } = item.schema;
@@ -100,39 +95,36 @@ const StorageForm = (props) => {
 
       // cluster template
       const formData = [];
-      if (context.availableComponents) {
-        context.availableComponents.forEach((plugin) => {
+      if (availableComponents) {
+        availableComponents.forEach((plugin) => {
           if (plugin.name === name) {
             formData.push({ ...plugin.config, enable: true });
           }
         });
       }
+
+      const schemas = Array(formData.length || 1).fill(item.schema);
+
       return {
         ...item,
         state: 'Not Enabled',
-        schemas: [item.schema],
-        isAddMore: item.name === 'nfs-provisioner',
+        schemas,
+        isAddMore: !item.unique,
         formData,
         formInstances: [],
       };
     });
 
-    if (context.storage) {
-      setState(context.storage);
-    } else {
-      const data = {
-        ...state,
-        tabs: newTabs,
-        current: storageComponents[0]?.name,
-      };
-      setState(data);
-    }
+    updateContext({
+      storageCurrent: storageComponents[0]?.name,
+      storageTabs: newTabs,
+    });
   }, [storageComponents]);
 
   const handleTabChange = async (tab, index) => {
     let isError = false;
-    const currentForms = tabs.find(
-      (item) => item.name === current
+    const currentForms = storageTabs.find(
+      (item) => item.name === storageCurrent
     ).formInstances;
 
     for (const item of currentForms) {
@@ -143,7 +135,10 @@ const StorageForm = (props) => {
       }
     }
     if (!isError) {
-      setState({ ...state, current: tab, tabIndex: index });
+      updateContext({
+        storageCurrent: tab,
+        storageTabIndex: index,
+      });
     }
   };
 
@@ -163,7 +158,9 @@ const StorageForm = (props) => {
 
     if (typeof formData === 'string') {
       if (formData === 'notUseTemplate') {
-        const { baseFormData } = tabs.find((item) => item.name === current);
+        const { baseFormData } = storageTabs.find(
+          (item) => item.name === storageCurrent
+        );
         formInstance.setValues({
           ...baseFormData,
           pluginTemplate: 'notUseTemplate',
@@ -181,10 +178,10 @@ const StorageForm = (props) => {
       }
     }
 
-    let enableStorage = [];
+    const enableStorage = [];
     const allScName = [];
 
-    const _tabs = tabs.map((item) => {
+    const _tabs = storageTabs.map((item) => {
       const _item = { ...item };
 
       if (item.name === name) {
@@ -206,41 +203,30 @@ const StorageForm = (props) => {
       return _item;
     });
 
-    enableStorage = uniq(enableStorage);
-    const endState = {
-      ...state,
-      tabs: _tabs,
-      enableStorage,
-      currentForms: _tabs.find((item) => item.name === name).formInstances,
-    };
-
     store.scNames = allScName;
-    setState(endState);
-    onChange(endState);
 
     updateContext({
-      enableStorage,
-      storage: endState,
+      storageTabs: _tabs,
+      storageEnable: uniq(enableStorage),
     });
   };
 
   const handleAdd = async () => {
-    const _tabs = tabs.map((item) => {
-      if (item.name === current) {
+    const _tabs = storageTabs.map((item) => {
+      if (item.name === storageCurrent) {
         item.schemas.push(item.schema);
       }
       return item;
     });
 
-    setState({
-      ...state,
-      tabs: _tabs,
+    updateContext({
+      storageTabs: _tabs,
     });
   };
 
   const handleRemove = async () => {
-    const _tabs = tabs.map((item) => {
-      if (item.name === current) {
+    const _tabs = storageTabs.map((item) => {
+      if (item.name === storageCurrent) {
         item.schemas.pop();
         item.formData.pop();
         item.formInstances.pop();
@@ -248,24 +234,27 @@ const StorageForm = (props) => {
       return item;
     });
 
-    setState({
-      ...state,
-      tabs: _tabs,
+    updateContext({
+      storageTabs: _tabs,
     });
   };
 
-  let isShowAddMore = false;
-  get(state, 'currentForms', []).forEach((it) => {
-    if (it.formData.enable) {
-      isShowAddMore = true;
-    }
-  });
+  const isShowAddMore = storageTabs[storageTabIndex]?.formData.some(
+    ({ enable }) => enable
+  );
 
   return (
     <Context.Provider value={{ context, updateContext }}>
-      <Tabs tabs={tabs} current={current} onChange={handleTabChange}>
-        {tabs.map((item, index) => (
-          <div key={index} style={{ display: item.name !== current && 'none' }}>
+      <Tabs
+        tabs={storageTabs}
+        current={storageCurrent}
+        onChange={handleTabChange}
+      >
+        {storageTabs.map((item, index) => (
+          <div
+            key={index}
+            style={{ display: item.name !== storageCurrent && 'none' }}
+          >
             {item.schemas.map((_item, _index) => (
               <div key={_index} className={styles.item}>
                 {_index > 0 && (
@@ -285,14 +274,12 @@ const StorageForm = (props) => {
                     handleFRChange(name, formInstance, formData, _index)
                   }
                 />
-                {tabs[tabIndex]?.isAddMore && isShowAddMore && (
-                  <Divider dashed />
-                )}
+                {item.isAddMore && isShowAddMore && <Divider dashed />}
               </div>
             ))}
           </div>
         ))}
-        {tabs[tabIndex]?.isAddMore && isShowAddMore && (
+        {storageTabs[storageTabIndex]?.isAddMore && isShowAddMore && (
           <Button onClick={handleAdd}>{t('Add More')}</Button>
         )}
       </Tabs>

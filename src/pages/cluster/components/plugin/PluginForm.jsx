@@ -34,7 +34,7 @@ const PluginForm = (props) => {
     value,
     onChange,
   } = props;
-  const enabledStorageClass = get(context, 'storage.enableStorage') || [];
+  const enabledStorageClass = get(context, 'storageEnable') || [];
 
   const [state, setState] = useReducer(
     (_state, newState) => ({ ..._state, ...newState }),

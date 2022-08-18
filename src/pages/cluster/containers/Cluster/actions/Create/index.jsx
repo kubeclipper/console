@@ -121,9 +121,10 @@ export default class Create extends StepAction {
 
   getRegistry = (registry) => flatten(arrayInputValue(registry));
 
-  getComponents = ({ storage = {}, plugins = {}, defaultStorage = '' }) => {
+  getComponents = (values) => {
+    const { plugins = {}, defaultStorage = '' } = values;
     const enabledComponents = [];
-    get(storage, 'tabs', []).forEach(({ name, formData }) => {
+    get(values, 'storageTabs', []).forEach(({ name, formData }) => {
       (formData || []).forEach((item) => {
         if (item.enable) {
           const s = {
