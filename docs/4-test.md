@@ -1,20 +1,4 @@
-<!--
- * Copyright (C) 2021 99cloud.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * You should have received a copy of the Apache License.
- * If not, see <http://www.apache.org/licenses/LICENSE-2.0>.
--->
-
-# 前端测试方案
+# 前端 E2E 测试和单元测试方案
 
 我们提供了两种类型的测试
 
@@ -27,9 +11,9 @@
   - 侧重于基础函数测试
   - 使用 `Jest` 框架, 参考：[Jest](https://jestjs.io/docs/getting-started)
 
-# E2E 测试
+## E2E 测试
 
-## 搭建 E2E 测试环境
+### 搭建 E2E 测试环境
 
 - node.js 环境
 
@@ -92,7 +76,7 @@ yarn start
   - 修改 local_config.yaml 中的相应变量
   - 对于变量的取值，优先级为：local_config.yaml > config.yaml
 
-## 命令行运行 E2E
+### 命令行运行 E2E
 
 ```shell
 yarn test:e2e
@@ -100,7 +84,7 @@ yarn test:e2e
 
 ![控制台](images/e2e_run.png)
 
-## GUI 运行 E2E
+### GUI 运行 E2E
 
 ```shell
 yarn test:e2e:open
@@ -112,13 +96,13 @@ Cypress 提供了 GUI
 
 ![work](images/e2e_gui_work.png)
 
-## E2E 测试结果
+### E2E 测试结果
 
 测试运行结束后，访问`cypress/report/merge-report.html`即可查看
 
 ![结果](images/e2e_report.png)
 
-## E2E 代码覆盖率测试结果
+### E2E 代码覆盖率测试结果
 
 > 注意：代码覆盖率，需要 E2E 访问的`baseUrl`对应的前端包，是具有可检测代码覆盖率版本的`dist`包
 
@@ -172,11 +156,11 @@ server {
 }
 ```
 
-# 单元测试
+## 单元测试
 
 > 详细配置在 根目录下 `jest.config.js`, 其他配置可参考官网文档
 
-## 单元测试使用
+### 单元测试使用
 
 终端运行 `yarn run test:unit`, 会执行目录下测试文件，并进入监听模式 ![Coverage](images/unit_command_line.jpg)
 
@@ -197,7 +181,7 @@ Watch Usage
 - press Enter to trigger a test run
 ```
 
-## 单元测试覆盖率
+### 单元测试覆盖率
 
 终端运行 `yarn run test:unit:coverage`, 会匹配项目下
 
