@@ -18,9 +18,9 @@ FROM node:12-alpine AS builder
 COPY ./ /root/kubeclipper-console/
 WORKDIR /root/kubeclipper-console
 RUN apk add python2 make g++ \
-    && yarn config set registry https://registry.npm.taobao.org/ \
-    && yarn install \
-    && yarn run build
+  && yarn config set registry https://registry.npm.taobao.org/ \
+  && yarn install \
+  && yarn run build
 
 # Step2. Put into nginx
 FROM nginx:1.21.4-alpine

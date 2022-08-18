@@ -2,7 +2,7 @@
 # How to build
 ############################
 # In the same directory as package.json
-# $ DOCKER_BUILDKIT=1 docker build -t kubeclipper-console -f "docker/prod.dockerfile" ./
+# $ docker build -t kubeclipper-console .
 
 ############################
 # How to run
@@ -13,18 +13,17 @@
 # $ docker run -d --name kubeclipper-console --restart=always --net=host -v /var/log/nginx:/var/log/nginx -v your_nginx_file:/etc/nginx/nginx.conf kubeclipper-console:latest
 
 # Setp1. Build dist
-FROM caas.registry.com/library/node:12-alpine AS builder
+FROM node:12-alpine AS builder
 
 COPY ./ /root/kubeclipper-console/
 WORKDIR /root/kubeclipper-console
-RUN apk add python2 make g++
-RUN yarn config set registry https://registry.npm.taobao.org/
-RUN yarn config set network-timeout 300000
-RUN yarn install
-RUN yarn run build
+RUN apk add python2 make g++ git \
+  && yarn config set registry https://registry.npmmirror.com/ \
+  && yarn install \
+  && yarn run build
 
 # Step2. Put into nginx
-FROM caas.registry.com/library/nginx:1.21.4-alpine
+FROM nginx:1.21.4-alpine
 
 ARG REPO_URL
 ARG BRANCH
