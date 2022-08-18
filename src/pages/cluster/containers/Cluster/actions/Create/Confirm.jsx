@@ -311,7 +311,7 @@ export class ConfirmStep extends BaseForm {
 
   getStorageItems = () => {
     const { context } = this.props;
-    const storagesTabs = get(context, 'storage.tabs') || [];
+    const storagesTabs = get(context, 'storageTabs') || [];
 
     const result = [];
 

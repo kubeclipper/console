@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Button } from 'antd';
 import styles from './index.less';
 import classnames from 'classnames';
@@ -23,7 +23,8 @@ export default function Footer(props) {
   const {
     current,
     steps,
-    isCreateQuickly = false,
+    isCreateQuickly,
+    useTemplate,
     handle: {
       onClickCancel,
       onClickPrev,
@@ -77,7 +78,12 @@ export default function Footer(props) {
   const CreateQuickly = () => {
     const isFirstStep = current === 0;
     const isEndStep = current === steps.length - 1;
-    if (isCreateQuickly && !isFirstStep && !isEndStep) {
+
+    const useTemplateQuickly = isCreateQuickly && useTemplate && !isEndStep;
+    const uselessTemplateQuickly =
+      isCreateQuickly && !useTemplate && !isFirstStep && !isEndStep;
+
+    if (useTemplateQuickly || uselessTemplateQuickly) {
       return (
         <Button type="primary" onClick={onClickCreateQuickly}>
           {t('Create Quickly')}
@@ -87,19 +93,16 @@ export default function Footer(props) {
     return null;
   };
 
-  return useMemo(
-    () => (
-      <div className={classnames(styles.footer, 'step-footer')}>
-        <div className={classnames(styles['footer-left'])}>{}</div>
-        <div className={classnames(styles.btns)}>
-          <Cancel />
-          <PrevBtn />
-          <NextBtn />
-          <Confirm />
-          <CreateQuickly />
-        </div>
+  return (
+    <div className={classnames(styles.footer, 'step-footer')}>
+      <div className={classnames(styles['footer-left'])}>{}</div>
+      <div className={classnames(styles.btns)}>
+        <Cancel />
+        <PrevBtn />
+        <NextBtn />
+        <Confirm />
+        <CreateQuickly />
       </div>
-    ),
-    [current, isCreateQuickly]
+    </div>
   );
 }
