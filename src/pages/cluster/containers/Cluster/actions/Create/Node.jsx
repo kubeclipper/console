@@ -30,18 +30,23 @@ const { nodeStore, regionStore } = rootStore;
 
 @observer
 export default class Node extends BaseForm {
-  init() {
+  async init() {
     this.nodeStore = nodeStore;
     this.regionStore = regionStore;
 
-    this.getRegions();
-    this.fetchNodeList({
-      'topology.kubeclipper.io/region': this.defaultValue.region,
+    await this.getRegions();
+    await this.fetchNodeList({
+      'topology.kubeclipper.io/region': this.formDefaultValue.region,
     });
   }
 
   async getRegions() {
-    await this.regionStore.fetchList({ limit: -1 });
+    if (this.formDefaultValue.region) return;
+
+    const regionList = await this.regionStore.fetchList({ limit: -1 });
+    this.updateContext({
+      region: regionList[0]?.name,
+    });
     this.updateDefaultValue();
   }
 
@@ -59,12 +64,6 @@ export default class Node extends BaseForm {
 
   get isStep() {
     return true;
-  }
-
-  get defaultValue() {
-    return {
-      region: 'default',
-    };
   }
 
   getTaintsDefaultValue(nodes) {
