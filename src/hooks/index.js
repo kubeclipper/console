@@ -25,6 +25,7 @@ import useMountMergeState from './useMountMergeState';
 import useMergedState from './useMergedState';
 import useRefFunction from './useRefFunction';
 import useQuery from './useQuery';
+import useModal from './useModal';
 
 export {
   useDidUpdateEffect,
@@ -38,4 +39,5 @@ export {
   useMergedState,
   useRefFunction,
   useQuery,
+  useModal,
 };

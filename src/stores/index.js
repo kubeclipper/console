@@ -366,6 +366,23 @@ class RootStore {
 
     return hasPlugin;
   }
+
+  sendMsgCode(params) {
+    return request.post('oauth/verification-code', params, {
+      checkToken: false,
+    });
+  }
+
+  async verifyLogin(params) {
+    const resp = await request.post('oauth/token', params, {
+      checkToken: false,
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    return this.handleLoginResp(resp);
+  }
 }
 /* Store end */
 
