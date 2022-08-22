@@ -161,7 +161,8 @@ class RootStore {
       throw new Error(resp.message);
     }
 
-    const { access_token, refresh_token, expires_in } = resp || {};
+    const { access_token, refresh_token, expires_in, refresh_expires_in } =
+      resp || {};
 
     const { username } = jwtDecode(access_token);
 
@@ -169,21 +170,61 @@ class RootStore {
       username,
     };
 
-    // eslint-disable-next-line no-mixed-operators
     const expire = Number(expires_in) * 1000;
+    const refreshExpire = Number(refresh_expires_in) * 1000;
     const token = {
       token: access_token,
       refreshToken: refresh_token,
-      expire,
+      // expire,
       expires: new Date().getTime() + expire,
     };
 
-    setLocalStorageItem('token', token, expire);
+    setLocalStorageItem('token', token, refreshExpire);
 
     return {
       username,
       ...token,
     };
+  };
+
+  /**
+   * refresh token
+   * @param {*} params
+   * @returns
+   */
+  getNewToken = async (params) => {
+    const data = {
+      grant_type: 'refresh_token',
+      refresh_token: params?.refreshToken,
+    };
+
+    let newToken = {};
+    const resp = await request.post('oauth/token', data, {
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      withoutToken: true,
+      checkToken: false,
+    });
+
+    const { access_token, refresh_token, expires_in, refresh_expires_in } =
+      resp || {};
+
+    if (!access_token) {
+      throw new Error(resp?.message);
+    }
+
+    const expire = Number(expires_in) * 1000;
+    const refreshExpire = Number(refresh_expires_in) * 1000;
+    newToken = {
+      token: access_token,
+      refreshToken: refresh_token,
+      // expire,
+      expires: new Date().getTime() + expire,
+      refreshExpire,
+    };
+
+    return newToken;
   };
 
   /**
@@ -286,44 +327,6 @@ class RootStore {
   updateOpenKeys(newKeys) {
     this.openKeys = newKeys;
   }
-
-  /**
-   * refresh token
-   * @param {*} params
-   * @returns
-   */
-  getNewToken = async (params) => {
-    const data = {
-      grant_type: 'refresh_token',
-      refresh_token: params?.refreshToken,
-    };
-
-    let newToken = {};
-    const resp = await request.post('oauth/token', data, {
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-      withoutToken: true,
-      checkToken: false,
-    });
-
-    const { access_token, refresh_token, expires_in } = resp || {};
-
-    if (!access_token) {
-      throw new Error(resp?.message);
-    }
-
-    const expire = Number(expires_in) * 1000;
-    newToken = {
-      token: access_token,
-      refreshToken: refresh_token,
-      // eslint-disable-next-line no-mixed-operators
-      expire,
-      expires: new Date().getTime() + expire,
-    };
-
-    return newToken;
-  };
 
   async getConfigs() {
     const res = await request.get('/api/config.kubeclipper.io/v1/configz');

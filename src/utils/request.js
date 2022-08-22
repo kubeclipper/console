@@ -48,8 +48,19 @@ module.exports = methods.reduce(
 );
 
 async function checkToken(callback) {
-  const token = getLocalStorageItem('token') || {};
+  const token = getLocalStorageItem('token') || '';
+
+  if (!token) {
+    const error = {
+      status: 401,
+      reason: 'the token has expired, please login again',
+    };
+    window.onunhandledrejection(error);
+    return;
+  }
+
   const { expires = '' } = token;
+
   if (expires) {
     const current = new Date().getTime();
 
@@ -58,7 +69,7 @@ async function checkToken(callback) {
     if (expires <= current + TIME_DELAY) {
       const resp = await rootStore.getNewToken(token);
 
-      setLocalStorageItem('token', resp, resp.expire);
+      setLocalStorageItem('token', resp, resp.refreshExpire);
 
       return callback();
     }
