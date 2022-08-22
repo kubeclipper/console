@@ -116,7 +116,9 @@ function BaseList(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fetchData = (locationParams, _params) => {
+  const fetchData = (locationParams, _params = {}) => {
+    if (!isRenderFooter) _params.limit = -1;
+
     const _locationParams = omit(locationParams, ['tab']);
     if (propsGetData) {
       propsGetData({ ..._locationParams, ..._params });
@@ -124,7 +126,7 @@ function BaseList(props) {
     }
 
     let dataParams = { ..._locationParams, ...propsParams };
-    if (_params) {
+    if (!isEmpty(_params)) {
       dataParams = { ...dataParams, ..._params };
     }
 

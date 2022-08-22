@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isEqual from 'react-fast-compare';
 import { toJS } from 'mobx';
-import { Observer, useObserver } from 'mobx-react';
+import { Observer, observer } from 'mobx-react';
 import { get, isArray, isString, isEmpty, includes, omit } from 'lodash';
 import { Button, Table, Input, Typography, Tooltip, Dropdown } from 'antd';
 import MagicInput from 'components/MagicInput';
@@ -41,8 +41,8 @@ import Download from '../HeaderIcons/Download';
 import styles from './index.less';
 
 const ORDER_MAP = {
-  ascend: 'true',
-  descend: 'false',
+  ascend: true,
+  descend: false,
 };
 
 /**
@@ -358,16 +358,19 @@ const BaseTable = (props) => {
     });
   };
 
-  const CustomTable = () => {
+  const CustomTable = observer(() => {
     const expandableProps = expandable.rowExpandable ? { expandable } : {};
 
     const handleChange = (_, __, sorter) => {
-      onFetch({
-        limit: list.limit,
-        page: list.page,
-        current: list.page,
-        reverse: ORDER_MAP[sorter.order],
-      });
+      onFetch(
+        {
+          limit: list.limit,
+          page: list.page,
+          current: list.page,
+          reverse: ORDER_MAP[sorter.order],
+        },
+        true
+      );
     };
 
     const getColumns = () => {
@@ -501,6 +504,7 @@ const BaseTable = (props) => {
           const sorters = ['createTime'];
           if (sorters.includes(dataIndex)) {
             newColumn.sorter = true;
+            newColumn.defaultSortOrder = 'descend';
           }
 
           return newColumn;
@@ -577,7 +581,7 @@ const BaseTable = (props) => {
 
     props.checkRefresh(list.data);
 
-    return useObserver(() => (
+    return (
       <Table
         className={classnames(styles.table, 'sl-table', className)}
         rowKey={rowKey}
@@ -595,8 +599,8 @@ const BaseTable = (props) => {
           isRenderFooter ? renderFooter(currentPageData) : null
         }
       />
-    ));
-  };
+    );
+  });
 
   return (
     <>
