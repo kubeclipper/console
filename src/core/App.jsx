@@ -22,6 +22,7 @@ import 'styles/main.less';
 import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader/root';
 import { RootStoreProvider } from 'stores';
+import ErrorBoundary from 'components/ErrorBoundary';
 
 import routes from './routes';
 import i18n from './i18n';
@@ -46,9 +47,11 @@ function App({ rootStore, history }) {
           <Helmet>
             <title>{global_config.title}</title>
           </Helmet>
-          <RootStoreProvider>
-            <Router history={history}>{renderRoutes(routes)}</Router>
-          </RootStoreProvider>
+          <ErrorBoundary>
+            <RootStoreProvider>
+              <Router history={history}>{renderRoutes(routes)}</Router>
+            </RootStoreProvider>
+          </ErrorBoundary>
         </>
       </Provider>
     )
