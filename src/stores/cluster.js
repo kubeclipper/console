@@ -92,7 +92,7 @@ export default class ClusterStore extends BaseStore {
           online: true,
         }
       );
-      const onlineData = get(onlineResult, 'items') || [];
+      const onlineData = get(onlineResult, 'rules') || [];
       this.onlineVersion = onlineData || [];
     } catch (e) {}
   }
@@ -106,7 +106,7 @@ export default class ClusterStore extends BaseStore {
           online: false,
         }
       );
-      const offlineData = get(offlineResult, 'items') || [];
+      const offlineData = get(offlineResult, 'rules') || [];
       this.offlineVersion = offlineData || [];
     } catch (e) {}
   }

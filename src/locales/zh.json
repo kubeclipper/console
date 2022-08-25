@@ -539,5 +539,6 @@
   "To make sure it works for you, please do a security verification first.": "为了确保为您本人操作，请先进行安全验证。",
   "Send VerifyCode": "发送验证码",
   "Please input verifyCode": "请输入验证码",
-  "Verification Mode": "验证方式"
+  "Verification Mode": "验证方式",
+  "Calico Version": "Calico 版本"
 }

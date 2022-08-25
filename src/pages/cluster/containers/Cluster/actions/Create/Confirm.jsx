@@ -102,13 +102,7 @@ export class ConfirmStep extends BaseForm {
 
   containerRuntimeItem() {
     const {
-      context: {
-        offline,
-        containerRuntimeType,
-        dockerVersion,
-        containerdVersionOnline,
-        containerdVersionOffline,
-      },
+      context: { containerRuntimeType, dockerVersion, containerdVersion },
     } = this.props;
     const isDocker = containerRuntimeType === 'docker';
 
@@ -129,7 +123,7 @@ export class ConfirmStep extends BaseForm {
     return [
       {
         label: t('Containerd Version'),
-        value: offline ? containerdVersionOffline : containerdVersionOnline,
+        value: containerdVersion,
       },
       ...this.notFilled(t('Containerd Data Path'), 'containerdRootDir'),
       ...this.notFilled(
@@ -228,8 +222,7 @@ export class ConfirmStep extends BaseForm {
     const { context } = this.props;
     const {
       offline,
-      kubernetesVersionOnline,
-      kubernetesVersionOffline,
+      kubernetesVersion,
       containerRuntimeType,
       dnsDomain,
       cniType,
@@ -250,7 +243,7 @@ export class ConfirmStep extends BaseForm {
       ...this.notFilled(t('LocalRegistry'), 'localRegistry'),
       {
         label: t('K8S Version'),
-        value: offline ? kubernetesVersionOffline : kubernetesVersionOnline,
+        value: kubernetesVersion,
       },
       ...this.notFilled(t('{name} Data Dir', { name: 'ETCD' }), 'etcdDataDir'),
       ...this.notFilled(

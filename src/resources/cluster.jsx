@@ -24,7 +24,6 @@ export const clusterParams = {
   etcdDataDir: '/var/lib/etcd',
   kubectlDataDir: '/var/lib/kubelet',
   containerRuntimeType: 'containerd',
-  dockerVersion: '19.03.12',
   dockerRootDir: '/var/lib/docker',
   containerdRootDir: '/var/lib/containerd',
   // 网络

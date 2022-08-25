@@ -167,8 +167,6 @@ const ClusterTemplateMapper = (item) => {
   );
 
   const kubernetesVersion = get(config, 'kubernetesVersion');
-  const kubernetesVersionOnline = !offline && kubernetesVersion;
-  const kubernetesVersionOffline = offline && kubernetesVersion;
 
   const containerRuntimeVersion = get(config, 'containerRuntime.version');
   const containerRuntimeType = get(config, 'containerRuntime.type');
@@ -182,15 +180,8 @@ const ClusterTemplateMapper = (item) => {
     localRegistry: get(config, 'localRegistry'),
     workerNodeVip: get(config, 'workerNodeVip'),
     kubernetesVersion,
-    kubernetesVersionOnline,
-    kubernetesVersionOffline,
     containerRuntimeType,
     [`${containerRuntimeType}Version`]: containerRuntimeVersion,
-    [`${containerRuntimeType}VersionOnline`]:
-      !offline && containerRuntimeVersion,
-    [`${containerRuntimeType}VersionOffline`]:
-      offline && containerRuntimeVersion,
-
     [`${containerRuntimeType}RootDir`]: get(config, 'containerRuntime.rootDir'),
     [`${containerRuntimeType}InsecureRegistry`]: get(
       config,
@@ -218,6 +209,7 @@ const ClusterTemplateMapper = (item) => {
     kubectlDataDir: get(config, 'kubelet.rootDir'),
     // cni
     cniType: get(config, 'cni.type'),
+    calicoVersion: get(config, 'cni.version'),
     mtu: get(config, 'cni.calico.mtu'),
     IPv4AutoDetection: get(config, 'cni.calico.IPv4AutoDetection'),
     IPv6AutoDetection: get(config, 'cni.calico.IPv6AutoDetection'),

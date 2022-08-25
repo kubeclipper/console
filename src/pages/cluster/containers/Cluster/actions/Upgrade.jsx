@@ -32,16 +32,27 @@ export default class Upgrade extends ModalAction {
     return t('Cluster Upgrade');
   }
 
-  init() {
+  async init() {
     this.store = rootStore.clusterStore;
     this.templateStore = rootStore.templateStore;
-    this.getVersion();
-    this.getCommonRegistry();
+    await this.getVersion();
+    await this.getCommonRegistry();
+    await this.initDefaultValue();
   }
 
+  initDefaultValue = async () => {
+    const { offline, localRegistry } = this.item;
+    this.setState({
+      offline,
+      targetVersions: this.getMetaVersion(offline),
+      localRegistry,
+    });
+    this.updateDefaultValue();
+  };
+
   get defaultValue() {
-    const { offline, localRegistry = '' } = this.item;
-    const versions = this.getMetaVersion('k8s');
+    const { offline, localRegistry = '' } = this.state;
+    const versions = this.getMetaVersion(offline);
     return {
       offline,
       version: versions[0]?.value,
@@ -67,9 +78,19 @@ export default class Upgrade extends ModalAction {
     };
   }
 
+  handleImgType = async (offline) => {
+    const versions = this.getMetaVersion(offline);
+
+    await this.setState({
+      offline,
+      targetVersions: versions,
+      version: versions?.[0]?.value,
+    });
+    this.updateDefaultValue();
+  };
+
   async getVersion() {
     await this.store.fetchVersion({ limit: -1 });
-    this.updateDefaultValue();
   }
 
   async getCommonRegistry() {
@@ -87,14 +108,11 @@ export default class Upgrade extends ModalAction {
 
   static allowed = (item) => Promise.resolve(this.isStatusRunning(item));
 
-  getMetaVersion(type) {
-    const versionTitle = this.isOffLine ? 'offlineVersion' : 'onlineVersion';
+  getMetaVersion(offline) {
+    const versionTitle = offline ? 'offlineVersion' : 'onlineVersion';
     const { kubernetesVersion: currentVersion } = this.item;
 
-    let data = toJS(this.store[versionTitle]).filter(
-      ({ name }) => name === type
-    );
-    data = data.filter(
+    const data = this.store[versionTitle].filter(
       ({ version }) => versionCompare(currentVersion, version) < 0
     );
     return (data || []).map(({ version }) => ({
@@ -152,12 +170,13 @@ export default class Upgrade extends ModalAction {
           },
         ],
         tip: t('TIP_CLUSTER_IMAGE_TYPE_DESC'),
+        onChange: this.handleImgType,
       },
       {
         name: 'version',
         label: t('Target Version'),
         type: this.isOffLine ? 'select' : 'select-input',
-        options: this.getMetaVersion('k8s'),
+        options: this.state.targetVersions,
         rules: [
           {
             pattern: /^v\d+(?:\.\d+){2}$/,
