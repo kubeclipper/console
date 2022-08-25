@@ -21,12 +21,14 @@ import { useRootStore } from 'stores';
 import { setLocalStorageItem } from 'utils/localStorage';
 import Notify from 'components/Notify';
 import { defaultRoute } from 'utils';
+import { useModal } from 'hooks';
 import OAuth from './oauth';
-
+import Verification from './Verification';
 import styles from './index.less';
 
 export default function Login(props) {
   const rootStore = useRootStore();
+  const [modal, ModalDOM] = useModal();
 
   const [isSubmmiting, setIsSubmmiting] = useState(false);
 
@@ -40,27 +42,66 @@ export default function Login(props) {
     return defaultRoute(globalRules);
   };
 
+  const handleLoginResponse = async (res) => {
+    setLocalStorageItem('user', res, res.expire);
+    setLocalStorageItem('isExternal', false);
+    setIsSubmmiting(false);
+
+    const currentUser = await rootStore.getCurrentUser({
+      username: res.username,
+    });
+
+    if (currentUser) {
+      const { globalRules = {} } = currentUser;
+      rootStore.routing.push(nextPage(globalRules));
+    }
+  };
+
   const onFinish = async (values) => {
     setIsSubmmiting(true);
 
     try {
-      const user = await rootStore.login({ params: values });
-      if (user) {
-        setLocalStorageItem('user', user, user.expire);
-        setLocalStorageItem('isExternal', false);
-        setIsSubmmiting(false);
+      const res = await rootStore.login({ params: values });
 
-        const currentUser = await rootStore.getCurrentUser({
-          username: user.username,
-        });
-
-        if (currentUser) {
-          const { globalRules = {} } = currentUser;
-
-          rootStore.routing.push(nextPage(globalRules));
-        }
+      if (res) {
+        handleLoginResponse(res);
       }
     } catch (error) {
+      if (error.status === 428) {
+        const { providers } = error.data;
+        const detail = providers?.[0];
+
+        const onOk = async ({ code }) => {
+          const { type, token } = detail;
+          const params = {
+            code,
+            mfa_provider: type,
+            token,
+            grant_type: 'mfa',
+          };
+
+          try {
+            const res = await rootStore.verifyLogin(params);
+            if (res) {
+              handleLoginResponse(res);
+              modal.close();
+            }
+            // eslint-disable-next-line no-shadow
+          } catch (error) {
+            Notify.error(error?.reason);
+          }
+        };
+
+        modal.open({
+          title: t('Safety Verification'),
+          width: 360,
+          initialValues: { name: detail.value },
+          children: <Verification detail={detail} />,
+          bodyStyle: { padding: '24px 50px' },
+          onOk,
+        });
+        return;
+      }
       // eslint-disable-next-line no-console
       console.log('error', error);
       setIsSubmmiting(false);
@@ -110,6 +151,7 @@ export default function Login(props) {
           {`${t('Welcome Login')} ${global_config.title}`}
         </div>
         {renderForm()}
+        {ModalDOM}
         <OAuth />
       </div>
       <div

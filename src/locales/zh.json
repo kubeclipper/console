@@ -534,5 +534,10 @@
   "proxyMode": "代理模式",
   "Audit Log": "审计日志",
   "delete": "删除",
-  "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.": "{name} {action}操作已经执行，请等待操作完成或者手动刷新页面展示最终结果。"
+  "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.": "{name} {action}操作已经执行，请等待操作完成或者手动刷新页面展示最终结果。",
+  "Safety Verification": "安全验证",
+  "To make sure it works for you, please do a security verification first.": "为了确保为您本人操作，请先进行安全验证。",
+  "Send VerifyCode": "发送验证码",
+  "Please input verifyCode": "请输入验证码",
+  "Verification Mode": "验证方式"
 }

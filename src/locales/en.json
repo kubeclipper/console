@@ -534,5 +534,10 @@
   "proxyMode": "proxyMode",
   "Audit Log": "Audit Log",
   "delete": "delete",
-  "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.": "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result."
+  "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.": "The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.",
+  "Safety Verification": "Safety Verification",
+  "To make sure it works for you, please do a security verification first.": "To make sure it works for you, please do a security verification first.",
+  "Send VerifyCode": "Send VerifyCode",
+  "Please input verifyCode": "Please input verifyCode",
+  "Verification Mode": "Verification Mode"
 }
