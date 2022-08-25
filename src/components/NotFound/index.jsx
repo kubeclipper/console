@@ -16,28 +16,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import emptyCard from 'asset/image/empty-card.svg';
+import { Link } from 'react-router-dom';
+import i18n from 'core/i18n';
 
 import styles from './index.less';
 
-function NotFound({ title, link }) {
+const { t } = i18n;
+
+function NotFound({ title, link, codeError }) {
+  let h = '';
+  if (codeError) {
+    h = 'Error';
+  } else {
+    h = 'Resource Not Found';
+  }
+
+  const des = t('Unable to get {title} ', {
+    title,
+  });
+
+  const p = (
+    <p>
+      {des}
+      {link && <Link to={link}>{t('Home page')}</Link>}
+    </p>
+  );
+
   return (
     <div className={styles.wrapper}>
       <img className={styles.image} src={emptyCard} alt="" />
       <div className={styles.text}>
-        <div className="h1">Not Found</div>
-        <p>{t.html('DETAIL_NOT_FOUND_DESC', { title, link })}</p>
+        <div className="h1">{h}</div>
+        {p}
       </div>
     </div>
   );
 }
 
 NotFound.propTypes = {
-  title: PropTypes.string,
   link: PropTypes.string,
 };
 
 NotFound.defaultProps = {
-  title: '',
   link: '/',
 };
 

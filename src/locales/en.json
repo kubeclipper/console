@@ -34,7 +34,6 @@
   "Create Time": "Create Time",
   "Create User": "Create User",
   "Created At": "Created At",
-  "DETAIL_NOT_FOUND_DESC": "The Resource Not Exist",
   "Default Gateway": "Default Gateway",
   "Delete": "Delete",
   "Delete Cluster": "Delete Cluster",
@@ -540,5 +539,9 @@
   "Send VerifyCode": "Send VerifyCode",
   "Please input verifyCode": "Please input verifyCode",
   "Verification Mode": "Verification Mode",
-  "Calico Version": "Calico Version"
+  "Calico Version": "Calico Version",
+  "data": "data",
+  "Home page": "Home page",
+  "form": "form",
+  "Unable to get {title} ": "Unable to get {title} "
 }
