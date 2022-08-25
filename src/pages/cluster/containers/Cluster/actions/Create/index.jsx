@@ -103,16 +103,11 @@ export default class Create extends StepAction {
     this.templatesStore = rootStore.templatesStore;
 
     this.fetchTemplates();
-    this.fetchVersion();
   }
 
   async fetchTemplates() {
     const templates = await this.templatesStore.fetchAll();
     this.updateData({ templates });
-  }
-
-  async fetchVersion() {
-    await this.store.fetchVersion({ limit: -1 });
   }
 
   get successText() {
@@ -171,8 +166,7 @@ export default class Create extends StepAction {
       // image
       offline,
       localRegistry,
-      kubernetesVersionOffline,
-      kubernetesVersionOnline,
+      kubernetesVersion,
       certSANs,
       etcdDataDir,
       kubectlDataDir,
@@ -183,8 +177,7 @@ export default class Create extends StepAction {
       dockerVersion,
       containerdInsecureRegistry,
       containerdRootDir,
-      containerdVersionOnline,
-      containerdVersionOffline,
+      containerdVersion,
       backupPoint,
       // network
       dnsDomain,
@@ -193,6 +186,7 @@ export default class Create extends StepAction {
       IPVersion,
       calicoMode,
       cniType,
+      calicoVersion,
       proxyMode,
       podIPv4CIDR,
       podIPv6CIDR,
@@ -242,9 +236,7 @@ export default class Create extends StepAction {
       masters: formatNodesWithLabel(values).master,
       workers: formatNodesWithLabel(values).worker || [],
       localRegistry,
-      kubernetesVersion: offline
-        ? kubernetesVersionOffline
-        : kubernetesVersionOnline,
+      kubernetesVersion,
       containerRuntime: {
         type: containerRuntimeType,
         ...(containerRuntimeType === 'docker'
@@ -254,9 +246,7 @@ export default class Create extends StepAction {
               rootDir: dockerRootDir,
             }
           : {
-              version: offline
-                ? containerdVersionOffline
-                : containerdVersionOnline,
+              version: containerdVersion,
               insecureRegistry: this.getRegistry(containerdInsecureRegistry),
               rootDir: containerdRootDir,
             }),
@@ -282,6 +272,7 @@ export default class Create extends StepAction {
       },
       cni: {
         type: cniType,
+        version: calicoVersion,
         calico: {
           IPv4AutoDetection,
           IPv6AutoDetection,

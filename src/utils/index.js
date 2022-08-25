@@ -687,3 +687,13 @@ export function formatCron(cron) {
     time,
   };
 }
+
+/**
+ *
+ * @param {*} arr
+ * @param {*} name
+ * @returns
+ */
+export function filterByName(arr = [], name) {
+  return arr.filter((item) => item.name === name);
+}

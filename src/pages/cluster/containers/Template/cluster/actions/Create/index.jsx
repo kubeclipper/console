@@ -189,8 +189,7 @@ export default class Create extends StepAction {
       certSANs,
       etcdDataDir,
       kubectlDataDir,
-      kubernetesVersionOnline,
-      kubernetesVersionOffline,
+      kubernetesVersion,
       // container runtime
       containerRuntimeType,
       dockerInsecureRegistry,
@@ -198,8 +197,7 @@ export default class Create extends StepAction {
       dockerVersion,
       containerdInsecureRegistry,
       containerdRootDir,
-      containerdVersionOnline,
-      containerdVersionOffline,
+      containerdVersion,
       backupPoint,
       // backupPoint,
       // network
@@ -209,6 +207,7 @@ export default class Create extends StepAction {
       IPVersion,
       calicoMode,
       cniType,
+      calicoVersion,
       proxyMode,
       podIPv4CIDR,
       podIPv6CIDR,
@@ -246,9 +245,7 @@ export default class Create extends StepAction {
       certSANs: arrayInputValue(certSANs),
       localRegistry,
       workerNodeVip,
-      kubernetesVersion: offline
-        ? kubernetesVersionOffline
-        : kubernetesVersionOnline,
+      kubernetesVersion,
       containerRuntime: {
         type: containerRuntimeType,
         ...(containerRuntimeType === 'docker'
@@ -258,9 +255,7 @@ export default class Create extends StepAction {
               rootDir: dockerRootDir,
             }
           : {
-              version: offline
-                ? containerdVersionOffline
-                : containerdVersionOnline,
+              version: containerdVersion,
               insecureRegistry: this.getRegistry(containerdInsecureRegistry),
               rootDir: containerdRootDir,
             }),
@@ -286,6 +281,7 @@ export default class Create extends StepAction {
       },
       cni: {
         type: cniType,
+        version: calicoVersion,
         calico: {
           IPv4AutoDetection,
           IPv6AutoDetection,

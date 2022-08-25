@@ -539,5 +539,6 @@
   "To make sure it works for you, please do a security verification first.": "To make sure it works for you, please do a security verification first.",
   "Send VerifyCode": "Send VerifyCode",
   "Please input verifyCode": "Please input verifyCode",
-  "Verification Mode": "Verification Mode"
+  "Verification Mode": "Verification Mode",
+  "Calico Version": "Calico Version"
 }
