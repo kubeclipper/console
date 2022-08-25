@@ -34,7 +34,6 @@
   "Create Time": "创建时间",
   "Create User": "创建用户",
   "Created At": "创建于",
-  "DETAIL_NOT_FOUND_DESC": "您访问的资源不存在",
   "Default Gateway": "默认网关",
   "Delete": "删除",
   "Delete Cluster": "删除集群",
@@ -540,5 +539,9 @@
   "Send VerifyCode": "发送验证码",
   "Please input verifyCode": "请输入验证码",
   "Verification Mode": "验证方式",
-  "Calico Version": "Calico 版本"
+  "Calico Version": "Calico 版本",
+  "data": "数据",
+  "Home page": "首页",
+  "form": "表单",
+  "Unable to get {title} ": "无法获取"
 }
