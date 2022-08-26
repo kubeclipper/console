@@ -543,5 +543,9 @@
   "data": "data",
   "Home page": "Home page",
   "form": "form",
-  "Unable to get {title} ": "Unable to get {title} "
+  "Unable to get {title} ": "Unable to get {title} ",
+  "Download": "Download",
+  "Update Cluster License": "Update Cluster License",
+  "View Kubeconfig File": "View KubeConfig File",
+  "License Expiration Time": "License Expiration Time"
 }

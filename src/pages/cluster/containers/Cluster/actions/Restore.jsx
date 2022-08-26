@@ -18,6 +18,7 @@ import { ModalAction } from 'containers/Action';
 import BackUpStore from 'stores/backup';
 import { get } from 'lodash';
 import { backupTableProps } from 'resources/backup';
+import { checkExpired } from 'utils';
 
 @observer
 export default class Index extends ModalAction {
@@ -72,7 +73,13 @@ export default class Index extends ModalAction {
     return false;
   }
 
-  static allowed = (item) => Promise.resolve(this.isStatusRunning(item));
+  static isLicensExpiration = (item) =>
+    checkExpired(item.licenseExpirationTime);
+
+  static allowed = (item) =>
+    Promise.resolve(
+      this.isLicensExpiration(item) && this.isStatusRunning(item)
+    );
 
   get formItems() {
     const { name } = this.item;

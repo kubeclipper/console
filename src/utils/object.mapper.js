@@ -113,10 +113,15 @@ const ClusterMapper = (item) => {
     'services.cidrBlocks'
   );
 
+  const licenseExpirationTime = get(item, 'status.certifications', []).find(
+    (_item) => _item.caName
+  )?.expirationTime;
+
   return {
     ...getBaseInfo(item),
     ...item,
     ...components,
+    licenseExpirationTime,
     nodeList: [...masters, ...workers],
     mastersByIp,
     offline,

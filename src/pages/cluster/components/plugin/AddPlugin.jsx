@@ -13,78 +13,67 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
-import React, { useEffect, useReducer, useRef } from 'react';
-import Tabs from 'components/Tabs';
+import React, { useEffect, useRef, useReducer } from 'react';
+import { useRootStore } from 'stores';
+import { cloneDeep, omit, isArray, get, set, isMatch } from 'lodash';
+import { Forms } from 'components/Form';
+import classnames from 'classnames';
 import styles from './index.less';
-import RenderForm from '../../../components/plugin/RenderForm';
-import { cloneDeep, uniq, omit, set, assign, isArray, isMatch } from 'lodash';
-import { useParams, useHistory } from 'react-router-dom';
-import { encodeProperty } from 'utils';
+import RenderForm from './RenderForm';
+import { Context } from 'pages/cluster/components/plugin/Context';
+import Tips from 'pages/cluster/components/Tips';
 import Notify from 'components/Notify';
 
-import classnames from 'classnames';
-import { Forms } from 'components/Form';
-import { useRootStore } from 'stores';
-import { observer } from 'mobx-react';
+import Tabs from 'components/Tabs';
 import Footer from 'components/Footer';
 
-const Storage = observer((props) => {
+import { useParams, useHistory } from 'react-router';
+
+const Plugin = (props) => {
+  const { state, setState } = props;
+  const { current, tabs, templates } = state;
   const {
     clusterStore: store,
     templatesStore,
-    storageComponents,
+    pluginComponents,
   } = useRootStore();
-  const { state, setState } = props;
+
   const { id } = useParams();
-  const { current, tabs, baseStorage, templates } = state;
-
-  const checkScNameRepeat = (rule, value, callback) => {
-    const scNames = uniq(store.scNames);
-
-    if (scNames.length !== store.scNames.length) {
-      callback('scName repeat');
-    } else {
-      callback();
-    }
-  };
 
   useEffect(() => {
     async function init() {
-      const { storage = [] } = await store.updateDetail({ id });
       const _templates = await templatesStore.fetchAll();
 
-      const _baseStorage = storage
+      const { storage = [] } = await store.updateDetail({ id });
+      const enabledStorageClass = storage
         .map((item) => item?.config?.scName)
         .filter((item) => !!item);
 
-      const _baseStorageName = storage
-        .map((item) => item?.name)
-        .filter((item) => !!item);
-
-      const newTabs = cloneDeep(storageComponents).map((item) => {
+      const newTabs = cloneDeep(pluginComponents).map((item) => {
         const { properties = {} } = item.schema;
 
-        delete properties.isDefaultSC;
-        // eslint-disable-next-line guard-for-in
         for (const key in properties) {
           if (Object.hasOwnProperty.call(properties, key)) {
             const ele = properties[key];
             ele.hidden = '{{formData.enable === false}}';
           }
-          if (key === 'scName') {
-            properties.scName.rules = [
-              {
-                validator: checkScNameRepeat,
-              },
-            ];
-          }
         }
 
+        const storageClass = get(item.schema, 'properties.storageClass');
+
+        storageClass &&
+          set(item.schema, 'properties.storageClass', {
+            ...storageClass,
+            enum: enabledStorageClass,
+            enumNames: enabledStorageClass,
+          });
+
+        // plugin template
         const pluginTemplate = [
           ..._templates.filter((template) => template.pluginName === item.name),
           { name: 'notUseTemplate', templateName: t('Do not use Template') },
         ];
+
         set(item.schema, 'properties.pluginTemplate', {
           title: t('Plugin Template'),
           type: 'string',
@@ -96,52 +85,37 @@ const Storage = observer((props) => {
           hidden: '{{formData.enable === false}}',
         });
 
-        // unique true 表示只能安装一次
-        const disabled =
-          item.unique &&
-          _baseStorageName.findIndex((name) => name === item.name) !== -1;
-
         return {
           ...item,
           state: 'Not Enabled',
           schemas: [item.schema],
-          disabled,
           formData: [],
           formInstances: [],
+          switchChecked: false,
         };
       });
 
       setState({
         ...state,
         tabs: newTabs,
-        current: newTabs.find((item) => !item?.disabled)?.name,
-        baseStorage: _baseStorage,
-        storageComps: storageComponents,
+        current: pluginComponents[0]?.name,
         templates: _templates,
       });
     }
-    init();
-  }, [storageComponents]);
 
-  const handleTabChange = async (tab) => {
-    let isError = false;
-    for (const item of state[current]) {
-      if (item.formData.enable) {
-        // eslint-disable-next-line no-await-in-loop
-        const errfields = await item.submit();
-        errfields.length && (isError = true);
-      }
-    }
-    if (!isError) {
-      setState({ ...state, current: tab });
-    }
+    init();
+  }, [pluginComponents]);
+
+  const handleTabChange = (tab) => {
+    setState({ ...state, current: tab });
   };
 
   const handleFRChange = (name, formInstance, formData, index) => {
     if (typeof formData === 'object' && formData.pluginTemplate) {
       if (formData.pluginTemplate !== 'notUseTemplate') {
-        const { flatData = {} } =
-          templates.find((item) => item.id === formData.pluginTemplate) || {};
+        const { flatData = {} } = templates.find(
+          (item) => item.id === formData.pluginTemplate
+        );
         if (!isMatch(formData, flatData)) {
           formInstance.setValues({
             ...formData,
@@ -171,71 +145,60 @@ const Storage = observer((props) => {
       }
     }
 
-    let enableStorage = [];
-    const allScName = [];
-
     tabs.forEach((item) => {
       if (item.name === name) {
         item.formData[index] = formData;
         item.formInstances[index] = formInstance;
-        if (!item.baseFormData) {
-          item.baseFormData = cloneDeep(formData);
-        }
       }
 
-      if (item.disabled) {
-        item.state = t('Cannot be added repeatedly');
-      } else {
-        item.state = item.formData.some((_item) => _item.enable)
-          ? 'Enabled'
-          : 'Not Enabled';
-      }
+      item.state = item.formData.some((_item) => _item.enable)
+        ? 'Enabled'
+        : 'Not Enabled';
 
-      item.formData.forEach((_item) => {
-        if (_item.enable) {
-          enableStorage.push(_item.scName);
-          allScName.push(_item.scName);
-        }
-      });
       state[item.name] = item.formInstances;
     });
 
-    enableStorage = uniq(enableStorage).filter((item) => item.length) || [];
+    let enable = true;
+    for (const item of tabs) {
+      for (const form of item.formData) {
+        if (form.enable) {
+          enable = false;
+          break;
+        }
+      }
+    }
 
-    const allStorage = [...baseStorage, ...enableStorage];
     const endState = {
       ...state,
-      enableStorage: allStorage,
       currentForms: state[name],
+      confirmDisabled: enable,
     };
-
-    store.scNames = allStorage;
     setState(endState);
   };
 
   return (
-    <Tabs tabs={tabs} current={current} onChange={handleTabChange}>
-      {tabs.map((item, index) => (
-        <div key={index} style={{ display: item.name !== current && 'none' }}>
-          {item.schemas.map((schema, _index) => (
-            <div key={_index} className={styles.item}>
+    <Context.Provider value={{ context: tabs, setState }}>
+      <Tabs tabs={tabs} current={current} onChange={handleTabChange}>
+        {tabs.map((item) =>
+          item.schemas.map((_item, _index) => (
+            <>
+              {item.name === 'kubesphere' && <Tips />}
               <RenderForm
-                schema={schema}
-                name={item.name}
-                value={item.formData[_index]}
+                schema={_item}
+                name={current}
                 onChange={(name, formInstance, formData) =>
                   handleFRChange(name, formInstance, formData, _index)
                 }
               />
-            </div>
-          ))}
-        </div>
-      ))}
-    </Tabs>
+            </>
+          ))
+        )}
+      </Tabs>
+    </Context.Provider>
   );
-});
+};
 
-function AddStorage() {
+export default function AddPlugin() {
   const history = useHistory();
   const { id } = useParams();
   const { clusterStore: store } = useRootStore();
@@ -247,33 +210,12 @@ function AddStorage() {
       current: '',
       tabs: [],
       currentForms: [],
-      enableStorage: [],
-      baseStorage: [],
-      storageComps: [],
-      templates: [],
-
-      options: [],
       confirmDisabled: true,
+      templates: [],
     }
   );
 
-  const { tabs, confirmDisabled, enableStorage, currentForms } = state;
-
-  useEffect(() => {
-    let enable = true;
-    for (const item of tabs) {
-      for (const form of item.formData) {
-        if (form.enable) {
-          enable = false;
-          break;
-        }
-      }
-    }
-
-    setState({
-      confirmDisabled: enable,
-    });
-  }, [enableStorage]);
+  const { currentForms, confirmDisabled } = state;
 
   const checkFormRenderInput = async () => {
     let isError = false;
@@ -304,8 +246,7 @@ function AddStorage() {
   };
 
   const onOK = async () => {
-    const { defaultStorage } = formRef.current.getFieldsValue();
-    let enabledComponents = [];
+    const enabledComponents = [];
 
     state.tabs.forEach(({ name, formData }) => {
       (formData || []).forEach((item) => {
@@ -313,9 +254,7 @@ function AddStorage() {
           const s = {
             name,
             version: 'v1',
-            config: assign(omit(item, 'enable'), {
-              isDefaultSC: item.scName === defaultStorage,
-            }),
+            config: omit(item, 'enable'),
           };
 
           enabledComponents.push(s);
@@ -323,14 +262,10 @@ function AddStorage() {
       });
     });
 
-    enabledComponents = encodeProperty(state.storageComps, enabledComponents);
-    // validate form
     const { isError } = await checkFormRenderInput();
     if (!isError) {
-      // 请求接口
       try {
         await store.patchComponents(id, enabledComponents, false);
-        // Notify.success(t('Role {name} has been created successfully.', { name }));
         history.push('/cluster');
       } catch (error) {
         Notify.error(error.reason);
@@ -341,40 +276,17 @@ function AddStorage() {
   const formItems = [
     [
       {
-        name: 'storage',
+        name: 'plugins',
         label: '',
-        component: <Storage state={state} setState={setState} />,
+        component: <Plugin state={state} setState={setState} />,
         wrapperCol: {
           xs: {
             span: 24,
           },
           sm: {
-            span: 18,
+            span: 19,
           },
         },
-      },
-    ],
-    [
-      {
-        name: 'enableStorages',
-        label: t('Enable Storages'),
-        type: 'tags',
-        tags: enableStorage,
-      },
-      {
-        name: 'defaultStorage',
-        label: t('Default Storage'),
-        type: 'select',
-        options: [
-          ...enableStorage.map((item) => ({
-            label: item,
-            value: item,
-          })),
-          {
-            label: t('No Setting'),
-            value: false,
-          },
-        ],
       },
     ],
   ];
@@ -382,22 +294,9 @@ function AddStorage() {
   return (
     <div className={classnames(styles.wrapper)}>
       <div className={classnames(styles.form, 'base-form')}>
-        <Forms
-          ref={formRef}
-          formItems={formItems}
-          labelCol={{
-            xs: { span: 5 },
-            sm: { span: 3 },
-          }}
-          wrapperCol={{
-            xs: { span: 10 },
-            sm: { span: 8 },
-          }}
-        />
+        <Forms ref={formRef} formItems={formItems} name={'plugins'} />
         <Footer onOK={onOK} confirmDisabled={confirmDisabled} />
       </div>
     </div>
   );
 }
-
-export default observer(AddStorage);

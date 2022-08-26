@@ -15,6 +15,7 @@
  */
 import { LinkAction } from 'containers/Action';
 import { rootStore } from 'stores';
+import { checkExpired } from 'utils';
 
 class LinkAddPlugin extends LinkAction {
   static title = t('Add Plugin');
@@ -30,8 +31,15 @@ class LinkAddPlugin extends LinkAction {
     return rootStore.hasPlugin;
   }
 
+  static isLicensExpiration = (item) =>
+    checkExpired(item.licenseExpirationTime);
+
   static allowed = (item) =>
-    Promise.resolve(this.isStatusRunning(item) && this.hasPlugin());
+    Promise.resolve(
+      this.hasPlugin() &&
+        this.isStatusRunning(item) &&
+        this.isLicensExpiration(item)
+    );
 
   static path(item) {
     return `/cluster/add-plugin/${item.name}`;

@@ -144,7 +144,6 @@ function BaseDetail() {
           </>
         ),
       },
-
       {
         label: t('Cluster Labels'),
         dataIndex: '_originData',
@@ -160,6 +159,11 @@ function BaseDetail() {
 
           return 11;
         },
+      },
+      {
+        label: t('License Expiration Time'),
+        dataIndex: 'licenseExpirationTime',
+        valueRender: 'toLocalTime',
       },
     ];
     return {

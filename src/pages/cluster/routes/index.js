@@ -17,8 +17,8 @@ import BaseLayout from 'layouts/Base';
 import ClusterList from '../containers/Cluster';
 import ClusterDetail from '../containers/Cluster/Detail';
 import Create from '../containers/Cluster/actions/Create';
-import AddStorage from '../containers/Cluster/actions/AddStorage';
-import AddPlugin from '../containers/Cluster/actions/AddPlugin';
+import AddPlugin from '../components/plugin/AddPlugin';
+import AddStorage from '../components/plugin/AddStorage';
 import BackupPoint from '../containers/BackupPoint';
 import LocalRegistry from '../containers/LocalRegistry';
 

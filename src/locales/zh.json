@@ -284,7 +284,7 @@
   "Please input role name": "请输入角色名称",
   "Please input description": "请输入描述",
   "all": "",
-  "Current data downloaded.": "",
+  "Current data downloaded.": "当前数据下载完成",
   "All data downloaded.": "",
   "Download canceled!": "",
   "Cancel Download": "",
@@ -543,5 +543,9 @@
   "data": "数据",
   "Home page": "首页",
   "form": "表单",
-  "Unable to get {title} ": "无法获取"
+  "Unable to get {title} ": "无法获取",
+  "Download": "下载",
+  "Update Cluster License": "更新集群证书",
+  "View KubeConfig File": "查看 Kubeconfig 文件",
+  "License Expiration Time": "证书过期时间"
 }

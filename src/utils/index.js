@@ -697,3 +697,14 @@ export function formatCron(cron) {
 export function filterByName(arr = [], name) {
   return arr.filter((item) => item.name === name);
 }
+
+/**
+ * 校验时间是否过期
+ * @param {Date} time
+ * @returns
+ */
+export function checkExpired(time) {
+  if (!time) return true;
+  const secDiff = moment(time).diff(moment(), 'seconds');
+  return secDiff > 0;
+}

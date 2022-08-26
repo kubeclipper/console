@@ -26,6 +26,8 @@ import LinkAddPlugin from './LinkAddPlugin';
 import SaveAsTemplate from './SaveAsTemplate';
 import Terminal from './Terminal';
 import ScheduledBackup from './ScheduledBackup';
+import UpdateLicense from './UpdateLicense';
+import KubeConfig from './KubeConfig';
 
 const actionConfigs = {
   rowActions: {
@@ -36,11 +38,13 @@ const actionConfigs = {
       { action: ScheduledBackup },
       { action: Restore },
       { action: Upgrade },
-      { action: LinkAddStorage },
-      { action: LinkAddPlugin },
-      { action: SaveAsTemplate },
       { action: Terminal },
+      { action: LinkAddPlugin },
+      { action: LinkAddStorage },
+      { action: SaveAsTemplate },
       { action: Reset },
+      { action: UpdateLicense },
+      { action: KubeConfig },
       { action: Delete },
     ],
   },

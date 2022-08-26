@@ -13,6 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+@import '~styles/variables';
 
 .item {
   .remove-btn {
@@ -25,6 +26,49 @@
   &:hover {
     .remove-btn {
       display: inline;
+    }
+  }
+}
+
+.wrapper {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  padding-top: @body-padding;
+  :global {
+    .ant-spin-nested-loading {
+      height: 100%;
+    }
+    .ant-spin-container {
+      height: 100%;
+    }
+  }
+}
+
+.form {
+  margin-left: @body-padding * 2;
+  margin-right: @body-padding * 2;
+  background-color: #fff;
+  height: calc(100% - 48px);
+  overflow-y: auto;
+  :global {
+    .ant-form-item-label > label {
+      margin-left: 12px;
+    }
+    .ant-form-item-label > .ant-form-item-required {
+      margin-left: 0;
+    }
+  }
+
+  :global {
+    .ant-card {
+      margin: 5px;
+      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+
+    .ant-card-body {
+      padding-bottom: 0;
     }
   }
 }

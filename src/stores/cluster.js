@@ -125,4 +125,12 @@ export default class ClusterStore extends BaseStore {
       request.patch(`${this.getDetailUrl(params)}/status`)
     );
   }
+
+  updateClusterLicense = ({ name }) => request.post(`${APIVERSION.core}/clusters/${name}/certification`);
+
+  getKubeConfig = ({ name }) => {
+    const res = request.get(`${APIVERSION.core}/clusters/${name}/kubeconfig`);
+
+    return res;
+  };
 }
