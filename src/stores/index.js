@@ -360,7 +360,7 @@ class RootStore {
     const hasPlugin = pluginComponents.length > 0;
 
     this.storageComponents = filterComponents(storageComponents);
-    this.pluginComponents = filterComponents(pluginComponents);
+    this.pluginComponents = pluginComponents;
     this.hasPlugin = hasPlugin;
     this.componentsLoading = true;
 

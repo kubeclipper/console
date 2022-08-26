@@ -13,30 +13,42 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { LinkAction } from 'containers/Action';
-import { checkExpired } from 'utils';
+ @import '~styles/variables';
 
-export default class LinkAddStorage extends LinkAction {
-  static title = t('Add Storage');
+.content {
+  padding: 10px;
+  height: 100%;
+}
 
-  static isStatusRunning(item) {
-    if (item.status === 'Running') {
-      return true;
-    }
-    return false;
+.pane {
+  height: 100%;
+  border-radius: 4px;
+  overflow-y: auto;
+}
+
+
+.terminal {
+  flex: 1;
+  border-radius: 4px;
+  overflow: auto;
+  position: relative;
+  background-color: #242e42;
+  & > * {
+    box-sizing: border-box;
   }
+}
 
-  static isLicensExpiration = (item) =>
-    checkExpired(item.licenseExpirationTime);
-
-  static allowed = (item) =>
-    Promise.resolve(
-      this.isLicensExpiration(item) && this.isStatusRunning(item)
-    );
-
-  static path(item) {
-    return `/cluster/add-storage/${item.name}`;
-  }
-
-  static policy = 'clusters:edit';
+.download {
+  border-radius: 16px;
+  position: absolute;
+  right: 0;
+  z-index: 100;
+  margin: 12px;
+  height: 32px;
+  line-height: 32px;
+  background-color: #36435c;
+  padding: 0 12px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
 }

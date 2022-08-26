@@ -14,19 +14,17 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { observer } from 'mobx-react';
-import ContainerTerminalModal from 'pages/cluster/components/TerminalCtl';
 import { Modal, Button } from 'antd';
+import KubeConfig from 'pages/cluster/components/KubeConfig';
 import { CloseOutlined } from '@ant-design/icons';
 import { checkExpired } from 'utils';
 
-@observer
-export default class ConnectTerminal {
-  static id = 'Terminal';
+export default class KubeConfiView {
+  static id = 'kubeconfig';
 
-  static title = t('Connect Terminal');
+  static title = t('View KubeConfig File');
 
-  static buttonText = t('Connect Terminal');
+  static buttonText = t('View KubeConfig File');
 
   static get modalSize() {
     return 'middle';
@@ -36,13 +34,12 @@ export default class ConnectTerminal {
 
   static isRunning = (item) => item.status === 'Running';
 
-  static policy = 'clusters:access';
-
   static isLicensExpiration = (item) =>
     checkExpired(item.licenseExpirationTime);
 
-  static allowed = (item) =>
-    Promise.resolve(this.isLicensExpiration(item) && this.isRunning(item));
+  static policy = 'clusters:view';
+
+  static allowed = (item) => Promise.resolve(this.isRunning(item));
 
   static openTerminal = async (val) => {
     const { name } = val;
@@ -51,7 +48,7 @@ export default class ConnectTerminal {
     modal.update({
       title: (
         <>
-          <div>{val.ip}</div>
+          <div>kubeconfig</div>
           <Button
             type="text"
             onClick={() => {
@@ -64,7 +61,7 @@ export default class ConnectTerminal {
       ),
       icon: null,
       okText: () => '',
-      content: <ContainerTerminalModal name={name} />,
+      content: <KubeConfig name={name} />,
       className: 'terminal-modal-wrpper',
     });
   };

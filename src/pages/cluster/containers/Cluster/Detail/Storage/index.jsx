@@ -18,7 +18,7 @@ import Base from 'containers/BaseDetail';
 import { useRootStore } from 'stores';
 import { componentStatus } from 'resources/cluster';
 import ActionButton from 'components/Tables/Base/ActionButton';
-import Delete from '../../actions/RemovePlugin';
+import Delete from './actions/RemovePlugin';
 import SaveAsTemplate from '../../actions/SaveAsTemplate';
 import { getAction } from 'utils/allowed';
 import { toJS } from 'mobx';
