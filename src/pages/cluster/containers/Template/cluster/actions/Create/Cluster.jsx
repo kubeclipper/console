@@ -38,7 +38,8 @@ import {
   inputHelpByUnderlayType,
 } from 'resources/cluster';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
-import { versionCompare, filterByName } from 'utils';
+import { versionCompare } from 'utils';
+import { find, filter, get } from 'lodash';
 
 const cidrRegex = require('cidr-regex');
 
@@ -63,33 +64,57 @@ export default class Cluster extends BaseForm {
 
     this.getCommonRegistry();
     this.getBackupPoint();
-    this.getEditVals();
     this.getVersion();
   }
 
   async getVersion() {
     await this.store.fetchVersion({ limit: -1 });
-
-    const { id } = this.params;
-    id ? this.initVersions() : this.handleImgType(this.isOffLine);
+    this.initVersions();
   }
 
-  initVersions = () => {
-    const { kubernetesVersion } = this.props.context;
+  initVersions = async () => {
+    const { id } = this.params;
+    if (id) {
+      const vals = await this.templatesStore.query({
+        fieldSelector: `metadata.name=${id}`,
+      });
 
-    const versions = this.isOffLine
-      ? this.offlineVersions
-      : this.onlineVersions;
+      const { templateName, templateDescription, flatData } = vals;
+      const { kubernetesVersion } = flatData;
 
-    const currentK8sVersions = versions.find(
-      (item) => item.value === kubernetesVersion
-    );
-    const currentVersions = this.getCurrentVersionsByK8s(currentK8sVersions);
+      const versions = this.isOffLine
+        ? this.offlineVersions
+        : this.onlineVersions;
 
-    this.updateContext({
-      kubernetesVersions: versions,
-      ...currentVersions,
-    });
+      const currentK8sVersions = versions.find(
+        (item) => item.value === kubernetesVersion
+      );
+      const currentVersions = this.getCurrentVersionsByK8s(currentK8sVersions);
+
+      this.updateContext({
+        kubernetesVersions: versions,
+        ...currentVersions,
+        templateName,
+        templateDescription,
+        ...flatData,
+        ...this.props.context,
+      });
+    } else {
+      const isOffLine = this.props.isOffLine || clusterParams;
+
+      const versions = isOffLine ? this.offlineVersions : this.onlineVersions;
+      const [firstVersion] = versions;
+      const currentVersions = this.getCurrentVersionsByK8s(firstVersion);
+
+      this.updateContext({
+        kubernetesVersions: versions,
+        kubernetesVersion: firstVersion?.value,
+        ...currentVersions,
+        ...clusterParams,
+        ...this.props.context,
+      });
+    }
+    this.updateDefaultValue();
   };
 
   handleImgType = async (isOffLine) => {
@@ -103,24 +128,25 @@ export default class Cluster extends BaseForm {
       kubernetesVersion: firstVersion?.value,
       ...currentVersions,
     });
-    this.updateDefaultValue();
+
+    this.updateFormVersions({
+      kubernetesVersion: firstVersion?.value,
+      ...currentVersions,
+    });
   };
 
-  async getEditVals() {
-    const { id } = this.props.match.params;
-    if (id) {
-      const vals = await this.templatesStore.query({
-        fieldSelector: `metadata.name=${id}`,
-      });
+  updateFormVersions(versions) {
+    const {
+      kubernetesVersion,
+      containerdVersion,
+      dockerVersion,
+      calicoVersion,
+    } = versions;
 
-      const { templateName, templateDescription, flatData, _originData } = vals;
-      this.setState({
-        templateName,
-        templateDescription,
-        ...flatData,
-        _originData,
-      });
-    }
+    this.updateFormValue('kubernetesVersion', kubernetesVersion);
+    this.updateFormValue('containerdVersion', containerdVersion);
+    this.updateFormValue('dockerVersion', dockerVersion);
+    this.updateFormValue('calicoVersion', calicoVersion);
   }
 
   allowed = () => Promise.resolve();
@@ -130,14 +156,7 @@ export default class Cluster extends BaseForm {
   }
 
   get defaultValue() {
-    const { id } = this.params;
-    if (id) {
-      return {};
-    }
-
-    return {
-      ...clusterParams,
-    };
+    return {};
   }
 
   get labelCol() {
@@ -156,31 +175,31 @@ export default class Cluster extends BaseForm {
 
   get onlineVersions() {
     const data = this.store.onlineVersion;
-    return data.map(({ version, version_control }) => ({
+    return data.map(({ version, version_control, archs }) => ({
       value: version,
       label: version,
       version_control,
+      extra: archs,
     }));
   }
 
   get offlineVersions() {
     const data = this.store.offlineVersion;
 
-    return data.map(({ version, version_control }) => ({
+    return data.map(({ version, version_control, archs }) => ({
       value: version,
       label: version,
       version_control,
+      extra: archs,
     }));
   }
 
   async getCommonRegistry() {
     await this.templateStore.fetchList();
-    this.updateDefaultValue();
   }
 
   async getBackupPoint() {
     await this.backupPointStore.fetchList();
-    this.updateDefaultValue();
   }
 
   get getBackupPointOptions() {
@@ -191,33 +210,25 @@ export default class Cluster extends BaseForm {
     return options;
   }
 
-  handleImgType = async (isOffLine) => {
-    const versions = isOffLine ? this.offlineVersions : this.onlineVersions;
-    const [firstVersion] = versions;
-    const currentVersions = this.getCurrentVersionsByK8s(firstVersion);
-
-    await this.updateContext({
-      offline: isOffLine,
-      kubernetesVersions: versions,
-      kubernetesVersion: firstVersion?.value,
-      ...currentVersions,
-    });
-    this.updateDefaultValue();
-  };
-
   getCurrentVersionsByK8s = (kubernetesVersion) => {
-    const { cri = [], cni = [] } = kubernetesVersion.version_control;
-    const containerdVersions = filterByName(cri, 'containerd');
-    const dockerVersions = filterByName(cri, 'docker');
-    const calicoVersions = filterByName(cni, 'calico');
+    const cri = get(kubernetesVersion, 'version_control.cri', []);
+    const cni = get(kubernetesVersion, 'version_control.cni', []);
+
+    const containerdVersions = filter(cri, ['name', 'containerd']);
+    const dockerVersions = filter(cri, ['name', 'docker']);
+    const calicoVersions = filter(cni, ['name', 'calico']);
+
+    const containerdVersionArr = find(containerdVersions, ['default', true]);
+    const dockerVersionArr = find(containerdVersions, ['default', true]);
+    const calicoVersionArr = find(containerdVersions, ['default', true]);
 
     return {
       containerdVersions,
-      containerdVersion: containerdVersions[0]?.version,
+      containerdVersion: containerdVersionArr?.version,
       dockerVersions,
-      dockerVersion: dockerVersions[0]?.version,
+      dockerVersion: dockerVersionArr?.version,
       calicoVersions,
-      calicoVersion: calicoVersions[0]?.version,
+      calicoVersion: calicoVersionArr?.version,
     };
   };
 
@@ -475,7 +486,11 @@ export default class Cluster extends BaseForm {
       kubernetesVersion: value,
       ...currentVersions,
     });
-    this.updateDefaultValue();
+
+    this.updateFormVersions({
+      kubernetesVersion: value,
+      ...currentVersions,
+    });
   };
 
   checkIP = async (_, value) => {
@@ -551,7 +566,7 @@ export default class Cluster extends BaseForm {
         {
           name: 'kubernetesVersion',
           label: t('K8S Version'),
-          type: 'select',
+          type: 'select-value',
           required: true,
           options: this.props.context.kubernetesVersions || [],
           onChange: this.onK8SVersionChange,

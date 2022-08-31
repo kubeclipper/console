@@ -103,11 +103,16 @@ export default class Create extends StepAction {
     this.templatesStore = rootStore.templatesStore;
 
     this.fetchTemplates();
+    this.fetchVersion();
   }
 
   async fetchTemplates() {
     const templates = await this.templatesStore.fetchAll();
     this.updateData({ templates });
+  }
+
+  async fetchVersion() {
+    await this.store.fetchVersion({ limit: -1 });
   }
 
   get successText() {
