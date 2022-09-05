@@ -41,6 +41,10 @@ export const uiSchemas = [
           hidden:
             '{{formData.enable === false || formData.clusterRole !== "member"}}',
         },
+        jwtSecret: {
+          hidden:
+            '{{formData.enable === false || formData.clusterRole === "member"}}',
+        },
       },
     },
   },
