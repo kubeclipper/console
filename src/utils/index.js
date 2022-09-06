@@ -32,7 +32,7 @@ import { customAlphabet } from 'nanoid';
 import moment from 'moment';
 import JSEncrypt from 'jsencrypt';
 import { MODULE_ROUTE } from 'utils/constants';
-import { getLocalStorageItem } from 'utils/localStorage';
+import { getLocalStorageItem, getToken } from 'utils/localStorage';
 import { parseExpression } from 'cron-parser';
 
 import { SIZE_VALUE, SECOND_IN_TIME_UNIT } from './constants';
@@ -397,14 +397,20 @@ export const safeParseJSON = (json, defaultValue) => {
  */
 export const defaultRoute = (globalRules) => {
   let path = '';
-  if (isEmpty(globalRules)) {
-    return MODULE_ROUTE.empty;
-  }
-  for (const key in MODULE_ROUTE) {
-    if (has(globalRules, key) && globalRules[key].length > 0) {
-      path = MODULE_ROUTE[key];
 
-      break;
+  const token = getToken();
+
+  if (!isEmpty(token)) {
+    if (isEmpty(globalRules)) {
+      return MODULE_ROUTE.empty;
+    }
+
+    for (const key in MODULE_ROUTE) {
+      if (has(globalRules, key) && globalRules[key].length > 0) {
+        path = MODULE_ROUTE[key];
+
+        break;
+      }
     }
   }
 
