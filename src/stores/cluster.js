@@ -17,6 +17,7 @@
 import { get, uniqBy } from 'lodash';
 import { APIVERSION } from 'utils/constants';
 import ObjectMapper from 'utils/object.mapper';
+import { versionCompare } from 'utils';
 
 import BaseStore from './base';
 
@@ -94,6 +95,10 @@ export default class ClusterStore extends BaseStore {
       );
       let onlineData = get(onlineResult, 'rules') || [];
 
+      onlineData = onlineData
+        .sort((a, b) => versionCompare(a.version, b.version))
+        .reverse();
+
       onlineData = onlineData.map((item) => {
         const archs = onlineData
           .filter((data) => data.version === item.version)
@@ -119,6 +124,10 @@ export default class ClusterStore extends BaseStore {
         }
       );
       let offlineData = get(offlineResult, 'rules') || [];
+
+      offlineData = offlineData
+        .sort((a, b) => versionCompare(a.version, b.version))
+        .reverse();
 
       offlineData = offlineData.map((item) => {
         const archs = offlineData
