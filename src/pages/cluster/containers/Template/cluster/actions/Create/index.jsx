@@ -91,26 +91,6 @@ export default class Create extends StepAction {
 
   init() {
     this.templatesStore = rootStore.templatesStore;
-
-    this.getEditVals();
-  }
-
-  async getEditVals() {
-    const { id } = this.props.match.params;
-    if (id) {
-      const vals = await this.templatesStore.query({
-        fieldSelector: `metadata.name=${id}`,
-      });
-
-      const { templateName, templateDescription, flatData, _originData } = vals;
-
-      this.updateData({
-        templateName,
-        templateDescription,
-        ...flatData,
-        _originData,
-      });
-    }
   }
 
   getRegistry = (registry) => flatten(arrayInputValue(registry));

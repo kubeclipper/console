@@ -547,5 +547,7 @@
   "Download": "下载",
   "Update Cluster License": "更新集群证书",
   "View KubeConfig File": "查看 Kubeconfig 文件",
-  "License Expiration Time": "证书过期时间"
+  "License Expiration Time": "证书过期时间",
+  "Please keep the CPU architecture consistent!": "请保持 CPU 架构的一致性！",
+  "The selected node and schema are inconsistent": "选择的节点和架构不一致"
 }

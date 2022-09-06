@@ -19,7 +19,7 @@ import { toJS } from 'mobx';
 import BaseForm from 'components/Form';
 import { rootStore } from 'stores';
 import { joinSelector } from 'utils';
-import { isEmpty, flatten, isNumber } from 'lodash';
+import { isEmpty, flatten, isNumber, uniq } from 'lodash';
 import TaintInput from 'components/FormItem/TaintInput';
 import LabelInput from 'components/FormItem/LabelInput';
 import { message } from 'antd';
@@ -93,6 +93,17 @@ export default class Node extends BaseForm {
         t('Please keep the number of master nodes to an odd number!')
       );
     }
+
+    let values = [];
+    value.forEach((item) => {
+      values = [...values, ...item.value];
+    });
+    values = uniq(values.map((item) => item.nodeInfo.arch));
+    if (values.length !== 1) {
+      return Promise.reject(t('Please keep the CPU architecture consistent!'));
+    }
+
+    this.updateContext({ arch: values[0] });
 
     return Promise.resolve(true);
   };

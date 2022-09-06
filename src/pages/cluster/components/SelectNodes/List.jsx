@@ -171,7 +171,12 @@ export default class Index extends Component {
   };
 
   renderItemText(item) {
-    const { cpu, memory, status } = item;
+    const {
+      cpu,
+      memory,
+      status,
+      nodeInfo: { arch },
+    } = item;
     const isMinCpuOrMemory = Number(cpu) < 2 || parseInt(memory, 10) < 4096;
     const isUnknownStatus = status === 'Unknown';
 
@@ -183,7 +188,7 @@ export default class Index extends Component {
         <Col>
           <p className={styles.hostname}>{item.hostname}</p>
           <div className={styles.extra}>
-            {item.ip} | {cpu}C {memory}{' '}
+            {item.ip} | {cpu}C {memory} | {arch}
             {(isMinCpuOrMemory || isUnknownStatus) && (
               <Tooltip
                 title={

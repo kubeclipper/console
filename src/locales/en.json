@@ -547,5 +547,7 @@
   "Download": "Download",
   "Update Cluster License": "Update Cluster License",
   "View Kubeconfig File": "View KubeConfig File",
-  "License Expiration Time": "License Expiration Time"
+  "License Expiration Time": "License Expiration Time",
+  "Please keep the CPU architecture consistent!": "Please keep the CPU architecture consistent!",
+  "The selected node and schema are inconsistent": "The selected node and schema are inconsistent"
 }

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { get } from 'lodash';
+import { get, uniqBy } from 'lodash';
 import { APIVERSION } from 'utils/constants';
 import ObjectMapper from 'utils/object.mapper';
 
@@ -92,7 +92,19 @@ export default class ClusterStore extends BaseStore {
           online: true,
         }
       );
-      const onlineData = get(onlineResult, 'rules') || [];
+      let onlineData = get(onlineResult, 'rules') || [];
+
+      onlineData = onlineData.map((item) => {
+        const archs = onlineData
+          .filter((data) => data.version === item.version)
+          .map(({ arch }) => arch);
+
+        return {
+          ...item,
+          archs,
+        };
+      });
+      onlineData = uniqBy(onlineData, 'version');
       this.onlineVersion = onlineData || [];
     } catch (e) {}
   }
@@ -106,7 +118,19 @@ export default class ClusterStore extends BaseStore {
           online: false,
         }
       );
-      const offlineData = get(offlineResult, 'rules') || [];
+      let offlineData = get(offlineResult, 'rules') || [];
+
+      offlineData = offlineData.map((item) => {
+        const archs = offlineData
+          .filter((data) => data.version === item.version)
+          .map(({ arch }) => arch);
+
+        return {
+          ...item,
+          archs,
+        };
+      });
+      offlineData = uniqBy(offlineData, 'version');
       this.offlineVersion = offlineData || [];
     } catch (e) {}
   }
@@ -126,7 +150,8 @@ export default class ClusterStore extends BaseStore {
     );
   }
 
-  updateClusterLicense = ({ name }) => request.post(`${APIVERSION.core}/clusters/${name}/certification`);
+  updateClusterLicense = ({ name }) =>
+    request.post(`${APIVERSION.core}/clusters/${name}/certification`);
 
   getKubeConfig = ({ name }) => {
     const res = request.get(`${APIVERSION.core}/clusters/${name}/kubeconfig`);

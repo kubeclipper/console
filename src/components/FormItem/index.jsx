@@ -50,6 +50,7 @@ import SelectWithInput from './SelectWithInput';
 import SelectCycle from './SelectCycle';
 import Divider from './Divider';
 import DNSRecord from './DNSRecord';
+import SelectForValue from './SelectForValue';
 
 export const type2component = {
   label: Label,
@@ -60,6 +61,7 @@ export const type2component = {
   'select-cycle': SelectCycle,
   radio: Radio,
   'select-table': SelectTable,
+  'select-value': SelectForValue,
   'input-number': InputNumber,
   'input-password': Input.Password,
   'input-name': NameInput,
