@@ -149,6 +149,10 @@ function buildRequest({
     );
   }
 
+  if (options?.withoutToken) {
+    return doFetch();
+  }
+
   return options?.checkToken ?? true ? checkToken(doFetch) : doFetch();
 }
 
