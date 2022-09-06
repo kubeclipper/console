@@ -111,7 +111,9 @@ class RootStore {
    * @returns
    */
   async loginByOauth2(name, params) {
-    const resp = await request.get(`/oauth/cb/${name}`, params);
+    const resp = await request.get(`/oauth/cb/${name}`, params, {
+      withoutToken: true,
+    });
     return this.handleLoginResp(resp);
   }
 
