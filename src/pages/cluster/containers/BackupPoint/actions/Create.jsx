@@ -115,6 +115,9 @@ class CreateForm extends ModalAction {
         label: t('backupRootDir'),
         type: 'input',
         hidden: !this.isFs,
+        tip: t(
+          'The backup path needs to be created on each node and mounted to a shared file path (such as NFS)'
+        ),
         rules: [
           {
             pattern: path,

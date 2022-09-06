@@ -549,5 +549,6 @@
   "View Kubeconfig File": "View KubeConfig File",
   "License Expiration Time": "License Expiration Time",
   "Please keep the CPU architecture consistent!": "Please keep the CPU architecture consistent!",
-  "The selected node and schema are inconsistent": "The selected node and schema are inconsistent"
+  "The selected node and schema are inconsistent": "The selected node and schema are inconsistent",
+  "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)"
 }
