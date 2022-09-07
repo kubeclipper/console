@@ -180,7 +180,7 @@
   "enable node": "enable node",
   "example: 10.0.0.1，baidu.com or www.google.com": "example: 10.0.0.1，baidu.com or www.google.com",
   "example: 3001:db0::1, baidu.com or or www.google.com": "example: 3001:db0::1, baidu.com or or www.google.com",
-  "example: eth.*=(eth0,eth1,ethx...)": "example: eth.*=(eth0,eth1,ethx...)",
+  "example: eth0 or eth.*": "example: eth0 or eth.*",
   "first-found": "first-found",
   "interface": "interface",
   "items": "items",

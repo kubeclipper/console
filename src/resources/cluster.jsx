@@ -179,8 +179,8 @@ export const podNetworkUnderlayOptions = [
 
 export const inputHelpByUnderlayType = {
   'can-reach': t('example: 10.0.0.1，baidu.com or www.google.com'),
-  interface: t('example: eth.*=(eth0,eth1,ethx...)'),
-  cidr: t('example: eth.*=(eth0,eth1,ethx...)'),
+  interface: t('example: eth0 or eth.*'),
+  cidr: t('example: eth0 or eth.*'),
 };
 
 /**
