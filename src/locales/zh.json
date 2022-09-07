@@ -180,7 +180,7 @@
   "enable node": "启用节点",
   "example: 10.0.0.1，baidu.com or www.google.com": "例如：10.0.0.1，baidu.com 或者 www.google.com",
   "example: 3001:db0::1, baidu.com or or www.google.com": "例如：3001:db0::1, baidu.com or 或者 www.google.com",
-  "example: eth.*=(eth0,eth1,ethx...)": "例如：eth.*=(eth0,eth1,ethx...)",
+  "example: eth0 or eth.*": "例如：eth0 或者 eth.*",
   "first-found": "",
   "interface": "",
   "items": "条",

@@ -169,8 +169,8 @@ export default class Cluster extends BaseForm {
     const calicoVersions = filter(cni, ['name', 'calico']);
 
     const containerdVersionArr = find(containerdVersions, ['default', true]);
-    const dockerVersionArr = find(containerdVersions, ['default', true]);
-    const calicoVersionArr = find(containerdVersions, ['default', true]);
+    const dockerVersionArr = find(dockerVersions, ['default', true]);
+    const calicoVersionArr = find(calicoVersions, ['default', true]);
 
     return {
       containerdVersions,
