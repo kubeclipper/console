@@ -28,7 +28,8 @@ const ModalComponent = memo(
         ...source,
         visible: false,
       }));
-    }, [form]);
+      modalProps.onClose?.();
+    }, [form, modalProps]);
 
     const onOpen = useCallback(() => {
       setModalProps((source) => ({
