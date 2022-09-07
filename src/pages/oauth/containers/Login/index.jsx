@@ -99,6 +99,7 @@ export default function Login(props) {
           children: <Verification detail={detail} />,
           bodyStyle: { padding: '24px 50px' },
           onOk,
+          onClose: () => setIsSubmmiting(false),
         });
         return;
       }
