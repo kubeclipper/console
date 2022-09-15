@@ -546,9 +546,10 @@
   "Unable to get {title} ": "Unable to get {title} ",
   "Download": "Download",
   "Update Cluster License": "Update Cluster License",
-  "View Kubeconfig File": "View KubeConfig File",
   "License Expiration Time": "License Expiration Time",
   "Please keep the CPU architecture consistent!": "Please keep the CPU architecture consistent!",
   "The selected node and schema are inconsistent": "The selected node and schema are inconsistent",
-  "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)"
+  "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)",
+  "View KubeConfig File": "View KubeConfig File",
+  "Please select verification mode!": "Please select verification mode!"
 }

@@ -550,5 +550,6 @@
   "License Expiration Time": "证书过期时间",
   "Please keep the CPU architecture consistent!": "请保持 CPU 架构的一致性！",
   "The selected node and schema are inconsistent": "选择的节点和架构不一致",
-  "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "备份路径需要在每个节点上自行创建，并将路径该挂载到共享的文件路径(如 NFS)"
+  "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "备份路径需要在每个节点上自行创建，并将路径该挂载到共享的文件路径(如 NFS)",
+  "Please select verification mode!": "请选择验证方式"
 }
