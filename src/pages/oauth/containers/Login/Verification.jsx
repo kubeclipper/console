@@ -93,7 +93,7 @@ const Verification = (props) => {
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: t('Please select verification mode!'),
           },
         ]}
       >
