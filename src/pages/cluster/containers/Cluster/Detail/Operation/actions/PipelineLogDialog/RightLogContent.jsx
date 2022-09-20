@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import classNames from 'classnames';
 import {
   CaretRightOutlined,
@@ -37,19 +37,22 @@ function LogItemContent(props) {
     if (isLoading) {
       return <Spin className={styles['spin-center']} />;
     } else {
-      return <pre className={styles.LogItem_content}>{logdata}</pre>;
+      return <pre className={styles['log-item-content']}>{logdata}</pre>;
     }
   }
   return '';
 }
 
 const LogItem = observer((props) => {
-  const { nodeStatus, logStore, runtime, isStepFinished, nodes } = props;
+  const { nodeStatus, logStore, runtime, nodes, index } = props;
   const { operationStore } = useRootStore();
   const step = operationStore.currentNodesByStep;
-  logStore.isStepFinished = isStepFinished;
+  const inputEl = useRef();
 
-  const { logdata, isExpand, isLoading, cumulativeSize } = logStore;
+  const basicStepFinished = !!operationStore.currentNodesByStep?.status;
+  logStore.isStepFinished = basicStepFinished;
+  const { logdata, isExpand, isLoading, cumulativeSize, isStepFinished } =
+    logStore;
 
   const stateIcons = (errIgnore, status) => {
     if (errIgnore && status === 'failed') {
@@ -69,9 +72,24 @@ const LogItem = observer((props) => {
     offset: cumulativeSize,
   };
 
+  useEffect(() => {
+    if (index === 0) {
+      const fn = async () => {
+        await logStore.fetchStepLog(params);
+        inputEl.current?.scrollIntoView({ block: 'end' });
+      };
+
+      fn();
+    }
+  }, [step.id]);
+
   useInterval(
     () => {
-      logStore.fetchStepLog(params);
+      const fn = async () => {
+        await logStore.fetchStepLog(params);
+        inputEl.current?.scrollIntoView({ block: 'end' });
+      };
+      fn();
     },
     isExpand && !isStepFinished ? 2000 : null
   );
@@ -86,7 +104,7 @@ const LogItem = observer((props) => {
   };
 
   return (
-    <div className={styles.LogItem}>
+    <div className={styles.LogItem} ref={inputEl}>
       <div className={classNames(styles.LogItem__title)} onClick={toggleExpand}>
         {isExpand ? <CaretDownOutlined /> : <CaretRightOutlined />}
         {`${nodes.ipv4} (${nodes.id})`}
@@ -104,34 +122,45 @@ const LogItem = observer((props) => {
   );
 });
 
-function RightLogContent(props) {
-  const { activeStepIndex } = props;
-  const { operationStore: store } = useRootStore();
+function RightLogContent() {
+  const { operationStore } = useRootStore();
+  const { currentNodesByStep, activeStepIndex } = operationStore;
+
   return useMemo(() => {
-    if (store.currentNodesByStep.status) {
-      return store.currentNodesByStep.status.map(
-        ({ node, status, startAt, endAt }, index) => (
-          <LogItem
-            key={node}
-            logStore={new LogStore()}
-            nodeStatus={status}
-            runtime={formatSeconds(startAt, endAt)}
-            isStepFinished
-            nodes={store.currentNodesByStep.nodes[index]}
-          />
-        )
+    // resolve
+    if (currentNodesByStep?.status) {
+      return (
+        <div className={styles.right}>
+          {currentNodesByStep?.status?.map(
+            ({ node, status, startAt, endAt }, index) => (
+              <LogItem
+                key={node}
+                logStore={new LogStore()}
+                nodeStatus={status}
+                runtime={formatSeconds(startAt, endAt)}
+                nodes={currentNodesByStep.nodes[index]}
+                index={index}
+              />
+            )
+          )}
+        </div>
       );
     }
 
-    return store.currentNodesByStep.nodes.map((item) => (
-      <LogItem
-        key={item}
-        logStore={new LogStore()}
-        isStepFinished={false}
-        nodes={item}
-      />
-    ));
-  }, [store.currentNodesByStep.status, activeStepIndex]);
+    // pending
+    return (
+      <div className={styles.right}>
+        {currentNodesByStep?.nodes?.map((item, index) => (
+          <LogItem
+            key={index}
+            logStore={new LogStore()}
+            nodes={item}
+            index={index}
+          />
+        ))}
+      </div>
+    );
+  }, [currentNodesByStep, activeStepIndex]);
 }
 
-export default RightLogContent;
+export default observer(RightLogContent);

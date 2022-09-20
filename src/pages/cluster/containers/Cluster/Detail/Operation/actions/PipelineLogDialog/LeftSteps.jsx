@@ -17,6 +17,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Skeleton, Tooltip } from 'antd';
 import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import classNames from 'classnames';
 import { toLocalTime } from 'utils';
 import { useRootStore } from 'stores';
@@ -24,10 +25,10 @@ import Status from 'components/Status';
 import styles from './index.less';
 import { useDeepCompareEffect } from 'hooks';
 
-function StepItem(props) {
-  const { step, activeStepIndex, activeByStep, index } = props;
+const StepItem = observer((props) => {
+  const { step, activeByStep, index } = props;
+  const { operationStore: store } = useRootStore();
   const inputEl = useRef();
-
   const [showTip, setShowTip] = useState(false);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ function StepItem(props) {
   const stepItem = (
     <div
       className={classNames(styles['left-tab'], {
-        [styles['left-tab-active']]: activeStepIndex === index,
+        [styles['left-tab-active']]: store.activeStepIndex === index,
       })}
       onClick={handleStepClick}
     >
@@ -72,16 +73,15 @@ function StepItem(props) {
       )}
     </div>
   );
-}
+});
 
-export default function LeftSteps(props) {
+function LeftSteps(props) {
   const { operationStore: store } = useRootStore();
-  const { activeStepIndex, activeByStep } = props;
+  const { activeByStep } = props;
   const operationSteps = toJS(store.operationSteps);
 
   const isDataLoading =
-    store.operationSteps.findIndex((item) => item.stepID || item.frontStatus) >=
-    0;
+    operationSteps.findIndex((item) => item.stepID || item.frontStatus) >= 0;
 
   const resolveSteps = operationSteps.filter((item) => item.stepID);
   let pendingSteps = operationSteps.filter((item) => item.frontStatus);
@@ -107,7 +107,6 @@ export default function LeftSteps(props) {
             step={step}
             key={index}
             index={index}
-            activeStepIndex={activeStepIndex}
             activeByStep={activeByStep}
           />
         ))}
@@ -115,3 +114,5 @@ export default function LeftSteps(props) {
     </div>
   );
 }
+
+export default observer(LeftSteps);

@@ -46,12 +46,6 @@ export default class PipelineLog extends ViewAction {
 
     this.store = rootStore.operationStore;
 
-    this.state = {
-      activeStepIndex: 0,
-      activeNodeIndex: 0,
-      isFirstOpen: true,
-    };
-
     this.store.reset();
     this.websocket = new WebsocketStore();
   }
@@ -79,12 +73,11 @@ export default class PipelineLog extends ViewAction {
         const types = ['ADDED', 'MODIFIED', 'DELETED'];
         if (types.includes(message.type)) {
           const result = ObjectMapper.operations(message.object);
+          this.store.status = result.status;
+
           this.generateStatusBySteps(result.operationSteps);
           this.store.currentOperation = result;
           this.store.operationSteps = result.operationSteps;
-          this.setState({
-            isFirstOpen: false,
-          });
         }
       }
     );
@@ -112,32 +105,33 @@ export default class PipelineLog extends ViewAction {
 
     const lastIndex = operationSteps.findLastIndex((item) => item.stepID);
     const lastStep = operationSteps.findLast((item) => item.stepID);
-    if (lastIndex !== operationSteps.length - 1) {
-      operationSteps[lastIndex + 1].frontStatus = 'pending';
-      operationSteps[lastIndex + 1].stepStatus = 'processing';
-    }
-    if (lastIndex >= 0 && this.state.isFirstOpen)
+
+    const msgPending = ['running'];
+    // const msgResolve = ['successful', 'failed'];
+
+    if (
+      lastIndex !== operationSteps.length - 1 &&
+      msgPending.includes(this.store.status)
+    ) {
+      const processSteps = operationSteps[lastIndex + 1];
+      processSteps.frontStatus = 'pending';
+      processSteps.stepStatus = 'processing';
+
+      this.activeByStep(processSteps, lastIndex + 1);
+    } else {
       this.activeByStep(lastStep, lastIndex);
+    }
   }
 
   activeByStep = async (step, index) => {
     this.store.currentNodesByStep = step;
-    this.setState({
-      activeStepIndex: index,
-    });
+    this.store.activeStepIndex = index;
   };
 
   renderContent = () => (
     <div className={styles.container}>
-      <LeftSteps
-        activeStepIndex={this.state.activeStepIndex}
-        activeByStep={this.activeByStep}
-      />
-      <div className={styles.right}>
-        <div className={styles.logContainer}>
-          <RightLogContent activeStepIndex={this.state.activeStepIndex} />
-        </div>
-      </div>
+      <LeftSteps activeByStep={this.activeByStep} />
+      <RightLogContent />
     </div>
   );
 }
