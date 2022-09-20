@@ -44,6 +44,8 @@ export default class LogStore extends BaseStore {
       params = { ...params, offset: this.cumulativeSize };
       this.fetchStepLog(params);
     }
+    this.isExpand = true;
+    this.isLoading = false;
   }
 
   async getStepLog(params) {

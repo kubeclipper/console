@@ -15,6 +15,7 @@
  */
 
 import BaseStore from './base';
+import { makeObservable, observable } from 'mobx';
 
 class OperationStore extends BaseStore {
   operations = [];
@@ -23,11 +24,23 @@ class OperationStore extends BaseStore {
 
   operationSteps = [];
 
-  currentNodesByStep = {
-    status: [],
-  };
+  currentNodesByStep = {};
+
+  activeStepIndex = 0;
 
   module = 'operations';
+
+  constructor(props) {
+    super(props);
+
+    makeObservable(this, {
+      operations: observable,
+      currentOperation: observable,
+      operationSteps: observable,
+      currentNodesByStep: observable,
+      activeStepIndex: observable,
+    });
+  }
 
   async listDidFetch(items) {
     this.operations = items;
@@ -43,7 +56,7 @@ class OperationStore extends BaseStore {
   reset() {
     this.currentOperation = {};
     this.operationSteps = [];
-    this.currentNodesByStep = { status: [] };
+    this.currentNodesByStep = {};
   }
 }
 
