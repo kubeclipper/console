@@ -358,6 +358,7 @@ BaseList.defaultProps = {
   isAction: true,
   filterByInputParams: (fields) => ({ fieldSelector: joinSelector(fields) }),
   currentTab: {},
+  isRenderFooter: true,
 };
 
 export default BaseList;
