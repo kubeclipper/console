@@ -87,6 +87,7 @@ export default function Storage() {
           item: {
             name: id,
             component: [item],
+            plugin: toJS(store.detail.plugin),
             uninstall: true,
             title: t('Remove Storage'),
           },

@@ -143,7 +143,8 @@ export default class ConfirmAction {
     });
   };
 
-  submitErrorMsg = (data) => {
+  submitErrorMsg = (data, realError) => {
+    if (realError) return realError;
     const name = this.getName(data);
     return t('Unable to {action} {name}.', {
       action: this.actionName || this.title,
