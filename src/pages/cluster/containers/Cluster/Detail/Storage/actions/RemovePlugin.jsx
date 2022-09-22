@@ -48,9 +48,21 @@ export default class RemovePlugin extends ConfirmAction {
   };
 
   onSubmit = async (item) => {
-    const { name, component, uninstall } = item;
+    const { name, component, uninstall, plugin } = item;
+    const [firstComponet] = component;
+    const currentScName = firstComponet.config.scName;
+    const ksStorageClass =
+      plugin?.map(({ config }) => config.storageClass) || [];
+    if (ksStorageClass.includes(currentScName)) {
+      return Promise.reject(
+        t(
+          'The installed plugins exist in the storage class and cannot be deleted.'
+        )
+      );
+    }
+
     await clusterStore.patchComponents(name, component, uninstall);
     await clusterStore.fetchDetail({ id: name });
-    return Promise.resolve(true);
+    return Promise.resolve();
   };
 }

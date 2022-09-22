@@ -552,5 +552,6 @@
   "The selected node and schema are inconsistent": "The selected node and schema are inconsistent",
   "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)",
   "View KubeConfig File": "View KubeConfig File",
-  "Please select verification mode!": "Please select verification mode!"
+  "Please select verification mode!": "Please select verification mode!",
+  "The installed plugins exist in the storage class and cannot be deleted.": "The installed plugins exist in the storage class and cannot be deleted."
 }
