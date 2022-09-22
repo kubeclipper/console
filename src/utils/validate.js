@@ -15,6 +15,7 @@
  */
 import { isString } from 'lodash';
 import { Address4, Address6 } from 'ip-address';
+import { subdomain } from './regex';
 
 // eslint-disable-next-line no-unused-vars
 const ip =
@@ -25,8 +26,8 @@ const ipCidr =
   /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)([\/](([0-9])|([1-2][0-9])|(3[1-2])))?$/; // eslint-disable-line
 const ipv6Cidr =
   /^((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]d|1dd|[1-9]?d)(.(25[0-5]|2[0-4]d|1dd|[1-9]?d)){3}))|:)))(%.+)?s*(\/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))?$/;
-const nameRegex =
-  /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^<>.:()_-]{0,127}$/; // eslint-disable-line
+// const nameRegex =
+//   /^[a-zA-Z\u4e00-\u9fa5][\u4e00-\u9fa5\w"'\[\]^<>.:()_-]{0,127}$/; // eslint-disable-line
 const macRegex = /^[A-F0-9]{2}(:[A-F0-9]{2}){5}$/;
 const portRangeRegex =
   /^([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5])(:([1-9]|[1-5]?[0-9]{2,4}|6[1-4][0-9]{3}|65[1-4][0-9]{2}|655[1-2][0-9]|6553[1-5]))?$/;
@@ -48,6 +49,8 @@ const ipPortRegx =
   // eslint-disable-next-line no-useless-escape
   /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\:([0-9]|[1-9]\d{1,3}|[1-5]\d{4}|6[0-5]{2}[0-3][0-5])$/;
 const numberRegx = /^[0-9]*$/;
+const nameRegex =
+  /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
 
 export const regex = {
   cidr,
@@ -102,7 +105,7 @@ export const isIPv6Cidr = (value) => ipv6Cidr.test(value);
 
 export const isName = (value) => {
   if (value && isString(value)) {
-    return nameRegex.test(value) && value.length <= 128;
+    return nameRegex.test(value) && value.length <= 64;
   }
   return false;
 };
@@ -110,7 +113,7 @@ export const isName = (value) => {
 export const isPasswordRegex = (value) => passwordRegex.test(value);
 
 export const nameMessage = t(
-  'The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain "0-9, a-z, A-Z, "-\'_()[].:^<>".'
+  'The name can only contain lowercase letters, numbers, and separators ("-" or "."), and must start and end with a lowercase letter or number, up to a maximum of 64 characters'
 );
 
 export const portMessage = t('Enter an integer value between 1 and 65535.');
@@ -152,7 +155,7 @@ export const nameValidate = (rule, value) => {
   if (isName(value)) {
     return Promise.resolve(true);
   }
-  return Promise.reject(new Error(`${t('Invalid: ')}${nameMessage}`));
+  return Promise.reject(new Error(`${nameMessage}`));
 };
 
 export const macAddressValidate = (rule, value) => {

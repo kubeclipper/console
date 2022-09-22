@@ -18,7 +18,7 @@ import { observer } from 'mobx-react';
 import ContainerTerminalModal from 'pages/cluster/components/TerminalCtl';
 import { Modal, Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
-import { checkExpired } from 'utils';
+import { checkExpired, isDisableByProviderType } from 'utils';
 
 @observer
 export default class ConnectTerminal {
@@ -42,7 +42,8 @@ export default class ConnectTerminal {
     checkExpired(item.licenseExpirationTime);
 
   static allowed = (item) =>
-    Promise.resolve(this.isLicensExpiration(item) && this.isRunning(item));
+    Promise.resolve(this.isLicensExpiration(item) && this.isRunning(item)) &&
+    !isDisableByProviderType(item);
 
   static openTerminal = async (val) => {
     const { name } = val;

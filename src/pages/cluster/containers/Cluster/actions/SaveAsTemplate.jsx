@@ -16,6 +16,7 @@
 import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
+import { isDisableByProviderType } from 'utils';
 
 @observer
 class SaveAsTemplate extends ModalAction {
@@ -57,7 +58,8 @@ class SaveAsTemplate extends ModalAction {
 
   static isInstalling = (item) => item.status === 'Installing';
 
-  static allowed = (item) => Promise.resolve(!this.isInstalling(item));
+  static allowed = (item) =>
+    Promise.resolve(!this.isInstalling(item)) && !isDisableByProviderType(item);
 
   get formItems() {
     return [

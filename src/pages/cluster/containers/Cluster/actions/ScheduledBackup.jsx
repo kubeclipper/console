@@ -19,6 +19,7 @@ import { rootStore } from 'stores';
 import Notify from 'components/Notify';
 import { cronTypeOption } from 'resources/date';
 import { formatFormTemplates } from 'resources/backup';
+import { isDisableByProviderType } from 'utils';
 
 @observer
 class ScheduledBackup extends ModalAction {
@@ -65,7 +66,9 @@ class ScheduledBackup extends ModalAction {
     return false;
   }
 
-  static allowed = (item) => Promise.resolve(this.isStatusRunning(item));
+  static allowed = (item) =>
+    Promise.resolve(this.isStatusRunning(item)) &&
+    !isDisableByProviderType(item);
 
   get defaultValue() {
     const { backupPoint } = this.item;

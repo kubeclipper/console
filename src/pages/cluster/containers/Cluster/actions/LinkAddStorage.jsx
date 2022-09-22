@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 import { LinkAction } from 'containers/Action';
-import { checkExpired } from 'utils';
+import { checkExpired, isDisableByProviderType } from 'utils';
 
 export default class LinkAddStorage extends LinkAction {
   static title = t('Add Storage');
@@ -31,7 +31,9 @@ export default class LinkAddStorage extends LinkAction {
 
   static allowed = (item) =>
     Promise.resolve(
-      this.isLicensExpiration(item) && this.isStatusRunning(item)
+      this.isLicensExpiration(item) &&
+        this.isStatusRunning(item) &&
+        !isDisableByProviderType(item)
     );
 
   static path(item) {

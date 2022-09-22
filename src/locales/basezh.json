@@ -75,5 +75,12 @@
   "BackupPoint View": "查看备份点",
   "BACKUPPOINT_VIEW_DESC": "查看集群备份点",
   "BackupPoint Edit": "编辑备份点",
-  "BACKUPPOINT_EDIT_DESC": "编辑集群备份点"
+  "BACKUPPOINT_EDIT_DESC": "编辑集群备份点",
+  "CloudProvider View": "查看提供商",
+  "CLOUDPROVIDER_VIEW_DESC": "查看集群提供商",
+  "CloudProvider Edit": "编辑提供商",
+  "CLOUDPROVIDER_EDIT_DESC": "编辑集群提供商",
+  "SyncFailed": "同步失败",
+  "STATUS_INFORMATION": "状态信息",
+  "Syncing": "同步中"
 }

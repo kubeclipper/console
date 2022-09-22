@@ -704,3 +704,12 @@ export function checkExpired(time) {
   const secDiff = moment(time).diff(moment(), 'seconds');
   return secDiff > 0;
 }
+
+export function isDisableByProviderType(item) {
+  const PROVIDER_TYPE = 'rancher';
+
+  if (item?.providerType === PROVIDER_TYPE) {
+    return true;
+  }
+  return false;
+}

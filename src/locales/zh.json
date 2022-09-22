@@ -148,7 +148,6 @@
   "The enter does not meet the ipv4 cidr specification!": "输入不符合 ipv4 cidr 规范！",
   "The interface method uses the supplied interface regular expression (golang syntax) to enumerate matching interfaces and to return the first IP address on the first matching interface. The order that both the interfaces and the IP addresses are listed is system dependent.": "根据正则表达式获取所有满足的网卡设备名称并返回第一个满足表达式网卡的地址作为节点之间的路由地址",
   "The ip is already occupied！": "该 IP 已经被占用！",
-  "The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain \"0-9, a-z, A-Z, \"-'_()[].:^<>\".": "名称应以大写字母，小写字母或中文开头，最长为128字符，且只包含“0-9, a-z, A-Z, \"'-_()[].:^<>”。",
   "The overlay mode pod network using vxlan technology is suitable for almost all platforms but the performance is reduced": "使用 vxlan 技术的 overlay 模式的 pod 网络,适用于几乎所有的平台但是性能下降",
   "The starting number must be less than the ending number": "起始数字必须小于结束数字",
   "Unable to {action} {name}.": "无法{ action } {name}。",
@@ -553,5 +552,6 @@
   "The selected node and schema are inconsistent": "选择的节点和架构不一致",
   "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "备份路径需要在每个节点上自行创建，并将路径该挂载到共享的文件路径(如 NFS)",
   "Please select verification mode!": "请选择验证方式",
-  "The installed plugins exist in the storage class and cannot be deleted.": "存储类中存在已安装的插件，无法删除。"
+  "The installed plugins exist in the storage class and cannot be deleted.": "存储类中存在已安装的插件，无法删除。",
+  "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters": "只能包含小写字母、数字及分隔符('-'或'.')，且必须以小写字母或数字开头及结尾,最长 64 个字符"
 }

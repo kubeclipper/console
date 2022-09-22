@@ -17,7 +17,7 @@ import React from 'react';
 import { Modal, Button } from 'antd';
 import KubeConfig from 'pages/cluster/components/KubeConfig';
 import { CloseOutlined } from '@ant-design/icons';
-import { checkExpired } from 'utils';
+import { checkExpired, isDisableByProviderType } from 'utils';
 
 export default class KubeConfiView {
   static id = 'kubeconfig';
@@ -39,7 +39,8 @@ export default class KubeConfiView {
 
   static policy = 'clusters:view';
 
-  static allowed = (item) => Promise.resolve(this.isRunning(item));
+  static allowed = (item) =>
+    Promise.resolve(this.isRunning(item) && !isDisableByProviderType(item));
 
   static openTerminal = async (val) => {
     const { name } = val;
