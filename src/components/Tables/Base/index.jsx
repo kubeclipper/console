@@ -431,6 +431,7 @@ const BaseTable = (props) => {
             isStatus = false,
             extraNameIndex,
             extraNameCopyable,
+            extraRender,
             ...rest
           } = column;
 
@@ -474,9 +475,12 @@ const BaseTable = (props) => {
               if (value && value !== '-') {
                 return (
                   <>
-                    <Paragraph {...nameProps}>
-                      {render ? render(value, record) : value}
-                    </Paragraph>
+                    <div style={{ display: 'flex' }}>
+                      <Paragraph {...nameProps}>
+                        {render ? render(value, record) : value}
+                      </Paragraph>
+                      {extraRender?.(value, record)}
+                    </div>
                     {extraNameIndex ? (
                       <Paragraph {...extraProps}>{extraVal}</Paragraph>
                     ) : (
