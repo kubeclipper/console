@@ -17,6 +17,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { getRoles, nodeEnum } from 'resources/node';
 import RenderOption from 'components/RenderOption';
+import { Tag } from 'antd';
+import { checkExpired } from 'utils';
+import moment from 'moment';
 
 export const clusterParams = {
   offline: true,
@@ -267,6 +270,25 @@ export const columns = [
     isHideable: true,
     copyable: true,
     render: (name) => <Link to={`/cluster/${name}`}>{name}</Link>,
+    extraRender: (name, data) => {
+      let isExpired = null;
+      if (data.licenseExpirationTime) {
+        const date = moment(data.licenseExpirationTime)
+          .subtract(1, 'day')
+          .format('YYYY-MM-DD HH:mm:ss');
+        isExpired = !checkExpired(date);
+      }
+
+      return (
+        <>
+          {isExpired ? (
+            <Tag style={{ marginLeft: '12px' }} color={'red'} key={name}>
+              {t('License Expiration')}
+            </Tag>
+          ) : null}
+        </>
+      );
+    },
   },
   {
     title: t('Region'),
