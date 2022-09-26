@@ -19,6 +19,7 @@ import { rootStore } from 'stores';
 import FORM_TEMPLATES from 'utils/form.templates';
 import { set } from 'lodash';
 import Notify from 'components/Notify';
+import { isDisableByProviderType } from 'utils';
 
 @observer
 export default class Backup extends ModalAction {
@@ -63,7 +64,10 @@ export default class Backup extends ModalAction {
     return false;
   }
 
-  static allowed = (item) => Promise.resolve(this.isStatusRunning(item));
+  static allowed = (item) =>
+    Promise.resolve(
+      this.isStatusRunning(item) && !isDisableByProviderType(item)
+    );
 
   get formItems() {
     return [

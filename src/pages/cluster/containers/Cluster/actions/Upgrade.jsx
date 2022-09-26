@@ -19,7 +19,12 @@ import { toJS } from 'mobx';
 import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import styles from './index.less';
-import { versionCompare, versionCross, checkExpired } from 'utils';
+import {
+  versionCompare,
+  versionCross,
+  checkExpired,
+  isDisableByProviderType,
+} from 'utils';
 import { isIPv4, isDomain, isIpPort } from 'utils/validate';
 
 @observer
@@ -111,7 +116,9 @@ export default class Upgrade extends ModalAction {
 
   static allowed = (item) =>
     Promise.resolve(
-      this.isLicensExpiration(item) && this.isStatusRunning(item)
+      this.isLicensExpiration(item) &&
+        this.isStatusRunning(item) &&
+        !isDisableByProviderType(item)
     );
 
   getMetaVersion(offline) {

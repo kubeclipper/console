@@ -148,7 +148,6 @@
   "The enter does not meet the ipv4 cidr specification!": "The enter does not meet the ipv4 cidr specification!",
   "The interface method uses the supplied interface regular expression (golang syntax) to enumerate matching interfaces and to return the first IP address on the first matching interface. The order that both the interfaces and the IP addresses are listed is system dependent.": "The interface method uses the supplied interface regular expression (golang syntax) to enumerate matching interfaces and to return the first IP address on the first matching interface. The order that both the interfaces and the IP addresses are listed is system dependent.",
   "The ip is already occupied！": "The ip is already occupied！",
-  "The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain \"0-9, a-z, A-Z, \"-'_()[].:^<>\".": "The name should start with upper letter, lower letter or chinese, and be a string of 1 to 128, characters can only contain \"0-9, a-z, A-Z, \"-'_()[].:^<>\".",
   "The overlay mode pod network using vxlan technology is suitable for almost all platforms but the performance is reduced": "The overlay mode pod network using vxlan technology is suitable for almost all platforms but the performance is reduced",
   "The starting number must be less than the ending number": "The starting number must be less than the ending number",
   "Unable to {action} {name}.": "Unable to {action} {name}.",
@@ -553,5 +552,6 @@
   "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)",
   "View KubeConfig File": "View KubeConfig File",
   "Please select verification mode!": "Please select verification mode!",
-  "The installed plugins exist in the storage class and cannot be deleted.": "The installed plugins exist in the storage class and cannot be deleted."
+  "The installed plugins exist in the storage class and cannot be deleted.": "The installed plugins exist in the storage class and cannot be deleted.",
+  "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters": "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters"
 }

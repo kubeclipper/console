@@ -25,7 +25,7 @@ import { computeAutoDetectionReversion } from 'resources/common';
  * @param {*} item
  * @returns
  */
-const getOriginData = (item) =>
+export const getOriginData = (item) =>
   omit(item, [
     'metadata.uid',
     'metadata.selfLink',
@@ -41,7 +41,7 @@ const getOriginData = (item) =>
  * @param {*} item
  * @returns
  */
-const getBaseInfo = (item) => ({
+export const getBaseInfo = (item) => ({
   id: get(item, 'metadata.name'),
   name: get(item, 'metadata.name'),
   createTime: get(item, 'metadata.creationTimestamp'),
@@ -139,6 +139,8 @@ const ClusterMapper = (item) => {
     region: get(metadata, 'labels["topology.kubeclipper.io/region"]'),
     description: get(metadata, 'annotations["kubeclipper.io/description"]'),
     backupPoint: get(metadata, 'labels["kubeclipper.io/backupPoint"]'),
+    providerName: get(metadata, 'labels["kubeclipper.io/clusterProviderName"]'),
+    providerType: get(metadata, 'labels["kubeclipper.io/clusterProviderType"]'),
     _originData: getOriginData(item),
   };
 };

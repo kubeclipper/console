@@ -16,6 +16,7 @@
 import { ConfirmAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import { failedStatus } from 'resources/cluster';
+import { isDisableByProviderType } from 'utils';
 
 const { clusterStore } = rootStore;
 
@@ -46,7 +47,8 @@ export default class Index extends ConfirmAction {
     return failedStatus.includes(item.status);
   }
 
-  allowedCheckFunc = (item) => this.isFailed(item);
+  allowedCheckFunc = (item) =>
+    this.isFailed(item) && !isDisableByProviderType(item);
 
   confirmContext = (data) => {
     const name = this.getName(data);

@@ -17,6 +17,7 @@ import { ConfirmAction } from 'containers/Action';
 import React from 'react';
 import { rootStore } from 'stores';
 import { failedStatus } from 'resources/cluster';
+import { isDisableByProviderType } from 'utils';
 
 import styles from './index.less';
 
@@ -55,7 +56,9 @@ export default class DeleteAction extends ConfirmAction {
     return failedStatus.includes(item.status);
   }
 
-  allowedCheckFunc = (item) => this.isRunning(item) || this.isFailed(item);
+  allowedCheckFunc = (item) =>
+    (this.isRunning(item) || this.isFailed(item)) &&
+    !isDisableByProviderType(item);
 
   confirmContext = (data) => {
     const name = this.getName(data);

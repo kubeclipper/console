@@ -56,6 +56,8 @@ class Edit extends ModalAction {
       omit(metadata.labels, [
         'kubeclipper.io/externalIP',
         'topology.kubeclipper.io/region',
+        'kubeclipper.io/clusterProviderName',
+        'kubeclipper.io/clusterProviderType',
       ])
     );
 
@@ -152,8 +154,13 @@ class Edit extends ModalAction {
       description
     );
 
+    const pickLabels = [
+      'topology.kubeclipper.io/region',
+      'kubeclipper.io/clusterProviderName',
+      'kubeclipper.io/clusterProviderType',
+    ];
     set(formTemplate, 'metadata.labels', {
-      ...pick(formTemplate.metadata.labels, ['topology.kubeclipper.io/region']),
+      ...pick(formTemplate.metadata.labels, pickLabels),
       ...(externalIP ? { 'kubeclipper.io/externalIP': externalIP } : {}),
       ...arrayInput2Label(labels),
       ...(backupPoint ? { 'kubeclipper.io/backupPoint': backupPoint } : {}),

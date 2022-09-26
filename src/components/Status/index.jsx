@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge } from 'antd';
+import { Badge, Tooltip } from 'antd';
 import { isBoolean, isString } from 'lodash';
 
 const statusMap = {
@@ -46,10 +46,11 @@ const statusMap = {
   inProgress: 'processing',
   completed: 'success',
   partiallyFailed: 'error',
+  syncing: 'processing',
 };
 
 function Status(props) {
-  const { status, text, errIgnore = false } = props;
+  const { status, text, errIgnore = false, hoverText } = props;
   let realStatus = 'default';
 
   if (isBoolean(status)) {
@@ -62,17 +63,27 @@ function Status(props) {
     }
   }
 
+  if (hoverText) {
+    return (
+      <Tooltip placement="top" title={hoverText}>
+        <Badge status={realStatus} text={text} />
+      </Tooltip>
+    );
+  }
+
   return <Badge status={realStatus} text={text} />;
 }
 
 Status.propTypes = {
   status: PropTypes.any,
   text: PropTypes.string,
+  hoverText: PropTypes.node,
 };
 
 Status.defaultProps = {
   status: 'enabled',
   text: 'Enabled',
+  hoverText: null,
 };
 
 export default Status;

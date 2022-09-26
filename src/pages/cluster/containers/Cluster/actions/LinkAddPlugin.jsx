@@ -15,7 +15,7 @@
  */
 import { LinkAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import { checkExpired } from 'utils';
+import { checkExpired, isDisableByProviderType } from 'utils';
 
 class LinkAddPlugin extends LinkAction {
   static title = t('Add Plugin');
@@ -38,7 +38,8 @@ class LinkAddPlugin extends LinkAction {
     Promise.resolve(
       this.hasPlugin() &&
         this.isStatusRunning(item) &&
-        this.isLicensExpiration(item)
+        this.isLicensExpiration(item) &&
+        !isDisableByProviderType(item)
     );
 
   static path(item) {

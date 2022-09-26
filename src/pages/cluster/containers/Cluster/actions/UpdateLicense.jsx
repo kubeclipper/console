@@ -15,7 +15,7 @@
  */
 import { ConfirmAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import { checkExpired } from 'utils';
+import { checkExpired, isDisableByProviderType } from 'utils';
 
 const { clusterStore } = rootStore;
 
@@ -43,7 +43,8 @@ export default class UpdateLicense extends ConfirmAction {
   isRunning = (item) => item.status === 'Running';
 
   allowedCheckFunc = (item) =>
-    Promise.resolve(this.isRunning(item) && this.isLicensExpiration(item));
+    Promise.resolve(this.isRunning(item) && this.isLicensExpiration(item)) &&
+    !isDisableByProviderType(item);
 
   onSubmit = (item) => {
     const { name } = item;
