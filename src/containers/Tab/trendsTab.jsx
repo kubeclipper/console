@@ -19,7 +19,7 @@ import { Tabs, Skeleton } from 'antd';
 import { observer } from 'mobx-react';
 import styles from './index.less';
 import { useRootStore } from 'stores';
-import { isEmpty } from 'lodash';
+import { isEmpty, isUndefined } from 'lodash';
 import { useQuery } from 'hooks';
 
 const TabComponent = observer((props) => {
@@ -61,8 +61,13 @@ const Tab = (props) => {
       setTabLoading(false);
     } else {
       const _availableTabs = tabs.filter((tabItem) => {
-        const { checkEnable } = tabItem;
-        return !checkEnable || !isEmpty(detail[checkEnable]);
+        const { checkEnable, checkProvider } = tabItem;
+
+        const componentsEnable = !checkEnable || !isEmpty(detail[checkEnable]);
+        let providerEnable =
+          checkProvider && checkProvider === detail?.provider?.name;
+        if (isUndefined(providerEnable)) providerEnable = !providerEnable;
+        return componentsEnable && providerEnable;
       });
       const _activeKey =
         _availableTabs.find((it) => it.key === urlParams.tab)?.key ||
