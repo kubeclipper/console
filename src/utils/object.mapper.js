@@ -214,7 +214,7 @@ const ClusterTemplateMapper = (item) => {
     // etcd
     etcdDataDir: get(config, 'etcd.dataDir'),
     // kubectl
-    kubectlDataDir: get(config, 'kubelet.rootDir'),
+    kubeletDataDir: get(config, 'kubelet.rootDir'),
     // cni
     cniType: get(config, 'cni.type'),
     calicoVersion: get(config, 'cni.version'),

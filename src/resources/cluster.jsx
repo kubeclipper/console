@@ -25,7 +25,7 @@ export const clusterParams = {
   offline: true,
   localRegistry: '',
   etcdDataDir: '/var/lib/etcd',
-  kubectlDataDir: '/var/lib/kubelet',
+  kubeletDataDir: '/var/lib/kubelet',
   containerRuntimeType: 'containerd',
   dockerRootDir: '/var/lib/docker',
   containerdRootDir: '/var/lib/containerd',

@@ -18,7 +18,11 @@ import { ModalAction } from 'containers/Action';
 import { set, get, omit, pick } from 'lodash';
 import { rootStore } from 'stores';
 import KeyValueInput from 'components/FormItem/KeyValueInput';
-import { arrayInput2Label, label2ArrayInput } from 'utils';
+import {
+  arrayInput2Label,
+  label2ArrayInput,
+  isDisableByProviderType,
+} from 'utils';
 import { isIp } from 'utils/validate';
 
 @observer
@@ -119,7 +123,7 @@ class Edit extends ModalAction {
         label: t('description'),
         type: 'input',
       },
-      {
+      !isDisableByProviderType(this.item) && {
         name: 'backupPoint',
         label: t('BackupPoint'),
         type: 'select',

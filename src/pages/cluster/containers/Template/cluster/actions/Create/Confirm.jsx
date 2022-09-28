@@ -232,8 +232,8 @@ export class ConfirmStep extends BaseForm {
       },
       ...this.notFilled(t('{name} Data Dir', { name: 'ETCD' }), 'etcdDataDir'),
       ...this.notFilled(
-        t('{name} Data Dir', { name: 'kubectl' }),
-        'kubectlDataDir'
+        t('{name} Data Dir', { name: 'kubelet' }),
+        'kubeletDataDir'
       ),
       ...this.notFilled(t('CertSANs'), 'certSANs', arrayInputValue),
       {
