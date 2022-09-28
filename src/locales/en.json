@@ -553,5 +553,7 @@
   "View KubeConfig File": "View KubeConfig File",
   "Please select verification mode!": "Please select verification mode!",
   "The installed plugins exist in the storage class and cannot be deleted.": "The installed plugins exist in the storage class and cannot be deleted.",
-  "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters": "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters"
+  "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters": "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters",
+  "Removing": "Removing",
+  "RemoveFailed": "RemoveFailed"
 }
