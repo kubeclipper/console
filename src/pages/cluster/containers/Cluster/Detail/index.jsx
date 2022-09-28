@@ -83,11 +83,13 @@ function ClusterDetail() {
         title: t('BackUp'),
         key: 'BackUp',
         component: BackUp,
+        checkProvider: 'kubeadm',
       },
       {
         title: t('Scheduled Backup'),
         key: 'ScheduledBackup',
         component: ScheduledBackup,
+        checkProvider: 'kubeadm',
       },
     ],
     detailInfos: [
