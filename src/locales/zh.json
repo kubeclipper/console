@@ -553,5 +553,7 @@
   "The backup path needs to be created on each node and mounted to a shared file path (such as NFS)": "备份路径需要在每个节点上自行创建，并将路径该挂载到共享的文件路径(如 NFS)",
   "Please select verification mode!": "请选择验证方式",
   "The installed plugins exist in the storage class and cannot be deleted.": "存储类中存在已安装的插件，无法删除。",
-  "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters": "只能包含小写字母、数字及分隔符('-'或'.')，且必须以小写字母或数字开头及结尾,最长 64 个字符"
+  "The name can only contain lowercase letters, numbers, and separators (\"-\" or \".\"), and must start and end with a lowercase letter or number, up to a maximum of 64 characters": "只能包含小写字母、数字及分隔符('-'或'.')，且必须以小写字母或数字开头及结尾,最长 64 个字符",
+  "Removing": "移除中",
+  "RemoveFailed": "移除失败"
 }

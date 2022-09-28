@@ -59,6 +59,7 @@ export const transitionStatus = [
   'BackingUp',
   'Restoring',
   'Terminating',
+  'Removing',
 ];
 
 export const failedStatus = [
@@ -67,6 +68,7 @@ export const failedStatus = [
   'UpgradeFailed',
   'RestoreFailed',
   'TerminateFailed',
+  'RemoveFailed',
 ];
 
 export const clusterStatus = [
