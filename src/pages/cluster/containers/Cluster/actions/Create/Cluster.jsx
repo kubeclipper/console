@@ -18,7 +18,7 @@ import BaseForm from 'components/Form';
 import { toJS } from 'mobx';
 import { rootStore } from 'stores';
 import { message } from 'antd';
-import { fqdn, subdomain } from 'utils/regex';
+import { fqdn, subdomain, path } from 'utils/regex';
 import {
   isIPv4,
   isIpv6,
@@ -574,6 +574,13 @@ export default class Cluster extends BaseForm {
           maxLength: 256,
           placeholder: t('Please input {name} data dir', { name: 'ETCD' }),
           tip: t('{name} Data Dir', { name: 'ETCD' }),
+          rules: [
+            {
+              pattern: path,
+              message: t('Please input correct path'),
+              required: true,
+            },
+          ],
         },
         {
           name: 'kubeletDataDir',
@@ -581,6 +588,13 @@ export default class Cluster extends BaseForm {
           type: 'input',
           maxLength: 256,
           placeholder: t('Please input {name} data dir', { name: 'kubelet' }),
+          rules: [
+            {
+              pattern: path,
+              message: t('Please input correct path'),
+              required: true,
+            },
+          ],
         },
         // certSANs 数组string， 填 ip 和域名
         {
