@@ -21,6 +21,7 @@ import { rootStore } from 'stores';
 import WebsocketStore from 'stores/websocket';
 import { getToken } from 'utils/localStorage';
 import ObjectMapper from 'utils/object.mapper';
+import { findLastIndex, findLast } from 'lodash';
 
 import RightLogContent from './RightLogContent';
 import LeftSteps from './LeftSteps';
@@ -103,8 +104,8 @@ export default class PipelineLog extends ViewAction {
       }
     });
 
-    const lastIndex = operationSteps.findLastIndex((item) => item.stepID);
-    const lastStep = operationSteps.findLast((item) => item.stepID);
+    const lastIndex = findLastIndex(operationSteps, (item) => item.stepID);
+    const lastStep = findLast(operationSteps, (item) => item.stepID);
 
     const msgPending = ['running'];
     // const msgResolve = ['successful', 'failed'];
