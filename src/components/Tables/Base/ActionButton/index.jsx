@@ -143,7 +143,8 @@ function onShowError(action, data, error, props) {
   }
   const { submitErrorMsg } = action;
   const { data: responseData } = (error || {}).response || error || {};
-  const realError = responseData || error;
+  const realError =
+    responseData?.reason || responseData?.message || responseData || error;
   const message = submitErrorMsg
     ? submitErrorMsg(data, realError)
     : getDefaultMsg(action, data).submitErrorMsg;
