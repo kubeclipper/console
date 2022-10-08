@@ -43,6 +43,8 @@ class RootStore {
     });
   }
 
+  isOpenSource = true;
+
   user = null;
 
   roles = null;

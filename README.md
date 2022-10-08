@@ -1,6 +1,6 @@
 # KubeClipper Console
 
-KubeClipper console is the web for [KubeClipper](https://github.com/kubeclipper-labs/kubeclipper).
+KubeClipper console is the web for [KubeClipper](https://github.com/kubeclipper/kubeclipper).
 
 ## Getting Started
 
@@ -62,7 +62,7 @@ docker build -t kubeclipper-console .
 
 ## How to submit a PR
 
-Follow [Contribution Rules](https://github.com/kubeclipper-labs/community) to commit your codes.
+Follow [Contribution Rules](https://github.com/kubeclipper/community) to commit your codes.
 
 ## Others
 

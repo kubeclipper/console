@@ -23,6 +23,7 @@ import { useRootStore } from 'stores';
 import Breadcrumbs from './Breadcrumb';
 import { BaseContext } from '..';
 import ErrorBoundary from 'components/ErrorBoundary';
+import Tools from 'components/Tools';
 
 import styles from '../index.less';
 
@@ -94,6 +95,7 @@ function MainContent() {
       }  ${mainTabClass}`}
     >
       <ErrorBoundary>{renderRoutes(routes, extraProps)}</ErrorBoundary>
+      <Tools />
     </div>
   );
 }
