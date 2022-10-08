@@ -17,6 +17,7 @@ import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import background from 'src/asset/image/background.png';
 import SelectLang from 'components/SelectLang';
+import VersionInfo from 'components/VersionInfo';
 import { useRootStore } from 'stores';
 import { setLocalStorageItem } from 'utils/localStorage';
 import Notify from 'components/Notify';
@@ -147,7 +148,8 @@ export default function Login(props) {
   return (
     <div className={styles.container}>
       <div className={styles.left}>
-        <SelectLang className={styles.lang} style={{ position: 'absolute' }} />
+        <SelectLang className={styles.lang} />
+        {rootStore.isOpenSource && <VersionInfo className={styles.about} />}
         <div className={styles.header}>
           {`${t('Welcome Login')} ${global_config.title}`}
         </div>

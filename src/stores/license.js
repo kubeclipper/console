@@ -41,7 +41,13 @@ export default class LicenseStore extends BaseStore {
   }
 
   async getVersion() {
-    const result = await request.get(this.getVersionnUrl());
+    const result = await request.get(
+      this.getVersionnUrl(),
+      {},
+      {
+        withoutToken: true,
+      }
+    );
     this.versionInfo = result || {};
   }
 
