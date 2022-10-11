@@ -110,6 +110,7 @@ const DropdownActionButton = ({
             routing={routing}
             style={{ padding: 0 }}
             containerProps={containerProps}
+            buttonClassName={styles['more-action-btn']}
             isMoreAction
           />
         );
@@ -135,6 +136,7 @@ const DropdownActionButton = ({
               onFinishAction={onFinishAction}
               routing={routing}
               containerProps={containerProps}
+              buttonClassName={styles['more-action-btn']}
             />
           </Menu.Item>
         );
@@ -152,9 +154,7 @@ const DropdownActionButton = ({
       );
     });
 
-    const menu = (
-      <Menu className={styles['action-sub-menu']}>{menuContent}</Menu>
-    );
+    const menu = <Menu>{menuContent}</Menu>;
 
     if (firstAction && moreActions.length > 0 && allowedFatherCount > 0) {
       dividerElement = <Divider type="vertical" />;

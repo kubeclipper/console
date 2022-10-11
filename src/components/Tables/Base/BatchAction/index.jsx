@@ -68,13 +68,18 @@ function DropdownActionButton({
           buttonType="link"
           onFinishAction={onFinishAction}
           containerProps={containerProps}
+          buttonClassName={styles['more-action-btn']}
         />
       </Menu.Item>
     );
   });
   const menu = <Menu>{menuItems}</Menu>;
   return (
-    <Dropdown overlay={menu} className={styles['table-action']}>
+    <Dropdown
+      overlay={menu}
+      className={styles['table-action']}
+      overlayClassName={styles['table-batch-menu']}
+    >
       <Button type="primary">
         {t('More Actions')} {<DownOutlined />}
       </Button>
