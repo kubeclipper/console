@@ -51,6 +51,7 @@ import SelectCycle from './SelectCycle';
 import Divider from './Divider';
 import DNSRecord from './DNSRecord';
 import SelectForValue from './SelectForValue';
+import YamlInput from './YamlInput';
 
 export const type2component = {
   label: Label,
@@ -87,6 +88,7 @@ export const type2component = {
   'label-input': LabelInput,
   'select-input': SelectWithInput,
   'dns-record': DNSRecord,
+  'yaml-input': YamlInput,
 };
 
 export default function FormItem(props) {

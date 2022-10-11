@@ -563,5 +563,11 @@
   "Backup and recovery": "Backup and recovery",
   "Cluster Status": "Cluster Status",
   "Plugin management": "Plugin management",
-  "Certificate Management": "Certificate Management"
+  "Certificate Management": "Certificate Management",
+  "Back to": "Back to",
+  "STATUS_INFORMATION": "STATUS_INFORMATION",
+  "Reason": "Reason",
+  "Message": "Message",
+  "Cluster Hosting": "Cluster Hosting",
+  "Cluster Hosting Detail": "Cluster Hosting Detail"
 }

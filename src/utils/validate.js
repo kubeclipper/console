@@ -15,7 +15,7 @@
  */
 import { isString } from 'lodash';
 import { Address4, Address6 } from 'ip-address';
-import { subdomain } from './regex';
+import yaml from 'js-yaml/dist/js-yaml';
 
 // eslint-disable-next-line no-unused-vars
 const ip =
@@ -235,3 +235,15 @@ export const getPasswordOtherRule =
       return passwordValidate(rule, value, state);
     },
   });
+
+export const yamlValidator = (item, value) => {
+  if (value !== undefined && value !== '') {
+    try {
+      yaml.load(value);
+      return Promise.resolve(true);
+    } catch (e) {
+      return Promise.reject(new Error(t('Illegal YAML scheme')));
+    }
+  }
+  return Promise.resolve(true);
+};

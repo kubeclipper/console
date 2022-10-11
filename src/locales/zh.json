@@ -563,5 +563,11 @@
   "Backup and recovery": "备份和恢复",
   "Cluster Status": "集群状态",
   "Plugin management": "插件管理",
-  "Certificate Management": "证书管理"
+  "Certificate Management": "证书管理",
+  "Back to": "返回",
+  "STATUS_INFORMATION": "",
+  "Reason": "",
+  "Message": "",
+  "Cluster Hosting": "",
+  "Cluster Hosting Detail": ""
 }

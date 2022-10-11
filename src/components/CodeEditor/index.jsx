@@ -22,6 +22,7 @@ import styles from './index.less';
 
 export default function CodeEditor(props) {
   const { className, mode, options, value, onChange } = props;
+
   return (
     <AceEditor
       {...options}
@@ -34,10 +35,10 @@ export default function CodeEditor(props) {
 }
 
 CodeEditor.defaultProps = {
-  value: {},
+  // value: {},
   mode: 'yaml',
   options: {},
-  onChange() {},
+  onChange: () => {},
 };
 
 CodeEditor.propTypes = {
