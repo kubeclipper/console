@@ -326,7 +326,7 @@ const ActionButton = (props) => {
         key={id}
         disabled={!isAllowed}
         className={buttonClassName}
-        style={{ ...style }}
+        style={style}
         block={isMoreAction}
       >
         {name || title}

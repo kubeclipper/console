@@ -28,24 +28,38 @@ import Terminal from './Terminal';
 import ScheduledBackup from './ScheduledBackup';
 import UpdateLicense from './UpdateLicense';
 import KubeConfig from './KubeConfig';
+import AddNodes from '../Detail/NodesList/actions/Add';
+import RemoveNodes from './RemoveNodes';
 
 const actionConfigs = {
   rowActions: {
     firstAction: LinkLog,
     moreActions: [
-      { action: Edit },
-      { action: Backup },
-      { action: ScheduledBackup },
-      { action: Restore },
-      { action: Upgrade },
       { action: Terminal },
-      { action: LinkAddPlugin },
-      { action: LinkAddStorage },
-      { action: SaveAsTemplate },
-      { action: Reset },
-      { action: UpdateLicense },
-      { action: KubeConfig },
-      { action: Delete },
+      {
+        title: t('Cluster Settings'),
+        actions: [Edit, SaveAsTemplate],
+      },
+      {
+        title: t('Node management'),
+        actions: [AddNodes, RemoveNodes],
+      },
+      {
+        title: t('Backup and recovery'),
+        actions: [Backup, ScheduledBackup, Reset, Restore],
+      },
+      {
+        title: t('Cluster Status'),
+        actions: [Upgrade, Delete],
+      },
+      {
+        title: t('Plugin management'),
+        actions: [LinkAddPlugin, LinkAddStorage],
+      },
+      {
+        title: t('Certificate Management'),
+        actions: [UpdateLicense, KubeConfig],
+      },
     ],
   },
   batchActions: [Delete],

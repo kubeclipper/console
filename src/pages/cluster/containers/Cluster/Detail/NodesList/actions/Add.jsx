@@ -18,12 +18,13 @@ import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import { ModalAction } from 'containers/Action';
 import { isEmpty } from 'lodash';
-import NodeStore from 'stores/node';
-import ClusterStore from 'stores/cluster';
 import SelectNodes from 'pages/cluster/components/SelectNodes';
 import LabelInput from 'components/FormItem/LabelInput';
 import { joinSelector } from 'utils';
 import { formatNodesWithLabel } from 'resources/node';
+import { rootStore } from 'stores';
+
+const { clusterStore, nodeStore } = rootStore;
 
 @observer
 export default class Add extends ModalAction {
@@ -40,10 +41,10 @@ export default class Add extends ModalAction {
   }
 
   init() {
-    this.nodeStore = new NodeStore();
-    this.clusterStore = new ClusterStore();
+    this.nodeStore = nodeStore;
+    this.clusterStore = clusterStore;
     this.fetchNodeList({
-      'topology.kubeclipper.io/region': this.defaultValue.region,
+      'topology.kubeclipper.io/region': this.item.region,
     });
   }
 
@@ -159,10 +160,7 @@ export default class Add extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const {
-      detail: { id: clusterId },
-    } = this.containerProps;
-
+    const { id: clusterId } = this.item;
     const { worker } = formatNodesWithLabel(values);
 
     return this.clusterStore.addOrRemoveNode(clusterId, {
