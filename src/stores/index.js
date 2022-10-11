@@ -24,24 +24,9 @@ import ObjectMapper from 'utils/object.mapper';
 import jwtDecode from 'jwt-decode';
 import { APIVERSION } from 'utils/constants';
 import { filterComponents } from 'utils/schemaForm';
+import root from './root';
 
 export const routingStore = new RouterStore();
-
-const cache = {};
-
-function importAllStores(r) {
-  r.keys().forEach((key) => (cache[key] = r(key)));
-  const keys = r.keys();
-  const omitKeys = ['./index.js', './base.js', './base.list.js'];
-
-  const stores = keys
-    .filter((k) => !omitKeys.includes(k))
-    .map((path) => cache[path].default);
-
-  return stores;
-}
-
-const allStores = importAllStores(require.context('./', true, /\.js$/));
 
 /* Store start */
 class RootStore {
@@ -51,10 +36,10 @@ class RootStore {
     this.routing = routingStore;
     this.routing.query = this.query;
 
-    allStores.forEach((key) => {
-      const property = key.name.replace(/^\S/, (s) => s.toLowerCase());
-      // eslint-disable-next-line new-cap
-      this[property] = new key(this);
+    Object.keys(root).forEach((key) => {
+      const property = key.replace(/^\S/, (s) => s.toLowerCase());
+
+      this[property] = new root[key](this);
     });
   }
 
