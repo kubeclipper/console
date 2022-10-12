@@ -59,7 +59,8 @@ class SaveAsTemplate extends ModalAction {
   static isInstalling = (item) => item.status === 'Installing';
 
   static allowed = (item) =>
-    Promise.resolve(!this.isInstalling(item)) && !isDisableByProviderType(item);
+    Promise.resolve(!this.isInstalling(item)) &&
+    !isDisableByProviderType(item, ['kubeadm']);
 
   get formItems() {
     return [

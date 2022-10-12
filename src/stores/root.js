@@ -27,6 +27,7 @@ import TemplatesStore from './templates';
 import BackupPointStore from './backupPoint';
 import LogStore from './log';
 import CornBackupStore from './cronBackup';
+import CloudProviderStore from './cloudprovider';
 
 export default {
   ClusterStore,
@@ -42,4 +43,5 @@ export default {
   BackupPointStore,
   LogStore,
   CornBackupStore,
+  CloudProviderStore,
 };

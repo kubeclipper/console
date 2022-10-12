@@ -62,12 +62,22 @@ const getScheduledBackupTemplate = () => ({
   spec: {},
 });
 
+const getCloudProviderTemplate = () => ({
+  kind: 'CloudProvider',
+  apiVersion: 'core.kubeclipper.io/v1',
+  metadata: {
+    annotations: {},
+  },
+  ssh: {},
+});
+
 const FORM_TEMPLATES = {
   users: getUserTemplate,
   roles: getRoleTemplate,
   backups: getBackupTemplate,
   dns: getDnsTemplate,
   scheduledBackup: getScheduledBackupTemplate,
+  cloudproviders: getCloudProviderTemplate,
 };
 
 export default FORM_TEMPLATES;

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { get, omit, merge, intersectionBy, has } from 'lodash';
+import { get, omit, merge, intersectionBy, has, set } from 'lodash';
 import { status as nodeStatus } from 'resources/node';
 import { formatRoleRules, safeParseJSON } from 'utils';
 import { INTERNAL_ROLE_DES } from 'utils/constants';
@@ -444,6 +444,40 @@ const CronBackupMapper = (item) => {
   };
 };
 
+const CloudProviderMapper = (item) => {
+  const sshType =
+    has(item, 'ssh.privateKey') && get(item, 'ssh.privateKey')
+      ? 'privateKey'
+      : 'password';
+
+  const phase =
+    get(item, 'status.conditions', []).find((c) => c.type === 'Ready') ?? {};
+
+  set(item, 'status.status', phase.status === 'True');
+
+  get(item, 'status.conditions', []).forEach((cd) => {
+    if (cd.type === 'Progressing') {
+      cd.type = t('Create');
+    }
+
+    if (cd.type === 'Ready') {
+      cd.type = t('Sync');
+    }
+  });
+
+  return {
+    ...getBaseInfo(item),
+    ...item,
+    sshType,
+    description: get(
+      item,
+      'metadata.annotations["kubeclipper.io/description"]'
+    ),
+    phase: phase.reason,
+    _originData: getOriginData(item),
+  };
+};
+
 export default {
   nodes: NodesMapper,
   clusters: ClusterMapper,
@@ -460,4 +494,5 @@ export default {
   cronBackups: CronBackupMapper,
   templates: TemplatesMapper,
   clusterTemplate: ClusterTemplateMapper,
+  cloudproviders: CloudProviderMapper,
 };

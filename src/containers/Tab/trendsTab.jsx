@@ -61,13 +61,11 @@ const Tab = (props) => {
       setTabLoading(false);
     } else {
       const _availableTabs = tabs.filter((tabItem) => {
-        const { checkEnable, checkProvider } = tabItem;
+        const { allowed } = tabItem;
 
-        const componentsEnable = !checkEnable || !isEmpty(detail[checkEnable]);
-        let providerEnable =
-          checkProvider && checkProvider === detail?.provider?.name;
-        if (isUndefined(providerEnable)) providerEnable = !providerEnable;
-        return componentsEnable && providerEnable;
+        if (allowed === undefined) return true;
+
+        return allowed && allowed(detail);
       });
       const _activeKey =
         _availableTabs.find((it) => it.key === urlParams.tab)?.key ||

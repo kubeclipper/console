@@ -19,6 +19,7 @@ import { useRootStore } from 'stores';
 import { clusterStatus, transitionStatus } from 'resources/cluster';
 import { Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { isEmpty } from 'lodash';
 import BaseDetail from './BaseDetail';
 import Storage from './Storage';
 import Plugins from './Plugins';
@@ -44,6 +45,9 @@ const StatusTitle = () => (
 function ClusterDetail() {
   const { clusterStore: store } = useRootStore();
 
+  const allowedCheckProviderType = (item) => item?.provider?.name !== 'rancher';
+  const allowedCheckComponents = (item, key) => !isEmpty(item[key]);
+
   const currentProps = {
     name: t('ClusterDetail'),
     authKey: 'cluster-detail',
@@ -61,13 +65,13 @@ function ClusterDetail() {
         title: t('Storage'),
         key: 'Storage',
         component: Storage,
-        checkEnable: 'storage',
+        allowed: (item) => allowedCheckComponents(item, 'storage'),
       },
       {
         title: t('Plugins'),
         key: 'Plugins',
         component: Plugins,
-        checkEnable: 'plugin',
+        allowed: (item) => allowedCheckComponents(item, 'plugin'),
       },
       {
         title: t('Nodes List'),
@@ -83,13 +87,13 @@ function ClusterDetail() {
         title: t('BackUp'),
         key: 'BackUp',
         component: BackUp,
-        checkProvider: 'kubeadm',
+        allowed: allowedCheckProviderType,
       },
       {
         title: t('Scheduled Backup'),
         key: 'ScheduledBackup',
         component: ScheduledBackup,
-        checkProvider: 'kubeadm',
+        allowed: allowedCheckProviderType,
       },
     ],
     detailInfos: [
