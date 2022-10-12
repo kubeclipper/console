@@ -75,6 +75,32 @@ export const uiSchemas = [
     },
   },
   {
+    name: 'nfs-csi',
+    schema: {
+      properties: {
+        enable: {
+          default: false,
+          priority: 0,
+          title: 'nfs-csi',
+          type: 'boolean',
+        },
+        reclaimPolicy: {
+          widget: 'select',
+          props: {},
+          enum: ['Retain', 'Delete'],
+          enumNames: ['Retain', 'Delete'],
+        },
+        mountOptions: {
+          widget: 'ArrayString',
+          props: {
+            isInput: true,
+            width: '100%',
+          },
+        },
+      },
+    },
+  },
+  {
     name: 'cinder',
     schema: {
       properties: {

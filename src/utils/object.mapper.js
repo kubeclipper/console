@@ -98,7 +98,7 @@ function filterComponents(array, filters) {
  */
 const ClusterMapper = (item) => {
   const { metadata, networking } = item;
-  const STORAGES = ['nfs-provisioner', 'ceph-csi', 'cinder'];
+  const STORAGES = ['nfs-provisioner', 'nfs-csi', 'ceph-csi', 'cinder'];
   const PLUGINS = ['kubesphere'];
 
   const components = Object.fromEntries(
