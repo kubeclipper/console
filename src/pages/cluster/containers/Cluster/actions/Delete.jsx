@@ -58,7 +58,7 @@ export default class DeleteAction extends ConfirmAction {
 
   allowedCheckFunc = (item) =>
     (this.isRunning(item) || this.isFailed(item)) &&
-    !isDisableByProviderType(item);
+    !isDisableByProviderType(item, ['kubeadm']);
 
   confirmContext = (data) => {
     const name = this.getName(data);

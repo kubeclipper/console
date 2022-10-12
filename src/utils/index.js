@@ -705,11 +705,31 @@ export function checkExpired(time) {
   return secDiff > 0;
 }
 
-export function isDisableByProviderType(item) {
+export function isDisableByProviderType(item, extraType = []) {
   const PROVIDER_TYPE = 'rancher';
 
   if (item?.providerType === PROVIDER_TYPE) {
     return true;
   }
+
+  if (extraType.includes(item?.providerType)) {
+    return true;
+  }
+
   return false;
 }
+
+/**
+ * 数组指定位置插入元素
+ * @param index 添加元素的位置
+ * @param items 向数组添加的新项目
+ */
+// eslint-disable-next-line no-extend-native
+Array.prototype.insert = function (index, ...items) {
+  if (isNaN(index)) {
+    throw new TypeError('请输入数字');
+  }
+  this.splice(index, 0, ...items);
+
+  return this;
+};

@@ -55,7 +55,6 @@ const DropdownActionButton = ({
   containerProps,
   firstActionClassName,
 }) => {
-  // console.log(alloweds);
   if (alloweds.length === 0) {
     return null;
   }
@@ -142,6 +141,9 @@ const DropdownActionButton = ({
         );
       });
       const menuKey = `sub-menu-${index}`;
+
+      if (allowedCount === 0) return null;
+
       return (
         <SubMenu
           popupClassName={styles['action-sub-menu']}

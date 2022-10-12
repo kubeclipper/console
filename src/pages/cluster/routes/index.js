@@ -27,7 +27,7 @@ import ClusterTemplate from '../containers/Template/cluster/actions/Create';
 import PluginTemplate from '../containers/Template/plugin/actions/Create';
 
 import HostingList from '../containers/Hosting';
-
+import ProviderDetail from '../containers/Hosting/Detail';
 import E404 from 'components/E404';
 
 const PATH = '/cluster';
@@ -68,7 +68,9 @@ export default [
         exact: true,
       },
       { path: `${PATH}/hosting`, component: HostingList, exact: true },
-      // { path: `${PATH}/hosting/:id`, component: ProviderDetail, exact: true },
+      { path: `${PATH}/hosting/:id`, component: ProviderDetail, exact: true },
+      { path: `${PATH}/hosting`, component: HostingList, exact: true },
+      { path: `${PATH}/hosting/:id`, component: ProviderDetail, exact: true },
       { path: `${PATH}/:id`, component: ClusterDetail, exact: true },
       { path: '*', component: E404 },
     ],

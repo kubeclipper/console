@@ -33,7 +33,7 @@ import Infos from 'components/Infos';
 import styles from './index.less';
 import { useRootStore } from 'stores';
 import ItemAction from 'components/Tables/Base/ItemAction';
-import Tab from 'containers/Tab/trendsTab';
+import Tab from 'src/containers/Tab/TrendsTab';
 import { useInterval } from 'hooks';
 
 const { Paragraph } = Typography;

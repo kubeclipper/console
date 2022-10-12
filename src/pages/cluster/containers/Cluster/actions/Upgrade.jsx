@@ -118,7 +118,7 @@ export default class Upgrade extends ModalAction {
     Promise.resolve(
       this.isLicensExpiration(item) &&
         this.isStatusRunning(item) &&
-        !isDisableByProviderType(item)
+        !isDisableByProviderType(item, ['kubeadm'])
     );
 
   getMetaVersion(offline) {
