@@ -37,7 +37,7 @@ function NotFound({ title, link, codeError }) {
 
   const p = (
     <p>
-      {des}
+      {des},{t('Back to')}
       {link && <Link to={link}>{t('Home page')}</Link>}
     </p>
   );

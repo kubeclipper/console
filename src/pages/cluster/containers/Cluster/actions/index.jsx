@@ -39,26 +39,32 @@ const actionConfigs = {
       {
         title: t('Cluster Settings'),
         actions: [Edit, SaveAsTemplate],
+        key: 'cluster',
       },
       {
         title: t('Node management'),
         actions: [AddNodes, RemoveNodes],
+        key: 'node',
       },
       {
         title: t('Backup and recovery'),
         actions: [Backup, ScheduledBackup, Reset, Restore],
+        key: 'backup',
       },
       {
         title: t('Cluster Status'),
         actions: [Upgrade, Delete],
+        key: 'status',
       },
       {
         title: t('Plugin management'),
         actions: [LinkAddPlugin, LinkAddStorage],
+        key: 'plugin',
       },
       {
         title: t('Certificate Management'),
         actions: [UpdateLicense, KubeConfig],
+        key: 'cert',
       },
     ],
   },

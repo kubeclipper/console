@@ -13,9 +13,22 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-@import '~styles/variables';
+import React from 'react';
+import Tab from 'containers/Tab';
+import Cluster from './Cluster';
 
-.editor {
-  min-height: 300px;
-  border-radius: 4px;
-}
+const Hosting = () => {
+  const currentProps = {
+    tabs: [
+      {
+        title: t('Cluster'),
+        key: 'cluster',
+        component: Cluster,
+      },
+    ],
+  };
+
+  return <Tab {...currentProps} />;
+};
+
+export default Hosting;

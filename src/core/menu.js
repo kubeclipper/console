@@ -119,6 +119,22 @@ const renderMenu = (t) => {
           level: 1,
           module: 'registries',
         },
+        {
+          path: '/cluster/hosting',
+          name: t('Cluster Hosting'),
+          key: 'cloud-hosting',
+          level: 1,
+          module: 'cloudproviders',
+          children: [
+            {
+              path: /^\/cluster\/hosting\/.[^/]+$/,
+              name: t('Cluster Hosting Detail'),
+              key: 'cluster-Hosting-detail',
+              level: 2,
+              module: 'cloudproviders',
+            },
+          ],
+        },
       ],
     },
     {
