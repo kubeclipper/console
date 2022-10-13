@@ -35,11 +35,6 @@ const actionConfigs = {
   rowActions: {
     firstAction: LinkLog,
     moreActions: [
-      { action: Edit },
-      { action: Backup },
-      { action: ScheduledBackup },
-      { action: Restore },
-      { action: Upgrade },
       { action: Terminal },
       {
         title: t('Cluster Settings'),
