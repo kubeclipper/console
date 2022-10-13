@@ -13,7 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { getLocalStorageItem, setLocalStorageItem } from './localStorage';
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+  getToken,
+} from './localStorage';
 
 describe('test localstorage', () => {
   it('getLocalStorageItem', () => {
@@ -41,5 +45,12 @@ describe('test localstorage', () => {
     setLocalStorageItem('key', 'value', -1);
     expect(getLocalStorageItem('key')).toBe(null);
     localStorage.clear();
+  });
+
+  it('getToken', () => {
+    setLocalStorageItem('token', { token: 'value' });
+    expect(getToken()).toBe('value');
+    setLocalStorageItem('token', null);
+    expect(getToken()).toBe('');
   });
 });
