@@ -25,6 +25,7 @@ import LabelInput from 'components/FormItem/LabelInput';
 import { message } from 'antd';
 import { subdomain } from 'utils/regex';
 import SelectNodes from 'pages/cluster/components/SelectNodes';
+import { nameMessage } from 'utils/validate';
 
 const { nodeStore, regionStore } = rootStore;
 
@@ -245,9 +246,7 @@ export default class Node extends BaseForm {
     }
 
     if (!subdomain.test(value)) {
-      return Promise.reject(
-        t('The enter does not meet the subdomain specification!')
-      );
+      return Promise.reject(nameMessage);
     }
 
     return Promise.resolve(true);
