@@ -50,4 +50,12 @@ module.exports = {
   },
   moduleFileExtensions: ['js', 'ts', 'tsx', 'jsx', 'json'],
   resetMocks: true,
+  // coverageThreshold: {
+  //   global: {
+  //     branches: 80,
+  //     functions: 80,
+  //     lines: 80,
+  //     statements: 80,
+  //   },
+  // },
 };

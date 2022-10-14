@@ -20,6 +20,7 @@ import {
   macAddressValidate,
   portRangeValidate,
   // passwordValidate,
+  yamlValidator,
 } from './validate';
 
 describe('test vaildate', () => {
@@ -77,4 +78,32 @@ describe('test vaildate', () => {
 
   //   expect(val).toBe();
   // });
+
+  it('yamlValidator', async () => {
+    const yaml = `
+                kind: Deployment
+                apiVersion: apps/v1
+                metadata:
+                  name: fdsff
+                  namespace: test
+                  labels:
+                    app: fdsff
+                `;
+
+    const yaml2 = `
+                  kind: Deployment
+                  apiVersion: apps/v1
+                  metadata:
+                    name: fdsff
+                      namespace: test
+                    labels:
+                      app: fdsff
+                  `;
+
+    const val1 = await yamlValidator('', yaml);
+    const val2 = yamlValidator('', yaml2);
+
+    expect(val1).toBe(true);
+    expect(val2).rejects.toThrow();
+  });
 });

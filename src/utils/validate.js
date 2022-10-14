@@ -236,7 +236,7 @@ export const getPasswordOtherRule =
     },
   });
 
-export const yamlValidator = (item, value) => {
+export const yamlValidator = (_, value) => {
   if (value !== undefined && value !== '') {
     try {
       yaml.load(value);
