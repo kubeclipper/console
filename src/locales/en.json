@@ -589,5 +589,6 @@
   "Provider Detail": "Provider Detail",
   "Provider Name": "Provider Name",
   "Cloudprovider": "Cloudprovider",
-  "Illegal YAML scheme": "Illegal YAML scheme"
+  "Illegal YAML scheme": "Illegal YAML scheme",
+  "To be deprecated": "To be deprecated"
 }
