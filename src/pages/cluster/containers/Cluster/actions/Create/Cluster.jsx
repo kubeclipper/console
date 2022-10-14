@@ -17,15 +17,13 @@ import { observer } from 'mobx-react';
 import BaseForm from 'components/Form';
 import { toJS } from 'mobx';
 import { rootStore } from 'stores';
-import { message } from 'antd';
-import { fqdn, subdomain, path } from 'utils/regex';
+import { fqdn, path } from 'utils/regex';
 import {
   isIPv4,
   isIpv6,
   isDomain,
   isDomainPath,
   isIpPort,
-  isNumber,
 } from 'utils/validate';
 import {
   clusterParams,
@@ -298,29 +296,6 @@ export default class Cluster extends BaseForm {
           )
         );
       }
-    }
-
-    return Promise.resolve(true);
-  };
-
-  checkName = (rule, value) => {
-    const { isPrev } = this.state;
-
-    if (!value) {
-      if (isPrev) return Promise.resolve(true);
-
-      message.error(t('Please input cluster name'));
-      return Promise.reject(t('Please input cluster name'));
-    }
-
-    if (isNumber(value)) {
-      return Promise.reject(t('The name cannot be all numbers'));
-    }
-
-    if (!subdomain.test(value)) {
-      return Promise.reject(
-        t('The enter does not meet the subdomain specification!')
-      );
     }
 
     return Promise.resolve(true);
