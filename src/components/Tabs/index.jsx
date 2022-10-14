@@ -65,6 +65,9 @@ const Tabs = (props) => {
                     : t(item.state || 'Not Enabled')
                 }
               />
+              {item.deprecated ? (
+                <div className={styles.deprecated}>{t('To be deprecated')}</div>
+              ) : null}
             </div>
           ))}
         </div>

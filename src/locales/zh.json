@@ -589,5 +589,6 @@
   "Provider Detail": "提供商详情",
   "Provider Name": "提供商名称",
   "Cloudprovider": "提供商",
-  "Illegal YAML scheme": "YAML 格式不合法！"
+  "Illegal YAML scheme": "YAML 格式不合法！",
+  "To be deprecated": "即将废弃"
 }
