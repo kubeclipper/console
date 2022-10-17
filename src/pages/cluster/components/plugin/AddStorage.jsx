@@ -18,7 +18,16 @@ import React, { useEffect, useReducer, useRef } from 'react';
 import Tabs from 'components/Tabs';
 import styles from './index.less';
 import RenderForm from './RenderForm';
-import { cloneDeep, uniq, omit, set, assign, isArray, isMatch } from 'lodash';
+import {
+  cloneDeep,
+  uniq,
+  omit,
+  set,
+  assign,
+  isArray,
+  isMatch,
+  orderBy,
+} from 'lodash';
 import { useParams, useHistory } from 'react-router-dom';
 import { encodeProperty } from 'utils';
 import Notify from 'components/Notify';
@@ -62,7 +71,7 @@ const Storage = observer((props) => {
         .map((item) => item?.name)
         .filter((item) => !!item);
 
-      const newTabs = cloneDeep(storageComponents).map((item) => {
+      let newTabs = cloneDeep(storageComponents).map((item) => {
         const { properties = {} } = item.schema;
 
         delete properties.isDefaultSC;
@@ -110,6 +119,8 @@ const Storage = observer((props) => {
           formInstances: [],
         };
       });
+
+      newTabs = orderBy(newTabs, ['deprecated'], 'asc');
 
       setState({
         ...state,
