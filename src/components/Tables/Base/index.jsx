@@ -90,7 +90,7 @@ const BaseTable = (props) => {
     batchActions,
     containerProps,
     hideSearch,
-    searchFilters,
+    searchFilters = [],
     columns,
     resourceName,
     getDownloadData,
@@ -229,16 +229,8 @@ const BaseTable = (props) => {
         newFilters[n.filter.name] = n.value;
       });
 
-      const fieldKey = {};
-      tags.forEach((n) => {
-        fieldKey[n.filter?.fieldKey || n.filter.name] = n.value;
-      });
-
       if (
-        !isEqual(
-          newFilters,
-          omit(filters, ['page', 'limit', 'reverse', 'tab', 'fieldSelector'])
-        )
+        !isEqual(newFilters, omit(filters, ['page', 'limit', 'reverse', 'tab']))
       ) {
         setFiltered(newFilters);
 
@@ -249,7 +241,6 @@ const BaseTable = (props) => {
           limit,
           page,
           reverse,
-          fieldKey,
           ...newFilters,
         });
       }
@@ -341,11 +332,6 @@ const BaseTable = (props) => {
       </div>
     </div>
   );
-
-  const scroll = {
-    x: 'max-content',
-    y: scrollY > 0 ? scrollY : 400,
-  };
 
   const handlePageChange = (current, pageSize) => {
     const { reverse } = filters;
@@ -561,7 +547,6 @@ const BaseTable = (props) => {
           pageSize={list.limit > 0 ? parseFloat(list.limit) : 10}
           onChange={handlePageChange}
           currentDataSize={currentPageData.length}
-          // pageSizeOptions={pageSizeOptions}
           total={list.total}
           isLoading={list.isLoading}
           onFocusChange={onInputFocus}
@@ -596,7 +581,7 @@ const BaseTable = (props) => {
         pagination={false}
         rowSelection={rowSelection(toJS(list.selectedRowKeys))}
         sortDirections={['ascend', 'descend', 'ascend']}
-        scroll={scroll}
+        scroll={{ x: 'max-content', y: scrollY > 0 ? scrollY : 400 }}
         showSorterTooltip={false}
         {...expandableProps}
         footer={(currentPageData) =>

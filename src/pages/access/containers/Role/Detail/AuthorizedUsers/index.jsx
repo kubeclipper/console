@@ -71,7 +71,6 @@ export default function AuthorizedUsers() {
       {
         label: t('Users'),
         name: 'users',
-        fieldKey: 'metadata.name',
       },
     ],
     getData,

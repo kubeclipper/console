@@ -546,26 +546,58 @@ export function deleteObjectProperties(obj, keys = []) {
 }
 
 /**
- * 根据url取当前正在筛选的tags
- * @param {string} fieldSelector  例：username=admin,verb=create,type=
- * @param {array} searchFilters
- * @returns
+ *
+ * @param {*} params examp: fieldSelector=name=d,name2=d2&fuzzy=description~df,description2~df2
+ * @param {*} params fieldSelector 精确查询；fuzzy 模糊查询
+ * @param {*} searchFilters
+ * @returns {obj} {name: dd, name2: d2, description: df, description2: df2}
  */
-export const tagsByfieldSelectorUrl = (fieldSelector = '', searchFilters) => {
-  const filters = {};
-  fieldSelector.split(',').forEach((item) => {
-    const [key, val] = item.split('=');
-    filters[key] = val;
+export const initTagByUrlParams = (params, searchFilters = []) => {
+  const tag = {};
+  const paramsKeys = ['fieldSelector', 'fuzzy'];
+
+  Object.entries(params).forEach(([key, value]) => {
+    (value || '').split(',').forEach((it) => {
+      const [k, val] = it.indexOf('=') > 0 ? it.split('=') : it.split('~');
+      const isInSearch = searchFilters.some((s) => s.name === k);
+      const isKeyValExist = !!k && !!val;
+
+      if (isInSearch && paramsKeys.includes(key) && isKeyValExist) {
+        tag[k] = val;
+      }
+    });
   });
 
-  const result = {};
-  searchFilters.forEach((item) => {
-    if (item.fieldKey) {
-      if (filters[item.fieldKey]) result[item.name] = filters[item.fieldKey];
-    } else if (filters[item.name]) result[item.name] = filters[item.name];
+  return tag;
+};
+
+/**
+ *
+ * @param {obj} tags {name: dd, name2: d2, description: df, description2: df2}
+ * @param {array} searchFilters
+ * @returns {obj} {fieldSelector: 'name=d,name2=d2',fuzzy: 'description~df,description2~df2'}
+ */
+export const generateUrlParamsByTag = (tags = {}, searchFilters = []) => {
+  const params = {};
+
+  Object.entries(tags).forEach(([key, value]) => {
+    const s = searchFilters.find((it) => it.name === key);
+    const isKeyValueExist = !!key && !!value;
+
+    if (s && s.exact && isKeyValueExist) {
+      const val = params.fieldSelector;
+      params.fieldSelector = val ? `${val},${key}=${value}` : `${key}=${value}`;
+
+      return;
+    }
+
+    if (s && isKeyValueExist) {
+      const val = params.fuzzy;
+      params.fuzzy = val ? `${val},${key}~${value}` : `${key}~${value}`;
+    }
   });
 
-  return result;
+  return params;
 };
 
 /**

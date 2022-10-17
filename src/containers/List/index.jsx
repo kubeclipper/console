@@ -19,12 +19,12 @@ import { useQuery } from 'hooks';
 import { parse } from 'qs';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
-import { isEmpty, get, omit, has, flatten } from 'lodash';
+import { isEmpty, get, omit } from 'lodash';
 import BaseTable from 'components/Tables/Base';
 import Notify from 'components/Notify';
 import styles from './index.less';
 import { useRootStore } from 'stores';
-import { joinSelector, tagsByfieldSelectorUrl } from 'utils';
+import { initTagByUrlParams, generateUrlParamsByTag } from 'utils';
 
 /**
  * notify Error
@@ -37,23 +37,9 @@ const notifyError = (e, name) => {
   return Notify.errorWithDetail(e, t('Get {name} error.', { name }));
 };
 
-const hasFieldSelector = (params) =>
-  params.some((param) => has(param, 'fieldSelector'));
-
-const mergedFieldSelector = (params) => {
-  const value = [];
-
-  params.forEach((param) => {
-    if (param && Object.prototype.hasOwnProperty.call(param, 'fieldSelector')) {
-      value.push(param.fieldSelector.split(','));
-    }
-  });
-
-  return Array.from(new Set(flatten(value))).join(',');
-};
-
 function BaseList(props) {
-  const [filters, setFilters] = useState({});
+  const params = useParams();
+
   const { routing } = useRootStore();
   let dataTimer = null;
   const dataDuration = 5;
@@ -75,7 +61,6 @@ function BaseList(props) {
     getData: propsGetData,
     isAction,
     propsParams,
-    filterByInputParams,
     hideSearch,
     currentTab,
     isRenderFooter,
@@ -90,20 +75,20 @@ function BaseList(props) {
     rowActions = [],
   } = actionConfigs;
 
-  const params = useParams();
   const urlParams = useQuery();
   const match = useRouteMatch();
+
+  const initFilters = initTagByUrlParams(urlParams, searchFilters);
+  const [filters, setFilters] = useState(initFilters);
+
   const [tagByUrl, setTagsByUrl] = useState({});
 
   useEffect(() => {
     const unsubscribe = routing.history.subscribe((_location) => {
       if (_location.pathname === match.url) {
         const locationParams = parse(_location.search.slice(1));
+        const tags = initTagByUrlParams(locationParams, searchFilters);
 
-        const tags = tagsByfieldSelectorUrl(
-          locationParams.fieldSelector,
-          searchFilters
-        );
         setTagsByUrl(tags);
         fetchData(locationParams);
       }
@@ -120,6 +105,7 @@ function BaseList(props) {
     if (!isRenderFooter) _params.limit = -1;
 
     const _locationParams = omit(locationParams, ['tab']);
+
     if (propsGetData) {
       propsGetData({ ..._locationParams, ..._params });
       return;
@@ -128,12 +114,6 @@ function BaseList(props) {
     let dataParams = { ..._locationParams, ...propsParams };
     if (!isEmpty(_params)) {
       dataParams = { ...dataParams, ..._params };
-    }
-
-    const paramsArray = [_locationParams, propsParams, _params];
-
-    if (hasFieldSelector(paramsArray)) {
-      dataParams.fieldSelector = mergedFieldSelector(paramsArray);
     }
 
     getData(dataParams);
@@ -185,23 +165,15 @@ function BaseList(props) {
    * @param {*} _filters
    */
   const handleFilterChange = (_filters) => {
-    const { page, limit, reverse, fieldKey, ...rest } = _filters;
+    const { page, limit, reverse, ...rest } = _filters;
 
     setFilters(rest);
-
-    if (!filterByInputParams) {
-      fetchData(urlParams, rest);
-
-      return;
-    }
-
-    const inputParams = filterByInputParams?.(fieldKey) || null;
 
     const queryParams = {
       reverse,
       page,
       limit,
-      ...inputParams,
+      ...generateUrlParamsByTag(rest, searchFilters),
     };
     if (!isEmpty(currentTab)) queryParams.tab = currentTab.key;
 
@@ -270,11 +242,6 @@ function BaseList(props) {
     name: record.name,
   });
 
-  const getFilters = () => ({
-    ...urlParams,
-    ...toJS(list.filters),
-    ...filters,
-  });
   const tableHeight = () => {
     const tabOtherHeight = 326;
     const otherHeight = 272;
@@ -318,7 +285,10 @@ function BaseList(props) {
         checkRefresh={checkRefresh}
         resourceName={name}
         columns={columns}
-        filters={getFilters()}
+        filters={{
+          ...toJS(list.filters),
+          ...filters,
+        }}
         searchFilters={searchFilters}
         primaryActions={primaryActions}
         batchActions={batchActions}
@@ -356,7 +326,6 @@ BaseList.defaultProps = {
   }),
   rowKey: 'id',
   isAction: true,
-  filterByInputParams: (fields) => ({ fieldSelector: joinSelector(fields) }),
   currentTab: {},
   isRenderFooter: true,
 };

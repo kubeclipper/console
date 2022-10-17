@@ -78,7 +78,6 @@ function Providers(props) {
       {
         label: t('Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
     ],
     actionConfigs,

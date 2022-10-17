@@ -53,7 +53,6 @@ export default function Region(props) {
       {
         label: t('Region Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
     ],
     actionConfigs,

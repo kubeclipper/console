@@ -74,7 +74,6 @@ const User = () => {
       {
         label: t('User Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
     ],
     columns,

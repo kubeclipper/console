@@ -47,17 +47,16 @@ function BackupPoint(props) {
     name: t('BackupPoint'),
     store: backupPointStore,
     actionConfigs,
-    searchFilters: [
-      // {
-      //   label: t('Role Name'),
-      //   name: 'name',
-      //   fieldKey: 'metadata.name',
-      // },
-    ],
     columns,
     propsParams: {
       labelSelector: '!kubeclipper.io/role-template',
     },
+    searchFilters: [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+    ],
     isShowDownLoadIcon: false,
     isShowEyeIcon: false,
     isRenderFooter: false,

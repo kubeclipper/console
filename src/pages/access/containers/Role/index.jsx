@@ -64,7 +64,6 @@ export default function Role(props) {
       {
         label: t('Role Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
     ],
     columns,

@@ -55,7 +55,6 @@ function OperationList() {
       {
         label: t('Operation Name'),
         name: 'operationName',
-        fieldKey: 'metadata.name',
       },
     ],
     transitionStatusList: ['running'],

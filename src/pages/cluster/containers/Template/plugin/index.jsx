@@ -48,18 +48,7 @@ const ClusterTemplate = (props) => {
       {
         label: t('Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
-      // {
-      //   label: t('Region'),
-      //   name: 'region',
-      //   fieldKey: 'metadata.labels["topology.99cloud.net/region"]',
-      // },
-      // {
-      //   label: t('Status'),
-      //   name: 'status',
-      //   options: getOptions(clusterStatus),
-      // },
     ],
     actionConfigs,
     store,
