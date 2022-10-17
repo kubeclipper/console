@@ -17,7 +17,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 import Tabs from 'components/Tabs';
-import { cloneDeep, uniq, set, isMatch, isEmpty } from 'lodash';
+import { cloneDeep, uniq, set, isMatch, isEmpty, orderBy } from 'lodash';
 import RenderForm from './RenderForm';
 import { Divider, Button } from 'antd';
 import { Context } from './Context';
@@ -55,7 +55,7 @@ const StorageForm = (props) => {
   useEffect(() => {
     if (!isEmpty(storageTabs)) return;
 
-    const newTabs = cloneDeep(storageComponents).map((item) => {
+    let newTabs = cloneDeep(storageComponents).map((item) => {
       const { name } = item;
       const { properties = {} } = item.schema;
 
@@ -114,9 +114,10 @@ const StorageForm = (props) => {
         formInstances: [],
       };
     });
+    newTabs = orderBy(newTabs, ['deprecated'], 'asc');
 
     updateContext({
-      storageCurrent: storageComponents[0]?.name,
+      storageCurrent: newTabs[0]?.name,
       storageTabs: newTabs,
     });
   }, [storageComponents]);
