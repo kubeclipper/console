@@ -56,7 +56,6 @@ const ClusterList = (props) => {
       {
         label: t('Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
     ],
     transitionStatusList: transitionStatus,

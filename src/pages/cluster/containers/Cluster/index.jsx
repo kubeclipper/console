@@ -30,18 +30,7 @@ const ClusterList = (props) => {
       {
         label: t('Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
-      // {
-      //   label: t('Region'),
-      //   name: 'region',
-      //   fieldKey: 'metadata.labels["topology.kubeclipper.io/region"]',
-      // },
-      // {
-      //   label: t('Status'),
-      //   name: 'status',
-      //   options: getOptions(clusterStatus),
-      // },
     ],
     transitionStatusList: transitionStatus,
     actionConfigs,

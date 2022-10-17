@@ -45,7 +45,6 @@ export default function Cluster() {
       {
         label: t('Name'),
         name: 'name',
-        fieldKey: 'metadata.name',
       },
     ],
     getData,

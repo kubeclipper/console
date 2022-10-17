@@ -29,7 +29,6 @@ export const backupFilters = [
   {
     label: t('Name'),
     name: 'name',
-    fieldKey: 'metadata.name',
   },
 ];
 
