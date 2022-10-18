@@ -15,41 +15,19 @@
  */
 
 describe('The Login Page', () => {
-  const username = 'admin';
-  const password = '123456';
-
-  it('successfully get authtype', () => {
-    cy.visit('/');
-    cy.request('GET', 'api/authtype')
-      .its('body')
-      .should((response) => {
-        expect(response).to.have.property('standard');
-        expect(response).to.have.property('caas');
-      });
-  });
-
   it('successfully login and check menu', () => {
     cy.visit('/');
-    cy.intercept('GET', 'authtype');
-    cy.intercept('POST', 'login').as('login');
-    cy.loginInput('username', `${username}`)
-      .loginInput('password', `${password}`)
+    cy.loginInput('username', Cypress.env('username'))
+      .loginInput('password', Cypress.env('password'))
       .loginFormSubmit()
-      .wait('@login')
       .url()
-      .should('include', '/cluster/info')
-      .wait(1000)
-      .clickMenu(1, 0)
-      .wait(1000)
-      .url()
-      .should('include', '/region/mgt');
+      .should('include', '/cluster');
   });
 
   it('successfully error username and password', () => {
     cy.visit('/');
-    cy.intercept('GET', 'authtype').as('login');
-    cy.loginInput('username', `${username}1`)
-      .loginInput('password', `${password}1`)
+    cy.loginInput('username', `${Cypress.env('username')}1`)
+      .loginInput('password', `${Cypress.env('password')}1`)
       .loginFormSubmit()
       .get('.ant-notification')
       .should('have.length', 1);

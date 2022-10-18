@@ -5,7 +5,7 @@
   "video": false,
   "env": {
     "username": "admin",
-    "password": "123456",
+    "password": "Thinkbig1",
     "language": "zh"
   },
   "reporter": "mochawesome",

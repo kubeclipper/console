@@ -2,13 +2,13 @@ covarage: true
 baseUrl: http://localhost:8089
 env:
   username: admin
-  password: '123456'
+  password: 'Thinkbig1'
   language: zh
 testFiles:
-  # - pages/login.spec.js
-  - pages/error.spec.js
-  # - pages/base/header.spec.js
+  - pages/login.spec.js
   # - pages/cluster/cluster.spec.js
+  # - pages/error.spec.js
+  # - pages/base/header.spec.js
   # - pages/node/node.spec.js
   # - pages/platform/platform.spec.js
   # - pages/platform/license.spec.js
