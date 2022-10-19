@@ -24,9 +24,9 @@ import { checkExpired, isDisableByProviderType } from 'utils';
 export default class ConnectTerminal {
   static id = 'Terminal';
 
-  static title = t('Connect Terminal');
+  static title = t('Cluster Access');
 
-  static buttonText = t('Connect Terminal');
+  static buttonText = t('Cluster Access');
 
   static get modalSize() {
     return 'middle';

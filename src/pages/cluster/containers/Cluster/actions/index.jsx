@@ -46,11 +46,11 @@ const actionConfigs = {
       },
       {
         title: t('Backup and recovery'),
-        actions: [Backup, ScheduledBackup, Reset, Restore],
+        actions: [Backup, ScheduledBackup, Restore],
       },
       {
         title: t('Cluster Status'),
-        actions: [Upgrade, Delete],
+        actions: [Reset, Upgrade, Delete],
       },
       {
         title: t('Plugin management'),
