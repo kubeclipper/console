@@ -37,7 +37,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get buttonText() {
-    return t('Delete');
+    return t('Delete Cluster');
   }
 
   get actionName() {
