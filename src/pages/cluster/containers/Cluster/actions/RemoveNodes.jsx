@@ -107,6 +107,7 @@ export default class RemoveNodes extends ModalAction {
         extraParams: { labelSelector },
         tagKey: 'ip',
         searchFilters: [],
+        disabledFunc: (item) => item.role === 'master',
         columns: [
           {
             title: t('Node IP'),
