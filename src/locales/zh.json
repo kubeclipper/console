@@ -248,7 +248,6 @@
   "Service Subnet": "服务子网",
   "Belong To Cluster": "所属集群",
   "DNS Domain": "DNS 域名",
-  "The enter does not meet the subdomain specification!": "输入不满足子域名规范!",
   "NAME_DESC": "只能包含小写字母、数字及分隔符('-'或'.')，且必须以小写字母或数字开头及结尾",
   "key": "键",
   "Old Password": "旧密码",
@@ -571,7 +570,6 @@
   "Please input region which cluster and node belong": "请输入集群和节点所属区域",
   "Provider Type": "提供商类型",
   "kubeadm": "",
-  "Please input endpoint": "请输入端点（endpoint）",
   "SSH": "节点连接方式",
   "PrivateKey": "",
   "Please input node user": "请输入节点用户名",
@@ -590,5 +588,7 @@
   "Provider Name": "提供商名称",
   "Cloudprovider": "提供商",
   "Illegal YAML scheme": "YAML 格式不合法！",
-  "To be deprecated": "即将废弃"
+  "To be deprecated": "即将废弃",
+  "The cluster name is used as the display name of this platform and cannot be repeated with other cluster names.": "集群名称作为本平台的展示名称，不能与其他集群名重复",
+  "Access Kubectl": "访问 Kubectl"
 }

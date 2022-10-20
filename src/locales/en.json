@@ -248,7 +248,6 @@
   "Service Subnet": "Service Subnet",
   "Belong To Cluster": "Belong To Cluster",
   "DNS Domain": "DNS Domain",
-  "The enter does not meet the subdomain specification!": "The enter does not meet the subdomain specification!",
   "NAME_DESC": "Can only contain lowercase letters, numbers and separators ('-' or '.'), and must start and end with lowercase letters or numbers",
   "key": "key",
   "Old Password": "Old Password",
@@ -571,7 +570,6 @@
   "Please input region which cluster and node belong": "Please input region which cluster and node belong",
   "Provider Type": "Provider Type",
   "kubeadm": "kubeadm",
-  "Please input endpoint": "Please input endpoint",
   "SSH": "SSH",
   "PrivateKey": "PrivateKey",
   "Please input node user": "Please input node user",
@@ -590,5 +588,7 @@
   "Provider Name": "Provider Name",
   "Cloudprovider": "Cloudprovider",
   "Illegal YAML scheme": "Illegal YAML scheme",
-  "To be deprecated": "To be deprecated"
+  "To be deprecated": "To be deprecated",
+  "The cluster name is used as the display name of this platform and cannot be repeated with other cluster names.": "The cluster name is used as the display name of this platform and cannot be repeated with other cluster names.",
+  "Access Kubectl": "Access Kubectl"
 }
