@@ -124,13 +124,6 @@ class Create extends ModalAction {
         ],
       },
       {
-        name: 'apiEndpoint',
-        label: t('Endpoint'),
-        type: 'input',
-        placeholder: t('Please input endpoint'),
-        required: true,
-      },
-      {
         name: 'sshType',
         label: t('SSH'),
         type: 'radio',
@@ -177,6 +170,9 @@ class Create extends ModalAction {
         type: 'input-name',
         placeholder: t('Please input cluster name'),
         required: true,
+        tip: t(
+          'The cluster name is used as the display name of this platform and cannot be repeated with other cluster names.'
+        ),
       },
       {
         name: 'kubeConfig',

@@ -105,13 +105,6 @@ class Edit extends ModalAction {
         maxLength: 256,
       },
       {
-        name: 'apiEndpoint',
-        label: t('Endpoint'),
-        type: 'input',
-        placeholder: t('Please input endpoint'),
-        required: true,
-      },
-      {
         name: 'sshType',
         label: t('SSH'),
         type: 'radio',

@@ -24,9 +24,9 @@ import { checkExpired, isDisableByProviderType } from 'utils';
 export default class ConnectTerminal {
   static id = 'Terminal';
 
-  static title = t('Cluster Access');
+  static title = t('Access Kubectl');
 
-  static buttonText = t('Cluster Access');
+  static buttonText = t('Access Kubectl');
 
   static get modalSize() {
     return 'middle';
