@@ -62,8 +62,7 @@ export default class Terminal extends ModalAction {
       {
         name: 'port',
         label: t('Port'),
-        type: 'input',
-        placeholder: t('Please input backup name'),
+        type: 'input-number',
         required: true,
       },
       {
