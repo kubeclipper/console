@@ -45,7 +45,7 @@ const {
   nodeStore,
   regionStore,
   clusterStore,
-  templateStore,
+  registryStore,
   backupPointStore,
   templatesStore,
 } = rootStore;
@@ -56,7 +56,7 @@ export default class Cluster extends BaseForm {
     this.store = clusterStore;
     this.nodeStore = nodeStore;
     this.regionStore = regionStore;
-    this.templateStore = templateStore;
+    this.registryStore = registryStore;
     this.backupPointStore = backupPointStore;
     this.templatesStore = templatesStore;
 
@@ -193,7 +193,7 @@ export default class Cluster extends BaseForm {
   }
 
   async getCommonRegistry() {
-    await this.templateStore.fetchList();
+    await this.registryStore.fetchList();
   }
 
   async getBackupPoint() {
@@ -238,7 +238,7 @@ export default class Cluster extends BaseForm {
   }
 
   getRegistryOptions() {
-    const data = toJS(this.templateStore.list.data);
+    const data = toJS(this.registryStore.list.data);
     return (data || []).map(({ host }) => ({
       value: host,
       label: host,

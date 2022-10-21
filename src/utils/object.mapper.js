@@ -293,7 +293,6 @@ const RoleMapper = (item) => {
   return {
     ...getBaseInfo(item),
     rules: formatRoleRules(item),
-    // rules: get(item, 'rules'),
     aliasName: get(item, 'metadata.annotations["kubeclipper.io/alias-name"]'),
     module: get(item, 'metadata.annotations["kubeclipper.io/module"]'),
     labels: get(item, 'metadata.labels', {}),
@@ -478,6 +477,12 @@ const CloudProviderMapper = (item) => {
   };
 };
 
+const RegistryMapper = (item) => ({
+  ...getBaseInfo(item),
+  ...item,
+  description: get(item, 'metadata.annotations["kubeclipper.io/description"]'),
+});
+
 export default {
   nodes: NodesMapper,
   clusters: ClusterMapper,
@@ -495,4 +500,5 @@ export default {
   templates: TemplatesMapper,
   clusterTemplate: ClusterTemplateMapper,
   cloudproviders: CloudProviderMapper,
+  registries: RegistryMapper,
 };

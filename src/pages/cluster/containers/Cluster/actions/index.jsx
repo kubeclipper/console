@@ -30,6 +30,7 @@ import UpdateLicense from './UpdateLicense';
 import KubeConfig from './KubeConfig';
 import AddNodes from '../Detail/NodesList/actions/Add';
 import RemoveNodes from './RemoveNodes';
+import Registry from './Registry';
 
 const actionConfigs = {
   rowActions: {
@@ -38,7 +39,7 @@ const actionConfigs = {
       { action: Terminal },
       {
         title: t('Cluster Settings'),
-        actions: [Edit, SaveAsTemplate],
+        actions: [Edit, SaveAsTemplate, Registry],
       },
       {
         title: t('Node management'),
