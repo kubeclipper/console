@@ -57,13 +57,13 @@ Cypress.Commands.add('loginFormSubmit', () => {
 
 Cypress.Commands.add('formSelect', (formItemName, label, selectIndex) => {
   if (!selectIndex) {
-    cy.get(getId(formItemName)).find('.ant-select').click().wait(2000);
+    cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
   } else {
     cy.get(getId(formItemName))
       .find('.ant-select')
       .eq(selectIndex)
       .click()
-      .wait(2000);
+      .wait(500);
   }
   if (label !== undefined) {
     const realLabel = getTitle(label);
@@ -170,8 +170,18 @@ Cypress.Commands.add('formRadioButtonChoose', (formItemName, itemIndex = 0) => {
     .click();
 });
 
-Cypress.Commands.add('clickStepActionNextButton', (waitTime = 2000) => {
-  cy.get('.step-form-footer-btns').find('button').last().click().wait(waitTime);
+Cypress.Commands.add('clickStepActionNextButton', (action, waitTime = 1000) => {
+  cy.get(`[data-test="${action}"]`).click().wait(waitTime);
+});
+
+Cypress.Commands.add('inputText', (_class, value) => {
+  cy.get(_class).find('input').clear().type(value);
+});
+
+Cypress.Commands.add('inputIP', (_class, value) => {
+  value.split('.').forEach((it, index) => {
+    cy.get(_class).find('input').eq(index).clear().type(it);
+  });
 });
 
 Cypress.Commands.add('clickStepActionCancelButton', (waitTime = 2000) => {

@@ -30,8 +30,7 @@ Cypress.Commands.add('waitTableLoading', () => {
 Cypress.Commands.add('tableSearchText', (str) => {
   cy.get('.magic-input-wrapper')
     .find('input')
-    .type(`${str}{enter}`, { force: true })
-    .blur();
+    .type(`${str}{enter}`, { force: true });
   cy.waitTableLoading();
 });
 
@@ -91,16 +90,24 @@ Cypress.Commands.add('goBackToList', (url) => {
   cy.waitTableLoading();
 });
 
-Cypress.Commands.add('clickActionInMore', (title, waitTime = 2000) => {
-  cy.get('.ant-table-row')
-    .first()
-    .find('.ant-dropdown-trigger')
-    .trigger('mouseover');
+Cypress.Commands.add('clickActionInMore', (titles, waitTime = 2000) => {
+  const { title, subTitle } = titles;
+
+  cy.get('.ant-table-row').first().find('.ant-dropdown-trigger').click();
+  cy.wait(500);
   const realTitle = getTitle(title);
-  cy.get('ul.ant-dropdown-menu-light')
-    .contains(realTitle)
-    .click({ force: true })
-    .wait(waitTime);
+  cy.log(realTitle);
+  if (!subTitle) {
+    cy.get('ul.ant-dropdown-menu-light').contains(realTitle).click();
+  } else {
+    cy.get('ul.ant-dropdown-menu-light')
+      .contains(realTitle)
+      .trigger('mouseover');
+
+    cy.get('ul.ant-dropdown-menu-sub').contains(getTitle(subTitle)).click();
+  }
+
+  waitTime && cy.wait(waitTime);
 });
 
 Cypress.Commands.add('checkActionNotExistInMore', (title) => {
@@ -214,4 +221,23 @@ Cypress.Commands.add('waitStatusBackuping', () => {
     .first()
     .find('.ant-badge-status-default', { timeout: 100000000 })
     .should('not.exist');
+});
+
+Cypress.Commands.add('clickByTitle', (_class, title, options) => {
+  const { addZhSpace = true, waitTime = 2000 } = options || {};
+  title = getTitle(title);
+  if (Cypress.env('language') === 'zh' && title.length === 2 && addZhSpace) {
+    const [a, b] = title;
+    title = `${a} ${b}`;
+  }
+  cy.get(_class).contains(title).click();
+  waitTime && cy.wait(waitTime);
+});
+
+Cypress.Commands.add('checkTableColVal', (col, val) => {
+  cy.get('.ant-table-row')
+    .find('.ant-table-cell')
+    .eq(col)
+    .contains(val)
+    .should('exist');
 });

@@ -25,14 +25,16 @@ jobs:
       - name: Setup node env
         uses: actions/setup-node@v3
         with:
-          node-version: 12.13
+          node-version: 14.17
           cache: 'yarn'
           cache-dependency-path: yarn.lock
       - uses: cypress-io/github-action@v4
         with:
-          browser: chrome
-          config-file: cypress.json
+          browser: Chrome 106
+          config-file: cypress.config.js
           start: yarn start
+          wait-on: 'http://localhost:8089'
+          wait-on-timeout: 300
           command: yarn test:e2e
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
