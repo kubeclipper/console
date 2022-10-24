@@ -37,12 +37,9 @@ module.exports = (on, config) => {
   // `config` is the resolved Cypress config
   const conf = getConfig();
   // eslint-disable-next-line no-unused-vars
-  const { baseUrl, testFiles = [], translate, env = {} } = conf;
+  const { baseUrl, translate, env = {} } = conf;
   if (baseUrl) {
     config.baseUrl = baseUrl;
-  }
-  if (testFiles && testFiles.length) {
-    config.testFiles = testFiles;
   }
   if (translate) {
     config.env.translate = translate;

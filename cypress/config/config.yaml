@@ -4,16 +4,3 @@ env:
   username: admin
   password: 'Thinkbig1'
   language: zh
-testFiles:
-  - pages/login.spec.js
-  # - pages/cluster/cluster.spec.js
-  # - pages/error.spec.js
-  # - pages/base/header.spec.js
-  # - pages/node/node.spec.js
-  # - pages/platform/platform.spec.js
-  # - pages/platform/license.spec.js
-  # - pages/region/region.spec.js
-  # - pages/upgrade/plan.spec.js
-  # - pages/upgrade/version.spec.js
-  # - pages/user/user.spec.js
-  # - pages/user/role.spec.js

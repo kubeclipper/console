@@ -41,6 +41,7 @@
 
 import 'cypress-localstorage-commands';
 import getTitle from './common';
+import { get, uniq, isArray } from 'lodash';
 
 Cypress.Commands.add('interceptGetAll', (requestList) => {
   const names = requestList.map((it, index) => {
@@ -91,63 +92,91 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
   cy.setLanguage();
 
-  if (Cypress.config('user')) {
-    cy.setCookie('session', Cypress.config('session'));
-    cy.setCookie('username', Cypress.config('username'));
-    cy.setLocalStorage(
-      'user',
-      JSON.stringify({
-        expires: Date.now() + 864000000,
-        value: Cypress.config('user'),
-      })
-    );
-    cy.visitPage(visitUrl || '/cluster/info', isTable);
-
-    return;
-  }
-
-  cy.log('need login by request');
-  const body = {
-    username: Cypress.env('username'),
-    password: `${Cypress.env('password')}`,
-  };
   cy.request({
-    url: '/api/core/v1/login',
-    body,
+    url: '/apis/oauth/login',
+    body: {
+      username: Cypress.env('username'),
+      password: `${Cypress.env('password')}`,
+    },
     method: 'POST',
-  }).then((res) => {
-    const { body: resBody } = res;
-    const {
-      user: { username, roles, exp },
-      permission,
-    } = resBody || {};
+  })
+    .its('body')
+    .as('token')
+    .then((res) => {
+      const { access_token, refresh_token, expires_in, refresh_expires_in } =
+        res || {};
+      const expire = Number(expires_in) * 1000;
+      const refreshExpire = Number(refresh_expires_in) * 1000;
+      const token = {
+        token: access_token,
+        refreshToken: refresh_token,
+        // expire,
+        expires: new Date().getTime() + expire,
+      };
 
-    const { token } = resBody || {};
-    cy.setCookie('username', username);
-    cy.setCookie('session', token);
+      cy.setLocalStorageItem('token', token, refreshExpire);
+    });
 
-    // const authType = get(options, 'headers.X-Auth-Type');
-
+  cy.get('@token').then((res) => {
+    const rules = {};
     const user = {
-      token,
-      username,
-      expire: exp,
-      roles,
-      authType: 'standard',
-      permission,
+      username: null,
+      globalrole: null,
+      rules,
     };
 
-    cy.setLocalStorage(
-      'user',
-      JSON.stringify({
-        expires: Date.now() + 864000000,
-        value: user,
+    cy.request({
+      url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env('username')}`,
+      method: 'GET',
+      headers: {
+        authorization: `bearer ${res.access_token}`,
+      },
+    })
+      .its('body')
+      .then((userInfo) => {
+        user.username = get(userInfo, 'metadata.name');
+        user.globalrole = get(
+          userInfo,
+          'metadata.annotations["iam.kubeclipper.io/role"]'
+        );
+      });
+
+    cy.request({
+      url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env(
+        'username'
+      )}/roles`,
+      method: 'GET',
+      headers: {
+        authorization: `bearer ${res.access_token}`,
+      },
+    })
+      .its('body')
+      .then((role) => {
+        role.forEach((item) => {
+          const rule = JSON.parse(
+            get(
+              item,
+              "metadata.annotations['kubeclipper.io/role-template-rules']"
+            ),
+            {}
+          );
+
+          Object.keys(rule).forEach((key) => {
+            rules[key] = rules[key] || [];
+            if (isArray(rule[key])) {
+              rules[key].push(...rule[key]);
+            } else {
+              rules[key].push(rule[key]);
+            }
+            rules[key] = uniq(rules[key]);
+          });
+        });
       })
-    );
-    Cypress.config('username', username);
-    Cypress.config('session', token);
-    Cypress.config('user', user);
-    cy.visitPage(visitUrl || '/cluster/info', isTable);
+      .then(() => {
+        cy.setLocalStorageItem('user', user);
+      });
+    cy.visitPage(visitUrl || '/cluster', isTable);
+    cy.wait(500);
   });
 });
 
@@ -165,3 +194,16 @@ Cypress.Commands.add('clickAvatarButton', (label) => {
     .contains(realTitle)
     .click();
 });
+
+Cypress.Commands.add(
+  'setLocalStorageItem',
+  (key, value, maxAge = 864000000, expiry = 0) => {
+    cy.setLocalStorage(
+      key,
+      JSON.stringify({
+        expires: expiry || Date.now() + maxAge,
+        value,
+      })
+    );
+  }
+);

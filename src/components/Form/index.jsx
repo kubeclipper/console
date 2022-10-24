@@ -37,16 +37,16 @@ export const Forms = forwardRef((props, ref) => {
 
   const renderFormItems = (items) =>
     items.map((it, index) => {
-      const { _name, hidden } = it;
+      const { colNum, hidden } = it;
       if (typeof hidden === 'boolean' && hidden) {
         return '';
       }
 
       return (
         <Col
-          span={24 / (it.colNum || 1)}
+          span={24 / (colNum || 1)}
           key={`form-item-col-${index}`}
-          id={`form-item-col-${_name}`}
+          id={`form-item-col-${it.name}`}
         >
           <FormItem
             labelCol={labelCol}
