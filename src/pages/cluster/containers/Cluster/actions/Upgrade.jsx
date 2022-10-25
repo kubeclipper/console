@@ -39,7 +39,7 @@ export default class Upgrade extends ModalAction {
 
   async init() {
     this.store = rootStore.clusterStore;
-    this.templateStore = rootStore.templateStore;
+    this.registryStore = rootStore.registryStore;
     await this.getVersion();
     await this.getCommonRegistry();
     await this.initDefaultValue();
@@ -99,7 +99,7 @@ export default class Upgrade extends ModalAction {
   }
 
   async getCommonRegistry() {
-    await this.templateStore.fetchList();
+    await this.registryStore.fetchList();
   }
 
   static policy = 'clusters:edit';
@@ -158,7 +158,7 @@ export default class Upgrade extends ModalAction {
   }
 
   getRegistryOptions() {
-    const data = toJS(this.templateStore.list.data);
+    const data = toJS(this.registryStore.list.data);
     return (data || []).map(({ host }) => ({
       value: host,
       label: host,

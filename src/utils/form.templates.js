@@ -71,6 +71,16 @@ const getCloudProviderTemplate = () => ({
   ssh: {},
 });
 
+const getRegistryTemplate = () => ({
+  kind: 'Registry',
+  apiVersion: 'core.kubeclipper.io/v1',
+  metadata: {
+    annotations: {},
+  },
+  host: '',
+  scheme: '',
+});
+
 const FORM_TEMPLATES = {
   users: getUserTemplate,
   roles: getRoleTemplate,
@@ -78,6 +88,7 @@ const FORM_TEMPLATES = {
   dns: getDnsTemplate,
   scheduledBackup: getScheduledBackupTemplate,
   cloudproviders: getCloudProviderTemplate,
+  registries: getRegistryTemplate,
 };
 
 export default FORM_TEMPLATES;

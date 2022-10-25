@@ -20,7 +20,7 @@ import Create from '../containers/Cluster/actions/Create';
 import AddPlugin from '../components/plugin/AddPlugin';
 import AddStorage from '../components/plugin/AddStorage';
 import BackupPoint from '../containers/BackupPoint';
-import LocalRegistry from '../containers/LocalRegistry';
+import Registry from '../containers/Registry';
 
 import Template from '../containers/Template';
 import ClusterTemplate from '../containers/Template/cluster/actions/Create';
@@ -63,8 +63,8 @@ export default [
         exact: true,
       },
       {
-        path: `${PATH}/local-registry`,
-        component: LocalRegistry,
+        path: `${PATH}/registry`,
+        component: Registry,
         exact: true,
       },
       { path: `${PATH}/hosting`, component: HostingList, exact: true },
