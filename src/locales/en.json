@@ -596,5 +596,7 @@
   "Registry Repeat": "Registry Repeat",
   "Registry cannot be empty": "Registry cannot be empty",
   "Please input correct ip or domain": "Please input correct ip or domain",
-  "Delete the registry will invalidate the configured cluster CRI registry. Please ensure that registry is no longer used before deleting.": "Delete the registry will invalidate the configured cluster CRI registry. Please ensure that registry is no longer used before deleting."
+  "Delete the registry will invalidate the configured cluster CRI registry. Please ensure that registry is no longer used before deleting.": "Delete the registry will invalidate the configured cluster CRI registry. Please ensure that registry is no longer used before deleting.",
+  "Update CRI Registry": "Update CRI Registry",
+  "Cluster {name} {action} successfully.": "Cluster {name} {action} successfully."
 }
