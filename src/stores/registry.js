@@ -16,28 +16,10 @@
 
 import BaseStore from './base';
 
-export default class TemplateStore extends BaseStore {
-  module = 'template';
+export default class RegistryStore extends BaseStore {
+  module = 'registries';
 
   get apiType() {
-    return 'config';
-  }
-
-  get responseKey() {
-    return 'insecureRegistry';
-  }
-
-  async listDidFetch(items) {
-    return (items || []).map((item, index) => ({
-      ...item,
-      id: index,
-    }));
-  }
-
-  async update(datas) {
-    const data = {
-      insecureRegistry: datas,
-    };
-    await request.put(`${this.getListUrl()}`, data);
+    return 'core';
   }
 }

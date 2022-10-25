@@ -15,9 +15,8 @@
  */
 import { ConfirmAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import { toJS } from 'mobx';
 
-const { templateStore: store } = rootStore;
+const { registryStore: store } = rootStore;
 
 export default class DeleteAction extends ConfirmAction {
   get id() {
@@ -42,21 +41,21 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = () => 'registries:edit';
 
-  onSubmit = (_, __, props) => {
-    const datas = toJS(store.list.data);
-    if (props?.item) {
-      const { id } = props.item;
-      datas.splice(id, 1);
-      return store.update(datas);
-    }
-
-    const selectedRowKeys = toJS(store.list.selectedRowKeys);
-    const selectData = [];
-    datas.forEach((item, index) => {
-      if (!selectedRowKeys.includes(index)) {
-        selectData.push(item);
-      }
+  confirmContext = (data) => {
+    const name = this.getName(data);
+    const confirm = t('Are you sure to { action } {name}?', {
+      action: this.actionName || this.title,
+      name,
     });
-    return store.update(selectData);
+    const tip = t(
+      'Delete the registry will invalidate the configured cluster CRI registry. Please ensure that registry is no longer used before deleting.'
+    );
+    return confirm + tip;
+  };
+
+  onSubmit = (item) => {
+    const { name } = item;
+
+    return store.delete({ id: name });
   };
 }

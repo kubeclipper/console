@@ -52,6 +52,7 @@ import Divider from './Divider';
 import DNSRecord from './DNSRecord';
 import SelectForValue from './SelectForValue';
 import YamlInput from './YamlInput';
+import IPGroup from './IPGroup';
 
 export const type2component = {
   label: Label,
@@ -89,6 +90,7 @@ export const type2component = {
   'select-input': SelectWithInput,
   'dns-record': DNSRecord,
   'yaml-input': YamlInput,
+  'ip-group': IPGroup,
 };
 
 export default function FormItem(props) {
