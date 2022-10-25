@@ -45,6 +45,17 @@ class Registry extends ModalAction {
 
   static allowed = (item) => Promise.resolve(this.isRunning(item));
 
+  get name() {
+    return t('Update CRI Registry');
+  }
+
+  get successText() {
+    return t('Cluster {name} {action} successfully.', {
+      action: this.name.toLowerCase(),
+      name: this.instanceName,
+    });
+  }
+
   async getRegistry() {
     await this.registryStore.fetchList({
       limit: -1,
