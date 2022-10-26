@@ -79,7 +79,7 @@ export default function Node(props) {
     searchFilters: [
       {
         label: t('IP'),
-        name: 'ip',
+        name: 'default-ip',
       },
     ],
     store,

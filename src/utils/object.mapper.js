@@ -65,6 +65,7 @@ const NodesMapper = (item) => {
   return {
     ...getBaseInfo(item),
     ip: get(item, 'status.ipv4DefaultIP'),
+    'default-ip': get(item, 'status.ipv4DefaultIP'),
     hostname: get(item, 'metadata.labels["kubeclipper.io/hostname"]'),
     role: get(item, 'metadata.labels["kubeclipper.io/nodeRole"]', '-'),
     arch: get(item, 'metadata.labels["kubeclipper.io/arch"]'),
