@@ -19,7 +19,7 @@ import { useQuery } from 'hooks';
 import { parse } from 'qs';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
-import { isEmpty, get, omit } from 'lodash';
+import { isEmpty, get, omit, uniq } from 'lodash';
 import BaseTable from 'components/Tables/Base';
 import Notify from 'components/Notify';
 import styles from './index.less';
@@ -35,6 +35,20 @@ import { initTagByUrlParams, generateUrlParamsByTag } from 'utils';
 const notifyError = (e, name) => {
   if (e.status === 401) return null;
   return Notify.errorWithDetail(e, t('Get {name} error.', { name }));
+};
+
+const mergeFieldSelector = (field1, field2) => {
+  const val1 = get(field1, 'fieldSelector') ?? '';
+  const val2 = get(field2, 'fieldSelector') ?? '';
+
+  if (val1 && val2) {
+    const data = uniq([...val1?.split(','), ...val2?.split(',')]);
+
+    return data.join(',');
+  }
+  if (!val1) return val2;
+  if (!val2) return val1;
+  return '';
 };
 
 function BaseList(props) {
@@ -116,6 +130,8 @@ function BaseList(props) {
       dataParams = { ...dataParams, ..._params };
     }
 
+    dataParams.fieldSelector = mergeFieldSelector(_locationParams, propsParams);
+
     getData(dataParams);
   };
 
@@ -173,7 +189,7 @@ function BaseList(props) {
       reverse,
       page,
       limit,
-      ...generateUrlParamsByTag(rest, searchFilters),
+      ...generateUrlParamsByTag(rest, searchFilters, propsParams),
     };
     if (!isEmpty(currentTab)) queryParams.tab = currentTab.key;
 
