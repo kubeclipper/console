@@ -13,21 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-describe('The Cluster Page', () => {
+describe('集群', () => {
   const testUrl = '/cluster';
 
   const uuid = Cypress._.random(0, 1e6);
   const name = `e2e.cluster.name${uuid}`;
   const description = 'e2e-description';
   const region = 'default';
-  const confirmTitle = Cypress.env('language') === 'zh' ? '确 定' : 'Confirm';
   const externalIP = '142.22.2.2';
 
   beforeEach(() => {
     cy.login(testUrl);
   });
 
-  it('create cluster 1', () => {
+  // 创建单机集群
+  it('集群管理-创建-1', () => {
     cy.clickHeaderButton(0);
 
     cy.wait(1000).url().should('include', 'cluster/create');
@@ -48,73 +48,77 @@ describe('The Cluster Page', () => {
     cy.wait(2000).tableSearchText(name).waitStatusSuccess();
   });
 
-  // it('create cluster 2', () => {
-  //   cy.clickHeaderButton(0);
+  // 创建高可用集群
+  it.skip('集群管理-创建-2', () => {
+    cy.clickHeaderButton(0);
 
-  //   cy.wait(1000).url().should('include', 'cluster/create');
+    cy.wait(1000).url().should('include', 'cluster/create');
 
-  //   // cluster name
-  //   cy.get('[name="name"]').clear().type(name).blur();
-  //   cy.formSelect('region', region);
-  //   // select node
-  //   cy.waitTransferList();
-  //   cy.formMultiTransfer('nodes', 0);
-  //   cy.formMultiTransfer('nodes', 0, 1);
-  //   cy.formMultiTransfer('nodes', 0, 1);
+    // cluster name
+    cy.get('[name="name"]').clear().type(name).blur();
+    cy.formSelect('region', region);
+    // select node
+    cy.waitTransferList();
+    cy.formMultiTransfer('nodes', 0);
+    cy.formMultiTransfer('nodes', 0, 1);
+    cy.formMultiTransfer('nodes', 0, 1);
 
-  //   // next step
-  //   cy.clickStepActionNextButton('step-next');
-  //   cy.wait(2000);
-  //   cy.clickStepActionNextButton('step-quick');
-  //   cy.clickStepActionNextButton('step-confirm');
-  //   // check status
-  //   cy.wait(2000).tableSearchText(name).waitStatusSuccess();
-  // });
+    // next step
+    cy.clickStepActionNextButton('step-next');
+    cy.wait(2000);
+    cy.clickStepActionNextButton('step-quick');
+    cy.clickStepActionNextButton('step-confirm');
+    // check status
+    cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+  });
 
-  it('cluster detail', () => {
+  // 查看集群
+  it('集群管理-查看-1', () => {
     cy.tableSearchText(name).goToDetail(1);
     cy.checkDetailName(name);
   });
 
-  // const name1 = 'e2e.cluster.name976476';
-
-  it('edit cluster', () => {
+  // 编辑集群
+  it('集群管理-集群-编辑集群-1', () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Cluster Settings',
       subTitle: 'Edit',
     });
-    cy.inputText('#form-item-col-description', description);
+    cy.inputText('description', description);
     cy.inputIP('.ant-form-item-control-input .input-ip', externalIP);
 
-    cy.clickByTitle('.ant-modal-footer span', confirmTitle);
+    cy.clickConfirm();
     cy.wait(500).waitStatusSuccess();
     cy.checkTableColVal(3, description);
   });
 
-  it('add node', () => {
+  // 添加节点
+  it('集群管理-集群-添加节点-1', () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
       subTitle: 'AddNode',
     });
     cy.formMultiTransfer('nodes', 0);
-    cy.clickByTitle('.ant-modal-footer span', confirmTitle);
+    cy.clickConfirm();
     cy.wait(2000).waitStatusSuccess();
   });
 
-  it('remove node', () => {
+  // 移除节点
+  it('集群管理-集群-移除节点-1', () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
       subTitle: 'RemoveNode',
     });
     cy.clickByTitle('.ant-modal-content .ant-table-tbody', 'worker');
-    cy.clickByTitle('.ant-modal-footer span', confirmTitle);
+    cy.clickConfirm();
     cy.wait(2000).waitStatusSuccess();
   });
 
-  it('delete cluster 1', () => {
+  // 删除集群
+  it('集群管理-集群-删除集群-1', () => {
     cy.clickActionInMore({
       title: 'Cluster Status',
       subTitle: 'Delete Cluster',
