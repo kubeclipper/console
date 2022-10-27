@@ -116,7 +116,6 @@ class Registry extends ModalAction {
         type: 'array-input',
         itemComponent: SelectWithInput,
         options: this.registryOptions,
-        required: true,
       },
     ];
   }
