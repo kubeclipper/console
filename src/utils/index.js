@@ -577,7 +577,11 @@ export const initTagByUrlParams = (params, searchFilters = []) => {
  * @param {array} searchFilters
  * @returns {obj} {fieldSelector: 'name=d,name2=d2',fuzzy: 'description~df,description2~df2'}
  */
-export const generateUrlParamsByTag = (tags = {}, searchFilters = []) => {
+export const generateUrlParamsByTag = (
+  tags = {},
+  searchFilters = [],
+  propsParams = {}
+) => {
   const params = {};
 
   Object.entries(tags).forEach(([key, value]) => {
@@ -586,7 +590,15 @@ export const generateUrlParamsByTag = (tags = {}, searchFilters = []) => {
 
     if (s && s.exact && isKeyValueExist) {
       const val = params.fieldSelector;
-      params.fieldSelector = val ? `${val},${key}=${value}` : `${key}=${value}`;
+
+      let fieldValue = val ? `${val},${key}=${value}` : `${key}=${value}`;
+
+      if (has(propsParams, 'fieldSelector')) {
+        const propsFieldSelectorValue = get(propsParams, 'fieldSelector');
+        fieldValue = `${fieldValue},${propsFieldSelectorValue}`;
+      }
+
+      params.fieldSelector = fieldValue;
 
       return;
     }
