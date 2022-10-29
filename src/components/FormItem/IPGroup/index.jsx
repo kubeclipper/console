@@ -13,38 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React, { useState } from 'react';
+import React from 'react';
 import { Input, Select } from 'antd';
+import { useMergedState } from 'hooks';
 import PropTypes from 'prop-types';
 
 const { Option } = Select;
 
 export default function IPGroup(props) {
-  const { onChange, value, className } = props;
+  const { value, className } = props;
+  const [prefix, setPrefix] = useMergedState('http', {
+    value: value?.prefix,
+    onChange: props.onChange,
+  });
 
-  const [prefix, setPrefix] = useState('http');
-  const [ip, setIp] = useState('');
-
-  if (prefix !== value?.prefix) {
-    setPrefix(value?.prefix);
-  }
-  if (ip !== value?.ip) {
-    setIp(value?.ip);
-  }
-
-  const onPrefixChange = (_prefix) => {
-    onChange?.({
-      prefix: _prefix,
-      ip,
-    });
-  };
-
-  const onIPChange = (e) => {
-    onChange?.({
-      prefix,
-      ip: e.target.value,
-    });
-  };
+  const [ip, setIp] = useMergedState('', {
+    value: value?.ip,
+    onChange: props.onChange,
+  });
 
   return (
     <Input.Group compact className={className}>
@@ -53,7 +39,7 @@ export default function IPGroup(props) {
           width: '30%',
         }}
         value={prefix}
-        onChange={onPrefixChange}
+        onChange={(_prefix) => setPrefix({ prefix: _prefix, ip })}
       >
         <Option value="http">http</Option>
         <Option value="https">https</Option>
@@ -63,7 +49,7 @@ export default function IPGroup(props) {
           width: '70%',
         }}
         value={ip}
-        onChange={onIPChange}
+        onChange={(e) => setIp({ prefix, ip: e.target.value })}
       />
     </Input.Group>
   );
