@@ -50,7 +50,6 @@ function ClusterDetail() {
 
   const currentProps = {
     name: t('ClusterDetail'),
-    authKey: 'cluster-detail',
     listUrl: '/cluster',
     actionConfigs,
     store,

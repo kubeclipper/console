@@ -103,18 +103,20 @@ export const isIpCidr = (value) => ipCidr.test(value);
 
 export const isIPv6Cidr = (value) => ipv6Cidr.test(value);
 
-export const isName = (value) => {
+export const isName = (value, maxLength = 64) => {
   if (value && isString(value)) {
-    return nameRegex.test(value) && value.length <= 64;
+    return nameRegex.test(value) && value.length <= maxLength;
   }
   return false;
 };
 
 export const isPasswordRegex = (value) => passwordRegex.test(value);
 
-export const nameMessage = t(
-  'The name can only contain lowercase letters, numbers, and separators ("-" or "."), and must start and end with a lowercase letter or number, up to a maximum of 64 characters'
-);
+export const nameMessage = (maxLength = 64) =>
+  t(
+    `The name can only contain lowercase letters, numbers, and separators ("-" or "."), and must start and end with a lowercase letter or number, up to a maximum of {maxLength} characters.`,
+    { maxLength }
+  );
 
 export const portMessage = t('Enter an integer value between 1 and 65535.');
 
@@ -148,21 +150,21 @@ export const emailValidate = (rule, value) => {
   );
 };
 
-export const nameValidate = (rule, value) => {
+export const nameValidate = (rule, value, maxLength = 64) => {
   if (!rule.required && value === undefined) {
     return Promise.resolve(true);
   }
-  if (isName(value)) {
+  if (isName(value, maxLength)) {
     return Promise.resolve(true);
   }
-  return Promise.reject(new Error(`${nameMessage}`));
+  return Promise.reject(new Error(`${nameMessage(maxLength)}`));
 };
 
 export const macAddressValidate = (rule, value) => {
   if (isMacAddress(value)) {
     return Promise.resolve(true);
   }
-  return Promise.reject(new Error(`${t('Invalid: ')}${nameMessage}`));
+  return Promise.reject(new Error(`${t('Invalid: ')}${nameMessage()}`));
 };
 
 export const portRangeValidate = (rule, value) => {

@@ -51,7 +51,7 @@ class CreateForm extends ModalAction {
   }
 
   get listUrl() {
-    return '/access/user';
+    return '/access/user-admin';
   }
 
   get name() {

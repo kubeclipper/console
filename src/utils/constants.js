@@ -85,7 +85,15 @@ export const INTERNAL_ROLE_DES = {
 export const MODULE_ROUTE = {
   clusters: '/cluster',
   users: '/access/user',
-  platform: '/configuration/global-settings',
+  projectmembers: '/project/user',
+  projectroles: '/project/role',
+  empty: '/project/empty',
+};
+
+export const MODULE_ROUTE_ADMIN = {
+  clusters: '/cluster-admin',
+  users: '/access/user-admin',
+  platform: '/configuration/global-settings-admin',
   empty: '/auth/empty-role',
 };
 
@@ -103,4 +111,36 @@ export const APIVERSION = {
   iam: 'api/iam.kubeclipper.io/v1',
   config: 'api/config.kubeclipper.io/v1',
   audit: 'api/audit.kubeclipper.io/v1',
+  tenant: 'api/tenant.kubeclipper.io/v1',
+};
+
+export const ROLE_MODULES = {
+  globalroles: [
+    {
+      name: 'Access Control',
+    },
+    {
+      name: 'Platform Setting',
+    },
+    {
+      name: 'Cluster Management',
+    },
+    {
+      name: 'Audit',
+    },
+    {
+      name: 'DNS',
+    },
+  ],
+  projectroles: [
+    {
+      name: 'Project Setting',
+    },
+    {
+      name: 'Cluster Management',
+    },
+    {
+      name: 'DNS',
+    },
+  ],
 };

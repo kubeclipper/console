@@ -16,9 +16,9 @@
 import React, { useContext } from 'react';
 import { RouterStore } from '@superwf/mobx-react-router';
 import { parse } from 'qs';
-import { getQueryString } from 'utils';
+import { getQueryString, defaultRoute, isAdminPage } from 'utils';
 import { setLocalStorageItem, getLocalStorageItem } from 'utils/localStorage';
-import { get, uniq, isArray } from 'lodash';
+import { get, uniq, isArray, isEmpty } from 'lodash';
 import { makeAutoObservable } from 'mobx';
 import ObjectMapper from 'utils/object.mapper';
 import jwtDecode from 'jwt-decode';
@@ -63,6 +63,14 @@ class RootStore {
 
   hasPlugin = true;
 
+  currentProject = '';
+
+  isAdminPageRole = true;
+
+  isAdminPage = false;
+
+  isLoading = false;
+
   /**
    * routing
    * @param {*} params
@@ -71,6 +79,7 @@ class RootStore {
   query = (params = {}, refresh = false) => {
     const { pathname, search } = this.routing.location;
     const currentParams = parse(search.slice(1));
+    this.isAdminPage = isAdminPage(pathname);
 
     const newParams = refresh ? params : { ...currentParams, ...params };
     this.routing.push(`${pathname}?${getQueryString(newParams)}`);
@@ -119,6 +128,18 @@ class RootStore {
     return this.handleLoginResp(resp);
   }
 
+  // 两步验证，确认
+  async verifyLogin(params) {
+    const resp = await request.post('oauth/token', params, {
+      checkToken: false,
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    return this.handleLoginResp(resp);
+  }
+
   /**
    *
    * @param {*} name
@@ -160,7 +181,7 @@ class RootStore {
    * @param {*} resp
    * @returns
    */
-  handleLoginResp = (resp = {}) => {
+  handleLoginResp = async (resp = {}) => {
     if (!resp.access_token) {
       throw new Error(resp.message);
     }
@@ -179,16 +200,30 @@ class RootStore {
     const token = {
       token: access_token,
       refreshToken: refresh_token,
-      // expire,
       expires: new Date().getTime() + expire,
     };
 
     setLocalStorageItem('token', token, refreshExpire);
 
+    await this.getCurrentUser({ username, oauth: true });
+
+    this.routing.push(
+      this.nextPage(this.user.globalRules, this.user.globalrole)
+    );
+
     return {
       username,
       ...token,
     };
+  };
+
+  nextPage = (globalRules, globalrole) => {
+    const { search } = this.routing.location;
+    if (search) {
+      return search.split('=')[1];
+    }
+
+    return defaultRoute(globalRules, globalrole);
   };
 
   /**
@@ -236,32 +271,85 @@ class RootStore {
    * @param {*} param0
    * @returns
    */
-  getCurrentUser = async ({ username }) => {
+  getCurrentUser = async ({ username, oauth } = {}) => {
+    let currentUserName = username;
+
+    if (!username) {
+      const user = getLocalStorageItem('user');
+      if (user) {
+        currentUserName = user.username;
+      } else {
+        this.gotoLoginPage();
+      }
+    }
+
     let user = {};
 
     const resp = await request.get(
-      `/api/iam.kubeclipper.io/v1/users/${username}`
+      `/api/iam.kubeclipper.io/v1/users/${currentUserName}`
+    );
+    const globalrole = get(
+      resp,
+      'metadata.annotations["iam.kubeclipper.io/role"]'
     );
 
     if (resp) {
       user = {
         username: get(resp, 'metadata.name'),
-        globalrole: get(
-          resp,
-          'metadata.annotations["iam.kubeclipper.io/role"]'
-        ),
+        globalrole,
       };
     } else {
       throw new Error(resp);
     }
 
-    try {
-      user.globalRules = await this.getUserRoleRules({ username });
-    } catch (error) {}
+    this.isAdminPageRole = globalrole !== 'platform-regular';
+
+    if (oauth) {
+      this.isAdminPage = this.isAdminPageRole;
+    } else {
+      this.isAdminPage = isAdminPage(window.location.pathname);
+    }
+
+    user.projects = await this.getUserProject();
+
+    if (this.isAdminPage || (!this.isAdminPage && user.projects.length > 0)) {
+      user.globalRules = await this.getUserRoleRules({
+        username: currentUserName,
+      });
+    }
 
     this.updateUser(user);
 
     return user;
+  };
+
+  getUserProject = async function () {
+    const res = await request.get(`/api/tenant.kubeclipper.io/v1/projects`);
+    const data = (get(res, 'items') || []).map(ObjectMapper.projects);
+
+    if (isEmpty(data)) {
+      this.routing.push('/project/empty');
+      // return;
+    }
+
+    if (this.isAdminPage) {
+      setLocalStorageItem('currentProject', '');
+      this.currentProject = '';
+    } else {
+      const project = getLocalStorageItem('currentProject');
+
+      this.currentProject = project || data?.[0]?.name;
+    }
+
+    return data;
+  };
+
+  roleRulesPath = ({ project, username }) => {
+    if (this.isAdminPage) {
+      return `api/iam.kubeclipper.io/v1/users/${username}/roles`;
+    }
+
+    return `api/iam.kubeclipper.io/v1/projects/${project}/projectmembers/${username}/roles`;
   };
 
   /**
@@ -271,7 +359,10 @@ class RootStore {
    */
   getUserRoleRules = async ({ username, options }) => {
     const resp = await request.get(
-      `api/iam.kubeclipper.io/v1/users/${username}/roles`,
+      this.roleRulesPath({
+        project: this.currentProject,
+        username,
+      }),
       {},
       options
     );
@@ -303,7 +394,6 @@ class RootStore {
    */
   updateUser(user) {
     this.user = user;
-
     setLocalStorageItem('user', user);
   }
 
@@ -377,15 +467,21 @@ class RootStore {
     });
   }
 
-  async verifyLogin(params) {
-    const resp = await request.post('oauth/token', params, {
-      checkToken: false,
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-    });
+  async updateCurrentProject(project) {
+    this.isLoading = true;
+    this.currentProject = project;
+    setLocalStorageItem('currentProject', project);
 
-    return this.handleLoginResp(resp);
+    try {
+      this.user.globalRules = await this.getUserRoleRules({
+        username: this.user.username,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('switchproject err', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }
 /* Store end */

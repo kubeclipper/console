@@ -31,7 +31,7 @@ import {
 import { customAlphabet } from 'nanoid';
 import moment from 'moment';
 import JSEncrypt from 'jsencrypt';
-import { MODULE_ROUTE } from 'utils/constants';
+import { MODULE_ROUTE, MODULE_ROUTE_ADMIN } from 'utils/constants';
 import { getLocalStorageItem, getToken } from 'utils/localStorage';
 import { parseExpression } from 'cron-parser';
 
@@ -288,6 +288,17 @@ export const getOptions = (obj) =>
 
 /**
  *
+ * @param {*} data
+ * @returns
+ */
+export const getOptionsByListData = (data = []) =>
+  data.map(({ name }) => ({
+    label: name,
+    value: name,
+  }));
+
+/**
+ *
  * @param {*} enable
  * @param {*} options
  * @returns
@@ -395,19 +406,21 @@ export const safeParseJSON = (json, defaultValue) => {
  * @param {*} globalRules
  * @returns
  */
-export const defaultRoute = (globalRules) => {
+export const defaultRoute = (globalRules, globalrole) => {
   let path = '';
+  const isAdminPageRole = globalrole !== 'platform-regular';
+  const MODULE = isAdminPageRole ? MODULE_ROUTE_ADMIN : MODULE_ROUTE;
 
   const token = getToken();
 
   if (!isEmpty(token)) {
     if (isEmpty(globalRules)) {
-      return MODULE_ROUTE.empty;
+      return MODULE.empty;
     }
 
-    for (const key in MODULE_ROUTE) {
+    for (const key in MODULE) {
       if (has(globalRules, key) && globalRules[key].length > 0) {
-        path = MODULE_ROUTE[key];
+        path = MODULE[key];
 
         break;
       }
@@ -777,3 +790,5 @@ Array.prototype.insert = function (index, ...items) {
 
   return this;
 };
+
+export const isAdminPage = (url) => url && url.indexOf('admin') >= 0;

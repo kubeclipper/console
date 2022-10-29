@@ -14,22 +14,12 @@
  *  limitations under the License.
  */
 
-export const ROLE_MODULES = {
-  globalroles: [
-    {
-      name: 'Access Control',
-    },
-    {
-      name: 'Platform Setting',
-    },
-    {
-      name: 'Cluster Management',
-    },
-    {
-      name: 'Audit',
-    },
-    {
-      name: 'DNS',
-    },
-  ],
-};
+import BaseStore from './base';
+
+export default class ProjectStore extends BaseStore {
+  module = 'projects';
+
+  get apiType() {
+    return 'tenant';
+  }
+}

@@ -32,7 +32,7 @@ export default function Node() {
       extraNameCopyable: true,
       width: 200,
       render: (_, record) => (
-        <Link to={`/node/${record.id}`}>{record.hostname}</Link>
+        <Link to={`/node-admin/${record.id}`}>{record.hostname}</Link>
       ),
     },
     {

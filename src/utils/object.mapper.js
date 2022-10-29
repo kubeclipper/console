@@ -44,6 +44,7 @@ export const getOriginData = (item) =>
 export const getBaseInfo = (item) => ({
   id: get(item, 'metadata.name'),
   name: get(item, 'metadata.name'),
+  description: get(item, 'metadata.annotations["kubeclipper.io/description"]'),
   createTime: get(item, 'metadata.creationTimestamp'),
   resourceVersion: get(item, 'metadata.resourceVersion'),
 });
@@ -143,7 +144,8 @@ const ClusterMapper = (item) => {
     backupPoint: get(metadata, 'labels["kubeclipper.io/backupPoint"]'),
     providerName: get(metadata, 'labels["kubeclipper.io/clusterProviderName"]'),
     providerType: get(metadata, 'labels["kubeclipper.io/clusterProviderType"]'),
-    _originData: getOriginData(item),
+    project: get(metadata, 'labels["kubeclipper.io/project"]', ''),
+    _originData: getOriginData(item, 'labels["kubeclipper.io/project"]'),
   };
 };
 
@@ -485,6 +487,57 @@ const RegistryMapper = (item) => ({
   ...getBaseInfo(item),
   ...item,
   description: get(item, 'metadata.annotations["kubeclipper.io/description"]'),
+  _originData: getOriginData(item),
+});
+
+const ProjectMapper = (item) => ({
+  ...getBaseInfo(item),
+  clusterCount: get(item, 'status.count.cluster', ''),
+  nodeCount: get(item, 'status.count.node', ''),
+  _originData: getOriginData(item),
+});
+
+const ProjectrolesMapper = (item) => {
+  const isInternal = safeParseJSON(
+    get(item, 'metadata.annotations["kubeclipper.io/internal"]'),
+    false
+  );
+
+  const description = isInternal
+    ? INTERNAL_ROLE_DES[get(item, 'metadata.name')]
+    : get(item, 'metadata.annotations["kubeclipper.io/description"]', '');
+
+  return {
+    ...getBaseInfo(item),
+    rules: formatRoleRules(item),
+    aliasName: get(item, 'metadata.annotations["kubeclipper.io/alias-name"]'),
+    module: get(item, 'metadata.annotations["kubeclipper.io/module"]'),
+    labels: get(item, 'metadata.labels', {}),
+    annotations: get(item, 'metadata.annotations'),
+    dependencies: safeParseJSON(
+      get(item, 'metadata.annotations["kubeclipper.io/dependencies"]', ''),
+      []
+    ),
+    roleTemplates: safeParseJSON(
+      get(item, 'metadata.annotations["kubeclipper.io/aggregation-roles"]', ''),
+      []
+    ),
+    description,
+    isInternal,
+    _originData: getOriginData(item),
+  };
+};
+
+const projectmembersMapper = (item) => ({
+  ...getBaseInfo(item),
+  projectRole: get(item, 'metadata.annotations["iam.kubeclipper.io/role"]'),
+  authenticationMode: get(item, 'metadata.labels["iam.kubeclipper.io/idp"]'),
+  description: get(item, 'spec.description'),
+  displayName: get(item, 'spec.displayName'),
+  phone: get(item, 'spec.phone'),
+  email: get(item, 'spec.email'),
+  status: get(item, 'status.state'),
+  _originData: getOriginData(item),
 });
 
 export default {
@@ -505,4 +558,7 @@ export default {
   clusterTemplate: ClusterTemplateMapper,
   cloudproviders: CloudProviderMapper,
   registries: RegistryMapper,
+  projects: ProjectMapper,
+  projectroles: ProjectrolesMapper,
+  projectmembers: projectmembersMapper,
 };

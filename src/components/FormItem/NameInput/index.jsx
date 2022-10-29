@@ -25,7 +25,8 @@ export default function NameInput(props) {
 
   const getRules = () => {
     let newRules = {
-      validator: nameValidate,
+      validator: (rule, value) =>
+        nameValidate(rule, value, componentProps.maxLength),
     };
     if (rules && rules.length > 0) {
       newRules = {
@@ -44,7 +45,7 @@ export default function NameInput(props) {
   const newFormItemProps = {
     ...rest,
     rules: getRules(),
-    extra: nameMessage,
+    extra: nameMessage(componentProps.maxLength),
   };
 
   return (

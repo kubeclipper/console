@@ -20,7 +20,7 @@ import { useRootStore } from 'stores';
 
 import actionConfigs from './actions';
 
-const User = () => {
+const User = ({ isAdminPage }) => {
   const { userStore } = useRootStore();
 
   const columns = [
@@ -30,16 +30,17 @@ const User = () => {
       extraNameIndex: 'displayName',
       render: (name, record) => {
         if (name) {
-          return <Link to={`/access/user/${record.id}`}>{name}</Link>;
+          return (
+            <Link
+              to={`/access/user${isAdminPage ? '-admin' : ''}/${record.id}`}
+            >
+              {name}
+            </Link>
+          );
         }
         return '-';
       },
     },
-    // {
-    //   title: t('Status'),
-    //   dataIndex: 'status',
-    //   render: (value) => userStatus[value] || '-',
-    // },
     {
       title: t('Role'),
       dataIndex: 'role',

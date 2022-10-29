@@ -27,6 +27,7 @@ import useRefFunction from './useRefFunction';
 import useQuery from './useQuery';
 import useModal from './useModal';
 import useVersionInfo from './useVersionInfo';
+import useAdminPage from './useAdminPage';
 
 export {
   useDidUpdateEffect,
@@ -42,4 +43,5 @@ export {
   useQuery,
   useModal,
   useVersionInfo,
+  useAdminPage,
 };

@@ -32,7 +32,7 @@ class SaveAsTemplate extends ModalAction {
 
   static policy = 'clusters:edit';
 
-  static listUrl = '/cluster';
+  static listUrl = `/cluster${super.isAdminPage ? '-admin' : ''}`;
 
   static get modalSize() {
     return 'middle';

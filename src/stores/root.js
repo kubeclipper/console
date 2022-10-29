@@ -28,6 +28,9 @@ import BackupPointStore from './backupPoint';
 import LogStore from './log';
 import CornBackupStore from './cronBackup';
 import CloudProviderStore from './cloudprovider';
+import ProjectStore from './project';
+import ProjectUserStore from './project/user';
+import ProjectRoleStore from './project/role';
 
 export default {
   ClusterStore,
@@ -44,4 +47,7 @@ export default {
   LogStore,
   CornBackupStore,
   CloudProviderStore,
+  ProjectStore,
+  ProjectUserStore,
+  ProjectRoleStore,
 };

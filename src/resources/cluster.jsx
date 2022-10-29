@@ -265,13 +265,19 @@ export const computeAutoDetection = (values) => {
   };
 };
 
-export const columns = [
+export const columns = (self) => [
   {
     title: t('Name'),
     dataIndex: 'name',
     isHideable: true,
     copyable: true,
-    render: (name) => <Link to={`/cluster/${name}`}>{name}</Link>,
+    render: (name) => (
+      <Link
+        to={self?.isAdminPage ? `/cluster-admin/${name}` : `/cluster/${name}`}
+      >
+        {name}
+      </Link>
+    ),
     extraRender: (name, data) => {
       let isExpired = null;
       if (data.licenseExpirationTime) {

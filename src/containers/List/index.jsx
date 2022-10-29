@@ -15,7 +15,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouteMatch } from 'react-router-dom';
-import { useQuery } from 'hooks';
+import { useQuery, useAdminPage } from 'hooks';
 import { parse } from 'qs';
 import classnames from 'classnames';
 import { toJS } from 'mobx';
@@ -54,7 +54,9 @@ const mergeFieldSelector = (field1, field2) => {
 function BaseList(props) {
   const params = useParams();
 
-  const { routing } = useRootStore();
+  const rootStore = useRootStore();
+  const { routing } = rootStore;
+
   let dataTimer = null;
   const dataDuration = 5;
 
@@ -80,6 +82,7 @@ function BaseList(props) {
     isRenderFooter,
     isShowDownLoadIcon,
     isShowEyeIcon,
+    showProject = false,
   } = props;
 
   const { list } = store;
@@ -91,6 +94,7 @@ function BaseList(props) {
 
   const urlParams = useQuery();
   const match = useRouteMatch();
+  const { isAdminPage } = useAdminPage();
 
   const initFilters = initTagByUrlParams(urlParams, searchFilters);
   const [filters, setFilters] = useState(initFilters);
@@ -130,7 +134,11 @@ function BaseList(props) {
       dataParams = { ...dataParams, ..._params };
     }
 
-    dataParams.fieldSelector = mergeFieldSelector(_locationParams, propsParams);
+    const fieldSelectorValue = mergeFieldSelector(_locationParams, propsParams);
+
+    if (fieldSelectorValue) {
+      dataParams.fieldSelector = fieldSelectorValue;
+    }
 
     getData(dataParams);
   };
@@ -231,7 +239,6 @@ function BaseList(props) {
       ...match.params,
       ..._params,
     };
-
     fetchListWithTry(async () => {
       await store.fetchList({ ...newParams });
       list.silent = false;
@@ -293,6 +300,23 @@ function BaseList(props) {
       clearTimer();
     }
   };
+
+  if (isAdminPage && showProject) {
+    const projects = get(rootStore, 'user.projects') || [];
+    const filterOptions = projects.map((p) => ({
+      value: p.name,
+      text: p.name,
+    }));
+    const projectColumn = {
+      title: t('Project'),
+      dataIndex: 'project',
+      filters: filterOptions,
+      onFilter: (value, record) => record.project.indexOf(value) > -1,
+      width: '8%',
+    };
+
+    columns.splice(1, 0, projectColumn);
+  }
 
   return (
     <div className={classnames(styles.wrapper, 'list-container', className)}>

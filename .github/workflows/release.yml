@@ -31,7 +31,7 @@ jobs:
 
       - name: Extract Tag
         id: extract_tag
-        run:  echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
 
       - name: Build
         run: |
@@ -47,7 +47,7 @@ jobs:
       - name: Setup ossutil
         uses: manyuanrong/setup-ossutil@v2.0
         with:
-          endpoint:  ${{ secrets.OSS_ENDPOINT }}
+          endpoint: ${{ secrets.OSS_ENDPOINT }}
           access-key-id: ${{ secrets.OSS_ACCESS_KEY }}
           access-key-secret: ${{ secrets.OSS_ACCESS_SECRET }}
       - name: Upload to oss

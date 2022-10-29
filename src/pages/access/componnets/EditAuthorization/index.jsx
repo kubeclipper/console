@@ -18,7 +18,6 @@ import { get, cloneDeep, keyBy, groupBy, sortBy, uniqBy } from 'lodash';
 import React, { useReducer, forwardRef, useImperativeHandle } from 'react';
 import { useDeepCompareEffect } from 'hooks';
 import Tabs from 'components/Tabs';
-import { ROLE_MODULES } from './constants';
 import CheckItem from './CheckItem';
 
 const EditAuthorization = forwardRef((props, ref) => {
@@ -51,7 +50,7 @@ const EditAuthorization = forwardRef((props, ref) => {
 
     const _roleTemplates = props.formTemplate.roleTemplates || [];
 
-    const _roleModules = cloneDeep(ROLE_MODULES.globalroles)
+    const _roleModules = cloneDeep(props.roleModule)
       .filter((item) => !item.hide)
       .map((item) => ({
         ...item,

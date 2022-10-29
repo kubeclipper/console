@@ -43,8 +43,8 @@ export default function Oauth2Redirect() {
           });
 
           if (currentUser) {
-            const { globalRules = {} } = currentUser;
-            history.push(defaultRoute(globalRules));
+            const { globalRules = {}, globalrole } = currentUser;
+            history.push(defaultRoute(globalRules, globalrole));
           }
         }
       } catch (error) {

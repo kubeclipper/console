@@ -1,0 +1,69 @@
+/*
+ * Copyright 2021 KubeClipper Authors.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+.wrapper {
+  margin: 13px 20px;
+  height: calc(100% - 60px);
+  overflow: auto;
+
+  :global {
+    .ant-collapse {
+      border: 0;
+
+      .ant-collapse-item,
+      .ant-collapse-content {
+        border: 0;
+      }
+
+      .ant-collapse-item {
+        margin-bottom: 12px;
+      }
+    }
+
+    .ant-collapse-header {
+      font-size: 16px;
+      font-weight: 500;
+      background-color: #eceff1;
+      padding: 8px 16px 8px 40px !important;
+    }
+
+    .ant-collapse-arrow {
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+
+  :global {
+    .ant-form-item-label {
+      justify-content: flex-start;
+    }
+  }
+
+  .formWrapper {
+    margin-left: 24px;
+  }
+
+  .auth {
+    :global {
+      .ant-collapse-content {
+        padding: 0 24px;
+      }
+      .ant-collapse-content-box {
+        // height: calc(100vh - 600px);
+      }
+    }
+  }
+}

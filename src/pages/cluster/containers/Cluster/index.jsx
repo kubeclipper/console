@@ -25,7 +25,7 @@ const ClusterList = (props) => {
   const currentProps = {
     ...props,
     name: t('Cluster'),
-    columns,
+    columns: columns(props),
     searchFilters: [
       {
         label: t('Name'),
@@ -35,6 +35,7 @@ const ClusterList = (props) => {
     transitionStatusList: transitionStatus,
     actionConfigs,
     store,
+    showProject: true,
   };
 
   return <BaseList {...currentProps} />;

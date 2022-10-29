@@ -30,4 +30,13 @@ export default [
       { path: '*', component: E404 },
     ],
   },
+  {
+    path: `${PATH}-admin`,
+    component: BaseLayout,
+    routes: [
+      { path: `${PATH}-admin`, component: Node, exact: true },
+      { path: `${PATH}-admin/:id`, component: NodeDetail, exact: true },
+      { path: '*', component: E404 },
+    ],
+  },
 ];

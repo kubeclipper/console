@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 import { Component } from 'react';
+import { isAdminPage } from 'utils';
 
 export default class LinkAction extends Component {
   static allowed() {
@@ -29,6 +30,8 @@ export default class LinkAction extends Component {
   static title = t('View');
 
   static buttonType = 'primary';
+
+  static isAdminPage = isAdminPage(window.location.pathname);
 
   render() {
     return 'link action';

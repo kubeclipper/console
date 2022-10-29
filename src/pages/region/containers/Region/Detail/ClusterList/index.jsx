@@ -25,7 +25,7 @@ export default function Cluster() {
 
   const currentProps = {
     store,
-    columns,
+    columns: columns({ isAdminPage: true }),
     module: 'cluster',
     name: 'cluster',
     transitionStatusList: transitionStatus,

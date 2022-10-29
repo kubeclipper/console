@@ -51,7 +51,7 @@ const ClusterList = (props) => {
   const currentProps = {
     ...props,
     name: t('Cluster'),
-    columns,
+    columns: columns(props),
     searchFilters: [
       {
         label: t('Name'),

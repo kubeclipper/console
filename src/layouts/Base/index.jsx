@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React, { useEffect, useReducer } from 'react';
-import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+// import { Spin } from 'antd';
 import RightContext from './Right/index';
 import LeftContext from './Left/index';
 import { useRootStore } from 'stores';
-import { getLocalStorageItem } from 'utils/localStorage';
 
 import styles from './index.less';
 
@@ -42,33 +42,17 @@ function BaseLayout(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (!rootStore.user) {
-      const user = getLocalStorageItem('user');
-
-      if (!user) {
-        rootStore.gotoLoginPage(window.location.pathname);
-      }
-
-      user && rootStore.updateUser(user);
-    }
-
-    const user = toJS(rootStore.user);
-
-    if (user && (!user?.globalrole || !user?.globalRules)) {
-      rootStore.getCurrentUser({ username: rootStore.user.username });
-    }
-  }, []);
-
   return (
     <BaseContext.Provider
       value={{ state, setState, Routes: props }}
       className={styles['base-layout']}
     >
+      {/* <Spin spinning> */}
       <LeftContext />
       <RightContext />
+      {/* </Spin> */}
     </BaseContext.Provider>
   );
 }
 
-export default BaseLayout;
+export default observer(BaseLayout);

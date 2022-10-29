@@ -31,6 +31,7 @@ import KubeConfig from './KubeConfig';
 import AddNodes from '../Detail/NodesList/actions/Add';
 import RemoveNodes from './RemoveNodes';
 import Registry from './Registry';
+import AssignProject from './AssignProject';
 
 const actionConfigs = {
   rowActions: {
@@ -39,7 +40,7 @@ const actionConfigs = {
       { action: Terminal },
       {
         title: t('Cluster Settings'),
-        actions: [Edit, SaveAsTemplate, Registry],
+        actions: [Edit, SaveAsTemplate, Registry, AssignProject],
       },
       {
         title: t('Node management'),

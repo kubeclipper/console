@@ -31,7 +31,9 @@ export default function Node(props) {
       extraNameCopyable: true,
       width: 200,
       render: (_, record) => (
-        <Link to={`/node/${record.id}`}>{record.hostname}</Link>
+        <Link to={`/node${props.isAdminPage ? '-admin' : ''}/${record.id}`}>
+          {record.hostname}
+        </Link>
       ),
     },
     {
@@ -85,6 +87,7 @@ export default function Node(props) {
     store,
     columns,
     actionConfigs,
+    showProject: true,
   };
 
   return <BaseList {...currentProps} />;

@@ -13,13 +13,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import Create from './Create';
+import Delete from './Delete';
+import Edit from './Edit';
+import EditPermission from './EditPermission';
 
 const actionConfigs = {
   rowActions: {
-    moreActions: [],
+    firstAction: Edit,
+    moreActions: [
+      {
+        action: EditPermission,
+      },
+      {
+        action: Delete,
+      },
+    ],
   },
-  batchActions: [],
-  primaryActions: [],
+  batchActions: [Delete],
+  primaryActions: [Create],
 };
 
 export default actionConfigs;

@@ -20,9 +20,11 @@ import { Row, Col, Form, Button, Spin, Card, Alert } from 'antd';
 import FormItem from 'components/FormItem';
 import classnames from 'classnames';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import styles from './index.less';
 import PropTypes from 'prop-types';
 import FORM_TEMPLATES from 'utils/form.templates';
+import { isAdminPage } from 'utils';
+
+import styles from './index.less';
 
 export const Forms = forwardRef((props, ref) => {
   const {
@@ -180,10 +182,6 @@ export default class BaseForm extends React.Component {
     return 'right';
   }
 
-  get authKey() {
-    return this.module;
-  }
-
   get name() {
     return '';
   }
@@ -212,6 +210,16 @@ export default class BaseForm extends React.Component {
     return '/base/tmp';
   }
 
+  get realListUrl() {
+    if (this.isAdminPage) {
+      if (this.listUrlAdmin) return this.listUrlAdmin;
+
+      return `${this.listUrl}-admin`;
+    }
+
+    return this.listUrl;
+  }
+
   get isStep() {
     return false;
   }
@@ -222,6 +230,12 @@ export default class BaseForm extends React.Component {
 
   get isFormRender() {
     return false;
+  }
+
+  get isAdminPage() {
+    const pathname =
+      this.props?.containerProps?.match?.path || this.props?.location?.pathname;
+    return isAdminPage(pathname);
   }
 
   get formRenderRefs() {
@@ -313,7 +327,7 @@ export default class BaseForm extends React.Component {
     this.values = values;
     return this.onSubmit(values, containerProps).then(
       () => {
-        !this.isModal && this.routing.push(this.listUrl);
+        !this.isModal && this.routing.push(this.realListUrl);
 
         if (callback && isFunction(callback)) {
           callback(true, false);
@@ -451,7 +465,7 @@ export default class BaseForm extends React.Component {
   };
 
   onClickCancel = () => {
-    this.routing.push(this.listUrl);
+    this.routing.push(this.realListUrl);
   };
 
   renderAlert() {

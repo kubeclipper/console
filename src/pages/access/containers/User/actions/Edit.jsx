@@ -51,7 +51,7 @@ class Edit extends ModalAction {
   }
 
   get listUrl() {
-    return this.getUrl('/access/user');
+    return this.getUrl('/access/user-admin');
   }
 
   get data() {

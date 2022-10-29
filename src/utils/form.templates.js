@@ -81,6 +81,18 @@ const getRegistryTemplate = () => ({
   scheme: '',
 });
 
+const getProjectTemplate = () => ({
+  kind: 'Project',
+  apiVersion: 'tenant.kubeclipper.io/v1',
+  metadata: {
+    name: '',
+    annotations: {},
+  },
+  spec: {
+    manager: '',
+  },
+});
+
 const FORM_TEMPLATES = {
   users: getUserTemplate,
   roles: getRoleTemplate,
@@ -89,6 +101,7 @@ const FORM_TEMPLATES = {
   scheduledBackup: getScheduledBackupTemplate,
   cloudproviders: getCloudProviderTemplate,
   registries: getRegistryTemplate,
+  projects: getProjectTemplate,
 };
 
 export default FORM_TEMPLATES;

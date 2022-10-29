@@ -43,8 +43,8 @@ jobs:
 
       - name: Build
         run: |
-            yarn install
-            yarn run build
+          yarn install
+          yarn run build
 
       - name: Compress
         run: |
@@ -55,7 +55,7 @@ jobs:
       - name: Setup ossutil
         uses: manyuanrong/setup-ossutil@v2.0
         with:
-          endpoint:  ${{ secrets.OSS_ENDPOINT }}
+          endpoint: ${{ secrets.OSS_ENDPOINT }}
           access-key-id: ${{ secrets.OSS_ACCESS_KEY }}
           access-key-secret: ${{ secrets.OSS_ACCESS_SECRET }}
       - name: Upload to oss

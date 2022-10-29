@@ -21,52 +21,29 @@ import VersionInfo from 'components/VersionInfo';
 import { useRootStore } from 'stores';
 import { setLocalStorageItem } from 'utils/localStorage';
 import Notify from 'components/Notify';
-import { defaultRoute } from 'utils';
 import { useModal } from 'hooks';
 import OAuth from './oauth';
 import Verification from './Verification';
 import styles from './index.less';
 
-export default function Login(props) {
+export default function Login() {
   const rootStore = useRootStore();
   const [modal, ModalDOM] = useModal();
 
   const [isSubmmiting, setIsSubmmiting] = useState(false);
 
-  const nextPage = (globalRules) => {
-    const { location = {} } = props;
-    const { search } = location;
-    if (search) {
-      return search.split('=')[1];
-    }
-
-    return defaultRoute(globalRules);
-  };
-
-  const handleLoginResponse = async (res) => {
-    setLocalStorageItem('user', res, res.expire);
+  const handleLoginResponse = async () => {
     setLocalStorageItem('isExternal', false);
     setIsSubmmiting(false);
-
-    const currentUser = await rootStore.getCurrentUser({
-      username: res.username,
-    });
-
-    if (currentUser) {
-      const { globalRules = {} } = currentUser;
-      rootStore.routing.push(nextPage(globalRules));
-    }
   };
 
   const onFinish = async (values) => {
     setIsSubmmiting(true);
 
     try {
-      const res = await rootStore.login({ params: values });
+      await rootStore.login({ params: values });
 
-      if (res) {
-        handleLoginResponse(res);
-      }
+      handleLoginResponse();
     } catch (error) {
       if (error.status === 428) {
         const { providers } = error.data;
@@ -82,11 +59,11 @@ export default function Login(props) {
           };
 
           try {
-            const res = await rootStore.verifyLogin(params);
-            if (res) {
-              handleLoginResponse(res);
-              modal.close();
-            }
+            await rootStore.verifyLogin(params);
+
+            handleLoginResponse();
+            modal.close();
+
             // eslint-disable-next-line no-shadow
           } catch (error) {
             Notify.error(error?.reason);

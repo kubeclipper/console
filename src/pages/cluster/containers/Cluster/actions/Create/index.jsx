@@ -37,7 +37,9 @@ export default class Create extends StepAction {
 
   static title = t('Create Cluster');
 
-  static path = '/cluster/create';
+  static path() {
+    return `/cluster${super.isAdminPage ? '-admin' : ''}/create`;
+  }
 
   static policy = 'clusters:create';
 
@@ -50,7 +52,7 @@ export default class Create extends StepAction {
   }
 
   get listUrl() {
-    return '/cluster';
+    return this.isAdminPage ? '/cluster' : '/cluster-admin';
   }
 
   get name() {
@@ -167,6 +169,7 @@ export default class Create extends StepAction {
     const {
       /* step1: Node config */
       region,
+      project,
       /* step2: Cluster config */
       // image
       offline,
@@ -224,6 +227,7 @@ export default class Create extends StepAction {
       metadata: {
         name,
         labels: {
+          'kubeclipper.io/project': project,
           'topology.kubeclipper.io/region': region,
           'kubeclipper.io/backupPoint': backupPoint,
           ...externalIPLabel,
