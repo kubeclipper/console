@@ -141,18 +141,18 @@ Cypress.Commands.add('clickTab', (label, urlTab, waitTime = 2000) => {
   }
 });
 
-Cypress.Commands.add('waitStatusSuccess', (index) => {
+Cypress.Commands.add('waitStatusSuccess', (index, timeout = 100000000) => {
   if (!index) {
     cy.get('.ant-table-row')
       .first()
-      .find('.ant-badge-status-success', { timeout: 100000000 })
+      .find('.ant-badge-status-success', { timeout })
       .should('exist');
   } else {
     cy.get('.ant-table-row')
       .first()
       .find('.ant-table-cell')
       .eq(index)
-      .find('.ant-badge-status-success', { timeout: 100000000 })
+      .find('.ant-badge-status-success', { timeout })
       .should('exist');
   }
 });
@@ -240,4 +240,9 @@ Cypress.Commands.add('checkTableColVal', (col, val) => {
     .eq(col)
     .contains(val)
     .should('exist');
+});
+
+Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
+  cy.get('.ant-tabs-nav-list div').contains(getTitle(title)).click();
+  waitTime && cy.wait(waitTime);
 });

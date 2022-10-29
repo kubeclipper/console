@@ -22,10 +22,12 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config);
     },
+    experimentalSessionAndOrigin: true,
     baseUrl: 'http://localhost:8089',
     specPattern: [
       'cypress/e2e/pages/login.cy.js',
       'cypress/e2e/pages/cluster/cluster.cy.js',
+      'cypress/e2e/pages/cluster/backup.cy.js',
     ],
   },
 });

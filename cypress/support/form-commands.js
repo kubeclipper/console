@@ -79,6 +79,16 @@ Cypress.Commands.add('formSelect', (formItemName, label, selectIndex) => {
   }
 });
 
+Cypress.Commands.add('checkFormSelectorExist', (formItemName, val) => {
+  cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
+  cy.get(`[label="${val}"]`).should('exist');
+});
+
+Cypress.Commands.add('checkFormSelectorNotExist', (formItemName, val) => {
+  cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
+  cy.get(`[label="${val}"]`).should('not.exist');
+});
+
 Cypress.Commands.add('waitFormLoading', () => {
   cy.get('.ant-btn-loading', { timeout: 600000 }).should('not.exist');
 });
@@ -174,8 +184,8 @@ Cypress.Commands.add('clickStepActionNextButton', (action, waitTime = 1000) => {
   cy.get(`[data-test="${action}"]`).click().wait(waitTime);
 });
 
-Cypress.Commands.add('inputText', (_class, value) => {
-  cy.get(_class).find('input').clear().type(value);
+Cypress.Commands.add('inputText', (formItemName, value) => {
+  cy.get(getId(formItemName)).find('input').clear().type(value);
 });
 
 Cypress.Commands.add('inputIP', (_class, value) => {
@@ -235,3 +245,8 @@ Cypress.Commands.add(
     }
   }
 );
+
+Cypress.Commands.add('clickConfirm', (_class = '.ant-modal-footer span') => {
+  const confirmTitle = Cypress.env('language') === 'zh' ? '确 定' : 'Confirm';
+  cy.clickByTitle(_class, confirmTitle);
+});

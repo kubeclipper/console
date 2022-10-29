@@ -90,94 +90,96 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 });
 
 Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
-  cy.setLanguage();
+  cy.session('login', () => {
+    cy.setLanguage();
 
-  cy.request({
-    url: '/apis/oauth/login',
-    body: {
-      username: Cypress.env('username'),
-      password: `${Cypress.env('password')}`,
-    },
-    method: 'POST',
-  })
-    .its('body')
-    .as('token')
-    .then((res) => {
-      const { access_token, refresh_token, expires_in, refresh_expires_in } =
-        res || {};
-      const expire = Number(expires_in) * 1000;
-      const refreshExpire = Number(refresh_expires_in) * 1000;
-      const token = {
-        token: access_token,
-        refreshToken: refresh_token,
-        // expire,
-        expires: new Date().getTime() + expire,
+    cy.request({
+      url: '/apis/oauth/login',
+      body: {
+        username: Cypress.env('username'),
+        password: `${Cypress.env('password')}`,
+      },
+      method: 'POST',
+    })
+      .its('body')
+      .as('token')
+      .then((res) => {
+        const { access_token, refresh_token, expires_in, refresh_expires_in } =
+          res || {};
+        const expire = Number(expires_in) * 1000;
+        const refreshExpire = Number(refresh_expires_in) * 1000;
+        const token = {
+          token: access_token,
+          refreshToken: refresh_token,
+          // expire,
+          expires: new Date().getTime() + expire,
+        };
+
+        cy.setLocalStorageItem('token', token, refreshExpire);
+      });
+
+    cy.get('@token').then((res) => {
+      const rules = {};
+      const user = {
+        username: null,
+        globalrole: null,
+        rules,
       };
 
-      cy.setLocalStorageItem('token', token, refreshExpire);
-    });
-
-  cy.get('@token').then((res) => {
-    const rules = {};
-    const user = {
-      username: null,
-      globalrole: null,
-      rules,
-    };
-
-    cy.request({
-      url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env('username')}`,
-      method: 'GET',
-      headers: {
-        authorization: `bearer ${res.access_token}`,
-      },
-    })
-      .its('body')
-      .then((userInfo) => {
-        user.username = get(userInfo, 'metadata.name');
-        user.globalrole = get(
-          userInfo,
-          'metadata.annotations["iam.kubeclipper.io/role"]'
-        );
-      });
-
-    cy.request({
-      url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env(
-        'username'
-      )}/roles`,
-      method: 'GET',
-      headers: {
-        authorization: `bearer ${res.access_token}`,
-      },
-    })
-      .its('body')
-      .then((role) => {
-        role.forEach((item) => {
-          const rule = JSON.parse(
-            get(
-              item,
-              "metadata.annotations['kubeclipper.io/role-template-rules']"
-            ),
-            {}
-          );
-
-          Object.keys(rule).forEach((key) => {
-            rules[key] = rules[key] || [];
-            if (isArray(rule[key])) {
-              rules[key].push(...rule[key]);
-            } else {
-              rules[key].push(rule[key]);
-            }
-            rules[key] = uniq(rules[key]);
-          });
-        });
+      cy.request({
+        url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env('username')}`,
+        method: 'GET',
+        headers: {
+          authorization: `bearer ${res.access_token}`,
+        },
       })
-      .then(() => {
-        cy.setLocalStorageItem('user', user);
-      });
-    cy.visitPage(visitUrl || '/cluster', isTable);
-    cy.wait(500);
+        .its('body')
+        .then((userInfo) => {
+          user.username = get(userInfo, 'metadata.name');
+          user.globalrole = get(
+            userInfo,
+            'metadata.annotations["iam.kubeclipper.io/role"]'
+          );
+        });
+
+      cy.request({
+        url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env(
+          'username'
+        )}/roles`,
+        method: 'GET',
+        headers: {
+          authorization: `bearer ${res.access_token}`,
+        },
+      })
+        .its('body')
+        .then((role) => {
+          role.forEach((item) => {
+            const rule = JSON.parse(
+              get(
+                item,
+                "metadata.annotations['kubeclipper.io/role-template-rules']"
+              ),
+              {}
+            );
+
+            Object.keys(rule).forEach((key) => {
+              rules[key] = rules[key] || [];
+              if (isArray(rule[key])) {
+                rules[key].push(...rule[key]);
+              } else {
+                rules[key].push(rule[key]);
+              }
+              rules[key] = uniq(rules[key]);
+            });
+          });
+        })
+        .then(() => {
+          cy.setLocalStorageItem('user', user);
+        });
+    });
   });
+  cy.visitPage(visitUrl || '/cluster', isTable);
+  cy.wait(500);
 });
 
 Cypress.Commands.add('t', (text) => {
@@ -207,3 +209,27 @@ Cypress.Commands.add(
     );
   }
 );
+
+Cypress.Commands.add('createClusterQuick', () => {
+  cy.visitPage('/cluster');
+
+  cy.clickHeaderButton(0);
+
+  const uuid = Cypress._.random(0, 1e6);
+  const name = `e2e.cluster.name${uuid}`;
+
+  // cluster name
+  cy.get('[name="name"]').clear().type(name).blur();
+  cy.formSelect('region', 'default');
+  // select node
+  cy.waitTransferList();
+  cy.formMultiTransfer('nodes', 0);
+
+  // next step
+  cy.clickStepActionNextButton('step-next');
+  cy.wait(1000);
+  cy.clickStepActionNextButton('step-quick');
+  cy.clickStepActionNextButton('step-confirm');
+  // check status
+  cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+});
