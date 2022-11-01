@@ -23,8 +23,9 @@ import LabelInput from 'components/FormItem/LabelInput';
 import { joinSelector } from 'utils';
 import { formatNodesWithLabel } from 'resources/node';
 import { rootStore } from 'stores';
+import NodeStore from 'stores/node';
 
-const { clusterStore, nodeStore } = rootStore;
+const { clusterStore } = rootStore;
 
 @observer
 export default class Add extends ModalAction {
@@ -41,7 +42,7 @@ export default class Add extends ModalAction {
   }
 
   init() {
-    this.nodeStore = nodeStore;
+    this.nodeStore = new NodeStore();
     this.clusterStore = clusterStore;
     this.fetchNodeList({
       'topology.kubeclipper.io/region': this.item.region,
