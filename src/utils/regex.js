@@ -39,4 +39,4 @@ export const domain =
 export const subdomain =
   /^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/;
 
-export const path = /^\/(\w+\/?)+$/;
+export const path = /^\/([a-zA-Z0-9-_]+\/?)+$/;
