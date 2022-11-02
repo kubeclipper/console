@@ -13,6 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import getTitle from './../../../support/common';
+import moment from 'moment';
 
 describe('备份点', () => {
   const testUrl = 'cluster/backup-point';
@@ -27,6 +29,10 @@ describe('备份点', () => {
   const backupS3EndPoint = '172.20.163.233:9000';
   const backupS3Admin = 'admin';
   const backupS3Password = 'Aa123456';
+
+  // 定时备份
+  const scheduledTest = 'scheduled-test';
+  const onlyOnceTest = 'onlyonce-test	';
 
   before(() => {
     cy.login(testUrl);
@@ -195,6 +201,169 @@ describe('备份点', () => {
     cy.clickByTitle('.ant-modal-content .ant-table-tbody', backupS3Name);
     cy.clickConfirm();
     cy.wait(2000).waitStatusSuccess();
+  });
+
+  // 定时备份-重复执行
+  it('集群管理-定时备份-1', () => {
+    cy.visitPage('/cluster');
+
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('BackUp');
+    cy.get('.ant-table-body')
+      .find('.ant-table-row')
+      .its('length')
+      .as('rowLength');
+
+    cy.visitPage('/cluster');
+    cy.clickActionInMore({
+      title: 'Backup and recovery',
+      subTitle: 'Scheduled Backup',
+    });
+
+    cy.inputText('name', scheduledTest);
+    cy.formSelect('type', getTitle('Repeat'));
+    cy.formSelect('cycle', getTitle('Every Day'));
+    cy.inputText('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
+
+    cy.inputText('maxBackupNum', 2);
+    cy.clickConfirm();
+    cy.wait(1000 * 60 * 2);
+
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('BackUp');
+    // cy.get('.ant-btn-loading', { timeout: 600000 }).should('not.exist');
+    cy.get('@rowLength').then((rowLength) => {
+      cy.log(rowLength);
+      cy.get('.ant-table-body .ant-table-row').should(
+        'have.length.gt',
+        rowLength
+      );
+    });
+  });
+
+  // 编辑定时备份
+  it('集群管理-定时备份-3', () => {
+    cy.visitPage('/cluster');
+
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('BackUp');
+    cy.get('.ant-table-body')
+      .find('.ant-table-row')
+      .its('length')
+      .as('rowLength');
+
+    cy.visitPage('/cluster');
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('Scheduled Backup');
+
+    cy.clickActionButtonByTitle('Edit');
+
+    cy.inputText('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
+
+    cy.clickConfirm();
+    cy.wait(1000 * 60 * 2);
+
+    cy.clickByDetailTabs('BackUp');
+    cy.get('@rowLength').then((rowLength) => {
+      cy.log(rowLength);
+      cy.get('.ant-table-body .ant-table-row').should(
+        'have.length.gt',
+        rowLength
+      );
+    });
+  });
+
+  // 禁用/启用定时备份
+  it.only('集群管理-定时备份-4', () => {
+    cy.visitPage('/cluster');
+
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('BackUp');
+    cy.get('.ant-table-body')
+      .find('.ant-table-row')
+      .its('length')
+      .as('rowLength');
+
+    cy.visitPage('/cluster');
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('Scheduled Backup');
+
+    cy.clickActionButtonByTitle('Edit');
+    cy.inputText('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
+    cy.clickConfirm();
+
+    cy.clickActionInMore({
+      title: 'Disable',
+    });
+    cy.clickConfirmActionSubmitButton();
+
+    cy.wait(1000 * 60 * 2);
+
+    cy.clickByDetailTabs('BackUp');
+    cy.get('@rowLength').then((rowLength) => {
+      cy.log(rowLength);
+      cy.get('.ant-table-body .ant-table-row').should('have.length', rowLength);
+    });
+  });
+
+  // 定时备份-仅执行一次
+  it('集群管理-定时备份-2', () => {
+    cy.visitPage('/cluster');
+
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('BackUp');
+    cy.get('.ant-table-body')
+      .find('.ant-table-row')
+      .its('length')
+      .as('rowLength');
+
+    cy.visitPage('/cluster');
+    cy.clickActionInMore({
+      title: 'Backup and recovery',
+      subTitle: 'Scheduled Backup',
+    });
+
+    cy.inputText('name', onlyOnceTest);
+    cy.formSelect('type', getTitle('OnlyOnce'));
+    cy.inputText(
+      'date',
+      `${moment().add(2, 'm').format('YYYY-MM-DD HH:mm:ss')}{enter}`
+    );
+    cy.clickConfirm();
+    cy.wait(1000 * 60 * 2);
+
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('BackUp');
+    cy.get('@rowLength').then((rowLength) => {
+      cy.log(rowLength);
+      cy.get('.ant-table-body .ant-table-row').should(
+        'have.length.gt',
+        rowLength
+      );
+    });
+  });
+
+  // 删除定时备份
+  it('集群管理-定时备份-5', () => {
+    cy.visitPage('/cluster');
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('Scheduled Backup');
+    cy.get('.ant-table-body')
+      .find('.ant-table-row')
+      .its('length')
+      .as('rowLength');
+
+    cy.clickActionInMore({
+      title: 'Delete',
+    });
+    cy.clickConfirmActionSubmitButton();
+
+    cy.get('@rowLength').then((rowLength) => {
+      cy.get('.ant-table-body .ant-table-row').should(
+        'have.length.lt',
+        rowLength
+      );
+    });
   });
 
   // 删除备份点 fs

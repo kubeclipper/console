@@ -185,7 +185,7 @@ Cypress.Commands.add('clickStepActionNextButton', (action, waitTime = 1000) => {
 });
 
 Cypress.Commands.add('inputText', (formItemName, value) => {
-  cy.get(getId(formItemName)).find('input').clear().type(value);
+  cy.get(getId(formItemName)).find('input').clear({ force: true }).type(value);
 });
 
 Cypress.Commands.add('inputIP', (_class, value) => {
