@@ -147,7 +147,7 @@ const Plugin = (props) => {
 
     tabs.forEach((item) => {
       if (item.name === name) {
-        item.formData[index] = formData;
+        item.formData[index] = formInstance.formData;
         item.formInstances[index] = formInstance;
       }
 
