@@ -24,7 +24,7 @@ import { useParams } from 'react-router-dom';
 
 function ScheduledBackup() {
   const { cornBackupStore: store } = useRootStore();
-  const params = useParams();
+  const { id } = useParams();
 
   const columns = [
     {
@@ -97,9 +97,8 @@ function ScheduledBackup() {
     isRenderFooter: false,
   };
 
-  async function getData() {
-    const { id } = params;
-    await store.fetchList({ id, limit: -1 });
+  async function getData(params) {
+    await store.fetchList({ id, limit: -1, ...params });
   }
 
   return <BaseList {...currentProps} />;
