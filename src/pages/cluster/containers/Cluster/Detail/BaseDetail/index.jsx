@@ -17,7 +17,6 @@ import React from 'react';
 import Base from 'containers/BaseDetail';
 import { get } from 'lodash';
 import { useRootStore } from 'stores';
-import { componentStatus } from 'resources/cluster';
 import { observer } from 'mobx-react';
 
 function BaseDetail() {
@@ -97,14 +96,6 @@ function BaseDetail() {
         dataIndex: 'kubernetesVersion',
       },
       {
-        label: t('Kubernetes Healthy'),
-        dataIndex: 'componentsHealthy',
-        render: (data) => {
-          const current = data.find((it) => it.name === 'kubernetes');
-          return componentStatus[current?.status];
-        },
-      },
-      {
         label: t('LocalRegistry'),
         dataIndex: 'offline',
         render: (_, data) => {
@@ -134,12 +125,14 @@ function BaseDetail() {
         dataIndex: 'externalIP',
       },
       {
-        label: t('Master Node'),
-        dataIndex: 'mastersByIp',
+        label: t('Master Node Healthy Status'),
+        dataIndex: 'controlPlaneHealth',
         render: (data) => (
           <>
-            {data.map(({ ip }, index) => (
-              <p key={index}>{ip}</p>
+            {data.map(({ hostname, address, status }, index) => (
+              <p key={index}>
+                {hostname} | {address} ｜ {t(status)}
+              </p>
             ))}
           </>
         ),

@@ -135,6 +135,7 @@ const ClusterMapper = (item) => {
     externalIP: get(metadata, 'labels["kubeclipper.io/externalIP"]'),
     status: get(item, 'status.phase'),
     componentsHealthy: get(item, 'status.componentConditions') || [],
+    controlPlaneHealth: get(item, 'status.controlPlaneHealth') || [],
     plugin: filterComponents(item.addons, PLUGINS) || [],
     storage: filterComponents(item.addons, STORAGES) || [],
     region: get(metadata, 'labels["topology.kubeclipper.io/region"]'),

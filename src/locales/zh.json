@@ -596,5 +596,6 @@
   "Please input correct ip or domain": "请输入正确的 ip 或域名",
   "Delete the registry will invalidate the configured cluster CRI registry. Please ensure that registry is no longer used before deleting.": "删除镜像仓库会导致已配置的集群 CRI 镜像仓库失效，请确保此镜像仓库不再使用再删除。",
   "Update CRI Registry": "更新 CRI 镜像仓库",
-  "Cluster {name} {action} successfully.": "集群 {name} {action}成功"
+  "Cluster {name} {action} successfully.": "集群 {name} {action}成功",
+  "Master Node Healthy Status": "控制节点健康状态"
 }
