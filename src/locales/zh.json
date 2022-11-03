@@ -243,7 +243,7 @@
   "IPV6 Autodetection": "",
   "Cluster Config": "集群配置",
   "Please keep the number of master nodes to an odd number!": "请保持 master 节点数为单数！",
-  "WorkerNode Vip": "Worker 负载 IP",
+  "WorkerNode Vip": "控制平面负载 IP",
   "CNI Type": "CNI 类型",
   "Service Subnet": "服务子网",
   "Belong To Cluster": "所属集群",
