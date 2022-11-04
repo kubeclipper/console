@@ -43,7 +43,7 @@ class Edit extends ModalAction {
 
   get isS3() {
     const { storageType } = this.item;
-    return storageType === 'S3';
+    return storageType === 's3';
   }
 
   get formItems() {
@@ -81,9 +81,10 @@ class Edit extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { name, storageType, ...rest } = values;
+    const { name, storageType, description, ...rest } = values;
     const params = {
       storageType,
+      description,
       [`${storageType.toLowerCase()}Config`]: rest,
     };
 
