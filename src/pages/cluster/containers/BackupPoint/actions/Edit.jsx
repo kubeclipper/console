@@ -27,7 +27,7 @@ class Edit extends ModalAction {
 
   static buttonText = t('Edit');
 
-  static title = t('Edit BackupPoint');
+  static title = t('Edit Backup Space');
 
   static policy = 'backuppoints:edit';
 
@@ -50,7 +50,7 @@ class Edit extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('BackupPoint Name'),
+        label: t('Backup Space Name'),
         type: 'label',
       },
       {

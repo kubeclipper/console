@@ -44,7 +44,7 @@ function BackupPoint(props) {
 
   const currentProps = {
     ...props,
-    name: t('BackupPoint'),
+    name: t('Backup Space'),
     store: backupPointStore,
     actionConfigs,
     columns,

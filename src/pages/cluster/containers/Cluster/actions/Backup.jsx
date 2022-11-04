@@ -36,7 +36,7 @@ export default class Backup extends ModalAction {
   static checkNotice = (item) => {
     const { backupPoint } = item;
     if (!backupPoint) {
-      Notify.error(t('Please add a backup point in the edit cluster'));
+      Notify.error(t('Please add a backup space in the edit cluster'));
       return false;
     }
     return true;
@@ -73,7 +73,7 @@ export default class Backup extends ModalAction {
     return [
       {
         name: 'backupPoint',
-        label: t('BackupPoint'),
+        label: t('Backup Space'),
         type: 'label',
       },
       {

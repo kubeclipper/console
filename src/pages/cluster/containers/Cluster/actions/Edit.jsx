@@ -125,7 +125,7 @@ class Edit extends ModalAction {
       },
       !isDisableByProviderType(this.item) && {
         name: 'backupPoint',
-        label: t('BackupPoint'),
+        label: t('Backup Space'),
         type: 'select',
         options: this.getBackupPointOptions,
       },

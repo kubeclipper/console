@@ -89,7 +89,7 @@ class Edit extends ModalAction {
     return [
       {
         name: 'backupPoint',
-        label: t('BackupPoint'),
+        label: t('Backup Space'),
         type: 'label',
       },
       {
