@@ -171,12 +171,13 @@ class CreateForm extends ModalAction {
   }
 
   onSubmit = (values) => {
-    const { name, storageType, ...rest } = values;
+    const { name, storageType, description, ...rest } = values;
     const params = {
       metadata: {
         name,
       },
       storageType,
+      description,
       [`${storageType.toLowerCase()}Config`]: rest,
     };
 

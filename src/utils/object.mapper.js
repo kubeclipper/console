@@ -397,11 +397,13 @@ const Oauth2Mapper = (data) => {
 
 const BackupPointMapper = (item) => {
   const storageType = get(item, 'storageType');
+  const description = get(item, 'description');
   const config = get(item, `${storageType.toLowerCase()}Config`);
   return {
     ...getBaseInfo(item),
     ...config,
     storageType,
+    description,
   };
 };
 
