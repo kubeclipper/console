@@ -881,7 +881,7 @@ export default class Cluster extends BaseForm {
         },
         {
           name: 'backupPoint',
-          label: t('BackupPoint'),
+          label: t('Backup Space'),
           type: 'select',
           options: this.getBackupPointOptions,
         },

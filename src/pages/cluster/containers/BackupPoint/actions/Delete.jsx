@@ -24,7 +24,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get title() {
-    return t('Delete BackupPoint');
+    return t('Delete Backup Space');
   }
 
   get buttonType() {
@@ -36,7 +36,7 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   get actionName() {
-    return t('Delete BackupPoint');
+    return t('Delete Backup Space');
   }
 
   policy = 'backuppoints:edit';

@@ -91,9 +91,9 @@ class CreateForm extends ModalAction {
     return [
       {
         name: 'name',
-        label: t('BackupPoint Name'),
+        label: t('Backup Space Name'),
         type: 'input',
-        placeholder: `${t('Please input')}${t('BackupPoint Name')}`,
+        placeholder: `${t('Please input')}${t('Backup Space Name')}`,
         maxLength: 12,
         rules: [this.checkName],
       },

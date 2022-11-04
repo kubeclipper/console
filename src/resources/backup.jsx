@@ -43,7 +43,7 @@ export const backupColumns = [
     isHideable: true,
   },
   {
-    title: t('BackupPoint'),
+    title: t('Backup Space'),
     dataIndex: 'backupPointName',
   },
   {

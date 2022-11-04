@@ -70,7 +70,7 @@ const renderMenu = (t) => {
         },
         {
           path: '/cluster/backup-point',
-          name: t('BackupPoint'),
+          name: t('Backup Space'),
           key: 'backup-point',
           level: 1,
           module: 'backuppoints',

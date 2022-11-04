@@ -108,7 +108,7 @@ function BaseDetail() {
         dataIndex: 'description',
       },
       {
-        label: t('BackupPoint'),
+        label: t('Backup Space'),
         dataIndex: 'backupPoint',
       },
       {
