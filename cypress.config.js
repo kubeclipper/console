@@ -29,6 +29,7 @@ module.exports = defineConfig({
       'cypress/e2e/pages/cluster/cluster.cy.js',
       'cypress/e2e/pages/cluster/backup.cy.js',
       'cypress/e2e/pages/cluster/detail.cy.js',
+      'cypress/e2e/pages/cluster/upgrade.cy.js',
     ],
   },
 });

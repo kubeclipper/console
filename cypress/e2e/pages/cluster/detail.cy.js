@@ -15,13 +15,13 @@
  */
 import getTitle from '../../../support/common';
 
+before(() => {
+  cy.login();
+  cy.checkClusterExist();
+});
+
 describe('集群详情', () => {
   const testUrl = '/cluster';
-
-  before(() => {
-    cy.login(testUrl);
-    cy.createClusterQuick();
-  });
 
   beforeEach(() => {
     cy.login(testUrl);

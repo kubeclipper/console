@@ -233,3 +233,10 @@ Cypress.Commands.add('createClusterQuick', () => {
   // check status
   cy.wait(2000).tableSearchText(name).waitStatusSuccess();
 });
+
+Cypress.Commands.add('checkClusterExist', () => {
+  cy.visitPage('/cluster');
+  if (Cypress.$('.ant-empty-description').length) {
+    cy.createClusterQuick();
+  }
+});
