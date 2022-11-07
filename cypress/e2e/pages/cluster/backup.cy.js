@@ -16,8 +16,13 @@
 import getTitle from './../../../support/common';
 import moment from 'moment';
 
+before(() => {
+  cy.login();
+  cy.checkClusterExist();
+});
+
 describe('备份点', () => {
-  const testUrl = 'cluster/backup-point';
+  const testUrl = '/cluster/backup-point';
 
   const backupFSName = 'test-fs';
   const backupFSRootDir = '/root';
@@ -33,11 +38,6 @@ describe('备份点', () => {
   // 定时备份
   const scheduledTest = 'scheduled-test';
   const onlyOnceTest = 'onlyonce-test	';
-
-  before(() => {
-    cy.login(testUrl);
-    cy.createClusterQuick();
-  });
 
   beforeEach(() => {
     cy.login(testUrl);
@@ -274,7 +274,7 @@ describe('备份点', () => {
   });
 
   // 禁用/启用定时备份
-  it.only('集群管理-定时备份-4', () => {
+  it('集群管理-定时备份-4', () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
