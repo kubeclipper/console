@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { Tabs, Skeleton } from 'antd';
 import { observer } from 'mobx-react';
@@ -34,14 +34,12 @@ const TabComponent = observer((props) => {
     }
   }, [store.detail]);
 
-  return useMemo(() => {
-    if (isNeedDetail) {
-      return activeKey === key && isDetail ? (
-        <tabItem.component currentTab={tabItem} store={store} />
-      ) : null;
-    }
-    return <tabItem.component currentTab={tabItem} />;
-  }, [isDetail]);
+  if (isNeedDetail) {
+    return activeKey === key && isDetail ? (
+      <tabItem.component currentTab={tabItem} store={store} />
+    ) : null;
+  }
+  return <tabItem.component currentTab={tabItem} />;
 });
 
 const Tab = (props) => {

@@ -31,11 +31,9 @@ const Item = observer((props) => {
   const BASEPADDING = 16;
 
   useEffect(() => {
-    setTimeout(() => {
-      const [nodes] = ref.current.childNodes;
-      setGridSpan(Math.round(nodes.clientHeight / BASEGRID));
-    });
-  }, [store.detail]);
+    const [nodes] = ref.current.childNodes;
+    setGridSpan(Math.round(nodes.clientHeight / BASEGRID));
+  }, [store.isLoading, store.detail]);
 
   const gridComputed =
     gridSpan > 0 ? { gridRow: `auto / span ${gridSpan + BASEPADDING}` } : {};
