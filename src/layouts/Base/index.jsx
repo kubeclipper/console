@@ -15,10 +15,10 @@
  */
 import React, { useEffect, useReducer } from 'react';
 import { observer } from 'mobx-react';
-// import { Spin } from 'antd';
 import RightContext from './Right/index';
 import LeftContext from './Left/index';
 import { useRootStore } from 'stores';
+import Tools from 'components/Tools';
 
 import styles from './index.less';
 
@@ -47,10 +47,9 @@ function BaseLayout(props) {
       value={{ state, setState, Routes: props }}
       className={styles['base-layout']}
     >
-      {/* <Spin spinning> */}
       <LeftContext />
       <RightContext />
-      {/* </Spin> */}
+      <Tools />
     </BaseContext.Provider>
   );
 }

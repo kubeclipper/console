@@ -37,7 +37,7 @@ export function sortProperties(properties = {}) {
  * @param {*} schema
  * @returns
  */
-export function filterComponents(components, dep) {
+export function filterComponents(components = [], dep) {
   const fixedDependence = ['kubernetes', 'nodes'].concat(dep);
   let _components = [];
 
