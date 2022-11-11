@@ -15,6 +15,7 @@
  */
 
 import StepForm from 'components/StepForm';
+import { isAdminPage } from 'utils';
 
 export default class StepAction extends StepForm {
   static actionType = 'link';
@@ -26,6 +27,8 @@ export default class StepAction extends StepForm {
   static title = 'StepAction';
 
   static path = '/';
+
+  static isAdminPage = isAdminPage(window.location.pathname);
 
   static get allowed() {
     return Promise.resolve();

@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React, { useContext } from 'react';
+import React, { useContext, Suspense } from 'react';
 import { Layout } from 'antd';
 import classnames from 'classnames';
 import { renderRoutes } from 'utils/router.config';
@@ -24,6 +24,8 @@ import Breadcrumbs from './Breadcrumb';
 import { BaseContext } from '..';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Tools from 'components/Tools';
+import PageLoading from 'components/PageLoading';
+import { useAdminPage } from 'hooks';
 
 import styles from '../index.less';
 
@@ -51,14 +53,15 @@ function Right() {
   );
 }
 
-function MainContent() {
+const MainContent = observer(() => {
   const { state, Routes } = useContext(BaseContext);
   const { currentRoutes, hover, collapsed } = state;
   const { routes } = Routes.route;
 
   const rootStore = useRootStore();
+  const { isAdminPage } = useAdminPage();
 
-  if (!rootStore.user) return null;
+  if (!rootStore.user || rootStore.isLoading) return null;
 
   const hasMainTab = () => {
     if (currentRoutes.length === 0) {
@@ -86,6 +89,7 @@ function MainContent() {
   const extraProps = {
     sliderHover: hover,
     sliderCollapsed: collapsed,
+    isAdminPage,
   };
 
   return (
@@ -94,10 +98,12 @@ function MainContent() {
         !hasBreadcrumb ? styles['main-no-breadcrumb'] : ''
       }  ${mainTabClass}`}
     >
-      <ErrorBoundary>{renderRoutes(routes, extraProps)}</ErrorBoundary>
+      <Suspense fallback={<PageLoading className="sl-page-loading" />}>
+        <ErrorBoundary>{renderRoutes(routes, extraProps)}</ErrorBoundary>
+      </Suspense>
       <Tools />
     </div>
   );
-}
+});
 
 export default observer(Right);

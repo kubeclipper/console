@@ -19,7 +19,6 @@ import styles from './index.less';
 
 export default function BlankLayout(props) {
   const { routes } = props.route;
-
   return (
     <div className={styles.container}>
       <div className={styles.main}>{renderRoutes(routes)}</div>

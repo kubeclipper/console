@@ -19,7 +19,7 @@ import RegionDetail from '../containers/Region/Detail';
 
 import E404 from 'components/E404';
 
-const PATH = '/region';
+const PATH = '/region-admin';
 export default [
   {
     path: PATH,

@@ -16,7 +16,6 @@
 import React from 'react';
 import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
-import actionConfigs from './actions';
 import { userOperationStatus } from 'resources/user';
 import { useParams } from 'react-router-dom';
 
@@ -63,7 +62,6 @@ export default function LoginLog() {
 
   const currentProps = {
     columns,
-    authKey: 'loginLog',
     module: 'loginLog',
     name: t('Login Log'),
     searchFilters: [
@@ -73,7 +71,6 @@ export default function LoginLog() {
       },
     ],
     isAction: false,
-    actionConfigs,
     store,
     getData,
   };

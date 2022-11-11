@@ -24,6 +24,8 @@ class CloudProviderStore extends BaseStore {
     return ObjectMapper[this.module] || ((data) => data);
   }
 
+  // getListUrl = () => `${this.apiVersion}/${this.module}`;
+
   sync(data) {
     return this.submitting(request.post(`${this.getDetailUrl(data)}/sync`));
   }

@@ -29,7 +29,7 @@ export default function Role(props) {
       dataIndex: 'name',
       render: (name, record) => {
         if (name) {
-          return <Link to={`/access/role/${record.id}`}>{name}</Link>;
+          return <Link to={`/access/role-admin/${record.id}`}>{name}</Link>;
         }
         return '-';
       },

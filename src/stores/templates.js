@@ -25,6 +25,8 @@ export default class TemplatesStore extends BaseStore {
 
   module = 'templates';
 
+  // getListUrl = () => `${this.apiVersion}/${this.module}`;
+
   async fetchAll() {
     const result = (await request.get(`${this.getListUrl()}`)) || [];
     const data = this.getListData(result);

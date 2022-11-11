@@ -19,7 +19,7 @@ import { toJS } from 'mobx';
 import BaseForm from 'components/Form';
 import { rootStore } from 'stores';
 import { joinSelector } from 'utils';
-import { isEmpty, flatten, isNumber, uniq } from 'lodash';
+import { isEmpty, flatten, isNumber, uniq, get } from 'lodash';
 import TaintInput from 'components/FormItem/TaintInput';
 import LabelInput from 'components/FormItem/LabelInput';
 import { message } from 'antd';
@@ -127,6 +127,13 @@ export default class Node extends BaseForm {
     return currentTemplates.map((it) => ({
       value: it.id,
       label: it.templateName,
+    }));
+  }
+
+  get projectOptions() {
+    return (get(rootStore, 'user.projects') || []).map(({ name }) => ({
+      label: name,
+      value: name,
     }));
   }
 
@@ -246,7 +253,7 @@ export default class Node extends BaseForm {
     }
 
     if (!subdomain.test(value)) {
-      return Promise.reject(nameMessage);
+      return Promise.reject(nameMessage());
     }
 
     return Promise.resolve(true);
@@ -264,6 +271,14 @@ export default class Node extends BaseForm {
           maxLength: 32,
           required: true,
           validator: this.checkName,
+        },
+        {
+          name: 'project',
+          label: t('Project'),
+          type: 'select',
+          options: this.projectOptions,
+          required: true,
+          hidden: !this.isAdminPage,
         },
         {
           name: 'clusterTemplate',

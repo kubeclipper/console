@@ -20,6 +20,7 @@ import { set, uniq } from 'lodash';
 import { toJS } from 'mobx';
 import { rootStore } from 'stores';
 import EditAuthorization from 'pages/access/componnets/EditAuthorization';
+import { ROLE_MODULES } from 'utils/constants';
 
 @observer
 class Edit extends ModalAction {
@@ -60,6 +61,10 @@ class Edit extends ModalAction {
     };
   }
 
+  get roleModule() {
+    return ROLE_MODULES.globalroles;
+  }
+
   get formItems() {
     return [
       {
@@ -73,6 +78,7 @@ class Edit extends ModalAction {
             formTemplate={this.item}
             tabStyles={{ width: '180px' }}
             isModlal
+            roleModule={this.roleModule}
           />
         ),
       },

@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 import BaseForm from 'components/Form';
+import { isAdminPage } from 'utils';
 
 export default class ModalAction extends BaseForm {
   static id = 'modalAction';
@@ -26,6 +27,11 @@ export default class ModalAction extends BaseForm {
 
   static get modalSize() {
     return 'small';
+  }
+
+  static get isAdminPage() {
+    const { pathname } = window.location;
+    return isAdminPage(pathname);
   }
 
   get name() {

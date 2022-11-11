@@ -34,12 +34,14 @@ function EmptyRole() {
       if (!user) {
         rootStore.gotoLoginPage(window.location.pathname);
       } else {
-        const { globalRules = {} } = user;
+        const { globalRules = {}, globalrole } = user;
         user && rootStore.updateUser(user);
-        history.push(defaultRoute(globalRules));
+        history.push(defaultRoute(globalRules, globalrole));
       }
     } else {
-      history.push(defaultRoute(rootStore.user.globalRules));
+      history.push(
+        defaultRoute(rootStore.user.globalRules, rootStore.user.globalrole)
+      );
     }
   }, []);
 

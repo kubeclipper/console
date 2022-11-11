@@ -35,6 +35,9 @@ const Access = lazy(() =>
 const Region = lazy(() =>
   import(/* webpackChunkName: "Region" */ 'region/App.jsx')
 );
+const Project = lazy(() =>
+  import(/* webpackChunkName: "Project" */ 'project/App.jsx')
+);
 
 const defaultPath = homePageRoute() || 'auth/login';
 
@@ -51,11 +54,19 @@ export default [
         component: Cluster,
       },
       {
-        path: '/region',
+        path: '/cluster-admin',
+        component: Cluster,
+      },
+      {
+        path: '/region-admin',
         component: Region,
       },
       {
         path: '/node',
+        component: Node,
+      },
+      {
+        path: '/node-admin',
         component: Node,
       },
       {
@@ -69,6 +80,10 @@ export default [
       {
         path: '/oauth2',
         component: Oauth2,
+      },
+      {
+        path: '/project',
+        component: Project,
       },
       {
         path: '*',

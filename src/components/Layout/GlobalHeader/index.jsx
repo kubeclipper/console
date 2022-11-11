@@ -14,11 +14,20 @@
  *  limitations under the License.
  */
 import React from 'react';
+import ProjectDropdown from './ProjectDropdown';
+import { useLocation } from 'react-router-dom';
 import RightContent from './RightContent';
+import { isAdminPage } from 'utils';
 import styles from './index.less';
 
-export const GlobalHeader = (props) => (
-  <div className={styles.header}>
-    <RightContent {...props} />
-  </div>
-);
+export const GlobalHeader = (props) => {
+  const { pathname } = useLocation();
+  const isAdmin = isAdminPage(pathname);
+
+  return (
+    <div className={styles.header}>
+      {!isAdmin && <ProjectDropdown />}
+      <RightContent {...props} isAdminPage={isAdmin} />
+    </div>
+  );
+};

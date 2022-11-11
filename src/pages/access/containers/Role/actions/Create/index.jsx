@@ -25,12 +25,12 @@ import Notify from 'components/Notify';
 import EditAuthorization from 'pages/access/componnets/EditAuthorization';
 import FORM_TEMPLATES from 'utils/form.templates';
 import BaseInfo from './baseInfo';
+import { ROLE_MODULES } from 'utils/constants';
 import styles from './index.less';
 
 const { Panel } = Collapse;
 
 const { roleStore } = rootStore;
-
 @observer
 export default class Create extends LinkAction {
   constructor(props) {
@@ -46,7 +46,7 @@ export default class Create extends LinkAction {
 
   static title = t('Create Role');
 
-  static path = `/access/role/create`;
+  static path = `/access/role-admin/create`;
 
   static allowed = () => Promise.resolve(true);
 
@@ -61,7 +61,7 @@ export default class Create extends LinkAction {
   }
 
   get listUrl() {
-    return '/access/role';
+    return '/access/role-admin';
   }
 
   get name() {
@@ -74,6 +74,14 @@ export default class Create extends LinkAction {
 
   get baseInfo() {
     return this.baseInfoRef.current;
+  }
+
+  get roleModule() {
+    return ROLE_MODULES.globalroles;
+  }
+
+  get project() {
+    return '';
   }
 
   componentDidMount() {
@@ -103,7 +111,7 @@ export default class Create extends LinkAction {
       set(formTemplate, 'metadata.annotations', annotations);
 
       try {
-        await this.store.create(formTemplate);
+        await this.store.create(formTemplate, { project: this.project });
         Notify.success(
           t('Role {name} has been created successfully.', { name })
         );
@@ -137,6 +145,7 @@ export default class Create extends LinkAction {
               ref={this.authRef}
               roleTemplates={toJS(this.store.roleTemplates.data)}
               formTemplate={this.formTemplate}
+              roleModule={this.roleModule}
             />
           </Panel>
         </Collapse>

@@ -65,7 +65,7 @@ export default class BaseStore {
     return (params) => {
       if (params.limit === -1) {
         params.limit = -1;
-        params.page = 1;
+        // params.page = 1;
       }
 
       params.limit = params.limit || 10;
@@ -82,9 +82,21 @@ export default class BaseStore {
     return APIVERSION[this.apiType] || 'api/core.kubeclipper.io/v1';
   }
 
-  getListUrl = () => `${this.apiVersion}/${this.module}`;
+  get hasAdminRole() {
+    return this.rootStore.hasAdminRole;
+  }
 
-  getDetailUrl = ({ id }) => `${this.getListUrl()}/${id}`;
+  getListUrl = ({ project } = {}) => {
+    const currentProject = this.rootStore?.currentProject;
+    if (project || currentProject)
+      return `${this.apiVersion}/projects/${project || currentProject}/${
+        this.module
+      }`;
+
+    return `${this.apiVersion}/${this.module}`;
+  };
+
+  getDetailUrl = ({ id, project }) => `${this.getListUrl({ project })}/${id}`;
 
   setSelectRowKeys(key, selectedRowKeys) {
     this[key] && this[key].selectedRowKeys.replace(selectedRowKeys);
@@ -115,11 +127,11 @@ export default class BaseStore {
   getListData = (result, mapper) =>
     this.getListDataFromResult(result)?.map(mapper || this.mapper) ?? null;
 
-  async fetchList({ more, ...params } = {}) {
+  async fetchList({ project, more, ...params } = {}) {
     !this.list.silent && this.list.reset();
-
     const newParams = this.paramsFunc(this.pageParamsFunc(params));
-    const result = (await request.get(`${this.getListUrl()}`, newParams)) || [];
+    const result =
+      (await request.get(`${this.getListUrl({ project })}`, newParams)) || [];
     const data = this.getListData(result);
 
     let newData = [];

@@ -34,7 +34,7 @@ import styles from './index.less';
 import { useRootStore } from 'stores';
 import ItemAction from 'components/Tables/Base/ItemAction';
 import Tab from 'src/containers/Tab/TrendsTab';
-import { useInterval } from 'hooks';
+import { useInterval, useAdminPage } from 'hooks';
 
 const { Paragraph } = Typography;
 export const TabDetailContext = React.createContext();
@@ -164,14 +164,28 @@ const TabDetail = (props) => {
     store,
     name,
     listUrl,
+    listUrlAdmin = '',
     className,
     transitionStatusList = [],
     transitionDataIndex = 'status',
     tabs,
+    onlyConsole = false,
   } = props;
 
   const [notFound, setNotFound] = useState(false);
   const { routing } = useRootStore();
+  const { isAdminPage } = useAdminPage();
+
+  // 某些路径带 admin 不能正确判断是否管理平台；比如项目管理员的项目角色详情页路径：project/role/xxx-admin; 添加 onlyConsole 控制
+  const getListUrl = () => {
+    if (isAdminPage && !onlyConsole) {
+      if (listUrlAdmin) return listUrlAdmin;
+
+      return `${listUrl}-admin`;
+    }
+
+    return listUrl;
+  };
 
   const detail = toJS(store.detail);
 
@@ -206,7 +220,7 @@ const TabDetail = (props) => {
   );
 
   const goBack = () => {
-    routing.push(listUrl);
+    routing.push(getListUrl());
   };
 
   const _catch = (e) => {
@@ -223,7 +237,7 @@ const TabDetail = (props) => {
   };
 
   if (notFound) {
-    return <NotFound title={t(`${name}s`)} link={listUrl} />;
+    return <NotFound title={t(`${name}s`)} link={getListUrl()} />;
   }
 
   return (
@@ -241,7 +255,6 @@ TabDetail.defaultProps = {
   listUrl: '/base/tmp',
   name: '',
   module: '',
-  authKey: '',
   tabs: [],
   detailInfos: [],
   className: '',

@@ -25,12 +25,12 @@ export default function UserDetail(props) {
   const currentProps = {
     ...props,
     name: t('role'),
-    listUrl: '/access/user',
+    listUrl: `/access/user-admin`,
     store,
     actionConfigs,
     detailInfos: [
       {
-        title: t('Role Name'),
+        title: t('User Name'),
         dataIndex: 'name',
       },
       {

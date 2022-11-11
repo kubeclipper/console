@@ -43,7 +43,9 @@ class LinkAddPlugin extends LinkAction {
     );
 
   static path(item) {
-    return `/cluster/add-plugin/${item.name}`;
+    return `/cluster${super.isAdminPage ? '-admin' : ''}/add-plugin/${
+      item.name
+    }`;
   }
 
   static policy = 'clusters:edit';

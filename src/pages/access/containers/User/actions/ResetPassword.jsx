@@ -44,7 +44,7 @@ class Index extends ModalAction {
   }
 
   get listUrl() {
-    return this.getUrl('/access/user');
+    return this.getUrl('/access/user-admin');
   }
 
   get defaultValue() {

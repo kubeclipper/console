@@ -16,7 +16,6 @@
 
 import React from 'react';
 import { get, isEmpty } from 'lodash';
-
 import { Checkbox, Tag } from 'antd';
 import Notify from 'components/Notify';
 import Text from 'components/Text';
@@ -61,7 +60,7 @@ const CheckItem = (props) => {
 
     names.forEach((name) => {
       const template = roleTemplatesMap[name];
-      if (template.dependencies) {
+      if (template?.dependencies) {
         template.dependencies.forEach((dep) => {
           if (!names.includes(dep) && !dependencies.includes(dep)) {
             dependencies.push(dep);
@@ -97,7 +96,7 @@ const CheckItem = (props) => {
           {t('Depend on')}:{' '}
           {newDependencies.map((item) => (
             <Tag className={styles.tag} type="info" key={item}>
-              {t(get(roleTemplatesMap, `[${item}].aliasName`))}
+              {t(get(roleTemplatesMap, `[${item}].aliasName`, '-'))}
             </Tag>
           ))}
         </div>

@@ -34,7 +34,6 @@ function NodeDetail(props) {
   const currentProps = {
     ...props,
     name: t('NodeDetail'),
-    authKey: 'node-detail',
     listUrl: '/node',
     store,
     actionConfigs,

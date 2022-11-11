@@ -28,6 +28,8 @@ import i18n from './i18n';
 import { routingStore, rootStore } from 'stores';
 import GlobalValue from './global';
 
+const store = rootStore;
+
 require('@babel/polyfill');
 
 window.t = i18n.t;
@@ -70,7 +72,27 @@ const render = (component) => {
   );
 };
 
-render(<App rootStore={rootStore} history={history} />);
+const getUser = async (callback) => {
+  const currentPath = window.location.pathname;
+  if (!currentPath.includes('/auth/login')) {
+    try {
+      await store.getCurrentUser();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+      store.gotoLoginPage(currentPath);
+    } finally {
+      callback && callback();
+    }
+    return;
+  }
+
+  callback && callback();
+};
+
+getUser(() => {
+  render(<App rootStore={rootStore} history={history} />);
+});
 
 module.hot &&
   module.hot.accept('./App', () => {
