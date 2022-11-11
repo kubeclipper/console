@@ -111,35 +111,24 @@ const Plugin = (props) => {
   };
 
   const handleFRChange = (name, formInstance, formData, index) => {
-    if (typeof formData === 'object' && formData.pluginTemplate) {
+    if (formData.pluginTemplate) {
       if (formData.pluginTemplate !== 'notUseTemplate') {
-        const { flatData = {} } = templates.find(
-          (item) => item.id === formData.pluginTemplate
+        const selectedTemplate = templates.find(
+          (item) => item.name === formData.pluginTemplate
         );
-        if (!isMatch(formData, flatData)) {
+
+        if (!isMatch(formData, selectedTemplate.flatData)) {
           formInstance.setValues({
-            ...formData,
-            pluginTemplate: '',
+            ...selectedTemplate.flatData,
+            pluginTemplate: formData.pluginTemplate,
+            enable: true,
           });
         }
-      }
-    }
-
-    if (typeof formData === 'string') {
-      if (formData === 'notUseTemplate') {
+      } else {
         const { baseFormData } = tabs.find((item) => item.name === current);
         formInstance.setValues({
           ...baseFormData,
           pluginTemplate: 'notUseTemplate',
-          enable: true,
-        });
-      } else {
-        const [{ flatData = {} }] = templates.filter(
-          (item) => item.name === formData
-        );
-        formInstance.setValues({
-          ...flatData,
-          pluginTemplate: formData,
           enable: true,
         });
       }

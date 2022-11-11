@@ -13,10 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React from 'react';
+import React, { useMemo } from 'react';
 import BaseList from 'containers/List';
 import { operationStatus } from 'resources/cluster';
 import { useRootStore } from 'stores';
+import { observer } from 'mobx-react';
 import actionConfigs from './actions';
 import { useParams } from 'react-router-dom';
 
@@ -71,7 +72,7 @@ function OperationList() {
     await store.fetchList({ labelSelector, ...params });
   }
 
-  return <BaseList {...currentProps} />;
+  return useMemo(() => <BaseList {...currentProps} />, [store.detail]);
 }
 
-export default OperationList;
+export default observer(OperationList);
