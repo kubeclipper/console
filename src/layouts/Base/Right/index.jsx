@@ -23,7 +23,6 @@ import { useRootStore } from 'stores';
 import Breadcrumbs from './Breadcrumb';
 import { BaseContext } from '..';
 import ErrorBoundary from 'components/ErrorBoundary';
-import Tools from 'components/Tools';
 import PageLoading from 'components/PageLoading';
 import { useAdminPage } from 'hooks';
 
@@ -101,7 +100,6 @@ const MainContent = observer(() => {
       <Suspense fallback={<PageLoading className="sl-page-loading" />}>
         <ErrorBoundary>{renderRoutes(routes, extraProps)}</ErrorBoundary>
       </Suspense>
-      <Tools />
     </div>
   );
 });

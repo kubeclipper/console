@@ -37,6 +37,7 @@ const ItemAction = ({
   );
 
   useDeepCompareEffect(() => {
+    let isMounted = true;
     async function updateResult() {
       const newResults = await getAllowedResults(
         actionList,
@@ -44,10 +45,14 @@ const ItemAction = ({
         'action',
         containerProps
       );
-      setResults(newResults);
+      if (isMounted) setResults(newResults);
     }
 
     updateResult();
+
+    return () => {
+      isMounted = false;
+    };
   }, [containerProps, item, hasPlugin]);
 
   return (
