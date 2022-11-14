@@ -16,7 +16,7 @@
 import React, { useEffect, useRef, useReducer } from 'react';
 import { useParams, useHistory } from 'react-router';
 import { useRootStore } from 'stores';
-import { set, cloneDeep } from 'lodash';
+import { set, cloneDeep, isEmpty } from 'lodash';
 import classnames from 'classnames';
 import RenderForm from 'pages/cluster/components/plugin/RenderForm';
 import { Context } from 'pages/cluster/components/plugin/Context';
@@ -158,6 +158,12 @@ function AddPlugin() {
     }
   };
 
+  const renderPlugin = () => {
+    if (name && isEmpty(state.pluginInitVal)) {
+      return null;
+    }
+    return <Plugin state={state} setState={setState} />;
+  };
   const formItems = [
     [
       {
@@ -178,7 +184,7 @@ function AddPlugin() {
       {
         name: 'plugins',
         label: '',
-        component: <Plugin state={state} setState={setState} />,
+        component: renderPlugin(),
         wrapperCol: {
           xs: { span: 24 },
           sm: { span: 16 },
