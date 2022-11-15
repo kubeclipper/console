@@ -19,9 +19,11 @@ import Tab from 'containers/Tab';
 import ClusterTemplate from './cluster';
 import PluginTemplate from './plugin';
 import { observer } from 'mobx-react';
+import { useQuery } from 'hooks';
 
 const TemplateManagement = () => {
   const { templatesStore, components, componentsLoading } = useRootStore();
+  const query = useQuery();
 
   const PluginComponents = components.map((item) => ({
     title: `${item?.name} ${t('Template')}`,
@@ -32,6 +34,7 @@ const TemplateManagement = () => {
   }));
 
   const currentProps = {
+    active: query.tab,
     store: templatesStore,
     tabs: [
       {

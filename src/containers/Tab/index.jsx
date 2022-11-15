@@ -18,6 +18,7 @@ import classnames from 'classnames';
 import { Tabs, Skeleton } from 'antd';
 import styles from './index.less';
 import { useRootStore } from 'stores';
+import { useMergedState } from 'hooks';
 
 const TabComponent = (props) => {
   const { tabItem, activeKey, store } = props;
@@ -33,16 +34,17 @@ const TabComponent = (props) => {
 };
 
 const Tab = (props) => {
-  const { tabs, className, store } = props;
+  const { tabs, className, store, active } = props;
   const { routing } = useRootStore();
 
   const [availableTabs, setAvailableTabs] = useState([]);
-  const [activeKey, setActiveKey] = useState('');
+  const [activeKey, setActiveKey] = useMergedState(tabs[0].key, {
+    value: active,
+  });
   const [tabLoading, setTabLoading] = useState(true);
 
   useEffect(() => {
     setAvailableTabs(tabs);
-    setActiveKey(tabs[0].key);
     setTabLoading(false);
   }, []);
 
