@@ -20,6 +20,7 @@ import { toJS } from 'mobx';
 import { rootStore } from 'stores';
 import SelectWithInput from 'components/FormItem/SelectWithInput';
 import { set, get } from 'lodash';
+import { isDisableByProviderType } from 'utils';
 
 @observer
 class Registry extends ModalAction {
@@ -43,7 +44,8 @@ class Registry extends ModalAction {
 
   static isRunning = (item) => item.status === 'Running';
 
-  static allowed = (item) => Promise.resolve(this.isRunning(item));
+  static allowed = (item) =>
+    Promise.resolve(this.isRunning(item) && !isDisableByProviderType(item));
 
   get name() {
     return t('Update CRI Registry');
