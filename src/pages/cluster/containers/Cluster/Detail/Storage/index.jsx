@@ -23,6 +23,7 @@ import SaveAsTemplate from '../../actions/SaveAsTemplate';
 import { getAction } from 'utils/allowed';
 import { toJS } from 'mobx';
 import { useParams } from 'react-router';
+import { checkExpired, isDisableByProviderType } from 'utils';
 
 export default function Storage() {
   const { clusterStore: store, components } = useRootStore();
@@ -77,9 +78,19 @@ export default function Storage() {
           },
         };
 
+        const isLicensExpiration = () =>
+          checkExpired(store.detail.licenseExpirationTime);
+
+        const isStatusRunning = () => store.detail.status === 'Running';
+
+        const allowed = () =>
+          isLicensExpiration() &&
+          isStatusRunning() &&
+          !isDisableByProviderType(store.detail);
+
         const deleteButtonProps = {
           id: `${item.name}-${index}`,
-          isAllowed: true,
+          isAllowed: allowed(),
           title: t('Remove'),
           buttonType: 'link',
           actionType: 'confirm',

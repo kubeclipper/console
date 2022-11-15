@@ -631,5 +631,6 @@
   "projectrole": "项目角色",
   "projectmembers": "项目用户",
   "You do not have project": "您没有所属项目",
-  "Sorry, you do not have any projects, please contact the administrator to operate.": "抱歉，您没有所属项目，请联系管理员操作。"
+  "Sorry, you do not have any projects, please contact the administrator to operate.": "抱歉，您没有所属项目，请联系管理员操作。",
+  "Container Registry": "容器镜像仓库"
 }
