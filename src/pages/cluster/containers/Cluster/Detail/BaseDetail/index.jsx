@@ -22,36 +22,23 @@ import { observer } from 'mobx-react';
 function BaseDetail() {
   const { clusterStore: store } = useRootStore();
 
-  const containerRuntimeItem = () => {
-    const {
-      containerRuntime,
-      containerRuntime: { containerRuntimeType: type },
-    } = store.detail;
-
-    const isDocker = type === 'docker';
-
-    return [
-      {
-        label: t('Container Runtime'),
-        dataIndex: 'containerRuntime.type',
-      },
-      {
-        label: isDocker ? t('Docker Version') : t('Containerd Version'),
-        dataIndex: 'containerRuntime',
-        render: () => containerRuntime.version,
-      },
-      {
-        label: t('Docker Data Path'),
-        dataIndex: 'containerRuntime.docker',
-        render: () => containerRuntime.rootDir,
-      },
-      {
-        label: isDocker ? t('Docker Registry') : t('Containerd Registry'),
-        dataIndex: 'containerRuntime.docker',
-        render: () => containerRuntime.insecureRegistry,
-      },
-    ];
-  };
+  const containerRuntimeItem = () => [
+    {
+      label: t('Container Runtime'),
+      dataIndex: 'containerRuntime',
+      render: (data) => `${data.type} ${data.version}`,
+    },
+    {
+      label: t('Docker Data Path'),
+      dataIndex: 'containerRuntime',
+      render: (data) => data.rootDir,
+    },
+    {
+      label: t('Container Registry'),
+      dataIndex: 'containerRuntime',
+      render: (data) => data.insecureRegistry,
+    },
+  ];
 
   const networkItem = () => [
     {
