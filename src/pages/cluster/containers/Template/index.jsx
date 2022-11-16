@@ -34,7 +34,7 @@ const TemplateManagement = () => {
   }));
 
   const currentProps = {
-    active: query.tab,
+    active: query.tab || 'cluster',
     store: templatesStore,
     tabs: [
       {
