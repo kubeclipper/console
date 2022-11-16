@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import Base from 'containers/BaseDetail';
-import { get } from 'lodash';
+import { get, uniq } from 'lodash';
 import { useRootStore } from 'stores';
 import { observer } from 'mobx-react';
 
@@ -36,7 +36,11 @@ function BaseDetail() {
     {
       label: t('Container Registry'),
       dataIndex: 'containerRuntime',
-      render: (data) => data.insecureRegistry,
+      render: (_, record) => {
+        const registry = get(record, '_originData.status.Registries', []);
+        if (registry.length === 0) return '-';
+        return uniq(registry.map((it) => it.host));
+      },
     },
   ];
 

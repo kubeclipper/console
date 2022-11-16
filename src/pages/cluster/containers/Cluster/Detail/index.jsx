@@ -45,7 +45,7 @@ const StatusTitle = () => (
 function ClusterDetail() {
   const { clusterStore: store } = useRootStore();
 
-  const allowedCheckProviderType = (item) => item?.provider?.name !== 'rancher';
+  const allowedCheckProviderType = (item) => item.providerType !== 'rancher';
   const allowedCheckComponents = (item, key) => !isEmpty(item[key]);
 
   const currentProps = {
