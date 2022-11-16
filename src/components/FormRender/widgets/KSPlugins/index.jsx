@@ -18,7 +18,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { Switch } from 'antd';
 import FR from 'components/FormRender';
 import { useForm } from 'form-render';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, values } from 'lodash';
 import { Context } from 'pages/cluster/components/plugin/Context';
 
 import styles from './index.less';
@@ -29,13 +29,19 @@ import styles from './index.less';
  * @param {*} props
  * @returns
  */
-export default function KSPlugins({ schema, addons }) {
+export default function KSPlugins(props) {
+  const { schema, addons } = props;
   const { context = {} } = useContext(Context);
   // eslint-disable-next-line no-unused-vars
   const { setValueByPath, getValue } = addons;
 
   const form = useForm(); // 组件内部表单
   const [switchChecked, setSwitchChecked] = useState(false);
+
+  const handleSwitchChecked = (obj) => {
+    const checked = values(obj).every((item) => item);
+    setSwitchChecked(checked);
+  };
 
   // 同步父表单值
   useEffect(() => {
@@ -47,12 +53,18 @@ export default function KSPlugins({ schema, addons }) {
         'plugins.forms.kubesphere.formData.plugin'
       );
       form.setValues(initPluginValue);
+    } else {
+      handleSwitchChecked(addons.formData.plugin);
+      form.setValues(addons.formData.plugin);
     }
   }, []);
 
   const watch = {
     '#': (formData) => {
-      setValueByPath(schema.$id, formData); // 设置父表单值
+      if (!isEmpty(formData)) {
+        handleSwitchChecked(formData);
+        setValueByPath(schema.$id, formData); // 设置父表单值
+      }
     },
   };
 
