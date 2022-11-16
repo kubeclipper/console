@@ -152,7 +152,7 @@ function AddPlugin() {
       } else {
         await templatesStore.create(params, state.pluginInitVal);
       }
-      history.push('/cluster/template');
+      history.push(`/cluster/template?tab=${plugin}`);
     } catch (error) {
       Notify.error(error.reason);
     }
