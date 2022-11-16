@@ -47,8 +47,13 @@ export default class Index extends ConfirmAction {
     return failedStatus.includes(item.status);
   }
 
+  isUpdating(item) {
+    return item.status === 'Updating';
+  }
+
   allowedCheckFunc = (item) =>
-    this.isFailed(item) && !isDisableByProviderType(item);
+    (this.isFailed(item) || this.isUpdating(item)) &&
+    !isDisableByProviderType(item);
 
   confirmContext = (data) => {
     const name = this.getName(data);
