@@ -1,37 +1,59 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import NotFound from 'components/NotFound';
 
-export default class ErrorBoundary extends React.Component {
+function ErrorBoundary({ children, ...rest }) {
+  const [hasError, setHasError] = useState(false);
+  const location = useLocation();
+  // fix err, router not work
+  useEffect(() => {
+    if (hasError) {
+      setHasError(false);
+    }
+  }, [location.key]);
+
+  return (
+    <ErrorBoundaryInner hasError={hasError} setHasError={setHasError} {...rest}>
+      {children}
+    </ErrorBoundaryInner>
+  );
+}
+
+class ErrorBoundaryInner extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
-    // eslint-disable-next-line no-console
-    console.log('ErrorBoundary', error);
-    return {
-      hasError: true,
-      error,
-    };
+  static getDerivedStateFromError(_error) {
+    return { hasError: true };
   }
 
-  // eslint-disable-next-line no-unused-vars
-  componentDidCatch(error, errorInfo) {}
+  componentDidUpdate(prevProps, _previousState) {
+    if (!this.props.hasError && prevProps.hasError) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ hasError: false });
+    }
+  }
+
+  componentDidCatch(_error, _errorInfo) {
+    // eslint-disable-next-line no-console
+    console.table('error', _error);
+    this.props.setHasError(true);
+  }
 
   render() {
-    const { formError, children } = this.props;
-
-    if (this.state.hasError) {
-      return (
-        <NotFound
-          codeError
-          title={formError ? t('form') : t('data')}
-          link={formError ? false : '/'}
-        />
-      );
-    }
-
-    return children;
+    return this.state.hasError ? (
+      <NotFound
+        codeError
+        title={this.props.formError ? t('form') : t('data')}
+        link={this.props.formError ? false : '/'}
+      />
+    ) : (
+      this.props.children
+    );
   }
 }
+
+export default ErrorBoundary;
