@@ -90,6 +90,10 @@ function Plugins() {
         },
       },
       {
+        label: t('Host Cluster Name'),
+        dataIndex: 'kubesphere.HostClusterName',
+      },
+      {
         label: t('Storage Class'),
         dataIndex: 'kubesphere.storageClass',
       },
