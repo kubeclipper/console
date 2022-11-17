@@ -598,5 +598,6 @@
   "Update CRI Registry": "更新 CRI 镜像仓库",
   "Cluster {name} {action} successfully.": "集群 {name} {action}成功",
   "Master Node Healthy Status": "控制节点健康状态",
-  "Container Registry": "容器镜像仓库"
+  "Container Registry": "容器镜像仓库",
+  "Host Cluster Name": "主机集群名称"
 }

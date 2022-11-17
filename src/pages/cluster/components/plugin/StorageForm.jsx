@@ -32,6 +32,7 @@ const StorageForm = (props) => {
     useTemplate = false,
     context,
     updateContext,
+    onChange,
     store,
   } = props;
   const { storageComponents } = useRootStore();
@@ -205,6 +206,14 @@ const StorageForm = (props) => {
     });
 
     store.scNames = allScName;
+
+    const currentForms = storageTabs.find(
+      (item) => item.name === storageCurrent
+    ).formInstances;
+
+    onChange({
+      currentForms,
+    });
 
     updateContext({
       storageTabs: _tabs,

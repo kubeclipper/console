@@ -598,5 +598,6 @@
   "Update CRI Registry": "Update CRI Registry",
   "Cluster {name} {action} successfully.": "Cluster {name} {action} successfully.",
   "Master Node Healthy Status": "Master Node Healthy Status",
-  "Container Registry": "Container Registry"
+  "Container Registry": "Container Registry",
+  "Host Cluster Name": "Host Cluster Name"
 }
