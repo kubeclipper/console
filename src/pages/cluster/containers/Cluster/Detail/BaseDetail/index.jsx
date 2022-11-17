@@ -18,6 +18,7 @@ import Base from 'containers/BaseDetail';
 import { get, uniq } from 'lodash';
 import { useRootStore } from 'stores';
 import { observer } from 'mobx-react';
+import { isDisableByProviderType } from 'utils';
 
 function BaseDetail() {
   const { clusterStore: store } = useRootStore();
@@ -116,17 +117,20 @@ function BaseDetail() {
         dataIndex: 'externalIP',
       },
       {
-        label: t('Master Node Healthy Status'),
+        label: t('Master'),
         dataIndex: 'controlPlaneHealth',
-        render: (data) => (
-          <>
-            {data.map(({ hostname, address, status }, index) => (
-              <p key={index}>
-                {hostname} | {address} ｜ {t(status)}
-              </p>
-            ))}
-          </>
-        ),
+        render: (data) => {
+          const isRancher = isDisableByProviderType(store.detail);
+          return (
+            <>
+              {data.map(({ hostname, address, status }, index) => (
+                <p key={index}>
+                  {hostname} | {address} {!isRancher ? `｜ ${t(status)}` : ''}
+                </p>
+              ))}
+            </>
+          );
+        },
       },
       {
         label: t('Cluster Labels'),
