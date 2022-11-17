@@ -43,6 +43,10 @@ export default function KSPlugins(props) {
     setSwitchChecked(checked);
   };
 
+  useEffect(() => {
+    form.setValues(props.value);
+  }, [props.value]);
+
   // 同步父表单值
   useEffect(() => {
     // TODO: 未生效, 应该用此方式
