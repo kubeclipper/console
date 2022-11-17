@@ -176,7 +176,9 @@ module.exports = () => {
           extractComments: false,
           terserOptions: {
             compress: {
-              drop_console: true,
+              drop_console: false,
+              drop_debugger: true,
+              pure_funcs: ['console.log'],
             },
           },
         }),
