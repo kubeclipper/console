@@ -633,5 +633,7 @@
   "You do not have project": "You do not have project",
   "Sorry, you do not have any projects, please contact the administrator to operate.": "Sorry, you do not have any projects, please contact the administrator to operate.",
   "Container Registry": "Container Registry",
-  "Host Cluster Name": "Host Cluster Name"
+  "Host Cluster Name": "Host Cluster Name",
+  "Only the node is assigned to the project, it can be used under the project": "Only the node is assigned to the project, it can be used under the project",
+  "Assign node": "Assign node"
 }

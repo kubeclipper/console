@@ -88,6 +88,7 @@ export default class BaseStore {
 
   getListUrl = ({ project } = {}) => {
     const currentProject = this.rootStore?.currentProject;
+
     if (project || currentProject)
       return `${this.apiVersion}/projects/${project || currentProject}/${
         this.module

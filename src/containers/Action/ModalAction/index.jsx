@@ -56,6 +56,10 @@ export default class ModalAction extends BaseForm {
     };
   }
 
+  get isAsyncAction() {
+    return false;
+  }
+
   static allowed() {
     return Promise.resolve();
   }
@@ -64,16 +68,27 @@ export default class ModalAction extends BaseForm {
     return this.item?.name || this.values?.name;
   }
 
+  get actionName() {
+    return this.name.toLowerCase() || this.title;
+  }
+
   get successText() {
+    if (this.isAsyncAction) {
+      return t(
+        'The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.',
+        { action: this.actionName, name: this.instanceName }
+      );
+    }
+
     return t('{action} {name} successfully.', {
-      action: this.name.toLowerCase(),
+      action: this.actionName,
       name: this.instanceName,
     });
   }
 
   get errorText() {
     return t('Unable to {action} {name}.', {
-      action: this.name.toLowerCase(),
+      action: this.actionName,
       name: this.instanceName,
     });
   }

@@ -34,6 +34,10 @@ export default class StepAction extends StepForm {
     return Promise.resolve();
   }
 
+  // get isAdminPage() {
+  //   return isAdminPage(window.location.pathname);
+  // }
+
   get hasConfirmStep() {
     return true;
   }

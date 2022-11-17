@@ -42,4 +42,10 @@ export default class NodeStore extends BaseStore {
       request.patch(`${this.getDetailUrl({ id: name })}/enable`)
     );
   }
+
+  async assignProject(id, data) {
+    return this.submitting(
+      request.put(`${this.getDetailUrl({ id })}/join`, data)
+    );
+  }
 }

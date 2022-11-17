@@ -79,6 +79,7 @@ const NodesMapper = (item) => {
     ipv4DefaultGw: get(item, 'status.ipv4DefaultGw'),
     nodeInfo: get(item, 'status.nodeInfo'),
     disabled: !get(item, 'metadata.labels["kubeclipper.io/nodeDisable"]'),
+    project: get(item, 'metadata.labels["kubeclipper.io/project"]', ''),
     _originData: getOriginData(item),
   };
 };
