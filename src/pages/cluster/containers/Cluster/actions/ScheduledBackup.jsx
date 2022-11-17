@@ -50,6 +50,10 @@ class ScheduledBackup extends ModalAction {
     return 'scheduledBackup';
   }
 
+  get instanceName() {
+    return this.values.name;
+  }
+
   static checkNotice = (item) => {
     const { backupPoint } = item;
     if (!backupPoint) {
