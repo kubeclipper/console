@@ -312,7 +312,7 @@ class RootStore {
 
     user.projects = await this.getUserProject();
 
-    if (this.isAdminPage || (!this.isAdminPage && user.projects.length > 0)) {
+    if (this.isAdminPage || (!this.isAdminPage && user.projects?.length > 0)) {
       user.globalRules = await this.getUserRoleRules({
         username: currentUserName,
       });
@@ -327,15 +327,15 @@ class RootStore {
     const res = await request.get(`/api/tenant.kubeclipper.io/v1/projects`);
     const data = (get(res, 'items') || []).map(ObjectMapper.projects);
 
-    if (isEmpty(data)) {
-      this.routing.push('/project/empty');
-      // return;
-    }
-
     if (this.isAdminPage) {
       setLocalStorageItem('currentProject', '');
       this.currentProject = '';
     } else {
+      if (isEmpty(data)) {
+        this.routing.push('/project/empty');
+        return;
+      }
+
       const project = getLocalStorageItem('currentProject');
 
       this.currentProject = project || data?.[0]?.name;

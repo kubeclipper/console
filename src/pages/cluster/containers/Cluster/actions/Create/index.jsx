@@ -51,8 +51,12 @@ export default class Create extends StepAction {
     return true;
   }
 
+  get isAdminPage() {
+    return this.constructor.isAdminPage;
+  }
+
   get listUrl() {
-    return this.isAdminPage ? '/cluster' : '/cluster-admin';
+    return this.isAdminPage ? '/cluster-admin' : '/cluster';
   }
 
   get name() {
@@ -165,11 +169,18 @@ export default class Create extends StepAction {
     return encodeProperty(this.components, enabledComponents);
   };
 
+  getProject(values) {
+    if (this.isAdminPage) {
+      return values.project;
+    }
+
+    return rootStore.currentProject;
+  }
+
   onSubmit = (values) => {
     const {
       /* step1: Node config */
       region,
-      project,
       /* step2: Cluster config */
       // image
       offline,
@@ -227,7 +238,7 @@ export default class Create extends StepAction {
       metadata: {
         name,
         labels: {
-          'kubeclipper.io/project': project,
+          'kubeclipper.io/project': this.getProject(values),
           'topology.kubeclipper.io/region': region,
           'kubeclipper.io/backupPoint': backupPoint,
           ...externalIPLabel,

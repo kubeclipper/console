@@ -17,11 +17,15 @@ import Disable from './Disable';
 import Enable from './Enable';
 import Delete from './Delete';
 import Terminal from './Terminal';
+import AssignProject from './AssignProject';
 
 const actionConfigs = {
   rowActions: {
     firstAction: Terminal,
     moreActions: [
+      {
+        action: AssignProject,
+      },
       {
         action: Disable,
       },
