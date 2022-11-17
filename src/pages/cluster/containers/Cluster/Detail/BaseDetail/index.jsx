@@ -37,7 +37,7 @@ function BaseDetail() {
       label: t('Container Registry'),
       dataIndex: 'containerRuntime',
       render: (_, record) => {
-        const registry = get(record, '_originData.status.Registries', []);
+        const registry = get(record, '_originData.status.Registries') ?? [];
         if (registry.length === 0) return '-';
         return uniq(registry.map((it) => it.host));
       },
