@@ -632,5 +632,6 @@
   "projectmembers": "projectmembers",
   "You do not have project": "You do not have project",
   "Sorry, you do not have any projects, please contact the administrator to operate.": "Sorry, you do not have any projects, please contact the administrator to operate.",
-  "Container Registry": "Container Registry"
+  "Container Registry": "Container Registry",
+  "Host Cluster Name": "Host Cluster Name"
 }

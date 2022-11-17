@@ -63,7 +63,7 @@ const RenderForm = (props) => {
     },
     pluginTemplate: {
       handler: (val) => {
-        val && onChange(name, form, val);
+        val && onChange(name, form, form.formData, 'plugin');
       },
       immediate: false,
     },
