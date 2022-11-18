@@ -110,8 +110,8 @@ const Plugin = (props) => {
     setState({ ...state, current: tab });
   };
 
-  const handleFRChange = (name, formInstance, formData, index) => {
-    if (formData.pluginTemplate) {
+  const handleFRChange = (name, formInstance, formData, type, index) => {
+    if (type) {
       if (formData.pluginTemplate !== 'notUseTemplate') {
         const selectedTemplate = templates.find(
           (item) => item.name === formData.pluginTemplate
@@ -175,8 +175,8 @@ const Plugin = (props) => {
               <RenderForm
                 schema={_item}
                 name={current}
-                onChange={(name, formInstance, formData) =>
-                  handleFRChange(name, formInstance, formData, _index)
+                onChange={(name, formInstance, formData, type) =>
+                  handleFRChange(name, formInstance, formData, type, _index)
                 }
               />
             </>
