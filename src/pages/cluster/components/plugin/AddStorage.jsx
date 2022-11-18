@@ -148,35 +148,24 @@ const Storage = observer((props) => {
     }
   };
 
-  const handleFRChange = (name, formInstance, formData, index) => {
-    if (typeof formData === 'object' && formData.pluginTemplate) {
+  const handleFRChange = (name, formInstance, formData, type, index) => {
+    if (type) {
       if (formData.pluginTemplate !== 'notUseTemplate') {
-        const { flatData = {} } =
-          templates.find((item) => item.id === formData.pluginTemplate) || {};
-        if (!isMatch(formData, flatData)) {
+        const selectedTemplate = templates.find(
+          (item) => item.name === formData.pluginTemplate
+        );
+        if (!isMatch(formData, selectedTemplate.flatData)) {
           formInstance.setValues({
-            ...formData,
-            pluginTemplate: '',
+            ...selectedTemplate.flatData,
+            pluginTemplate: formData.pluginTemplate,
+            enable: true,
           });
         }
-      }
-    }
-
-    if (typeof formData === 'string') {
-      if (formData === 'notUseTemplate') {
+      } else {
         const { baseFormData } = tabs.find((item) => item.name === current);
         formInstance.setValues({
           ...baseFormData,
           pluginTemplate: 'notUseTemplate',
-          enable: true,
-        });
-      } else {
-        const [{ flatData = {} }] = templates.filter(
-          (item) => item.name === formData
-        );
-        formInstance.setValues({
-          ...flatData,
-          pluginTemplate: formData,
           enable: true,
         });
       }
@@ -234,8 +223,8 @@ const Storage = observer((props) => {
                 schema={schema}
                 name={item.name}
                 value={item.formData[_index]}
-                onChange={(name, formInstance, formData) =>
-                  handleFRChange(name, formInstance, formData, _index)
+                onChange={(name, formInstance, formData, type) =>
+                  handleFRChange(name, formInstance, formData, type, _index)
                 }
               />
             </div>
