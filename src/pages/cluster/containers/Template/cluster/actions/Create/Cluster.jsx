@@ -261,8 +261,8 @@ export default class Cluster extends BaseForm {
   }
 
   get isDocker() {
-    const type = this.state.containerRuntimeType;
-    return type === 'docker';
+    const { containerRuntimeType } = this.props.context;
+    return containerRuntimeType === 'docker';
   }
 
   get nameForStateUpdate() {
@@ -277,19 +277,19 @@ export default class Cluster extends BaseForm {
   }
 
   get isCalico() {
-    const { cniType } = this.state;
+    const { cniType } = this.props.context;
 
     return cniType === 'calico';
   }
 
   get isDualStack() {
-    const { IPVersion } = this.state;
+    const { IPVersion } = this.props.context;
 
     return IPVersion === 'IPv4+IPv6';
   }
 
   checkIpOrDomain = (rule, value) => {
-    const { pod_network_underlay } = this.state;
+    const { pod_network_underlay } = this.props.context;
     if (pod_network_underlay === 'can-reach') {
       if (isIPv4(value) || isDomain(value)) {
         return Promise.resolve(true);
@@ -306,7 +306,7 @@ export default class Cluster extends BaseForm {
   };
 
   checkIpOrDomainV6 = (rule, value) => {
-    const { pod_network_underlay } = this.state;
+    const { pod_network_underlay } = this.props.context;
     if (pod_network_underlay === 'can-reach') {
       if (isIpv6(value) || isDomain(value)) {
         return Promise.resolve(true);
@@ -476,7 +476,8 @@ export default class Cluster extends BaseForm {
   };
 
   get formItems() {
-    const { pod_network_underlay, pod_network_underlay_v6 } = this.state;
+    const { pod_network_underlay, pod_network_underlay_v6 } =
+      this.props.context;
     const { isAfter24 = false } = this.props.context;
 
     const underlayInputHelp =
