@@ -87,7 +87,7 @@ export default function Node(props) {
     store,
     columns,
     actionConfigs,
-    showProject: true,
+    showProjectColumn: true,
   };
 
   return <BaseList {...currentProps} />;

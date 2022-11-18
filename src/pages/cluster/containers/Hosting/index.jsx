@@ -82,6 +82,7 @@ function Providers(props) {
     ],
     actionConfigs,
     store,
+    showProjectColumn: true,
   };
 
   return <BaseList {...currentProps} />;

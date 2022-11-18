@@ -35,7 +35,7 @@ const ClusterList = (props) => {
     transitionStatusList: transitionStatus,
     actionConfigs,
     store,
-    showProject: true,
+    showProjectColumn: true,
   };
 
   return <BaseList {...currentProps} />;
