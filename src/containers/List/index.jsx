@@ -82,7 +82,7 @@ function BaseList(props) {
     isRenderFooter,
     isShowDownLoadIcon,
     isShowEyeIcon,
-    showProject = false,
+    showProjectColumn = false,
   } = props;
 
   const { list } = store;
@@ -301,7 +301,7 @@ function BaseList(props) {
     }
   };
 
-  if (isAdminPage && showProject) {
+  if (isAdminPage && showProjectColumn) {
     const projects = get(rootStore, 'user.projects') || [];
     const filterOptions = projects.map((p) => ({
       value: p.name,
