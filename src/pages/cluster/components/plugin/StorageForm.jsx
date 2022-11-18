@@ -144,22 +144,20 @@ const StorageForm = (props) => {
     }
   };
 
-  const handleFRChange = (name, formInstance, formData, index) => {
-    if (typeof formData === 'object' && formData.pluginTemplate) {
+  const handleFRChange = (name, formInstance, formData, type, index) => {
+    if (type) {
       if (formData.pluginTemplate !== 'notUseTemplate') {
-        const { flatData = {} } =
-          templates.find((item) => item.id === formData.pluginTemplate) || {};
-        if (!isMatch(formData, flatData)) {
+        const selectedTemplate = templates.find(
+          (item) => item.name === formData.pluginTemplate
+        );
+        if (!isMatch(formData, selectedTemplate.flatData)) {
           formInstance.setValues({
-            ...formData,
-            pluginTemplate: '',
+            ...selectedTemplate.flatData,
+            pluginTemplate: formData.pluginTemplate,
+            enable: true,
           });
         }
-      }
-    }
-
-    if (typeof formData === 'string') {
-      if (formData === 'notUseTemplate') {
+      } else {
         const { baseFormData } = storageTabs.find(
           (item) => item.name === storageCurrent
         );
@@ -168,22 +166,14 @@ const StorageForm = (props) => {
           pluginTemplate: 'notUseTemplate',
           enable: true,
         });
-      } else {
-        const [{ flatData = {} }] = templates.filter(
-          (item) => item.name === formData
-        );
-        formInstance.setValues({
-          ...flatData,
-          pluginTemplate: formData,
-          enable: true,
-        });
       }
     }
 
     const enableStorage = [];
     const allScName = [];
 
-    const _tabs = storageTabs.map((item) => {
+    const _tabs = cloneDeep(storageTabs);
+    _tabs.forEach((item) => {
       const _item = { ...item };
 
       if (item.name === name) {
@@ -280,8 +270,8 @@ const StorageForm = (props) => {
                   schema={_item}
                   name={item.name}
                   value={item.formData[_index]}
-                  onChange={(name, formInstance, formData) =>
-                    handleFRChange(name, formInstance, formData, _index)
+                  onChange={(name, formInstance, formData, type) =>
+                    handleFRChange(name, formInstance, formData, type, _index)
                   }
                 />
                 {item.isAddMore && isShowAddMore && <Divider dashed />}
