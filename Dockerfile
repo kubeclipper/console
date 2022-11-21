@@ -3,6 +3,8 @@
 ############################
 # In the same directory as package.json
 # $ docker build -t kc-console .
+# NOTE: must have at least one tag in your repo，otherwise will build failed.
+# run cmd [ git describe --tags --dirty --match='v*' --abbrev=14 ] to check
 
 ############################
 # How to run
@@ -13,7 +15,7 @@
 # $ docker run -d --name kc-console --restart=always --net=host -v /var/log/nginx:/var/log/nginx -v your_nginx_file:/etc/nginx/nginx.conf kc-console:latest
 
 # Setp1. Build dist
-FROM node:12-alpine AS builder
+FROM --platform=${BUILDPLATFORM} node:12-alpine AS builder
 
 COPY ./ /root/kc-console/
 WORKDIR /root/kc-console
