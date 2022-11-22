@@ -16,6 +16,7 @@
 import React, { Suspense } from 'react';
 import { getWebSocketProtocol } from 'utils';
 import ContainerTerminal from './terminal';
+import { devIp } from '../../../config/common';
 
 const BG_COLOR = '#181d28';
 
@@ -26,7 +27,7 @@ export default function SessionTerminal(props) {
     const { protocol, host } = window.location;
 
     const wsIp = `${getWebSocketProtocol(protocol)}://${
-      process.env.NODE_ENV === 'development' ? process.env.PROXY_IP : host
+      process.env.NODE_ENV === 'development' ? devIp : host
     }`;
 
     return `${wsIp}${url}`;

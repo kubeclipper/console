@@ -16,6 +16,7 @@
 import { action, observable, makeObservable } from 'mobx';
 import { getWebSocketProtocol } from 'utils';
 import SocketClient from 'utils/socket.client';
+import { devIp } from '../../config/common';
 
 export default class WebSocketStore {
   message = {};
@@ -29,7 +30,7 @@ export default class WebSocketStore {
 
   get host() {
     return process.env.NODE_ENV === 'development'
-      ? process.env.PROXY_IP
+      ? devIp
       : window.location.host;
   }
 
