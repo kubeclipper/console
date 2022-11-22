@@ -23,14 +23,9 @@ module.exports = defineConfig({
       return require('./cypress/plugins/index.js')(on, config);
     },
     experimentalSessionAndOrigin: true,
-    baseUrl: 'http://localhost:8089',
     specPattern: [
       'cypress/e2e/pages/login.cy.js',
-      'cypress/e2e/pages/cluster/cluster.cy.js',
-      'cypress/e2e/pages/cluster/backup.cy.js',
-      'cypress/e2e/pages/cluster/detail.cy.js',
-      'cypress/e2e/pages/cluster/upgrade.cy.js',
-      'cypress/e2e/pages/cluster/template.cy.js',
+      'cypress/e2e/pages/cluster/*.cy.js',
     ],
   },
 });

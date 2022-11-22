@@ -21,7 +21,7 @@ describe('The Login Page', () => {
       .loginInput('password', Cypress.env('password'))
       .loginFormSubmit()
       .url()
-      .should('include', '/cluster');
+      .should('include', '/cluster-admin');
   });
 
   it('successfully error username and password', () => {
