@@ -152,7 +152,6 @@ module.exports = () => {
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
           COMMITHASH: JSON.stringify(gitRevision.version()),
-          PROXY_IP: JSON.stringify(devIp),
         },
       }),
     ],
