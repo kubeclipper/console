@@ -3,7 +3,9 @@ name: build-image
 on:
   push:
     branches:
-      - '*'
+      - 'master'
+    tags:
+      - 'v*'
 #
 # This ensures that previous jobs for the branch are canceled when the branch is updated.
 concurrency:

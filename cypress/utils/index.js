@@ -45,6 +45,7 @@ function getConfig() {
   const cypressFolder = 'cypress';
   const config = loadYaml(root(`${cypressFolder}/config/config.yaml`)) || {};
   const tryFile = root(`${cypressFolder}/config/local_config.yaml`);
+
   if (fs.existsSync(tryFile)) {
     // merge local_config
     const local_config = loadYaml(tryFile);

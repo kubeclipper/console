@@ -1,22 +1,19 @@
 # 1.setup node env
-# 2.setup cypress env
-# 3.e2e test
-# 4.upload coverage
+# 2.make build and deploy all-in-one service
+# 3.stop console service ,replace files and restart console service
+# 4.run e2e cluster test
 
-name: e2e-test
+name: front-e2e-test
 
 on: [push, pull_request]
-
-# This ensures that previous jobs for the PR are canceled when the PR is updated.
+# This ensures that previous jobs for the branch are canceled when the branch is updated. 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:
-  cypress-run:
+  front-e2e-test:
     runs-on: ubuntu-20.04
-    # let's make sure our tests pass on Chrome browser
-    name: E2E on Chrome
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -25,25 +22,53 @@ jobs:
       - name: Setup node env
         uses: actions/setup-node@v3
         with:
-          node-version: 14.17
+          node-version: 12.13
           cache: 'yarn'
           cache-dependency-path: yarn.lock
+      - name: Build
+        run: |
+            yarn install
+            yarn run build:test
+
+      - name: Get branch name
+        id: extract_branch
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_BASE_REF})"
+
+      - name: deploy service
+        run: | 
+          current_branch=master
+          if [[ "${{ steps.extract_branch.outputs.branch }}" =~ ^release-.* ]]; then
+            IFS="-" read -ra items <<< "$(git describe)"
+            if [[ ! ${#items[@]} -eq 0 ]]; then
+              current_branch=${items[0]}
+            fi
+          fi
+          echo current version is ${current_branch}
+          curl -sfL https://oss.kubeclipper.io/kcctl.sh | sudo KC_VERSION=${current_branch} KC_REGION=cn bash -
+          sudo kcctl deploy --pkg https://oss.kubeclipper.io/release/${current_branch}/kc-amd64.tar.gz
+
+      - name: update console files
+        run: |
+          sudo systemctl stop kc-console
+          sudo rm -rf /etc/kc-console/dist
+          sudo /bin/cp -rf ./dist /etc/kc-console/
+          sudo systemctl start kc-console
+
       - uses: cypress-io/github-action@v4
         with:
           browser: Chrome 106
           config-file: cypress.config.js
-          start: yarn start
-          wait-on: 'http://localhost:8089'
+          wait-on: 'http://localhost:80'
           wait-on-timeout: 300
           command: yarn test:e2e
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-      # after the test run completes
-      # store videos and any screenshots
-      # NOTE: screenshots will be generated only if E2E test failed
-      # thus we store screenshots only on failures
-      # Alternative: create and commit an empty cypress/screenshots folder
-      # to always have something to upload
+      
+      # - uses: actions/upload-artifact@v2
+      #   if: always()
+      #   with:
+      #     name: cypress-screenshots
+      #     path: cypress/screenshots
+
       - uses: actions/upload-artifact@v2
         if: always()
         with:
@@ -54,3 +79,12 @@ jobs:
         with:
           name: cypress-result
           path: cypress/results
+      # screenshots will be generated only if E2E test failed
+      - name: pass or fail
+        run: |
+          if [ -d "cypress/screenshots" ];then 
+          echo e2e-test fail
+          exit 110 
+          else
+          echo e2e-test successfully
+          fi

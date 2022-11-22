@@ -11,6 +11,7 @@ cypress/screenshots
 cypress/downloads
 cypress/results
 cypress/report
+cypress/config/local_config.yaml
 .nyc_output
 coverage
 unitCoverage

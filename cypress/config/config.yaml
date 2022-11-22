@@ -1,6 +1,3 @@
-covarage: true
-baseUrl: http://localhost:8089
-env:
-  username: admin
-  password: 'Thinkbig1'
-  language: zh
+# covarage: true
+baseUrl: http://localhost:80
+

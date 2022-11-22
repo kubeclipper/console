@@ -280,6 +280,7 @@ class RootStore {
         currentUserName = user.username;
       } else {
         this.gotoLoginPage();
+        return;
       }
     }
 
