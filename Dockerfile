@@ -2,28 +2,28 @@
 # How to build
 ############################
 # In the same directory as package.json
-# $ docker build -t kubeclipper-console .
+# $ docker build -t kc-console .
 
 ############################
 # How to run
 ############################
 # without any config
-# $ docker run -d --name kubeclipper-console --restart=always --net=host -v /var/log/nginx:/var/log/nginx kubeclipper-console:latest
+# $ docker run -d --name kc-console --restart=always --net=host -v /var/log/nginx:/var/log/nginx kc-console:latest
 # with your_nginx_file
-# $ docker run -d --name kubeclipper-console --restart=always --net=host -v /var/log/nginx:/var/log/nginx -v your_nginx_file:/etc/nginx/nginx.conf kubeclipper-console:latest
+# $ docker run -d --name kc-console --restart=always --net=host -v /var/log/nginx:/var/log/nginx -v your_nginx_file:/etc/nginx/nginx.conf kc-console:latest
 
 # Setp1. Build dist
 FROM node:12-alpine AS builder
 
-COPY ./ /root/kubeclipper-console/
-WORKDIR /root/kubeclipper-console
+COPY ./ /root/kc-console/
+WORKDIR /root/kc-console
 RUN apk add python2 make g++ git \
   && yarn config set registry https://registry.npmmirror.com/ \
   && yarn install \
   && yarn run build
 
-# Step2. Put into nginx
-FROM nginx:1.21.4-alpine
+# Step2. Put into caddy
+FROM --platform=${BUILDPLATFORM} caddy:2.4.6
 
 ARG REPO_URL
 ARG BRANCH
@@ -32,4 +32,4 @@ LABEL repo-url=$REPO_URL
 LABEL branch=$BRANCH
 LABEL commit-ref=$COMMIT_REF
 
-COPY --from=builder /root/kubeclipper-console/dist /var/www/kubeclipper-console
+COPY --from=builder /root/kc-console/dist /etc/kc-console/dist

@@ -1,0 +1,34 @@
+{
+        # General Options
+        #debug
+        admin off
+        grace_period 1m
+}
+:80 {
+        root * /etc/kc-console/dist
+        encode gzip
+        log {
+                output stdout
+        }
+        uri strip_prefix /apis
+        route {
+                @kc {
+                        path /api/*
+                        path /oauth/*
+                        path /version
+                }
+                reverse_proxy @kc {
+                        to  http://kc-server:8080
+                        lb_policy round_robin
+                        health_uri /healthz
+                        #health_port
+                        health_interval 10s
+                        health_timeout 5s
+                        health_status 2xx
+                        #health_body
+                        #health_headers
+                }
+                try_files {path} {path}/ /index.html
+                file_server
+        }
+}
