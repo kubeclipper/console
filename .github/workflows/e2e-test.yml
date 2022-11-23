@@ -55,6 +55,18 @@ jobs:
           sudo /bin/cp -rf ./dist /etc/kc-console/
           sudo systemctl start kc-console
 
+      - name: wait kc-service valid
+        run: |
+          while true
+            do
+            kcctl login -H http://localhost:80  -u admin -p Thinkbig1   
+            if [[ $? -eq 0 ]]; then
+                break
+            else
+                sleep 3
+            fi         
+            done
+      
       - uses: cypress-io/github-action@v4
         with:
           browser: Chrome 106
