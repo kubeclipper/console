@@ -13,6 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { TestCase } from '../../../support/common';
+
 describe('集群', () => {
   const testUrl = '/cluster';
 
@@ -26,8 +28,12 @@ describe('集群', () => {
     cy.login(testUrl);
   });
 
+  afterEach(() => {
+    cy.addContext();
+  });
+
   // 创建单机集群
-  it('集群管理-创建-1', () => {
+  it(...TestCase('集群管理-创建-1').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
     cy.wait(1000).url().should('include', 'cluster/create');
@@ -49,7 +55,7 @@ describe('集群', () => {
   });
 
   // 创建高可用集群
-  it.skip('集群管理-创建-2', () => {
+  it.skip(...TestCase('集群管理-创建-2').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
     cy.wait(1000).url().should('include', 'cluster/create');
@@ -73,13 +79,13 @@ describe('集群', () => {
   });
 
   // 查看集群
-  it('集群管理-查看-1', () => {
+  it(...TestCase('集群管理-查看-1').smoke().value(), () => {
     cy.tableSearchText(name).goToDetail(1);
     cy.checkDetailName(name);
   });
 
   // 编辑集群
-  it('集群管理-集群-编辑集群-1', () => {
+  it(...TestCase('集群管理-集群-编辑集群-1').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Cluster Settings',
@@ -94,7 +100,7 @@ describe('集群', () => {
   });
 
   // 添加节点
-  it('集群管理-集群-添加节点-1', () => {
+  it(...TestCase('集群管理-集群-添加节点-1').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
@@ -106,7 +112,7 @@ describe('集群', () => {
   });
 
   // 移除节点
-  it('集群管理-集群-移除节点-1', () => {
+  it(...TestCase('集群管理-集群-移除节点-1').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
@@ -118,7 +124,7 @@ describe('集群', () => {
   });
 
   // 删除集群
-  it('集群管理-集群-删除集群-1', () => {
+  it(...TestCase('集群管理-集群-删除集群-1').smoke().value(), () => {
     cy.clickActionInMore({
       title: 'Cluster Status',
       subTitle: 'Delete Cluster',

@@ -23,4 +23,28 @@ const getTitle = (title) => {
   return translate[title] || title;
 };
 
+export function TestCase(caseName) {
+  const _value = {
+    caseName,
+    tags: [caseName],
+    cases: [],
+  };
+  const self = {
+    value: () => [caseName, _value],
+    smoke: () => {
+      _value.tags.push('smoke');
+      return self;
+    },
+    slow: () => {
+      _value.tags.push('slow');
+      return self;
+    },
+    addCase: (name) => {
+      _value.cases.push(name);
+      return self;
+    },
+  };
+  return self;
+}
+
 export default getTitle;
