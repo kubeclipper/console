@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import getTitle, { TestCase } from './../../../support/common';
+import getTitle from './../../../support/common';
 import moment from 'moment';
 
 before(() => {
@@ -43,12 +43,8 @@ describe('备份点', () => {
     cy.login(testUrl);
   });
 
-  afterEach(() => {
-    cy.addContext();
-  });
-
   // 添加fs备份点
-  it(...TestCase('集群管理-备份点-创建-1').smoke().value(), () => {
+  it('集群管理-备份点-创建-1', () => {
     cy.clickHeaderButton(0);
 
     cy.inputText('name', backupFSName);
@@ -69,7 +65,7 @@ describe('备份点', () => {
   });
 
   // 添加s3备份点
-  it(...TestCase('集群管理-备份点-创建-2').smoke().value(), () => {
+  it('集群管理-备份点-创建-2', () => {
     cy.visitPage(testUrl);
 
     cy.clickHeaderButton(0);
@@ -95,7 +91,7 @@ describe('备份点', () => {
   });
 
   // 备份点查看
-  it(...TestCase('集群管理-备份点-查看-1').smoke().value(), () => {
+  it('集群管理-备份点-查看-1', () => {
     cy.visitPage(testUrl);
 
     cy.tableSearchText(backupFSName);
@@ -103,7 +99,7 @@ describe('备份点', () => {
   });
 
   // fs备份点编辑
-  it(...TestCase('集群管理-备份点-编辑备份点-1').smoke().value(), () => {
+  it('集群管理-备份点-编辑备份点-1', () => {
     cy.visitPage(testUrl);
 
     const description = 'fs-description';
@@ -116,7 +112,7 @@ describe('备份点', () => {
   });
 
   // s3 备份点编辑
-  it(...TestCase('集群管理-备份点-编辑备份点-2').smoke().value(), () => {
+  it('集群管理-备份点-编辑备份点-2', () => {
     const description = 's3-description';
     cy.tableSearchText(backupS3Name);
     cy.checkTableColVal(2, backupS3Name);
@@ -127,7 +123,7 @@ describe('备份点', () => {
   });
 
   // 使用 fs 存储备份
-  it.skip(...TestCase('集群管理-备份点-备份-1').smoke().value(), () => {
+  it('集群管理-备份点-备份-1', () => {
     cy.clickHeaderButton(0);
     cy.inputText('name', backupFSName);
     cy.inputText('backupRootDir', backupFSRootDir);
@@ -158,7 +154,7 @@ describe('备份点', () => {
   });
 
   // 使用 fs 存储恢复
-  it(...TestCase('集群管理-备份点-恢复-2').smoke().value(), () => {
+  it('集群管理-备份点-恢复-2', () => {
     cy.visitPage('cluster');
 
     cy.clickActionInMore({
@@ -172,7 +168,7 @@ describe('备份点', () => {
   });
 
   // 使用 s3 存储备份
-  it.skip(...TestCase('集群管理-备份点-备份-2').smoke().value(), () => {
+  it('集群管理-备份点-备份-2', () => {
     cy.visitPage('/cluster');
     cy.clickActionInMore({
       title: 'Cluster Settings',
@@ -194,7 +190,7 @@ describe('备份点', () => {
   });
 
   // 使用 s3 存储恢复
-  it.skip(...TestCase('集群管理-备份点-恢复-1').smoke().value(), () => {
+  it('集群管理-备份点-恢复-1', () => {
     cy.visitPage('cluster');
 
     cy.clickActionInMore({
@@ -208,7 +204,7 @@ describe('备份点', () => {
   });
 
   // 定时备份-重复执行
-  it(...TestCase('集群管理-定时备份-1').smoke().value(), () => {
+  it('集群管理-定时备份-1', () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -246,7 +242,7 @@ describe('备份点', () => {
   });
 
   // 编辑定时备份
-  it(...TestCase('集群管理-定时备份-3').smoke().value(), () => {
+  it('集群管理-定时备份-3', () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -278,7 +274,7 @@ describe('备份点', () => {
   });
 
   // 禁用/启用定时备份
-  it(...TestCase('集群管理-定时备份-4').smoke().value(), () => {
+  it('集群管理-定时备份-4', () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -311,7 +307,7 @@ describe('备份点', () => {
   });
 
   // 定时备份-仅执行一次
-  it(...TestCase('集群管理-定时备份-2').smoke().value(), () => {
+  it('集群管理-定时备份-2', () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -348,7 +344,7 @@ describe('备份点', () => {
   });
 
   // 删除定时备份
-  it(...TestCase('集群管理-定时备份-5').smoke().value(), () => {
+  it('集群管理-定时备份-5', () => {
     cy.visitPage('/cluster');
     cy.goToDetail(1);
     cy.clickByDetailTabs('Scheduled Backup');
@@ -371,7 +367,7 @@ describe('备份点', () => {
   });
 
   // 删除备份点 fs
-  it.skip(...TestCase('集群管理-备份点-删除-1').smoke().value(), () => {
+  it('集群管理-备份点-删除-1', () => {
     cy.tableSearchText(backupFSName);
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();
@@ -386,7 +382,7 @@ describe('备份点', () => {
   });
 
   // 删除备份点 s3
-  it.skip(...TestCase('集群管理-备份点-删除-2').smoke().value(), () => {
+  it('集群管理-备份点-删除-2', () => {
     cy.tableSearchText(backupS3Name);
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();
