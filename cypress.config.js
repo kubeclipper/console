@@ -25,10 +25,7 @@ module.exports = defineConfig({
     experimentalSessionAndOrigin: true,
     specPattern: [
       'cypress/e2e/pages/login.cy.js',
-      'cypress/e2e/pages/cluster/cluster.cy.js',
-      'cypress/e2e/pages/cluster/backup.cy.js',
-      'cypress/e2e/pages/cluster/detail.cy.js',
-      'cypress/e2e/pages/cluster/upgrade.cy.js',
+      'cypress/e2e/pages/cluster/*.cy.js',
     ],
   },
 });

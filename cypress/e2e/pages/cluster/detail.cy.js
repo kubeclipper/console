@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import getTitle, { TestCase } from '../../../support/common';
+import getTitle from '../../../support/common';
 
 before(() => {
   cy.login();
@@ -28,12 +28,8 @@ describe('集群详情', () => {
     cy.goToDetail(1);
   });
 
-  afterEach(() => {
-    cy.addContext();
-  });
-
   // 查看集群详情
-  it(...TestCase('集群管理-集群详情-详情-1').smoke().value(), () => {
+  it('集群管理-集群详情-详情-1', () => {
     cy.clickByDetailTabs('BaseDetail');
 
     cy.get('.ant-descriptions-view').should('exist');
@@ -42,20 +38,17 @@ describe('集群详情', () => {
   });
 
   // 查看集群存储
-  it.skip(...TestCase('集群管理-集群详情-存储详情-1').smoke().value(), () => {
+  it.only('集群管理-集群详情-存储详情-1', () => {
     cy.clickByDetailTabs('Storage');
 
     cy.get('.ant-tabs-content h3').should('contain', 'nfs-provisioner');
   });
 
   // 查看节点列表
-  it.skip(
-    ...TestCase('集群管理-集群-集群详情-节点列表-1').smoke().value(),
-    () => {}
-  );
+  it.skip('集群管理-集群-集群详情-节点列表-1', () => {});
 
   // 添加节点
-  it(...TestCase('集群管理-集群-集群详情-节点列表-2').smoke().value(), () => {
+  it('集群管理-集群-集群详情-节点列表-2', () => {
     cy.clickByDetailTabs('Nodes List');
 
     cy.get('.ant-table-body')
@@ -79,7 +72,7 @@ describe('集群详情', () => {
   });
 
   // 查看操作日志
-  it(...TestCase('集群管理-集群-集群详情-操作日志-1').smoke().value(), () => {
+  it('集群管理-集群-集群详情-操作日志-1', () => {
     cy.clickByDetailTabs('Operation Log');
 
     cy.clickActionButtonByTitle('ViewLog');
@@ -87,7 +80,7 @@ describe('集群详情', () => {
   });
 
   // 查看集群备份
-  it(...TestCase('集群管理-集群-集群详情-备份-1').smoke().value(), () => {
+  it('集群管理-集群-集群详情-备份-1', () => {
     cy.clickByDetailTabs('BackUp');
 
     cy.clickActionButtonByTitle('Edit');

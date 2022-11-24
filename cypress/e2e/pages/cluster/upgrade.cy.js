@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import getTitle, { TestCase } from '../../../support/common';
+import getTitle from '../../../support/common';
 
 before(() => {
   cy.login();
@@ -28,12 +28,8 @@ describe('升级集群', () => {
     cy.login(testUrl);
   });
 
-  afterEach(() => {
-    cy.addContext();
-  });
-
   // 升级集群
-  it.skip(...TestCase('集群管理-集群-升级集群-1').smoke().value(), () => {
+  it('集群管理-集群-升级集群-1', () => {
     cy.clickActionInMore({
       title: 'Cluster Status',
       subTitle: 'Cluster Upgrade',
