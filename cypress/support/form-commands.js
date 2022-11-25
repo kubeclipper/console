@@ -132,6 +132,7 @@ Cypress.Commands.add('clickConfirmActionSubmitButton', (waitTime) => {
     .eq(1)
     .click()
     .waitFormLoading()
+    .wait(1000)
     .closeNotice();
   if (waitTime) {
     cy.wait(waitTime);
