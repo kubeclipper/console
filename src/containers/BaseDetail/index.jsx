@@ -39,7 +39,11 @@ const Item = observer((props) => {
     gridSpan > 0 ? { gridRow: `auto / span ${gridSpan + BASEPADDING}` } : {};
 
   return (
-    <div className={classnames(styles.item)} style={gridComputed} ref={ref}>
+    <div
+      className={classnames(styles.item, 'detail-card-item')}
+      style={gridComputed}
+      ref={ref}
+    >
       <Card
         key={`card-left-${index}`}
         data={toJS(store.detail)}

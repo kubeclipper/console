@@ -210,13 +210,13 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add('createClusterQuick', () => {
+Cypress.Commands.add('createClusterQuick', (clusterName) => {
   cy.visitPage('/cluster');
 
   cy.clickHeaderButton(0);
 
   const uuid = Cypress._.random(0, 1e6);
-  const name = `e2e.cluster.name${uuid}`;
+  const name = clusterName || `e2e.cluster.name${uuid}`;
 
   // cluster name
   cy.get('[name="name"]').clear().type(name).blur();
@@ -239,4 +239,20 @@ Cypress.Commands.add('checkClusterExist', () => {
   if (Cypress.$('.ant-empty-description').length) {
     cy.createClusterQuick();
   }
+});
+
+Cypress.Commands.add('deleteCluster', (clusterName) => {
+  cy.visitPage('/cluster');
+  cy.tableSearchText(clusterName);
+
+  cy.clickActionInMore({
+    title: 'Cluster Status',
+    subTitle: 'Delete Cluster',
+  });
+
+  cy.clickConfirmActionSubmitButton();
+  // check delete finished
+  cy.get('.ant-table-tbody')
+    .find('.ant-table-row', { timeout: 100000000 })
+    .should('not.exist');
 });

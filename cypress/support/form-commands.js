@@ -105,6 +105,7 @@ Cypress.Commands.add('closeNotice', () => {
     .click();
 });
 
+// modal 框确认按钮
 Cypress.Commands.add(
   'clickModalActionSubmitButton',
   (inTable = true, waitTime) => {
@@ -113,6 +114,7 @@ Cypress.Commands.add(
       .eq(1)
       .click()
       .waitFormLoading()
+      .wait(1000)
       .closeNotice();
     if (inTable) {
       cy.wait(2000).waitTableLoading();
@@ -123,6 +125,7 @@ Cypress.Commands.add(
   }
 );
 
+// confirm 框确认按钮
 Cypress.Commands.add('clickConfirmActionSubmitButton', (waitTime) => {
   cy.get('.ant-modal-confirm-btns')
     .find('button')

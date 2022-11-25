@@ -16,19 +16,28 @@
 import getTitle from './../../../support/common';
 import moment from 'moment';
 
+const uuid = Cypress._.random(0, 1e6);
+const clusterName = `e2e.cluster.name.${uuid}`;
+
 before(() => {
   cy.login();
-  cy.checkClusterExist();
+  cy.createClusterQuick(clusterName);
+});
+
+after(() => {
+  // cy.deleteCluster(clusterName);
 });
 
 describe('备份点', () => {
   const testUrl = '/cluster/backup-point';
 
-  const backupFSName = 'test-fs';
-  const backupFSRootDir = '/root';
+  const _uuid = Cypress._.random(0, 1e6);
+
+  const backupFSName = `fs-${_uuid}`;
+  const backupFSRootDir = '/data/aio-test'; // e2e workflow 中 mkdir 的目录
   const backupFSStorageType = 'FS';
 
-  const backupS3Name = 'test-s3';
+  const backupS3Name = `s3-${_uuid}`;
   const backupS3StorageType = 'S3';
   const backupS3BucketName = 'kubeclipper';
   const backupS3EndPoint = '172.20.163.233:9000';
@@ -50,7 +59,7 @@ describe('备份点', () => {
     cy.inputText('name', backupFSName);
     cy.inputText('backupRootDir', backupFSRootDir);
     cy.formSelect('storageType', backupFSStorageType);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
 
     cy.tableSearchText(backupFSName);
     cy.checkTableColVal(3, 'fs');
@@ -76,7 +85,7 @@ describe('备份点', () => {
     cy.inputText('endpoint', backupS3EndPoint);
     cy.inputText('accessKeyID', backupS3Admin);
     cy.inputText('accessKeySecret', backupS3Password);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
 
     cy.tableSearchText(backupS3Name);
     cy.checkTableColVal(3, 's3');
@@ -168,7 +177,7 @@ describe('备份点', () => {
   });
 
   // 使用 s3 存储备份
-  it('集群管理-备份点-备份-2', () => {
+  it.skip('集群管理-备份点-备份-2', () => {
     cy.visitPage('/cluster');
     cy.clickActionInMore({
       title: 'Cluster Settings',
@@ -190,7 +199,7 @@ describe('备份点', () => {
   });
 
   // 使用 s3 存储恢复
-  it('集群管理-备份点-恢复-1', () => {
+  it.skip('集群管理-备份点-恢复-1', () => {
     cy.visitPage('cluster');
 
     cy.clickActionInMore({
@@ -307,7 +316,7 @@ describe('备份点', () => {
   });
 
   // 定时备份-仅执行一次
-  it('集群管理-定时备份-2', () => {
+  it.skip('集群管理-定时备份-2', () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -344,7 +353,7 @@ describe('备份点', () => {
   });
 
   // 删除定时备份
-  it('集群管理-定时备份-5', () => {
+  it.skip('集群管理-定时备份-5', () => {
     cy.visitPage('/cluster');
     cy.goToDetail(1);
     cy.clickByDetailTabs('Scheduled Backup');

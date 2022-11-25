@@ -49,6 +49,7 @@ jobs:
           echo current branch is ${current_branch}
           curl -sfL https://oss.kubeclipper.io/kcctl.sh | sudo KC_VERSION=${current_branch} KC_REGION=cn bash -
           sudo kcctl deploy --pkg https://oss.kubeclipper.io/release/${release_version}/kc-amd64.tar.gz
+          sudo mkdir /data/aio-test
 
       - name: update console files
         run: |
