@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import getTitle from './../../../support/common';
+import getTitle, { testCase } from '../../../support/common';
 import moment from 'moment';
 
 const uuid = Cypress._.random(0, 1e6);
@@ -28,7 +28,7 @@ after(() => {
   // cy.deleteCluster(clusterName);
 });
 
-describe('备份点', () => {
+describe('备份空间', () => {
   const testUrl = '/cluster/backup-point';
 
   const _uuid = Cypress._.random(0, 1e6);
@@ -52,8 +52,12 @@ describe('备份点', () => {
     cy.login(testUrl);
   });
 
-  // 添加fs备份点
-  it('集群管理-备份点-创建-1', () => {
+  afterEach(() => {
+    cy.addContext();
+  });
+
+  // 添加fs备份空间
+  it(...testCase('集群管理-备份空间-创建-1').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
     cy.inputText('name', backupFSName);
@@ -73,8 +77,8 @@ describe('备份点', () => {
     cy.formSelect('backupPoint', backupFSName);
   });
 
-  // 添加s3备份点
-  it('集群管理-备份点-创建-2', () => {
+  // 添加s3备份空间
+  it(...testCase('集群管理-备份空间-创建-2').smoke().value(), () => {
     cy.visitPage(testUrl);
 
     cy.clickHeaderButton(0);
@@ -99,16 +103,16 @@ describe('备份点', () => {
     cy.formSelect('backupPoint', backupS3Name);
   });
 
-  // 备份点查看
-  it('集群管理-备份点-查看-1', () => {
+  // 备份空间查看
+  it(...testCase('集群管理-备份空间-查看-1').smoke().value(), () => {
     cy.visitPage(testUrl);
 
     cy.tableSearchText(backupFSName);
     cy.checkTableColVal(2, backupFSName);
   });
 
-  // fs备份点编辑
-  it('集群管理-备份点-编辑备份点-1', () => {
+  // fs备份空间编辑
+  it(...testCase('集群管理-备份空间-编辑备份空间-1').smoke().value(), () => {
     cy.visitPage(testUrl);
 
     const description = 'fs-description';
@@ -120,8 +124,8 @@ describe('备份点', () => {
     cy.checkTableColVal(4, description);
   });
 
-  // s3 备份点编辑
-  it('集群管理-备份点-编辑备份点-2', () => {
+  // s3 备份空间编辑
+  it(...testCase('集群管理-备份空间-编辑备份空间-2').smoke().value(), () => {
     const description = 's3-description';
     cy.tableSearchText(backupS3Name);
     cy.checkTableColVal(2, backupS3Name);
@@ -132,7 +136,7 @@ describe('备份点', () => {
   });
 
   // 使用 fs 存储备份
-  it('集群管理-备份点-备份-1', () => {
+  it(...testCase('集群管理-备份空间-备份-1').smoke().value(), () => {
     cy.clickHeaderButton(0);
     cy.inputText('name', backupFSName);
     cy.inputText('backupRootDir', backupFSRootDir);
@@ -163,7 +167,7 @@ describe('备份点', () => {
   });
 
   // 使用 fs 存储恢复
-  it('集群管理-备份点-恢复-2', () => {
+  it(...testCase('集群管理-备份空间-恢复-2').smoke().value(), () => {
     cy.visitPage('cluster');
 
     cy.clickActionInMore({
@@ -177,7 +181,7 @@ describe('备份点', () => {
   });
 
   // 使用 s3 存储备份
-  it.skip('集群管理-备份点-备份-2', () => {
+  it.skip(...testCase('集群管理-备份空间-备份-2').smoke().value(), () => {
     cy.visitPage('/cluster');
     cy.clickActionInMore({
       title: 'Cluster Settings',
@@ -199,7 +203,7 @@ describe('备份点', () => {
   });
 
   // 使用 s3 存储恢复
-  it.skip('集群管理-备份点-恢复-1', () => {
+  it.skip(...testCase('集群管理-备份空间-恢复-1').smoke().value(), () => {
     cy.visitPage('cluster');
 
     cy.clickActionInMore({
@@ -213,7 +217,7 @@ describe('备份点', () => {
   });
 
   // 定时备份-重复执行
-  it('集群管理-定时备份-1', () => {
+  it(...testCase('集群管理-定时备份-1').smoke().value(), () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -251,7 +255,7 @@ describe('备份点', () => {
   });
 
   // 编辑定时备份
-  it('集群管理-定时备份-3', () => {
+  it(...testCase('集群管理-定时备份-3').smoke().value(), () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -283,7 +287,7 @@ describe('备份点', () => {
   });
 
   // 禁用/启用定时备份
-  it('集群管理-定时备份-4', () => {
+  it(...testCase('集群管理-定时备份-4').smoke().value(), () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -316,7 +320,7 @@ describe('备份点', () => {
   });
 
   // 定时备份-仅执行一次
-  it.skip('集群管理-定时备份-2', () => {
+  it.skip(...testCase('集群管理-定时备份-2').smoke().value(), () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -353,7 +357,7 @@ describe('备份点', () => {
   });
 
   // 删除定时备份
-  it.skip('集群管理-定时备份-5', () => {
+  it.skip(...testCase('集群管理-定时备份-5').smoke().value(), () => {
     cy.visitPage('/cluster');
     cy.goToDetail(1);
     cy.clickByDetailTabs('Scheduled Backup');
@@ -375,8 +379,8 @@ describe('备份点', () => {
     });
   });
 
-  // 删除备份点 fs
-  it('集群管理-备份点-删除-1', () => {
+  // 删除备份空间 fs
+  it(...testCase('集群管理-备份空间-删除-1').smoke().value(), () => {
     cy.tableSearchText(backupFSName);
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();
@@ -390,8 +394,8 @@ describe('备份点', () => {
     cy.checkFormSelectorNotExist('backupPoint', backupFSName);
   });
 
-  // 删除备份点 s3
-  it('集群管理-备份点-删除-2', () => {
+  // 删除备份空间 s3
+  it(...testCase('集群管理-备份空间-删除-2').smoke().value(), () => {
     cy.tableSearchText(backupS3Name);
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();

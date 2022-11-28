@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import getTitle from '../../../support/common';
+import getTitle, { testCase } from '../../../support/common';
 
 describe('集群', () => {
   const testUrl = '/cluster';
@@ -29,8 +29,12 @@ describe('集群', () => {
     cy.login(testUrl);
   });
 
+  afterEach(() => {
+    cy.addContext();
+  });
+
   // 创建单机集群
-  it('集群管理-创建-1', () => {
+  it(...testCase('集群管理-创建-1').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
     cy.wait(1000).url().should('include', 'cluster/create');
@@ -52,7 +56,7 @@ describe('集群', () => {
   });
 
   // 创建高可用集群
-  it.skip('集群管理-创建-2', () => {
+  it.skip(...testCase('集群管理-创建-2').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
     cy.wait(1000).url().should('include', 'cluster/create');
@@ -76,13 +80,13 @@ describe('集群', () => {
   });
 
   // 查看集群
-  it('集群管理-查看-1', () => {
+  it(...testCase('集群管理-查看-1').smoke().value(), () => {
     cy.tableSearchText(name).goToDetail(1);
     cy.checkDetailName(name);
   });
 
   // 编辑集群
-  it('集群管理-集群-编辑集群-1', () => {
+  it(...testCase('集群管理-集群-编辑集群-1').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Cluster Settings',
@@ -97,7 +101,7 @@ describe('集群', () => {
   });
 
   // 添加节点
-  it.skip('集群管理-集群-添加节点-1', () => {
+  it.skip(...testCase('集群管理-集群-添加节点-1').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
@@ -109,7 +113,7 @@ describe('集群', () => {
   });
 
   // 移除节点
-  it.skip('集群管理-集群-移除节点-1', () => {
+  it.skip(...testCase('集群管理-集群-移除节点-1').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
@@ -121,7 +125,7 @@ describe('集群', () => {
   });
 
   // 查看集群详情
-  it('集群管理-集群详情-详情-1', () => {
+  it(...testCase('集群管理-集群详情-详情-1').smoke().value(), () => {
     cy.goToDetail(1);
     cy.clickByDetailTabs('BaseDetail');
 
@@ -131,7 +135,7 @@ describe('集群', () => {
   });
 
   // 查看集群存储
-  it.skip('集群管理-集群详情-存储详情-1', () => {
+  it.skip(...testCase('集群管理-集群详情-存储详情-1').smoke().value(), () => {
     cy.goToDetail(1);
     cy.clickByDetailTabs('Storage');
 
@@ -139,35 +143,41 @@ describe('集群', () => {
   });
 
   // 查看节点列表
-  it.skip('集群管理-集群-集群详情-节点列表-1', () => {});
+  it.skip(
+    ...testCase('集群管理-集群-集群详情-节点列表-1').smoke().value(),
+    () => {}
+  );
 
   // 添加节点
-  it.skip('集群管理-集群-集群详情-节点列表-2', () => {
-    cy.goToDetail(1);
-    cy.clickByDetailTabs('Nodes List');
+  it.skip(
+    ...testCase('集群管理-集群-集群详情-节点列表-2').smoke().value(),
+    () => {
+      cy.goToDetail(1);
+      cy.clickByDetailTabs('Nodes List');
 
-    cy.get('.ant-table-body')
-      .find('.ant-table-row')
-      .its('length')
-      .as('rowLength');
+      cy.get('.ant-table-body')
+        .find('.ant-table-row')
+        .its('length')
+        .as('rowLength');
 
-    cy.clickHeaderButton(0, 200);
-    cy.formMultiTransfer('nodes', 0);
-    cy.clickConfirm();
+      cy.clickHeaderButton(0, 200);
+      cy.formMultiTransfer('nodes', 0);
+      cy.clickConfirm();
 
-    cy.log('@rowLength');
+      cy.log('@rowLength');
 
-    cy.get('@rowLength').then((rowLength) => {
-      cy.log(rowLength);
-      cy.get('.ant-table-body .ant-table-row').should(
-        'have.lengthOf.gt',
-        rowLength
-      );
-    });
-  });
+      cy.get('@rowLength').then((rowLength) => {
+        cy.log(rowLength);
+        cy.get('.ant-table-body .ant-table-row').should(
+          'have.lengthOf.gt',
+          rowLength
+        );
+      });
+    }
+  );
 
   // 查看操作日志
-  it('集群管理-集群-集群详情-操作日志-1', () => {
+  it(...testCase('集群管理-集群-集群详情-操作日志-1').smoke().value(), () => {
     cy.goToDetail(1);
     cy.clickByDetailTabs('Operation Log');
 
@@ -176,7 +186,7 @@ describe('集群', () => {
   });
 
   // 查看集群备份
-  it.skip('集群管理-集群-集群详情-备份-1', () => {
+  it.skip(...testCase('集群管理-集群-集群详情-备份-1').smoke().value(), () => {
     cy.goToDetail(1);
     cy.clickByDetailTabs('BackUp');
 
@@ -199,7 +209,7 @@ describe('集群', () => {
   });
 
   // 升级集群
-  it.skip('集群管理-集群-升级集群-1', () => {
+  it.skip(...testCase('集群管理-集群-升级集群-1').smoke().value(), () => {
     cy.clickActionInMore({
       title: 'Cluster Status',
       subTitle: 'Cluster Upgrade',
@@ -220,7 +230,7 @@ describe('集群', () => {
   });
 
   // 删除集群
-  it('集群管理-集群-删除集群-1', () => {
+  it(...testCase('集群管理-集群-删除集群-1').smoke().value(), () => {
     cy.deleteCluster(name);
   });
 });
