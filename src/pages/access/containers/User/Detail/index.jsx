@@ -15,9 +15,9 @@
  */
 import React from 'react';
 import BaseTabDetail from 'containers/TabDetail';
-import LoginLog from './LoginLog/index';
 import { useRootStore } from 'stores';
 import actionConfigs from '../actions';
+import LoginLog from './LoginLog/index';
 
 export default function UserDetail(props) {
   const { userStore: store } = useRootStore();

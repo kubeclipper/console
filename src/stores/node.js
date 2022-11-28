@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import BaseStore from './base';
 import { APIVERSION } from 'utils/constants';
+import BaseStore from './base';
 
 export default class NodeStore extends BaseStore {
   module = 'nodes';

@@ -15,12 +15,12 @@
  */
 
 import React from 'react';
-import { get, isEmpty } from 'lodash';
 import { Checkbox, Tag } from 'antd';
 import Notify from 'components/Notify';
 import Text from 'components/Text';
-
+import { get, isEmpty } from 'lodash';
 import styles from './index.less';
+
 
 const CheckItem = (props) => {
   const { roleTemplates, roleTemplatesMap, data, onChange } = props;

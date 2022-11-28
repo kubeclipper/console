@@ -16,8 +16,8 @@
 
 import React from 'react';
 import { Button } from 'antd';
-import styles from './index.less';
 import classnames from 'classnames';
+import styles from './index.less';
 
 export default function Footer(props) {
   const {

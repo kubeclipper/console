@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 import { ConfirmAction } from 'containers/Action';
-import { rootStore } from 'stores';
-import { isMaster } from 'resources/cluster';
 import { isArray } from 'lodash';
+import { isMaster } from 'resources/cluster';
+import { rootStore } from 'stores';
 
 const { clusterStore } = rootStore;
 

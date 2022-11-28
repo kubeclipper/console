@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Row, Col, Button } from 'antd';
-import List from './List';
 import classnames from 'classnames';
-import styles from './index.less';
 import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
+import List from './List';
+import styles from './index.less';
 
 export default class Index extends Component {
   static propTypes = {

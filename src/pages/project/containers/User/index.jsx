@@ -15,9 +15,9 @@
  */
 import React from 'react';
 import BaseList from 'containers/List';
-import { useRootStore } from 'stores';
 import actionConfigs from 'pages/access/containers/Project/Detail/ProjectUser/actions';
 import { projectMemberColumns } from 'resources/project';
+import { useRootStore } from 'stores';
 
 export default function User(props) {
   const { projectUserStore: store } = useRootStore();

@@ -18,8 +18,8 @@ import React from 'react';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import { Collapse } from 'antd';
 import classnames from 'classnames';
-
 import styles from './index.less';
+
 
 const { Panel } = Collapse;
 

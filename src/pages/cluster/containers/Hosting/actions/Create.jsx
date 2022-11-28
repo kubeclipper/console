@@ -14,16 +14,16 @@
  *  limitations under the License.
  */
 
-import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { rootStore } from 'stores';
-import FORM_TEMPLATES from 'utils/form.templates';
 import { merge } from 'lodash';
-import { safeBtoa } from 'utils/base64';
 import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { rootStore } from 'stores';
+import { safeBtoa } from 'utils/base64';
+import FORM_TEMPLATES from 'utils/form.templates';
+import styles from './index.less';
 
 // eslint-disable-next-line no-unused-vars
-import styles from './index.less';
 
 class Create extends ModalAction {
   static id = 'add-provider';

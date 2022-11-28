@@ -20,21 +20,21 @@ import React, {
   useMemo,
   useContext,
 } from 'react';
-import { useParams } from 'react-router-dom';
-import classnames from 'classnames';
-import { isEmpty, get } from 'lodash';
-import { renderFilterMap } from 'utils';
-import { Button, Divider, Typography, Skeleton } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
-import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
-import NotFound from 'components/NotFound';
+import { Button, Divider, Typography, Skeleton } from 'antd';
+import classnames from 'classnames';
 import Infos from 'components/Infos';
-import styles from './index.less';
-import { useRootStore } from 'stores';
+import NotFound from 'components/NotFound';
 import ItemAction from 'components/Tables/Base/ItemAction';
-import Tab from 'src/containers/Tab/TrendsTab';
 import { useInterval, useAdminPage } from 'hooks';
+import { isEmpty, get } from 'lodash';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { useParams } from 'react-router-dom';
+import Tab from 'src/containers/Tab/TrendsTab';
+import { useRootStore } from 'stores';
+import { renderFilterMap } from 'utils';
+import styles from './index.less';
 
 const { Paragraph } = Typography;
 export const TabDetailContext = React.createContext();

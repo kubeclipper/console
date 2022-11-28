@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React, { useEffect } from 'react';
-import { useRootStore } from 'stores';
-import { useLocation, useHistory, useParams } from 'react-router-dom';
-import { parse } from 'qs';
-import { setLocalStorageItem } from 'utils/localStorage';
 import Notify from 'components/Notify';
+import { parse } from 'qs';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
+import { useRootStore } from 'stores';
 import { defaultRoute } from 'utils';
+import { setLocalStorageItem } from 'utils/localStorage';
 
 export default function Oauth2Redirect() {
   const rootStore = useRootStore();

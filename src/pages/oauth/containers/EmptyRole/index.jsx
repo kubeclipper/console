@@ -15,12 +15,12 @@
  */
 import React, { useLayoutEffect } from 'react';
 import { Layout, Empty } from 'antd';
-import { useRootStore } from 'stores';
-import { getLocalStorageItem } from 'utils/localStorage';
 import { GlobalHeader } from 'components/Layout';
-import styles from './index.less';
-import { defaultRoute } from 'utils';
 import { useHistory } from 'react-router-dom';
+import { useRootStore } from 'stores';
+import { defaultRoute } from 'utils';
+import { getLocalStorageItem } from 'utils/localStorage';
+import styles from './index.less';
 
 const { Header, Content } = Layout;
 

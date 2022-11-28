@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import { ConfirmAction } from 'containers/Action';
-import { rootStore } from 'stores';
 import { isArray, isNumber } from 'lodash';
+import { rootStore } from 'stores';
 
 export default class DeleteAction extends ConfirmAction {
   get id() {

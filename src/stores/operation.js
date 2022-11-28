@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import BaseStore from './base';
 import { makeObservable, observable } from 'mobx';
+import BaseStore from './base';
 
 class OperationStore extends BaseStore {
   operations = [];

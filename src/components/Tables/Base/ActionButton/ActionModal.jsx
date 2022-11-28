@@ -17,8 +17,8 @@ import React, { useRef } from 'react';
 import { Modal, Button } from 'antd';
 // import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import styles from './index.less';
 import ErrorBoundary from 'components/ErrorBoundary';
+import styles from './index.less';
 
 const ActionModal = (props) => {
   const {

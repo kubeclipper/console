@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 /* eslint-disable import/no-unresolved */
-import BlankLayout from 'layouts/Blank';
-import E404 from 'components/E404';
 import { lazy } from 'react';
+import E404 from 'components/E404';
+import BlankLayout from 'layouts/Blank';
 import { homePageRoute } from 'utils';
 
 const Oauth = lazy(() =>

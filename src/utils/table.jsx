@@ -15,8 +15,8 @@
  */
 
 import React from 'react';
-import { isArray, get, isString } from 'lodash';
 import Status from 'components/Status';
+import { isArray, get, isString } from 'lodash';
 import { renderFilterMap } from 'utils/index';
 
 export const getDefaultSorter = (dataIndex) => (a, b) => {

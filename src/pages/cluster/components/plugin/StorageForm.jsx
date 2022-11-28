@@ -15,16 +15,16 @@
  */
 
 import React, { useEffect } from 'react';
-import { observer } from 'mobx-react';
+import { MinusCircleFilled } from '@ant-design/icons';
+import { Divider, Button } from 'antd';
 import Tabs from 'components/Tabs';
 import { cloneDeep, uniq, set, isMatch, isEmpty, orderBy } from 'lodash';
-import RenderForm from './RenderForm';
-import { Divider, Button } from 'antd';
-import { Context } from './Context';
-import { MinusCircleFilled } from '@ant-design/icons';
+import { observer } from 'mobx-react';
 import { useRootStore } from 'stores';
-
+import { Context } from './Context';
+import RenderForm from './RenderForm';
 import styles from './index.less';
+
 
 const StorageForm = (props) => {
   const {

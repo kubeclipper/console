@@ -15,12 +15,11 @@
  */
 
 import React from 'react';
-import { useVersionInfo } from 'hooks';
-
-import { Button } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
-
+import { Button } from 'antd';
+import { useVersionInfo } from 'hooks';
 import styles from './index.less';
+
 
 function Tools() {
   const [handleVersionClick, Version] = useVersionInfo();

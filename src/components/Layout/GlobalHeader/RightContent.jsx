@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import Avatar from './AvatarDropdown';
-import { Button, Col, Row } from 'antd';
 import { SwapOutlined } from '@ant-design/icons';
+import { Button, Col, Row } from 'antd';
 import { useRootStore } from 'stores';
+import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
 const GlobalHeaderRight = ({ isAdminPage }) => {

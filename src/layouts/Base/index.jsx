@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React, { useEffect, useReducer } from 'react';
-import { observer } from 'mobx-react';
-import RightContext from './Right/index';
-import LeftContext from './Left/index';
-import { useRootStore } from 'stores';
 import Tools from 'components/Tools';
-
+import { observer } from 'mobx-react';
+import { useRootStore } from 'stores';
+import LeftContext from './Left/index';
+import RightContext from './Right/index';
 import styles from './index.less';
+
 
 export const BaseContext = React.createContext();
 

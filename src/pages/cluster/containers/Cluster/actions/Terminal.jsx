@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
+import { CloseOutlined } from '@ant-design/icons';
+import { Modal, Button } from 'antd';
 import { observer } from 'mobx-react';
 import ContainerTerminalModal from 'pages/cluster/components/TerminalCtl';
-import { Modal, Button } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
 import { checkExpired, isDisableByProviderType } from 'utils';
 
 @observer

@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { set } from 'lodash';
+import { observer } from 'mobx-react';
 import { rootStore } from 'stores';
 
 @observer

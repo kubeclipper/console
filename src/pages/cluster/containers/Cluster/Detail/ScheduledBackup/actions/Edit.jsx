@@ -13,13 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { ModalAction } from 'containers/Action';
 import { observer } from 'mobx-react';
 import moment from 'moment';
-import { ModalAction } from 'containers/Action';
-import { rootStore } from 'stores';
-import { formatCron } from 'utils';
 import { circleDayofFirstLevel, formatFormTemplates } from 'resources/backup';
 import * as dateOption from 'resources/date';
+import { rootStore } from 'stores';
+import { formatCron } from 'utils';
 
 const { cornBackupStore: store, clusterStore } = rootStore;
 

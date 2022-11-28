@@ -14,14 +14,14 @@
  *  limitations under the License.
  */
 
-import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
-import { rootStore } from 'stores';
 import { merge } from 'lodash';
+import { observer } from 'mobx-react';
+import { rootStore } from 'stores';
 import { safeBtoa, safeAtob } from 'utils/base64';
+import styles from './index.less';
 
 // eslint-disable-next-line no-unused-vars
-import styles from './index.less';
 
 class Edit extends ModalAction {
   static id = 'edit-provider';

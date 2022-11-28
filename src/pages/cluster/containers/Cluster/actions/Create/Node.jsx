@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
+import { message } from 'antd';
 import BaseForm from 'components/Form';
+import LabelInput from 'components/FormItem/LabelInput';
+import TaintInput from 'components/FormItem/TaintInput';
+import { isEmpty, flatten, isNumber, uniq, get } from 'lodash';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import SelectNodes from 'pages/cluster/components/SelectNodes';
 import { rootStore } from 'stores';
 import { joinSelector } from 'utils';
-import { isEmpty, flatten, isNumber, uniq, get } from 'lodash';
-import TaintInput from 'components/FormItem/TaintInput';
-import LabelInput from 'components/FormItem/LabelInput';
-import { message } from 'antd';
 import { subdomain } from 'utils/regex';
-import SelectNodes from 'pages/cluster/components/SelectNodes';
 import { nameMessage } from 'utils/validate';
 
 const { nodeStore, regionStore } = rootStore;

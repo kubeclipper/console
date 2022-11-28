@@ -15,8 +15,8 @@
  */
 import React, { useState } from 'react';
 import { Radio } from 'antd';
-import PropTypes from 'prop-types';
 import { useDidUpdateEffect } from 'hooks';
+import PropTypes from 'prop-types';
 
 export default function Tab(props) {
   const { tabs, defaultTabValue, onChange, onTabChange, value } = props;

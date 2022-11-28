@@ -14,8 +14,7 @@
  *  limitations under the License.
  */
 import React from 'react';
-import PropTypes from 'prop-types';
-import { isEmpty } from 'lodash';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import {
   Form,
   Input,
@@ -25,34 +24,35 @@ import {
   DatePicker,
   TimePicker,
 } from 'antd';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import Select from './Select';
-import Label from './Label';
-import SelectTable from './SelectTable';
-import More from './More';
+import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
 import ArrayInput from './ArrayInput';
-import IpInput from './IpInput';
-import Radio from './Radio';
+import Checkbox from './Checkbox';
+import CheckboxGroup from './CheckboxGroup';
+import DNSRecord from './DNSRecord';
 import Descriptions from './Descriptions';
+import Divider from './Divider';
+import IPGroup from './IPGroup';
+import IpInput from './IpInput';
+import Label from './Label';
+import LabelInput from './LabelInput';
+import Metadata from './Metadata';
+import More from './More';
 import NameInput from './NameInput';
 import PortRange from './PortRange';
+import Radio from './Radio';
+import Select from './Select';
+import SelectCycle from './SelectCycle';
+import SelectForValue from './SelectForValue';
+import SelectTable from './SelectTable';
+import SelectWithInput from './SelectWithInput';
 import SliderInput from './SliderInput';
 import Switch from './Switch';
-import Checkbox from './Checkbox';
-import Transfer from './Transfer';
-import CheckboxGroup from './CheckboxGroup';
 import Tab from './Tab';
-import Metadata from './Metadata';
-import TaintInput from './TaintInput';
-import LabelInput from './LabelInput';
 import Tags from './Tags';
-import SelectWithInput from './SelectWithInput';
-import SelectCycle from './SelectCycle';
-import Divider from './Divider';
-import DNSRecord from './DNSRecord';
-import SelectForValue from './SelectForValue';
+import TaintInput from './TaintInput';
+import Transfer from './Transfer';
 import YamlInput from './YamlInput';
-import IPGroup from './IPGroup';
 
 export const type2component = {
   label: Label,

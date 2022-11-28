@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import { ConfirmAction } from 'containers/Action';
-import { rootStore } from 'stores';
 import { isArray } from 'lodash';
+import { rootStore } from 'stores';
 
 const { roleStore, userStore } = rootStore;
 export default class DeleteAction extends ConfirmAction {

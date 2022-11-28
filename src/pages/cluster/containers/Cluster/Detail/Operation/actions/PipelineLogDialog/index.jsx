@@ -15,17 +15,17 @@
  */
 
 import React from 'react';
-import { reaction, toJS } from 'mobx';
 import { ViewAction } from 'containers/Action';
+import { findLastIndex, findLast } from 'lodash';
+import { reaction, toJS } from 'mobx';
 import { rootStore } from 'stores';
 import WebsocketStore from 'stores/websocket';
 import { getToken } from 'utils/localStorage';
 import ObjectMapper from 'utils/object.mapper';
-import { findLastIndex, findLast } from 'lodash';
-
-import RightLogContent from './RightLogContent';
 import LeftSteps from './LeftSteps';
+import RightLogContent from './RightLogContent';
 import styles from './index.less';
+
 
 export default class PipelineLog extends ViewAction {
   static id = 'viewlog';

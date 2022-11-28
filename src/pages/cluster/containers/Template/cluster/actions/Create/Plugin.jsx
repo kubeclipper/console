@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { observer } from 'mobx-react';
 import BaseForm from 'components/Form';
+import { observer } from 'mobx-react';
 import PluginForm from 'pages/cluster/components/plugin/PluginForm';
 import { rootStore } from 'stores';
 

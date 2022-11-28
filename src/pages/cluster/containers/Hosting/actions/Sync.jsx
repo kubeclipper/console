@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { ConfirmAction } from 'containers/Action';
 import React from 'react';
+import { ConfirmAction } from 'containers/Action';
 import { rootStore } from 'stores';
 
 const { cloudProviderStore } = rootStore;

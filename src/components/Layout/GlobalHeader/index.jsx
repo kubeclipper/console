@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import ProjectDropdown from './ProjectDropdown';
 import { useLocation } from 'react-router-dom';
-import RightContent from './RightContent';
 import { isAdminPage } from 'utils';
+import ProjectDropdown from './ProjectDropdown';
+import RightContent from './RightContent';
 import styles from './index.less';
 
 export const GlobalHeader = (props) => {

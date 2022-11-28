@@ -14,20 +14,20 @@
  *  limitations under the License.
  */
 import React from 'react';
-import TabDetail from 'containers/TabDetail';
-import { useRootStore } from 'stores';
-import { clusterStatus, transitionStatus } from 'resources/cluster';
-import { Tooltip } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
+import TabDetail from 'containers/TabDetail';
 import { isEmpty } from 'lodash';
+import { clusterStatus, transitionStatus } from 'resources/cluster';
+import { useRootStore } from 'stores';
+import actionConfigs from '../actions';
+import BackUp from './Backup';
 import BaseDetail from './BaseDetail';
-import Storage from './Storage';
-import Plugins from './Plugins';
 import NodesList from './NodesList';
 import Operation from './Operation';
-import BackUp from './Backup';
+import Plugins from './Plugins';
 import ScheduledBackup from './ScheduledBackup';
-import actionConfigs from '../actions';
+import Storage from './Storage';
 
 const StatusTitle = () => (
   <span>

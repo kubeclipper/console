@@ -13,12 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { set } from 'lodash';
+import { observer } from 'mobx-react';
 import { rootStore } from 'stores';
-import FORM_TEMPLATES from 'utils/form.templates';
 import { getOptionsByListData } from 'utils';
+import FORM_TEMPLATES from 'utils/form.templates';
 
 @observer
 class Create extends ModalAction {

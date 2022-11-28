@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { Descriptions, Button } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
+import { Descriptions, Button } from 'antd';
 import { isArray, isUndefined, isBoolean } from 'lodash';
 import { generateId } from 'utils';
 import styles from './index.less';

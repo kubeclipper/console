@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { useRootStore } from 'stores';
 import Tab from 'containers/Tab';
+import { useQuery } from 'hooks';
+import { observer } from 'mobx-react';
+import { useRootStore } from 'stores';
 import ClusterTemplate from './cluster';
 import PluginTemplate from './plugin';
-import { observer } from 'mobx-react';
-import { useQuery } from 'hooks';
 
 const TemplateManagement = () => {
   const { templatesStore, components, componentsLoading } = useRootStore();

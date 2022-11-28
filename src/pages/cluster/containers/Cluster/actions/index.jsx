@@ -13,25 +13,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import Delete from './Delete';
-import LinkLog from './LinkLog';
-import Create from './Create';
-import Backup from './Backup';
-import Restore from './Restore';
-import Edit from './Edit';
-import Upgrade from './Upgrade';
-import Reset from './Reset';
-import LinkAddStorage from './LinkAddStorage';
-import LinkAddPlugin from './LinkAddPlugin';
-import SaveAsTemplate from './SaveAsTemplate';
-import Terminal from './Terminal';
-import ScheduledBackup from './ScheduledBackup';
-import UpdateLicense from './UpdateLicense';
-import KubeConfig from './KubeConfig';
 import AddNodes from '../Detail/NodesList/actions/Add';
-import RemoveNodes from './RemoveNodes';
-import Registry from './Registry';
 import AssignProject from './AssignProject';
+import Backup from './Backup';
+import Create from './Create';
+import Delete from './Delete';
+import Edit from './Edit';
+import KubeConfig from './KubeConfig';
+import LinkAddPlugin from './LinkAddPlugin';
+import LinkAddStorage from './LinkAddStorage';
+import LinkLog from './LinkLog';
+import Registry from './Registry';
+import RemoveNodes from './RemoveNodes';
+import Reset from './Reset';
+import Restore from './Restore';
+import SaveAsTemplate from './SaveAsTemplate';
+import ScheduledBackup from './ScheduledBackup';
+import Terminal from './Terminal';
+import UpdateLicense from './UpdateLicense';
+import Upgrade from './Upgrade';
 
 const actionConfigs = {
   rowActions: {

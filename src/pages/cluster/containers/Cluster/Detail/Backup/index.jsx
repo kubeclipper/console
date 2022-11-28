@@ -15,10 +15,10 @@
  */
 import React from 'react';
 import BaseList from 'containers/List';
-import actionConfigs from './actions';
+import { useParams } from 'react-router-dom';
 import { backupTableProps } from 'resources/backup';
 import { useRootStore } from 'stores';
-import { useParams } from 'react-router-dom';
+import actionConfigs from './actions';
 
 function BackupList() {
   const { backUpStore, clusterStore } = useRootStore();

@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { isString } from 'lodash';
 import { Address4, Address6 } from 'ip-address';
 import yaml from 'js-yaml/dist/js-yaml';
+import { isString } from 'lodash';
 
 // eslint-disable-next-line no-unused-vars
 const ip =

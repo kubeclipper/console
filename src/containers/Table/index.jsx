@@ -15,18 +15,17 @@
  */
 
 import React, { useMemo, useEffect, useRef, useCallback } from 'react';
+import { Typography } from 'antd';
+import classNames from 'classnames';
+import ItemAction from 'components/Tables/Base/ItemAction';
+import { useFetchData, useMountMergeState } from 'hooks';
+import { get, isEmpty } from 'lodash';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { useRouteMatch } from 'react-router-dom';
-
-import { Typography } from 'antd';
-import classNames from 'classnames';
-import { useFetchData, useMountMergeState } from 'hooks';
-import { get, isEmpty } from 'lodash';
-import ItemAction from 'components/Tables/Base/ItemAction';
-
 import TableHeader from './TableHeader';
 import TableRender from './TableRender';
+import styles from './index.less';
 import {
   checkIsStatusColumn,
   getTipRender,
@@ -34,7 +33,7 @@ import {
   getRender,
   hasItemActions,
 } from './utils';
-import styles from './index.less';
+
 
 /**
  * ProTable

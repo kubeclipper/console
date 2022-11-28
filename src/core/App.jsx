@@ -14,17 +14,16 @@
  *  limitations under the License.
  */
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Router } from 'react-router';
-import { renderRoutes } from 'utils/router.config';
 import { Provider } from 'mobx-react';
-import 'styles/main.less';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { hot } from 'react-hot-loader/root';
+import { Router } from 'react-router';
 import { RootStoreProvider } from 'stores';
-
-import routes from './routes';
+import { renderRoutes } from 'utils/router.config';
+import 'styles/main.less';
 import i18n from './i18n';
+import routes from './routes';
 
 function App({ rootStore, history }) {
   const [initDone, setInitDone] = useState(false);

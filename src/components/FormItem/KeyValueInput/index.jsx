@@ -16,8 +16,8 @@
 
 import React, { useState } from 'react';
 import { Input, Row, Col } from 'antd';
-import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 
 export default function KeyValueInput(props) {
   const { keyReadonly, valueReadonly, onChange, value } = props;

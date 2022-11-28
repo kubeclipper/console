@@ -16,8 +16,8 @@
 import React from 'react';
 import BaseList from 'containers/List';
 import actionConfigs from 'pages/access/containers/Project/Detail/ProjectRole/actions';
-import { useRootStore } from 'stores';
 import { projectRoleColumns } from 'resources/project';
+import { useRootStore } from 'stores';
 
 export default function Role(props) {
   const { projectRoleStore } = useRootStore();

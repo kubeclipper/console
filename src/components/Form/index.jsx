@@ -14,16 +14,15 @@
  *  limitations under the License.
  */
 import React, { forwardRef } from 'react';
-import { isFunction, has, isObject, isEmpty, isArray } from 'lodash';
-import Notify from 'components/Notify';
-import { Row, Col, Form, Button, Spin, Card, Alert } from 'antd';
-import FormItem from 'components/FormItem';
-import classnames from 'classnames';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { Row, Col, Form, Button, Spin, Card, Alert } from 'antd';
+import classnames from 'classnames';
+import FormItem from 'components/FormItem';
+import Notify from 'components/Notify';
+import { isFunction, has, isObject, isEmpty, isArray } from 'lodash';
 import PropTypes from 'prop-types';
-import FORM_TEMPLATES from 'utils/form.templates';
 import { isAdminPage } from 'utils';
-
+import FORM_TEMPLATES from 'utils/form.templates';
 import styles from './index.less';
 
 export const Forms = forwardRef((props, ref) => {

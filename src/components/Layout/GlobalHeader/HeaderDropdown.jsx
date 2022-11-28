@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { Dropdown } from 'antd';
 import React from 'react';
+import { Dropdown } from 'antd';
 import classNames from 'classnames';
 
 const HeaderDropdown = ({ overlayClassName: cls, ...restProps }) => (

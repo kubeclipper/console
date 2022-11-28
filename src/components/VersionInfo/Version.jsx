@@ -15,9 +15,9 @@
  */
 
 import React from 'react';
-import styles from './index.less';
 import title from 'src/asset/image/title.png';
 import { useRootStore } from 'stores';
+import styles from './index.less';
 
 function Version() {
   const { licenseStore: store } = useRootStore();

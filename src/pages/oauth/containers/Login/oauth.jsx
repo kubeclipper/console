@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React, { useEffect, useState } from 'react';
+import { LoginOutlined } from '@ant-design/icons';
 import { Button, Divider } from 'antd';
 import { useRootStore } from 'stores';
-import styles from './index.less';
-import { LoginOutlined } from '@ant-design/icons';
 import { toQueryString } from 'utils/request';
+import styles from './index.less';
 
 export default function OAuth() {
   const rootStore = useRootStore();

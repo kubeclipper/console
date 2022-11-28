@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { observer } from 'mobx-react';
-import { ModalAction } from 'containers/Action';
-import { rootStore } from 'stores';
 import { Select } from 'antd';
+import { ModalAction } from 'containers/Action';
+import { observer } from 'mobx-react';
+import { rootStore } from 'stores';
 import PojectUserStore from 'stores/project/user';
 
 @observer

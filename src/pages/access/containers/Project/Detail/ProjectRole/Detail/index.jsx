@@ -15,11 +15,11 @@
  */
 import React from 'react';
 import BaseTabDetail from 'containers/TabDetail';
-import BaseDetail from './BaseDetail';
-import AuthorizedUsers from './AuthorizedUsers';
 import { useRootStore } from 'stores';
 import { INTERNAL_ROLE_DES } from 'utils/constants';
 import actionConfigs from '../actions';
+import AuthorizedUsers from './AuthorizedUsers';
+import BaseDetail from './BaseDetail';
 
 export default function RoleDetail(props) {
   const { roleStore } = useRootStore();
