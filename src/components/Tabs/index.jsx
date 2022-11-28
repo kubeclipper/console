@@ -41,7 +41,10 @@ const Tabs = (props) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={classNames(styles.tabs, tabClassName)} style={tabStyles}>
+      <div
+        className={classNames(styles.tabs, tabClassName, 'verticalTabs')}
+        style={tabStyles}
+      >
         <div className={styles.tabsWrapper}>
           {tabs.map((item, index) => (
             <div

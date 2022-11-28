@@ -57,6 +57,7 @@ Cypress.Commands.add('interceptGetAll', (requestList) => {
   });
 });
 
+// 点击菜单
 Cypress.Commands.add('clickMenu', (fatherIndex, sonIndex) => {
   const ele = cy
     .get('.ant-menu-dark')
@@ -68,6 +69,7 @@ Cypress.Commands.add('clickMenu', (fatherIndex, sonIndex) => {
   cy.wait(1000);
 });
 
+// 设置语言
 Cypress.Commands.add('setLanguage', () => {
   const exp = Date.now() + 864000000;
   const language = Cypress.env('language') || 'zh';
@@ -76,6 +78,7 @@ Cypress.Commands.add('setLanguage', () => {
   window.localStorage.setItem('lang', JSON.stringify(langValue));
 });
 
+// 前端 url
 Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
   cy.visit(url);
 
@@ -89,6 +92,7 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
   }
 });
 
+// 登录
 Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
   cy.session('login', () => {
     cy.setLanguage();
@@ -182,11 +186,13 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
   cy.wait(500);
 });
 
+// 国际化
 Cypress.Commands.add('t', (text) => {
   const translated = getTitle(text);
   cy.get(translated);
 });
 
+// 点击右侧用户名处下拉
 Cypress.Commands.add('clickAvatarButton', (label) => {
   const realTitle = getTitle(label);
   cy.get('.ant-layout-header').find('.ant-dropdown-trigger').click().wait(2000);
@@ -197,6 +203,7 @@ Cypress.Commands.add('clickAvatarButton', (label) => {
     .click();
 });
 
+// set localstorage
 Cypress.Commands.add(
   'setLocalStorageItem',
   (key, value, maxAge = 864000000, expiry = 0) => {
@@ -210,6 +217,7 @@ Cypress.Commands.add(
   }
 );
 
+// 快速创建集群
 Cypress.Commands.add('createClusterQuick', (clusterName) => {
   cy.visitPage('/cluster');
 
@@ -234,13 +242,7 @@ Cypress.Commands.add('createClusterQuick', (clusterName) => {
   cy.wait(2000).tableSearchText(name).waitStatusSuccess();
 });
 
-Cypress.Commands.add('checkClusterExist', () => {
-  cy.visitPage('/cluster');
-  if (Cypress.$('.ant-empty-description').length) {
-    cy.createClusterQuick();
-  }
-});
-
+// 删除集群
 Cypress.Commands.add('deleteCluster', (clusterName) => {
   cy.visitPage('/cluster');
   cy.tableSearchText(clusterName);

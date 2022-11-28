@@ -29,7 +29,7 @@ after(() => {
 });
 
 describe('备份空间', () => {
-  const testUrl = '/cluster/backup-point';
+  const listUrl = '/cluster/backup-point';
 
   const _uuid = Cypress._.random(0, 1e6);
 
@@ -49,7 +49,7 @@ describe('备份空间', () => {
   const onlyOnceTest = 'onlyonce-test	';
 
   beforeEach(() => {
-    cy.login(testUrl);
+    cy.login(listUrl);
   });
 
   afterEach(() => {
@@ -60,8 +60,8 @@ describe('备份空间', () => {
   it(...testCase('集群管理-备份空间-创建-1').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
-    cy.inputText('name', backupFSName);
-    cy.inputText('backupRootDir', backupFSRootDir);
+    cy.formInput('name', backupFSName);
+    cy.formInput('backupRootDir', backupFSRootDir);
     cy.formSelect('storageType', backupFSStorageType);
     cy.clickModalActionSubmitButton();
 
@@ -79,16 +79,16 @@ describe('备份空间', () => {
 
   // 添加s3备份空间
   it(...testCase('集群管理-备份空间-创建-2').smoke().value(), () => {
-    cy.visitPage(testUrl);
+    cy.visitPage(listUrl);
 
     cy.clickHeaderButton(0);
 
-    cy.inputText('name', backupS3Name);
+    cy.formInput('name', backupS3Name);
     cy.formSelect('storageType', backupS3StorageType);
-    cy.inputText('bucket', backupS3BucketName);
-    cy.inputText('endpoint', backupS3EndPoint);
-    cy.inputText('accessKeyID', backupS3Admin);
-    cy.inputText('accessKeySecret', backupS3Password);
+    cy.formInput('bucket', backupS3BucketName);
+    cy.formInput('endpoint', backupS3EndPoint);
+    cy.formInput('accessKeyID', backupS3Admin);
+    cy.formInput('accessKeySecret', backupS3Password);
     cy.clickModalActionSubmitButton();
 
     cy.tableSearchText(backupS3Name);
@@ -105,7 +105,7 @@ describe('备份空间', () => {
 
   // 备份空间查看
   it(...testCase('集群管理-备份空间-查看-1').smoke().value(), () => {
-    cy.visitPage(testUrl);
+    cy.visitPage(listUrl);
 
     cy.tableSearchText(backupFSName);
     cy.checkTableColVal(2, backupFSName);
@@ -113,14 +113,14 @@ describe('备份空间', () => {
 
   // fs备份空间编辑
   it(...testCase('集群管理-备份空间-编辑备份空间-1').smoke().value(), () => {
-    cy.visitPage(testUrl);
+    cy.visitPage(listUrl);
 
     const description = 'fs-description';
     cy.tableSearchText(backupFSName);
     cy.checkTableColVal(2, backupFSName);
     cy.clickActionButtonByTitle('Edit');
-    cy.inputText('description', description);
-    cy.clickConfirm();
+    cy.formInput('description', description);
+    cy.clickModalActionSubmitButton();
     cy.checkTableColVal(4, description);
   });
 
@@ -130,18 +130,18 @@ describe('备份空间', () => {
     cy.tableSearchText(backupS3Name);
     cy.checkTableColVal(2, backupS3Name);
     cy.clickActionButtonByTitle('Edit');
-    cy.inputText('description', description);
-    cy.clickConfirm();
+    cy.formInput('description', description);
+    cy.clickModalActionSubmitButton();
     cy.checkTableColVal(4, description);
   });
 
   // 使用 fs 存储备份
   it(...testCase('集群管理-备份空间-备份-1').smoke().value(), () => {
     cy.clickHeaderButton(0);
-    cy.inputText('name', backupFSName);
-    cy.inputText('backupRootDir', backupFSRootDir);
+    cy.formInput('name', backupFSName);
+    cy.formInput('backupRootDir', backupFSRootDir);
     cy.formSelect('storageType', backupFSStorageType);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
 
     cy.visitPage('/cluster');
     cy.clickActionInMore({
@@ -150,15 +150,15 @@ describe('备份空间', () => {
     });
 
     cy.formSelect('backupPoint', backupFSName);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
 
     cy.clickActionInMore({
       title: 'Backup and recovery',
       subTitle: 'Backup Cluster',
     });
 
-    cy.inputText('name', 'test-backup');
-    cy.clickConfirm();
+    cy.formInput('name', 'test-backup');
+    cy.clickModalActionSubmitButton();
     cy.wait(2000).waitStatusSuccess();
 
     cy.goToDetail(1);
@@ -176,7 +176,7 @@ describe('备份空间', () => {
     });
 
     cy.clickByTitle('.ant-modal-content .ant-table-tbody', backupFSName);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.wait(2000).waitStatusSuccess();
   });
 
@@ -188,13 +188,13 @@ describe('备份空间', () => {
       subTitle: 'Edit',
     });
     cy.formSelect('backupPoint', backupS3Name);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.clickActionInMore({
       title: 'Backup and recovery',
       subTitle: 'Backup Cluster',
     });
-    cy.inputText('name', 'test-backup');
-    cy.clickConfirm();
+    cy.formInput('name', 'test-backup');
+    cy.clickModalActionSubmitButton();
     cy.wait(2000).waitStatusSuccess();
 
     cy.goToDetail(1);
@@ -212,7 +212,7 @@ describe('备份空间', () => {
     });
 
     cy.clickByTitle('.ant-modal-content .ant-table-tbody', backupS3Name);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.wait(2000).waitStatusSuccess();
   });
 
@@ -233,13 +233,13 @@ describe('备份空间', () => {
       subTitle: 'Scheduled Backup',
     });
 
-    cy.inputText('name', scheduledTest);
+    cy.formInput('name', scheduledTest);
     cy.formSelect('type', getTitle('Repeat'));
     cy.formSelect('cycle', getTitle('Every Day'));
-    cy.inputText('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
+    cy.formInput('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
 
-    cy.inputText('maxBackupNum', 2);
-    cy.clickConfirm();
+    cy.formInput('maxBackupNum', 2);
+    cy.clickModalActionSubmitButton();
     cy.wait(1000 * 60 * 2);
 
     cy.goToDetail(1);
@@ -271,9 +271,9 @@ describe('备份空间', () => {
 
     cy.clickActionButtonByTitle('Edit');
 
-    cy.inputText('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
+    cy.formInput('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
 
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.wait(1000 * 60 * 2);
 
     cy.clickByDetailTabs('BackUp');
@@ -302,8 +302,8 @@ describe('备份空间', () => {
     cy.clickByDetailTabs('Scheduled Backup');
 
     cy.clickActionButtonByTitle('Edit');
-    cy.inputText('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
-    cy.clickConfirm();
+    cy.formInput('time', `${moment().add(2, 'm').format('HH:mm')}{enter}`);
+    cy.clickModalActionSubmitButton();
 
     cy.clickActionInMore({
       title: 'Disable',
@@ -336,13 +336,13 @@ describe('备份空间', () => {
       subTitle: 'Scheduled Backup',
     });
 
-    cy.inputText('name', onlyOnceTest);
+    cy.formInput('name', onlyOnceTest);
     cy.formSelect('type', getTitle('OnlyOnce'));
-    cy.inputText(
+    cy.formInput(
       'date',
       `${moment().add(2, 'm').format('YYYY-MM-DD HH:mm:ss')}{enter}`
     );
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.wait(1000 * 60 * 2);
 
     cy.goToDetail(1);

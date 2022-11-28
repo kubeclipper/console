@@ -16,7 +16,7 @@
 import getTitle, { testCase } from '../../../support/common';
 
 describe('集群', () => {
-  const testUrl = '/cluster';
+  const listUrl = '/cluster';
 
   const uuid = Cypress._.random(0, 1e6);
   const name = `e2e.cluster.name${uuid}`;
@@ -26,7 +26,7 @@ describe('集群', () => {
   const upgradeVersion = 'v1.23.9';
 
   beforeEach(() => {
-    cy.login(testUrl);
+    cy.login(listUrl);
   });
 
   afterEach(() => {
@@ -92,10 +92,10 @@ describe('集群', () => {
       title: 'Cluster Settings',
       subTitle: 'Edit',
     });
-    cy.inputText('description', description);
+    cy.formInput('description', description);
     cy.inputIP('.ant-form-item-control-input .input-ip', externalIP);
 
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.wait(500).waitStatusSuccess();
     cy.checkTableColVal(3, description);
   });
@@ -108,7 +108,7 @@ describe('集群', () => {
       subTitle: 'AddNode',
     });
     cy.formMultiTransfer('nodes', 0);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.wait(2000).waitStatusSuccess();
   });
 
@@ -120,7 +120,7 @@ describe('集群', () => {
       subTitle: 'RemoveNode',
     });
     cy.clickByTitle('.ant-modal-content .ant-table-tbody', 'worker');
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
     cy.wait(2000).waitStatusSuccess();
   });
 
@@ -162,7 +162,7 @@ describe('集群', () => {
 
       cy.clickHeaderButton(0, 200);
       cy.formMultiTransfer('nodes', 0);
-      cy.clickConfirm();
+      cy.clickModalActionSubmitButton();
 
       cy.log('@rowLength');
 
@@ -191,8 +191,8 @@ describe('集群', () => {
     cy.clickByDetailTabs('BackUp');
 
     cy.clickActionButtonByTitle('Edit');
-    cy.inputText('description', 'description');
-    cy.clickConfirm();
+    cy.formInput('description', 'description');
+    cy.clickModalActionSubmitButton();
     cy.checkTableColVal(2, 'description');
 
     cy.clickActionInMore({
@@ -221,7 +221,7 @@ describe('集群', () => {
       .contains(getTitle('Online'))
       .click();
     cy.get('#form-item-col-version').find('span').contains(upgradeVersion);
-    cy.clickConfirm();
+    cy.clickModalActionSubmitButton();
 
     cy.waitStatusSuccess(null, 5 * 1000 * 60);
 
