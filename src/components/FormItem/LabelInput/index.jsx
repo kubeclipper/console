@@ -16,8 +16,8 @@
 
 import React, { useState } from 'react';
 import { Input, Row, Col, Select } from 'antd';
-import PropTypes from 'prop-types';
 import { isEqual, flatten } from 'lodash';
+import PropTypes from 'prop-types';
 import { arrayInputValue } from 'utils';
 
 export default function TaintInput(props) {

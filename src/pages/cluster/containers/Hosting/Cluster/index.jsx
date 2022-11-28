@@ -15,10 +15,10 @@
  */
 import React, { useEffect } from 'react';
 import BaseList from 'containers/List';
-import { transitionStatus, columns } from 'resources/cluster';
-import actionConfigs from '../../Cluster/actions';
-import { useRootStore } from 'stores';
 import { cloneDeep } from 'lodash';
+import { transitionStatus, columns } from 'resources/cluster';
+import { useRootStore } from 'stores';
+import actionConfigs from '../../Cluster/actions';
 import Add from './actions/Add';
 import Remove from './actions/Remove';
 

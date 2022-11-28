@@ -13,17 +13,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
+import { set } from 'lodash';
+import { observer } from 'mobx-react';
 import { rootStore } from 'stores';
+import FORM_TEMPLATES from 'utils/form.templates';
+import { subdomain } from 'utils/regex';
 import {
   phoneNumberValidate,
   emailValidate,
   getPasswordOtherRule,
 } from 'utils/validate';
-import FORM_TEMPLATES from 'utils/form.templates';
-import { set } from 'lodash';
-import { subdomain } from 'utils/regex';
 
 @observer
 class CreateForm extends ModalAction {

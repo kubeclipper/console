@@ -17,8 +17,8 @@
 import React from 'react';
 import { Checkbox } from 'antd';
 import classnames from 'classnames';
-
 import styles from './index.less';
+
 
 /**
  * 自定义 CustomBoolean ，覆盖默认 boolean 类型组件

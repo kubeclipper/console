@@ -116,8 +116,32 @@
     "array-bracket-spacing": "off",
     "space-before-function-paren": "off",
     "arrow-parens": "off",
-    "react-hooks/rules-of-hooks": "error"
-    // "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/rules-of-hooks": "error",
+    // "react-hooks/exhaustive-deps": "warn",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "builtin",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "alphabetize": {
+          "order": "asc"
+        }
+      }
+    ]
   },
   "globals": {
     "t": true,

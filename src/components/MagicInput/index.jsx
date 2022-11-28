@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React, { useEffect, useReducer, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { Input, Tag, Menu, Divider, Button, Checkbox, Row, Col } from 'antd';
 import { CloseOutlined, SearchOutlined } from '@ant-design/icons';
+import { Input, Tag, Menu, Divider, Button, Checkbox, Row, Col } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isBoolean, isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 import styles from './index.less';
 
 const option = PropTypes.shape({

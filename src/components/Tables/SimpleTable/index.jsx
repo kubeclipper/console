@@ -14,10 +14,11 @@
  *  limitations under the License.
  */
 import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import { get, isString, isEmpty, isEqual, has } from 'lodash';
 import { Table } from 'antd';
+import classnames from 'classnames';
+import { get, isString, isEmpty, isEqual, has } from 'lodash';
+import PropTypes from 'prop-types';
+import { getNoValue } from 'utils/index';
 import {
   getColumnSorter,
   getSortOrder,
@@ -26,7 +27,6 @@ import {
   getStatusRender,
   getRender,
 } from 'utils/table';
-import { getNoValue } from 'utils/index';
 import styles from './index.less';
 
 export default class SimpleTable extends React.Component {

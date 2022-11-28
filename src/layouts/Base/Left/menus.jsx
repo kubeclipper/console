@@ -15,17 +15,17 @@
  */
 
 import React, { useContext } from 'react';
-import renderMenu from 'core/menu';
+import { Menu } from 'antd';
 import renderAdminMenu from 'core/admin-menu';
 import i18n from 'core/i18n';
-import { isEmpty, has } from 'lodash';
-import { observer } from 'mobx-react';
-import { BaseContext } from '..';
-import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
-import { toJS } from 'mobx';
-import { useRootStore } from 'stores';
+import renderMenu from 'core/menu';
 import { useDeepCompareEffect, useAdminPage } from 'hooks';
+import { isEmpty, has } from 'lodash';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
+import { useRootStore } from 'stores';
+import { BaseContext } from '..';
 import styles from '../index.less';
 
 const { SubMenu } = Menu;

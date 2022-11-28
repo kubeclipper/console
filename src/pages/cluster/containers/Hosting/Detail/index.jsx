@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { useRootStore } from 'stores';
 import BaseTabDetail from 'containers/TabDetail';
+import { useRootStore } from 'stores';
+import actionConfigs from '../actions';
 import Clusters from './Clusters';
 
-import actionConfigs from '../actions';
 
 export default function Detail(props) {
   const { cloudProviderStore: store } = useRootStore();

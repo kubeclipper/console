@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React, { useEffect } from 'react';
+import { Card, Empty } from 'antd';
+import { groupBy, get } from 'lodash';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import { groupBy, get } from 'lodash';
-import { Card, Empty } from 'antd';
+import { useRootStore } from 'stores';
 import AuthorityList from './AuthorityList';
 import styles from './index.less';
-import { useRootStore } from 'stores';
 
 function BaseDetail() {
   const { roleStore: store } = useRootStore();

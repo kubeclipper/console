@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { observer } from 'mobx-react';
+import KeyValueInput from 'components/FormItem/KeyValueInput';
 import { ModalAction } from 'containers/Action';
 import { set, get, omit, pick } from 'lodash';
+import { observer } from 'mobx-react';
 import { rootStore } from 'stores';
-import KeyValueInput from 'components/FormItem/KeyValueInput';
 import {
   arrayInput2Label,
   label2ArrayInput,

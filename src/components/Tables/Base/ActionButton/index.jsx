@@ -15,12 +15,12 @@
  */
 import React, { useState } from 'react';
 import { Button } from 'antd';
-import { isArray, isFunction } from 'lodash';
 import Confirm from 'components/Confirm';
-import PropTypes from 'prop-types';
 import Notify from 'components/Notify';
-import { firstUpperCase, allSettled } from 'utils';
+import { isArray, isFunction } from 'lodash';
+import PropTypes from 'prop-types';
 import { useRootStore } from 'stores';
+import { firstUpperCase, allSettled } from 'utils';
 import ActionModal from './ActionModal';
 
 function getDefaultMsg(action, data) {

@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import E404 from 'components/E404';
 import BaseLayout from 'layouts/Base';
 import Node from '../containers/Node';
 import NodeDetail from '../containers/Node/Detail';
 
-import E404 from 'components/E404';
 
 const PATH = '/node';
 export default [

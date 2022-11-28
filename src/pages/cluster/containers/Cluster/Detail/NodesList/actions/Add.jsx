@@ -14,16 +14,16 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
+import LabelInput from 'components/FormItem/LabelInput';
 import { ModalAction } from 'containers/Action';
 import { isEmpty } from 'lodash';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import SelectNodes from 'pages/cluster/components/SelectNodes';
-import LabelInput from 'components/FormItem/LabelInput';
-import { joinSelector } from 'utils';
 import { formatNodesWithLabel } from 'resources/node';
 import { rootStore } from 'stores';
 import NodeStore from 'stores/node';
+import { joinSelector } from 'utils';
 
 const { clusterStore } = rootStore;
 

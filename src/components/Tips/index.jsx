@@ -16,8 +16,8 @@
 
 import React from 'react';
 import classNames from 'classnames';
-
 import styles from './index.less';
+
 
 export default ({ content, className = '' }) => (
   <div className={classNames(styles.tips, className)}>

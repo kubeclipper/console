@@ -13,14 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import BaseLayout from 'layouts/Base';
-import User from '../containers/User';
-import Role from '../containers/Role';
-import ProjectRoleCreate from 'pages/access/containers/Project/Detail/ProjectRole/actions/Create';
-import ProjectRoleDetail from '../containers/Role/Detail';
-import EmptyProject from 'components/EmptyProject';
-
 import E404 from 'components/E404';
+import EmptyProject from 'components/EmptyProject';
+import BaseLayout from 'layouts/Base';
+import ProjectRoleCreate from 'pages/access/containers/Project/Detail/ProjectRole/actions/Create';
+import Role from '../containers/Role';
+import ProjectRoleDetail from '../containers/Role/Detail';
+import User from '../containers/User';
 
 const PATH = '/project';
 export default [

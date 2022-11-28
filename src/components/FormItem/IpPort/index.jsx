@@ -15,8 +15,8 @@
  */
 import React from 'react';
 import { InputNumber } from 'antd';
-import IpInput from '../IpInput';
 import PropTypes from 'prop-types';
+import IpInput from '../IpInput';
 import styles from './index.less';
 
 export default function IpPort(props) {

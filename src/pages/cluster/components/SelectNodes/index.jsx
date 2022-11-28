@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 import React, { PureComponent } from 'react';
-import { observer } from 'mobx-react';
-import { computed } from 'mobx';
-import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import classnames from 'classnames';
-import { rootStore } from 'stores';
 import { flatten } from 'lodash';
-
+import { computed } from 'mobx';
+import { observer } from 'mobx-react';
+import PropTypes from 'prop-types';
+import { rootStore } from 'stores';
 import List from './List';
 import ListWrapper from './ListWrapper';
 import styles from './index.less';
+
 
 const { nodeStore } = rootStore;
 

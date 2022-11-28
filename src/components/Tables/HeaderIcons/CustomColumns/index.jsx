@@ -15,12 +15,12 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Menu } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 import { includes, remove, isUndefined } from 'lodash';
-
+import PropTypes from 'prop-types';
 import styles from './index.less';
+
 
 export default function CustomRow(props) {
   const { className, value: visibleList, onChange, title, options } = props;

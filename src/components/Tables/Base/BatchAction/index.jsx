@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { Dropdown, Menu, Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Button } from 'antd';
 import PropTypes from 'prop-types';
-import ActionButton from '../ActionButton';
 import { generateId } from 'utils';
+import ActionButton from '../ActionButton';
 import styles from '../index.less';
 
 const updateConf = (conf, selectedItems) => {

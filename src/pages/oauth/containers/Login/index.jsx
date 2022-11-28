@@ -15,16 +15,16 @@
  */
 import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import background from 'src/asset/image/background.png';
+import Notify from 'components/Notify';
 import SelectLang from 'components/SelectLang';
 import VersionInfo from 'components/VersionInfo';
+import { useModal } from 'hooks';
+import background from 'src/asset/image/background.png';
 import { useRootStore } from 'stores';
 import { setLocalStorageItem } from 'utils/localStorage';
-import Notify from 'components/Notify';
-import { useModal } from 'hooks';
-import OAuth from './oauth';
 import Verification from './Verification';
 import styles from './index.less';
+import OAuth from './oauth';
 
 export default function Login() {
   const rootStore = useRootStore();

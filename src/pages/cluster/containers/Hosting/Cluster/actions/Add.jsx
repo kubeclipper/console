@@ -15,16 +15,16 @@
  */
 
 // import React from 'react';
+import { ModalAction } from 'containers/Action';
+import { merge } from 'lodash';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 // import { Button } from 'antd';
-import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import FORM_TEMPLATES from 'utils/form.templates';
-import { merge } from 'lodash';
 import { safeBtoa } from 'utils/base64';
+import FORM_TEMPLATES from 'utils/form.templates';
 // import { checkEndpoint } from 'utils/validate';
 // import Notify from 'components/Notify';
-import { toJS } from 'mobx';
 
 class Add extends ModalAction {
   static id = 'add-provider';

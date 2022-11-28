@@ -16,10 +16,10 @@
 
 import { get, set } from 'lodash';
 import { action, makeObservable, observable } from 'mobx';
-import ObjectMapper from 'utils/object.mapper';
 import { APIVERSION } from 'utils/constants';
-
+import ObjectMapper from 'utils/object.mapper';
 import List from './base.list';
+
 
 export default class BaseStore {
   list = new List();

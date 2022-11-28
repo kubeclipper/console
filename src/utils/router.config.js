@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { Switch, Route } from 'react-router';
 import { isString, isObject } from 'lodash';
+import { Switch, Route } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 // eslint-disable-next-line import/prefer-default-export
 export const renderRoutes = (routes, extraProps = {}, switchProps = {}) =>

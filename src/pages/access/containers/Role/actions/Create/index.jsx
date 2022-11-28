@@ -14,18 +14,18 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { toJS } from 'mobx';
 import { Collapse } from 'antd';
-import { observer } from 'mobx-react';
-import { LinkAction } from 'containers/Action';
 import Footer from 'components/Footer';
-import { rootStore } from 'stores';
-import { uniq, set } from 'lodash';
 import Notify from 'components/Notify';
+import { LinkAction } from 'containers/Action';
+import { uniq, set } from 'lodash';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import EditAuthorization from 'pages/access/componnets/EditAuthorization';
+import { rootStore } from 'stores';
+import { ROLE_MODULES } from 'utils/constants';
 import FORM_TEMPLATES from 'utils/form.templates';
 import BaseInfo from './baseInfo';
-import { ROLE_MODULES } from 'utils/constants';
 import styles from './index.less';
 
 const { Panel } = Collapse;

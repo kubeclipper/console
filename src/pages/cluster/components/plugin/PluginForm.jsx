@@ -15,14 +15,14 @@
  */
 
 import React, { useEffect, useReducer } from 'react';
-import { toJS } from 'mobx';
-import { observer } from 'mobx-react';
 import Tabs from 'components/Tabs';
 import { cloneDeep, isEmpty, get, set, isMatch } from 'lodash';
-import RenderForm from './RenderForm';
-import { Context } from './Context';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import Tips from 'pages/cluster/components/Tips';
 import { useRootStore } from 'stores';
+import { Context } from './Context';
+import RenderForm from './RenderForm';
 
 const PluginForm = (props) => {
   const { clusterStore: store, pluginComponents } = useRootStore();

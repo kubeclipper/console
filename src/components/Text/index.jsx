@@ -15,10 +15,10 @@
  */
 
 import React from 'react';
-import { isUndefined } from 'lodash';
 import classNames from 'classnames';
-
+import { isUndefined } from 'lodash';
 import styles from './index.less';
+
 
 export default ({
   title,

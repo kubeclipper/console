@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 import React from 'react';
+import { CloseOutlined } from '@ant-design/icons';
 import { Modal, Button } from 'antd';
 import KubeConfig from 'pages/cluster/components/KubeConfig';
-import { CloseOutlined } from '@ant-design/icons';
 import { checkExpired, isDisableByProviderType } from 'utils';
 
 export default class KubeConfiView {

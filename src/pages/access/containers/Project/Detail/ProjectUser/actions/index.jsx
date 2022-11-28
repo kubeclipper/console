@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import InviteUser from './InviteUser';
 import Delete from './Delete';
 import Edit from './Edit';
+import InviteUser from './InviteUser';
 
 const actionConfigs = {
   rowActions: {

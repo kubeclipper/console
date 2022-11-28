@@ -16,8 +16,8 @@
 
 import React, { useContext } from 'react';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import styles from '../index.less';
 import { BaseContext } from '..';
+import styles from '../index.less';
 
 export default function Trigger() {
   const { state, setState } = useContext(BaseContext);

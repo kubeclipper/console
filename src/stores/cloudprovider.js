@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import BaseStore from './base';
 import ObjectMapper from 'utils/object.mapper';
+import BaseStore from './base';
 
 class CloudProviderStore extends BaseStore {
   module = 'cloudproviders';

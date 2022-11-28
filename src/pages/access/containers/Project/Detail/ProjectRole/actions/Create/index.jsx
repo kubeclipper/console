@@ -15,11 +15,10 @@
  */
 
 import { observer } from 'mobx-react';
-import { ROLE_MODULES } from 'utils/constants';
+import Base from 'pages/access/containers/Role/actions/Create';
 import { rootStore } from 'stores';
 import { isAdminPage } from 'utils';
-
-import Base from 'pages/access/containers/Role/actions/Create';
+import { ROLE_MODULES } from 'utils/constants';
 
 const { projectRoleStore } = rootStore;
 @observer

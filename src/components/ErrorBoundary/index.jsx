@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import NotFound from 'components/NotFound';
+import { useLocation } from 'react-router-dom';
 
 function ErrorBoundary({ children, ...rest }) {
   const [hasError, setHasError] = useState(false);

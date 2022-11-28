@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { set, uniq } from 'lodash';
 import { toJS } from 'mobx';
-import { rootStore } from 'stores';
+import { observer } from 'mobx-react';
 import EditAuthorization from 'pages/access/componnets/EditAuthorization';
+import { rootStore } from 'stores';
 import { ROLE_MODULES } from 'utils/constants';
 
 @observer

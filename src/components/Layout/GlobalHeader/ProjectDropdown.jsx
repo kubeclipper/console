@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import React from 'react';
-import { observer } from 'mobx-react';
-import { Menu, Spin, Dropdown, Space } from 'antd';
 import { DownOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { Menu, Spin, Dropdown, Space } from 'antd';
+import { observer } from 'mobx-react';
 import { useRootStore } from 'stores';
 import styles from './index.less';
 

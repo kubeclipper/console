@@ -14,19 +14,19 @@
  *  limitations under the License.
  */
 import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
 import { syncHistoryWithStore } from '@superwf/mobx-react-router';
-import { AppContainer } from 'react-hot-loader';
 import { ConfigProvider } from 'antd';
-import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
-import request from 'utils/request';
+import zhCN from 'antd/es/locale/zh_CN';
 import PageLoading from 'components/PageLoading';
-import App from './App';
-import i18n from './i18n';
+import { createBrowserHistory } from 'history';
+import ReactDOM from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
 import { routingStore, rootStore } from 'stores';
+import request from 'utils/request';
+import App from './App';
 import GlobalValue from './global';
+import i18n from './i18n';
 
 const store = rootStore;
 

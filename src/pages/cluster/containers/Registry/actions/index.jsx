@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import Delete from './Delete';
 import Add from './Add';
+import Delete from './Delete';
 
 const actionConfigs = {
   rowActions: {

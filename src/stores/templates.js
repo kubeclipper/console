@@ -15,8 +15,8 @@
  */
 
 import ObjectMapper from 'utils/object.mapper';
-
 import BaseStore from './base';
+
 
 export default class TemplatesStore extends BaseStore {
   allTemplates = [];

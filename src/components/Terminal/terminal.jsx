@@ -15,10 +15,10 @@
  */
 import React, { useEffect } from 'react';
 import { debounce } from 'lodash';
-import { Terminal } from 'xterm';
 import PropTypes from 'prop-types';
-import * as fit from 'xterm/lib/addons/fit/fit';
 import SocketClient from 'utils/socket.client';
+import { Terminal } from 'xterm';
+import * as fit from 'xterm/lib/addons/fit/fit';
 
 import './xterm.css';
 import './terminal.css';

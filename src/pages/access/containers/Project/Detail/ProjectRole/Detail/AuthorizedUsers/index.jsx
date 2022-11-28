@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import actionConfigs from './actions';
+import { useParams } from 'react-router-dom';
 import BaseList from 'src/containers/List';
 import { useRootStore } from 'stores';
-import { useParams } from 'react-router-dom';
+import actionConfigs from './actions';
 
 export default function AuthorizedUsers() {
   const { userStore } = useRootStore();

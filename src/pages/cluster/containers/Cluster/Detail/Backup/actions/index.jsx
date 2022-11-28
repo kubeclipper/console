@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import Delete from './Delete';
-import Restore from './Restore';
 import Edit from './Edit';
+import Restore from './Restore';
 
 const actionConfigs = {
   rowActions: {

@@ -15,17 +15,17 @@
  */
 
 import React from 'react';
-import { cloneDeep, isEmpty } from 'lodash';
-import Notify from 'components/Notify';
 import { Spin } from 'antd';
 import classnames from 'classnames';
-import { firstUpperCase } from 'utils/index';
+import Notify from 'components/Notify';
+import { cloneDeep, isEmpty } from 'lodash';
 import { parse } from 'qs';
 import { rootStore } from 'stores';
-import styles from './index.less';
-
-import Steps from './steps';
+import { firstUpperCase } from 'utils/index';
 import Footer from './footer';
+import styles from './index.less';
+import Steps from './steps';
+
 
 export default class BaseStepForm extends React.Component {
   constructor(props, options = {}) {

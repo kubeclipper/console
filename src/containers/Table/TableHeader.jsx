@@ -16,19 +16,18 @@
 
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
-import { Observer, useObserver } from 'mobx-react';
-import { isEmpty, isString } from 'lodash';
-import { Button, Dropdown } from 'antd';
 import { SyncOutlined, EyeOutlined } from '@ant-design/icons';
-
-import PrimaryAction from 'components/Tables/Base/PrimaryAction';
+import { Button, Dropdown } from 'antd';
+import classNames from 'classnames';
 import BatchAction from 'components/Tables/Base/BatchAction';
+import PrimaryAction from 'components/Tables/Base/PrimaryAction';
 import CustomColumns from 'components/Tables/HeaderIcons/CustomColumns';
 import Download from 'components/Tables/HeaderIcons/Download';
-
-import { batchActionList, getDataIndex } from './utils';
+import { isEmpty, isString } from 'lodash';
+import { Observer, useObserver } from 'mobx-react';
 import styles from './index.less';
+import { batchActionList, getDataIndex } from './utils';
+
 
 const BatchActions = ({
   rowKey,

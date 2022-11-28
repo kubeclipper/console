@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { Link } from 'react-router-dom';
 import BaseList from 'containers/List';
+import { Link } from 'react-router-dom';
 import { useRootStore } from 'stores';
 
 export default function Region(props) {

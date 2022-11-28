@@ -15,10 +15,10 @@
  */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import ActionButton from '../ActionButton';
-import { getAllowedResults } from 'utils/allowed';
-import { generateId } from 'utils';
 import { useRootStore } from 'stores';
+import { generateId } from 'utils';
+import { getAllowedResults } from 'utils/allowed';
+import ActionButton from '../ActionButton';
 
 const PrimaryAction = (props) => {
   const { routing } = useRootStore();

@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 import React, { useState, useEffect } from 'react';
-import { Select, Button, Input, Collapse } from 'antd';
 import {
   PlusCircleFilled,
   MinusCircleFilled,
   DoubleRightOutlined,
 } from '@ant-design/icons';
+import { Select, Button, Input, Collapse } from 'antd';
+import classnames from 'classnames';
 import { isEmpty, isArray, isEqual } from 'lodash';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import styles from './index.less';
 import { generateId } from 'utils';
+import styles from './index.less';
 
 const { Panel } = Collapse;
 

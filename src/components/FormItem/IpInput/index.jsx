@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import classname from 'classnames';
+import PropTypes from 'prop-types';
 import { isIPv4 } from 'utils/validate';
 import styles from './index.less';
 

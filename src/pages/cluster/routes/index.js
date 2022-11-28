@@ -13,22 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import E404 from 'components/E404';
 import BaseLayout from 'layouts/Base';
-import ClusterList from '../containers/Cluster';
-import ClusterDetail from '../containers/Cluster/Detail';
-import Create from '../containers/Cluster/actions/Create';
 import AddPlugin from '../components/plugin/AddPlugin';
 import AddStorage from '../components/plugin/AddStorage';
 import BackupPoint from '../containers/BackupPoint';
+import ClusterList from '../containers/Cluster';
+import ClusterDetail from '../containers/Cluster/Detail';
+import Create from '../containers/Cluster/actions/Create';
+import HostingList from '../containers/Hosting';
+import ProviderDetail from '../containers/Hosting/Detail';
 import Registry from '../containers/Registry';
-
 import Template from '../containers/Template';
 import ClusterTemplate from '../containers/Template/cluster/actions/Create';
 import PluginTemplate from '../containers/Template/plugin/actions/Create';
 
-import HostingList from '../containers/Hosting';
-import ProviderDetail from '../containers/Hosting/Detail';
-import E404 from 'components/E404';
 
 const PATH = '/cluster';
 export default [

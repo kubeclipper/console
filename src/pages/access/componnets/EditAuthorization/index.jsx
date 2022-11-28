@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 
-import { get, cloneDeep, keyBy, groupBy, sortBy, uniqBy } from 'lodash';
 import React, { useReducer, forwardRef, useImperativeHandle } from 'react';
-import { useDeepCompareEffect } from 'hooks';
 import Tabs from 'components/Tabs';
+import { useDeepCompareEffect } from 'hooks';
+import { get, cloneDeep, keyBy, groupBy, sortBy, uniqBy } from 'lodash';
 import CheckItem from './CheckItem';
 
 const EditAuthorization = forwardRef((props, ref) => {

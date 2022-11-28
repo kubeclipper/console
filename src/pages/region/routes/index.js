@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import E404 from 'components/E404';
 import BaseLayout from 'layouts/Base';
 import Region from '../containers/Region';
 import RegionDetail from '../containers/Region/Detail';
 
-import E404 from 'components/E404';
 
 const PATH = '/region-admin';
 export default [

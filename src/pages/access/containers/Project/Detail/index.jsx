@@ -15,10 +15,10 @@
  */
 import React from 'react';
 import BaseTabDetail from 'containers/TabDetail';
-import ProjectUser from './ProjectUser';
-import ProjectRole from './ProjectRole';
 import { useRootStore } from 'stores';
 import actionConfigs from '../actions';
+import ProjectRole from './ProjectRole';
+import ProjectUser from './ProjectUser';
 
 export default function RoleDetail(props) {
   const { projectStore } = useRootStore();

@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import BaseList from 'containers/List';
-import { useRootStore } from 'stores';
+import { useParams } from 'react-router-dom';
 import { projectMemberColumns } from 'resources/project';
+import { useRootStore } from 'stores';
 import actionConfigs from './actions';
 
 const User = (props) => {

@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
 import actionConfigs from 'pages/node/containers/Node/actions';
-import BaseList from 'src/containers/List';
+import { Link, useParams } from 'react-router-dom';
 import { getNodeRole } from 'resources/node';
+import BaseList from 'src/containers/List';
 import { useRootStore } from 'stores';
 
 export default function Node() {

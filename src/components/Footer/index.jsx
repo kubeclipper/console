@@ -18,8 +18,8 @@ import React from 'react';
 import { Button } from 'antd';
 import classnames from 'classnames';
 import { useRootStore } from 'stores';
-
 import styles from './index.less';
+
 
 function Footer(props) {
   const {

@@ -15,11 +15,11 @@
  */
 
 import { get, omit, merge, intersectionBy, has, set } from 'lodash';
+import { computeAutoDetectionReversion } from 'resources/common';
 import { status as nodeStatus } from 'resources/node';
+import UAParser from 'ua-parser-js';
 import { formatRoleRules, safeParseJSON } from 'utils';
 import { INTERNAL_ROLE_DES } from 'utils/constants';
-import UAParser from 'ua-parser-js';
-import { computeAutoDetectionReversion } from 'resources/common';
 /**
  * 原始数据
  * @param {*} item
