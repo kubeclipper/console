@@ -34,7 +34,6 @@ import '@cypress/code-coverage/support';
 import './commands';
 import './form-commands';
 import './table-commands';
-import './resource-command';
 import './context';
 
 Cypress.Cookies.defaults({
