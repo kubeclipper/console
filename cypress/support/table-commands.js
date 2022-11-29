@@ -15,6 +15,7 @@
  */
 import getTitle from './common';
 
+// 表格 header 区域按钮
 Cypress.Commands.add('clickHeaderButton', (buttonIndex, waitTime = 2000) => {
   cy.get('.table-header-btns')
     .find('button')
@@ -23,10 +24,12 @@ Cypress.Commands.add('clickHeaderButton', (buttonIndex, waitTime = 2000) => {
   cy.wait(waitTime);
 });
 
+// 等待表格 loading 消失
 Cypress.Commands.add('waitTableLoading', () => {
   cy.get('.ant-spin-dot-spin', { timeout: 120000 }).should('not.exist');
 });
 
+// 表格搜索
 Cypress.Commands.add('tableSearchText', (str) => {
   cy.get('.magic-input-wrapper')
     .find('input')
@@ -34,6 +37,7 @@ Cypress.Commands.add('tableSearchText', (str) => {
   cy.waitTableLoading();
 });
 
+// 操作栏 first action 按钮
 Cypress.Commands.add('clickFirstActionButton', () => {
   cy.get('.ant-table-row')
     .first()
@@ -42,6 +46,7 @@ Cypress.Commands.add('clickFirstActionButton', () => {
     .click({ force: true });
 });
 
+// 点击指定 title 按钮
 Cypress.Commands.add('clickActionButtonByTitle', (title) => {
   const realTitle = getTitle(title);
   cy.get('.ant-table-row')
@@ -51,6 +56,7 @@ Cypress.Commands.add('clickActionButtonByTitle', (title) => {
     .click({ force: true });
 });
 
+// 清空搜索框
 Cypress.Commands.add('clearSearchInput', () => {
   cy.get('.magic-input-wrapper')
     .first()
@@ -58,6 +64,7 @@ Cypress.Commands.add('clearSearchInput', () => {
     .click({ force: true });
 });
 
+// 点击表格中跳转列链接
 Cypress.Commands.add(
   'clickLinkInColumn',
   (columnIndex = 1, waitTime = 2000) => {
@@ -70,6 +77,7 @@ Cypress.Commands.add(
   }
 );
 
+// 前往详情
 Cypress.Commands.add('goToDetail', (index = 1, waitTime) => {
   cy.clickLinkInColumn(index, 2000);
   cy.get('.ant-skeleton-content', { timeout: 120000 }).should('not.exist');
@@ -78,10 +86,12 @@ Cypress.Commands.add('goToDetail', (index = 1, waitTime) => {
   }
 });
 
+// 校验详情页 name 存在
 Cypress.Commands.add('checkDetailName', (name) => {
   cy.get('.ant-descriptions-item-content').contains(name).should('exist');
 });
 
+// 详情页返回列表页
 Cypress.Commands.add('goBackToList', (url) => {
   cy.get('.ant-descriptions-header').find('button').eq(0).click().wait(2000);
   if (url) {
@@ -90,6 +100,7 @@ Cypress.Commands.add('goBackToList', (url) => {
   cy.waitTableLoading();
 });
 
+// 点击更多按钮
 Cypress.Commands.add('clickActionInMore', (titles, waitTime = 2000) => {
   const { title, subTitle } = titles;
 
@@ -110,6 +121,7 @@ Cypress.Commands.add('clickActionInMore', (titles, waitTime = 2000) => {
   waitTime && cy.wait(waitTime);
 });
 
+// 校验指定 action 不存在更多中
 Cypress.Commands.add('checkActionNotExistInMore', (title) => {
   const realTitle = getTitle(title);
   cy.get('.ant-table-row')
@@ -119,6 +131,7 @@ Cypress.Commands.add('checkActionNotExistInMore', (title) => {
   cy.get('ul.ant-dropdown-menu-light').contains(realTitle).should('not.exist');
 });
 
+// 校验指定操作是 disabled
 Cypress.Commands.add('checkActionDisabled', (title) => {
   const realTitle = getTitle(title);
   cy.get('.ant-table-row').first().contains(realTitle).should('not.exist');
@@ -129,10 +142,12 @@ Cypress.Commands.add('checkActionDisabled', (title) => {
   cy.get('ul.ant-dropdown-menu-light').contains(realTitle).should('not.exist');
 });
 
+// 光标 hover 更多
 Cypress.Commands.add('hoverMore', () => {
   cy.get('.ant-table-row').find('.ant-btn-more').first().trigger('mouseover');
 });
 
+// 点击 tab
 Cypress.Commands.add('clickTab', (label, urlTab, waitTime = 2000) => {
   const realTitle = getTitle(label);
   cy.get('.ant-tabs-tab-btn').contains(realTitle).click().wait(waitTime);
@@ -141,6 +156,7 @@ Cypress.Commands.add('clickTab', (label, urlTab, waitTime = 2000) => {
   }
 });
 
+// 等待状态成功
 Cypress.Commands.add('waitStatusSuccess', (index, timeout = 100000000) => {
   if (!index) {
     cy.get('.ant-table-row')
@@ -157,6 +173,7 @@ Cypress.Commands.add('waitStatusSuccess', (index, timeout = 100000000) => {
   }
 });
 
+// 等待状态 green
 Cypress.Commands.add('waitStatusGreen', (index) => {
   if (!index) {
     cy.get('.ant-table-row')
@@ -173,17 +190,20 @@ Cypress.Commands.add('waitStatusGreen', (index) => {
   }
 });
 
+// 刷新表格
 Cypress.Commands.add('freshTable', () => {
   // eslint-disable-next-line no-console
   console.log('fresh table');
   cy.clickHeaderButton(0).waitTableLoading();
 });
 
+// 校验表格为空
 Cypress.Commands.add('checkEmptyTable', () => {
   cy.get('.ant-empty-normal').should('have.length', 1);
   cy.wait(2000);
 });
 
+// 等待表格状态 no error
 Cypress.Commands.add('waitStatusNoError', (index) => {
   if (!index) {
     cy.get('.ant-table-row')
@@ -200,6 +220,7 @@ Cypress.Commands.add('waitStatusNoError', (index) => {
   }
 });
 
+// 等待表格 Processing 状态消失
 Cypress.Commands.add('waitStatusProcessing', (index) => {
   if (!index) {
     cy.get('.ant-table-row')
@@ -216,6 +237,7 @@ Cypress.Commands.add('waitStatusProcessing', (index) => {
   }
 });
 
+// 等待表格状态 default
 Cypress.Commands.add('waitStatusBackuping', () => {
   cy.get('.ant-table-row')
     .first()
@@ -234,6 +256,7 @@ Cypress.Commands.add('clickByTitle', (_class, title, options) => {
   waitTime && cy.wait(waitTime);
 });
 
+// 校验表格 col 列 存在 val 值
 Cypress.Commands.add('checkTableColVal', (col, val) => {
   cy.get('.ant-table-row')
     .find('.ant-table-cell')
@@ -242,6 +265,7 @@ Cypress.Commands.add('checkTableColVal', (col, val) => {
     .should('exist');
 });
 
+// 点击详情页 tab
 Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
   cy.get('.ant-tabs-nav-list div').contains(getTitle(title)).click();
   waitTime && cy.wait(waitTime);

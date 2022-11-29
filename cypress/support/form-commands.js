@@ -25,24 +25,26 @@ Cypress.Commands.add('waitFormLoading', () => {
   cy.get('.ant-btn-loading', { timeout: 600000 }).should('not.exist');
 });
 
+// 普通 input 表单
 Cypress.Commands.add('formInput', (formItemName, value, index) => {
   if (!index) {
     cy.get(getId(formItemName))
       .find('input')
       .first()
-      .clear()
+      .clear({ force: true })
       .type(value)
       .blur();
   } else {
     cy.get(getId(formItemName))
       .find('input')
       .eq(index)
-      .clear()
+      .clear({ force: true })
       .type(value)
       .blur();
   }
 });
 
+// 登录 input
 Cypress.Commands.add('loginInput', (formItemName, value, index) => {
   if (!index) {
     cy.get(`#normal_login_${formItemName}`).clear().type(value).blur();
@@ -51,10 +53,12 @@ Cypress.Commands.add('loginInput', (formItemName, value, index) => {
   }
 });
 
+// 登录提交
 Cypress.Commands.add('loginFormSubmit', () => {
   cy.get('#normal_login').find('button').click().waitFormLoading();
 });
 
+// 选择框
 Cypress.Commands.add('formSelect', (formItemName, label, selectIndex) => {
   if (!selectIndex) {
     cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
@@ -79,20 +83,12 @@ Cypress.Commands.add('formSelect', (formItemName, label, selectIndex) => {
   }
 });
 
-Cypress.Commands.add('checkFormSelectorExist', (formItemName, val) => {
-  cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
-  cy.get(`[label="${val}"]`).should('exist');
-});
-
-Cypress.Commands.add('checkFormSelectorNotExist', (formItemName, val) => {
-  cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
-  cy.get(`[label="${val}"]`).should('not.exist');
-});
-
+// 表单 loading
 Cypress.Commands.add('waitFormLoading', () => {
   cy.get('.ant-btn-loading', { timeout: 600000 }).should('not.exist');
 });
 
+// 关闭页面右上角 notification
 Cypress.Commands.add('closeNotice', () => {
   cy.get('.ant-notification-topRight')
     .first()
@@ -132,20 +128,19 @@ Cypress.Commands.add('clickConfirmActionSubmitButton', (waitTime) => {
     .eq(1)
     .click()
     .waitFormLoading()
+    .wait(1000)
     .closeNotice();
   if (waitTime) {
     cy.wait(waitTime);
   }
 });
 
+// checkbox 类型表单
 Cypress.Commands.add('formCheckboxClick', (formItemName, index = 0) => {
   cy.get(getId(formItemName)).find('input').eq(index).click();
 });
 
-Cypress.Commands.add('formAddSelectAdd', (formItemName) => {
-  cy.get(getId(formItemName)).find('.add-btn').click().wait(2000);
-});
-
+// ip 输入框
 Cypress.Commands.add('formInputIp', (formItemName, value = '0.0.0.0') => {
   cy.get(formItemName).last().as('item');
   value.split('.').forEach((it, index) => {
@@ -153,18 +148,12 @@ Cypress.Commands.add('formInputIp', (formItemName, value = '0.0.0.0') => {
   });
 });
 
+// port 输入框
 Cypress.Commands.add('formInputPort', (formItemName, value) => {
   cy.get(formItemName).last().find('input').first().clear().type(value);
 });
 
-Cypress.Commands.add('checkFormValue', (formItemName, value) => {
-  const realValue = getTitle(value);
-  cy.get(getId(formItemName))
-    .find('.ant-form-item-control')
-    .contains(realValue)
-    .should('exist');
-});
-
+// Textarea 类型输入框
 Cypress.Commands.add('formTextarea', (formItemName, value) => {
   cy.get(getId(formItemName))
     .find('textarea')
@@ -172,10 +161,12 @@ Cypress.Commands.add('formTextarea', (formItemName, value) => {
     .type(value, { force: true });
 });
 
+// Radio 类型选择框
 Cypress.Commands.add('formRadioChoose', (formItemName, itemIndex = 0) => {
   cy.get(getId(formItemName)).find('.ant-radio-wrapper').eq(itemIndex).click();
 });
 
+// RadioButton 类型选择框
 Cypress.Commands.add('formRadioButtonChoose', (formItemName, itemIndex = 0) => {
   cy.get(getId(formItemName))
     .find('.ant-radio-button-wrapper')
@@ -183,20 +174,12 @@ Cypress.Commands.add('formRadioButtonChoose', (formItemName, itemIndex = 0) => {
     .click();
 });
 
+// 分步表单下一步按钮
 Cypress.Commands.add('clickStepActionNextButton', (action, waitTime = 1000) => {
-  cy.get(`[data-test="${action}"]`).click().wait(waitTime);
+  cy.get(`[data-action="${action}"]`).click().wait(waitTime);
 });
 
-Cypress.Commands.add('inputText', (formItemName, value) => {
-  cy.get(getId(formItemName)).find('input').clear({ force: true }).type(value);
-});
-
-Cypress.Commands.add('inputIP', (_class, value) => {
-  value.split('.').forEach((it, index) => {
-    cy.get(_class).find('input').eq(index).clear().type(it);
-  });
-});
-
+// 分步表单取消按钮
 Cypress.Commands.add('clickStepActionCancelButton', (waitTime = 2000) => {
   cy.get('.step-form-footer-btns')
     .find('button')
@@ -205,12 +188,21 @@ Cypress.Commands.add('clickStepActionCancelButton', (waitTime = 2000) => {
     .wait(waitTime);
 });
 
+// ip 输入框
+Cypress.Commands.add('inputIP', (_class, value) => {
+  value.split('.').forEach((it, index) => {
+    cy.get(_class).find('input').eq(index).clear().type(it);
+  });
+});
+
+// 校验多穿梭框非空
 Cypress.Commands.add('waitTransferList', (waitTime = 10000) => {
   cy.get('.multi-transfer-left')
     .find('.ant-empty', { timeout: waitTime })
     .should('not.exist');
 });
 
+// 多穿梭框
 Cypress.Commands.add(
   'formMultiTransfer',
   (formItemName, leftIndex, rightIndex) => {
@@ -249,7 +241,53 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add('clickConfirm', (_class = '.ant-modal-footer span') => {
-  const confirmTitle = Cypress.env('language') === 'zh' ? '确 定' : 'Confirm';
-  cy.clickByTitle(_class, confirmTitle);
+// ArrayInput 类型表单 添加 按钮
+Cypress.Commands.add('formArrayInputAdd', (formItemName) => {
+  cy.get(getId(formItemName)).find('.add-btn').click().wait(2000);
+});
+
+// ArrayInput 类型表单 移除 按钮， index 表示移除第几个
+Cypress.Commands.add('formArrayInputRemove', (formItemName, index) => {
+  if (index) {
+    cy.get(getId(formItemName))
+      .find('.anticon-minus-circle')
+      .eq(index)
+      .click()
+      .wait(2000);
+  } else {
+    cy.get(getId(formItemName))
+      .find('.anticon-minus-circle')
+      .first()
+      .click()
+      .wait(2000);
+  }
+});
+
+// 校验表单值存在
+Cypress.Commands.add('checkFormValue', (formItemName, value) => {
+  const realValue = getTitle(value);
+  cy.get(getId(formItemName))
+    .find('.ant-form-item-control')
+    .contains(realValue)
+    .should('exist');
+});
+
+// 检验选择框值存在
+Cypress.Commands.add('checkFormSelectorExist', (formItemName, val) => {
+  cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
+  cy.get(`[label="${val}"]`).should('exist');
+});
+
+// 检验选择框值不存在
+Cypress.Commands.add('checkFormSelectorNotExist', (formItemName, val) => {
+  cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
+  cy.get(`[label="${val}"]`).should('not.exist');
+});
+
+// 检验分步创建确认页表单值
+Cypress.Commands.add('checkConfirmStepItemContent', (formItemName, value) => {
+  cy.get(getId(formItemName))
+    .find('.ant-descriptions-item-content')
+    .contains(value)
+    .should('exist');
 });

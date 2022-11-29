@@ -58,7 +58,7 @@ export default function Footer(props) {
     }
     const { title } = steps[current + 1];
     return (
-      <Button type="primary" onClick={onClickNext} data-test="step-next">
+      <Button type="primary" onClick={onClickNext} data-action="step-next">
         {`${t('Next')}: ${title}`}
       </Button>
     );
@@ -67,7 +67,11 @@ export default function Footer(props) {
   const Confirm = () => {
     if (current === steps.length - 1) {
       return (
-        <Button type="primary" onClick={onClickSubmit} data-test="step-confirm">
+        <Button
+          type="primary"
+          onClick={onClickSubmit}
+          data-action="step-confirm"
+        >
           {t('Confirm')}
         </Button>
       );
@@ -88,7 +92,7 @@ export default function Footer(props) {
         <Button
           type="primary"
           onClick={onClickCreateQuickly}
-          data-test="step-quick"
+          data-action="step-quick"
         >
           {t('Create Quickly')}
         </Button>
