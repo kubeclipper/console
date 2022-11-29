@@ -35,6 +35,7 @@ import './commands';
 import './form-commands';
 import './table-commands';
 import './context';
+import './resource';
 
 Cypress.Cookies.defaults({
   preserve: ['session', 'X-Auth-Token'],

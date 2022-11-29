@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /*
  * Copyright 2021 KubeClipper Authors.
  *
@@ -14,24 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import getTitle, { testCase } from '../../../support/common';
 
-describe('平台用户和角色', () => {
-  const listUrl = '/access/role';
-  const _uuid = Cypress._.random(0, 1e6);
-  const roleName = `role-${_uuid}`;
-  const userName = `user-${_uuid}`;
-
-  beforeEach(() => {
-    cy.login(listUrl);
-  });
-
-  // 创建角色
-  it(...testCase('访问控制-角色-创建角色-1').smoke().value(), () => {
-    cy.clickHeaderButton(0).url().should('include', listUrl);
-
-    cy.formInput('name', roleName);
-
-    // cy.tableSearchText(roleName);
-  });
+Cypress.Commands.add('createRole', (roleName) => {
+  cy.clickHeaderButton(0)
+    .formInput('name', roleName)
+    .clickRoleCheckbox()
+    .clickPageFormSubmitButton(1000);
 });

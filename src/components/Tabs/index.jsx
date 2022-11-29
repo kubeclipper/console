@@ -42,14 +42,14 @@ const Tabs = (props) => {
   return (
     <div className={styles.wrapper}>
       <div
-        className={classNames(styles.tabs, tabClassName, 'verticalTabs')}
+        className={classNames(styles.tabs, tabClassName, 'vertical-tabs')}
         style={tabStyles}
       >
         <div className={styles.tabsWrapper}>
           {tabs.map((item, index) => (
             <div
               key={item.name}
-              className={classNames(styles.tab, {
+              className={classNames('vertical-tabs-item', styles.tab, {
                 [styles.enabled]: current === item.name,
               })}
               onClick={(e) => handleTabChange(e, index)}
@@ -84,7 +84,11 @@ const Tabs = (props) => {
           isModlal ? styles['is-modal'] : ''
         )}
       >
-        <div className={styles.contentWrapper}>{children}</div>
+        <div
+          className={classNames('check-item-wrapper', styles.contentWrapper)}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

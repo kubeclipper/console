@@ -135,6 +135,19 @@ Cypress.Commands.add('clickConfirmActionSubmitButton', (waitTime) => {
   }
 });
 
+// 页面表单确认按钮，非 modal 弹窗
+Cypress.Commands.add('clickPageFormSubmitButton', (waitTime) => {
+  cy.get('.step-form-footer-btns')
+    .find('button')
+    .eq(1)
+    .click()
+    .waitFormLoading()
+    .wait(1000);
+  if (waitTime) {
+    cy.wait(waitTime);
+  }
+});
+
 // checkbox 类型表单
 Cypress.Commands.add('formCheckboxClick', (formItemName, index = 0) => {
   cy.get(getId(formItemName)).find('input').eq(index).click();
@@ -290,4 +303,31 @@ Cypress.Commands.add('checkConfirmStepItemContent', (formItemName, value) => {
     .find('.ant-descriptions-item-content')
     .contains(value)
     .should('exist');
+});
+
+// 点击左侧 tab 按钮(比如：角色权限)
+Cypress.Commands.add('clickLeftTab', (index, waitTime = 500) => {
+  cy.get('.vertical-tabs').find('.vertical-tabs-item').eq(index).click();
+  if (waitTime) {
+    cy.wait(waitTime);
+  }
+});
+
+// 勾选权限角色权限右侧 checkbox, 不传 index 就全勾选
+Cypress.Commands.add('clickRoleCheckbox', (index, waitTime) => {
+  if (index || index === 0) {
+    cy.get('.check-item-wrapper').find('.ant-checkbox').eq(index).click();
+  } else {
+    cy.get('.check-item-wrapper')
+      .find('.ant-checkbox')
+      .as('checkboxes')
+      .click({ multiple: true });
+
+    cy.get('@checkboxes').each(($el) => {
+      cy.wrap($el).should('have.class', 'ant-checkbox-checked');
+    });
+  }
+  if (waitTime) {
+    cy.wait(waitTime);
+  }
 });

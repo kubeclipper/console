@@ -34,7 +34,7 @@ Cypress.Commands.add('tableSearchText', (str) => {
   cy.get('.magic-input-wrapper')
     .find('input')
     .type(`${str}{enter}`, { force: true });
-  cy.waitTableLoading();
+  cy.waitTableLoading().wait(500);
 });
 
 // 操作栏 first action 按钮
@@ -60,7 +60,7 @@ Cypress.Commands.add('clickActionButtonByTitle', (title) => {
 Cypress.Commands.add('clearSearchInput', () => {
   cy.get('.magic-input-wrapper')
     .first()
-    .find('.ant-btn')
+    .find('.anticon-close')
     .click({ force: true });
 });
 
@@ -101,7 +101,7 @@ Cypress.Commands.add('goBackToList', (url) => {
 });
 
 // 点击更多按钮
-Cypress.Commands.add('clickActionInMore', (titles, waitTime = 2000) => {
+Cypress.Commands.add('clickActionInMore', (titles, waitTime = 1000) => {
   const { title, subTitle } = titles;
 
   cy.get('.ant-table-row').first().find('.ant-dropdown-trigger').click();
@@ -131,15 +131,50 @@ Cypress.Commands.add('checkActionNotExistInMore', (title) => {
   cy.get('ul.ant-dropdown-menu-light').contains(realTitle).should('not.exist');
 });
 
-// 校验指定操作是 disabled
-Cypress.Commands.add('checkActionDisabled', (title) => {
+// 校验更多中应该存在 指定操作
+Cypress.Commands.add('checkActionExistInMore', (title) => {
   const realTitle = getTitle(title);
-  cy.get('.ant-table-row').first().contains(realTitle).should('not.exist');
   cy.get('.ant-table-row')
     .first()
     .find('.ant-dropdown-trigger')
     .trigger('mouseover');
-  cy.get('ul.ant-dropdown-menu-light').contains(realTitle).should('not.exist');
+  cy.get('ul.ant-dropdown-menu-light').contains(realTitle).should('exist');
+});
+
+// 校验 firstAction 操作是 disabled
+Cypress.Commands.add('checkActionDisabled', (title, name) => {
+  const realTitle = getTitle(title);
+
+  if (name) {
+    cy.log(name);
+    cy.tableSearchText(name);
+    cy.get('.ant-table-row').first().contains(realTitle).should('exist');
+
+    cy.get('.ant-table-row')
+      .first()
+      .find('button')
+      .should('have.attr', 'disabled');
+    cy.clearSearchInput();
+  } else {
+    cy.get('.ant-table-row').first().contains(realTitle).should('exist');
+
+    cy.get('.ant-table-row')
+      .first()
+      .find('button')
+      .should('have.attr', 'disabled');
+  }
+});
+
+// 校验 firstAction 操作是 xxx,并且没有 disabled
+Cypress.Commands.add('checkActionEnable', (title) => {
+  const realTitle = getTitle(title);
+
+  cy.get('.ant-table-row').first().contains(realTitle).should('exist');
+
+  cy.get('.ant-table-row')
+    .first()
+    .find('button')
+    .should('not.have.attr', 'disabled');
 });
 
 // 光标 hover 更多
@@ -208,7 +243,9 @@ Cypress.Commands.add('checkTableRowLength', (rowLength) => {
   cy.get('.ant-table-tbody')
     .find('.ant-empty-normal', { timeout: 100000000 })
     .should('not.exist');
-  cy.get('.ant-table-body .ant-table-row').should('have.length', rowLength);
+  if (rowLength) {
+    cy.get('.ant-table-body .ant-table-row').should('have.length', rowLength);
+  }
 });
 
 // 等待表格状态 no error
@@ -287,4 +324,23 @@ Cypress.Commands.add('checkBaseDetailValue', (value) => {
     .find('.ant-col', { timeout: 100000000 })
     .contains(value)
     .should('exist');
+});
+
+// 列表勾选所有
+Cypress.Commands.add('selectAll', () => {
+  cy.get('.ant-table-thead')
+    .find('.ant-checkbox-input')
+    .click({ force: true })
+    .wait(2000);
+});
+
+// 按名称勾选
+Cypress.Commands.add('selectByName', (name) => {
+  cy.get('.ant-table-cell')
+    .contains(name)
+    .first()
+    .parent()
+    .parent()
+    .find('.ant-checkbox-input')
+    .click({ force: true });
 });
