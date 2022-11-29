@@ -203,6 +203,14 @@ Cypress.Commands.add('checkEmptyTable', () => {
   cy.wait(2000);
 });
 
+// 校验表格非空，且应该存在 rowLength 条数据
+Cypress.Commands.add('checkTableRowLength', (rowLength) => {
+  cy.get('.ant-table-tbody')
+    .find('.ant-empty-normal', { timeout: 100000000 })
+    .should('not.exist');
+  cy.get('.ant-table-body .ant-table-row').should('have.length', rowLength);
+});
+
 // 等待表格状态 no error
 Cypress.Commands.add('waitStatusNoError', (index) => {
   if (!index) {
@@ -269,4 +277,14 @@ Cypress.Commands.add('checkTableColVal', (col, val) => {
 Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
   cy.get('.ant-tabs-nav-list div').contains(getTitle(title)).click();
   waitTime && cy.wait(waitTime);
+});
+
+// 校验详情页 BaseDetail 字段值
+Cypress.Commands.add('checkBaseDetailValue', (value) => {
+  cy.goToDetail(1)
+    .get('.detail-card-item')
+    .first()
+    .find('.ant-col', { timeout: 100000000 })
+    .contains(value)
+    .should('exist');
 });
