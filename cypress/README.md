@@ -7,6 +7,7 @@
 - visitPage 前往 url
 - createClusterQuick 快速创建集群
 - deleteCluster 删除集群
+- loginByKeycloak oauth2 外部用户登录(keycloak)
 
 ## Table
 

@@ -61,7 +61,12 @@ export default function OAuth() {
       </Divider>
 
       {oauth2Info.map((item, index) => (
-        <Button key={index} onClick={() => oauth2(item.oauthUrl)} block>
+        <Button
+          name={item?.name}
+          key={index}
+          onClick={() => oauth2(item.oauthUrl)}
+          block
+        >
           <LoginOutlined />
           {t('Use { name } to login', { name: item.name })}
         </Button>
