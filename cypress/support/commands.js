@@ -78,7 +78,7 @@ Cypress.Commands.add('setLanguage', () => {
   window.localStorage.setItem('lang', JSON.stringify(langValue));
 });
 
-// 前端 url
+// 前往 url
 Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
   cy.visit(url);
 
