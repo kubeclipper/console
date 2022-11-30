@@ -13,35 +13,72 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { testCase } from '../../../support/common';
 
-let region = null;
+const region = 'default';
+const uuid = Cypress._.random(0, 1e6);
+const clusterName = `e2e.cluster.name${uuid}`;
+const listUrl = '/region';
+const port = '22';
+const username = 'root';
+const password = 'Thinkbig1';
+
+before(() => {
+  cy.login(listUrl);
+  cy.createClusterQuick(clusterName);
+});
+
+after(() => {
+  cy.deleteCluster(clusterName);
+});
 
 describe('The Region Page', () => {
-  const listUrl = '/region/mgt';
-
   beforeEach(() => {
     cy.login(listUrl);
   });
 
-  it('successfully get region', () => {
-    cy.get('.ant-table-row')
-      .first()
-      .find('a')
-      .then(($el) => {
-        region = $el.text();
-      });
+  afterEach(() => {
+    cy.addContext();
   });
 
-  it('successfully detail', () => {
+  it(...testCase('区域管理-查看区域-1').smoke().value(), () => {
+    cy.checkTableRowLength();
+  });
+
+  it(...testCase('区域管理-区域详情-查看集群列表-1').smoke().value(), () => {
     cy.tableSearchText(region).goToDetail(0);
-    cy.checkDetailName(region);
-
-    cy.goBackToList(listUrl);
+    cy.clickByDetailTabs('Cluster List');
+    cy.checkTableRowLength();
   });
 
-  it('successfully delete', () => {
-    cy.tableSearchText(region)
-      .clickActionButtonByTitle('Delete')
-      .clickConfirmActionSubmitButton();
+  it(...testCase('区域管理-区域详情-查看集群详情-1').smoke().value(), () => {
+    cy.tableSearchText(region).goToDetail(0);
+    cy.goToDetail(0);
+    cy.clickByDetailTabs('BaseDetail');
+    cy.checkBaseDetailValue(clusterName);
+    cy.clickByDetailTabs('Nodes List');
+    cy.checkTableRowLength();
+    cy.clickByDetailTabs('Operation Log');
+    cy.clickActionButtonByTitle('ViewLog');
+    cy.get('.ant-modal-body').should('exist');
+  });
+
+  it(...testCase('区域管理-区域详情-查看节点列表-1').smoke().value(), () => {
+    cy.tableSearchText(region).goToDetail(0);
+    cy.clickByDetailTabs('Nodes List');
+    cy.checkTableRowLength();
+    cy.clickActionButtonByTitle('Connect Terminal');
+    cy.formInput('port', port)
+      .formInput('username', username)
+      .formInput('password', password)
+      .clickModalActionSubmitButton();
+  });
+
+  it(...testCase('区域管理-区域详情-查看节点详情-1').smoke().value(), () => {
+    cy.tableSearchText(region).goToDetail(0);
+    cy.clickByDetailTabs('Nodes List');
+    cy.goToDetail(0);
+    cy.clickByDetailTabs('BaseDetail');
+    cy.checkBaseDetailValue('default');
   });
 });
