@@ -316,6 +316,16 @@ Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
   waitTime && cy.wait(waitTime);
 });
 
+
+// 校验详情页 BaseDetail 字段值
+Cypress.Commands.add('checkBaseDetailValue', (value) => {
+  cy.get('.detail-card-item')
+    .first()
+    .find('.ant-col', { timeout: 100000000 })
+    .contains(value)
+    .should('exist');
+});
+
 // 列表勾选所有
 Cypress.Commands.add('selectAll', () => {
   cy.get('.ant-table-thead')
