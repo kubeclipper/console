@@ -16,6 +16,7 @@ module.exports = defineConfig({
     html: false,
     json: true,
   },
+  chromeWebSecurity: false,
   e2e: {
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
@@ -30,6 +31,7 @@ module.exports = defineConfig({
       'cypress/e2e/pages/cluster/backup.cy.js',
       'cypress/e2e/pages/cluster/online-offline-install.cy.js',
       'cypress/e2e/pages/test.cy.js',
+      'cypress/e2e/pages/access/oauth2.cy.js',
     ],
   },
 });

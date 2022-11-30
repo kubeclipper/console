@@ -258,3 +258,13 @@ Cypress.Commands.add('deleteCluster', (clusterName) => {
     .find('.ant-table-row', { timeout: 100000000 })
     .should('not.exist');
 });
+
+// oauth2 登录 keycloak
+Cypress.Commands.add('loginByKeycloak', (username, password) => {
+  cy.visit('/auth/login');
+  cy.get('[name="keycloak"]').click();
+  cy.get('#username').type(username);
+  cy.get('#password').type(password);
+  cy.get('[type="submit"]').click();
+  cy.wait(1000);
+});
