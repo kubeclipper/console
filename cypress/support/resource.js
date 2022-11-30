@@ -20,3 +20,10 @@ Cypress.Commands.add('createRole', (roleName) => {
     .clickRoleCheckbox()
     .clickPageFormSubmitButton(1000);
 });
+
+Cypress.Commands.add('deleteUser', (userName) => {
+  cy.tableSearchText(userName)
+    .clickActionInMore({ title: 'Delete' })
+    .clickConfirmActionSubmitButton()
+    .checkEmptyTable();
+});

@@ -59,29 +59,32 @@ Cypress.Commands.add('loginFormSubmit', () => {
 });
 
 // 选择框
-Cypress.Commands.add('formSelect', (formItemName, label, selectIndex) => {
-  if (!selectIndex) {
-    cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
-  } else {
-    cy.get(getId(formItemName))
-      .find('.ant-select')
-      .eq(selectIndex)
-      .click()
-      .wait(500);
+Cypress.Commands.add(
+  'formSelect',
+  (formItemName, label, selectIndex, i18n = true) => {
+    if (!selectIndex) {
+      cy.get(getId(formItemName)).find('.ant-select').click().wait(500);
+    } else {
+      cy.get(getId(formItemName))
+        .find('.ant-select')
+        .eq(selectIndex)
+        .click()
+        .wait(500);
+    }
+    if (label !== undefined) {
+      const realLabel = i18n ? getTitle(label) : label;
+      cy.get('.ant-select-item-option')
+        .contains(realLabel)
+        .click({ force: true });
+    } else {
+      cy.get('.ant-select-dropdown')
+        .last()
+        .find('.ant-select-item-option')
+        .first()
+        .click({ force: true });
+    }
   }
-  if (label !== undefined) {
-    const realLabel = getTitle(label);
-    cy.get('.ant-select-item-option')
-      .contains(realLabel)
-      .click({ force: true });
-  } else {
-    cy.get('.ant-select-dropdown')
-      .last()
-      .find('.ant-select-item-option')
-      .first()
-      .click({ force: true });
-  }
-});
+);
 
 // 表单 loading
 Cypress.Commands.add('waitFormLoading', () => {
