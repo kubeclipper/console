@@ -243,4 +243,8 @@ describe('平台用户和角色', () => {
     cy.url().should('include', listUrl);
     cy.tableSearchText(roleName3).checkEmptyTable();
   });
+
+  it.skip(...testCase('访问控制-用户-登录日志-1').smoke().value(), () => {});
+
+  it.skip(...testCase('访问控制-用户-登录日志-2').smoke().value(), () => {});
 });

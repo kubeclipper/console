@@ -49,12 +49,16 @@ export default function Registry() {
     authKey: 'localRegistry',
     module: 'registries',
     name: t('LocalRegistry'),
-    searchFilters: [],
+    searchFilters: [
+      {
+        label: t('Name'),
+        name: 'name',
+      },
+    ],
     actionConfigs,
     store,
     isShowDownLoadIcon: false,
     isShowEyeIcon: false,
-    hideSearch: true,
     isAction: true,
   };
 

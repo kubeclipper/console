@@ -310,6 +310,12 @@ Cypress.Commands.add('checkTableColVal', (col, val) => {
     .should('exist');
 });
 
+// 点击详情页 tab
+Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
+  cy.get('.ant-tabs-nav-list div').contains(getTitle(title)).click();
+  waitTime && cy.wait(waitTime);
+});
+
 // 列表勾选所有
 Cypress.Commands.add('selectAll', () => {
   cy.get('.ant-table-thead')

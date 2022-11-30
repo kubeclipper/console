@@ -19,8 +19,8 @@ describe('在线/离线安装集群', () => {
   const listUrl = '/cluster';
 
   const uuid = Cypress._.random(0, 1e6);
-  const aliyunRegistry = 'registry.aliyuncs.com/google_containers';
-  const offLineRegistry = '172.20.150.138:5000';
+  const aliyunRegistry = Cypress.env('aliyunRegistry');
+  const offLineRegistry = Cypress.env('offLineRegistry');
 
   beforeEach(() => {
     cy.login(listUrl);

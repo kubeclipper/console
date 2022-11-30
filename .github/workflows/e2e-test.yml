@@ -78,11 +78,11 @@ jobs:
           wait-on-timeout: 300
           command: yarn test:e2e
       
-      # - uses: actions/upload-artifact@v2
-      #   if: always()
-      #   with:
-      #     name: cypress-screenshots
-      #     path: cypress/screenshots
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
 
       - uses: actions/upload-artifact@v2
         if: always()

@@ -13,35 +13,49 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { testCase } from '../../../support/common';
 
-let region = null;
+const region = 'default';
+const listUrl = '/region';
+const port = Cypress.env('nodePort');
+const username = Cypress.env('nodeUsername');
+const password = Cypress.env('nodePassword');
 
 describe('The Region Page', () => {
-  const listUrl = '/region/mgt';
-
   beforeEach(() => {
     cy.login(listUrl);
   });
 
-  it('successfully get region', () => {
-    cy.get('.ant-table-row')
-      .first()
-      .find('a')
-      .then(($el) => {
-        region = $el.text();
-      });
+  afterEach(() => {
+    cy.addContext();
   });
 
-  it('successfully detail', () => {
+  it(...testCase('区域管理-查看区域-1').smoke().value(), () => {
+    cy.checkTableRowLength();
+  });
+
+  it(...testCase('区域管理-区域详情-查看集群列表-1').smoke().value(), () => {
     cy.tableSearchText(region).goToDetail(0);
-    cy.checkDetailName(region);
-
-    cy.goBackToList(listUrl);
+    cy.clickByDetailTabs('Cluster List');
+    cy.checkTableRowLength();
   });
 
-  it('successfully delete', () => {
-    cy.tableSearchText(region)
-      .clickActionButtonByTitle('Delete')
-      .clickConfirmActionSubmitButton();
+  it(...testCase('区域管理-区域详情-查看节点列表-1').smoke().value(), () => {
+    cy.tableSearchText(region).goToDetail(0);
+    cy.clickByDetailTabs('Nodes List');
+    cy.checkTableRowLength();
+    cy.clickActionButtonByTitle('Connect Terminal');
+    cy.formInput('port', port)
+      .formInput('username', username)
+      .formInput('password', password)
+      .clickModalActionSubmitButton();
+  });
+
+  it(...testCase('区域管理-区域详情-查看节点详情-1').smoke().value(), () => {
+    cy.tableSearchText(region).goToDetail(0);
+    cy.clickByDetailTabs('Nodes List');
+    cy.goToDetail(0);
+    cy.clickByDetailTabs('BaseDetail');
+    cy.checkBaseDetailValue('default');
   });
 });
