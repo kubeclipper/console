@@ -32,9 +32,11 @@ const loadYaml = (filePath) => {
 
 function getZhJson() {
   const jsonPath = root('src/locales/zh.json');
+  const jsonPath2 = root('src/locales/basezh.json');
   try {
     const rawData = fs.readFileSync(jsonPath);
-    const translate = JSON.parse(rawData);
+    const rawData2 = fs.readFileSync(jsonPath2);
+    const translate = { ...JSON.parse(rawData), ...JSON.parse(rawData2) };
     return translate;
   } catch (e) {
     return {};

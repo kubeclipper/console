@@ -27,6 +27,8 @@
 - freshTable 刷新表格
 - checkTableColVal 校验表格 col 列 存在 val 值
 - clickByDetailTabs 点击详情页 tab
+- selectAll 列表勾选所有
+- selectByName 按名称勾选
 
 ## Form
 
@@ -47,6 +49,7 @@
 - formMultiTransfer 多穿梭框
 - formArrayInputAdd ArrayInput 类型表单 添加 按钮
 - formArrayInputRemove ArrayInput 类型表单 移除 按钮， index 表示移除第几个
+- clickLeftTab 点击左侧 tab 按钮(比如：角色权限)
 
 ## Check commands
 
@@ -57,7 +60,9 @@
 - checkConfirmStepItemContent 检验分步创建确认页表单值
 - checkDetailName 校验详情页 name 存在
 - checkActionNotExistInMore 校验指定 action 不存在更多中
+- checkActionExistInMore 校验更多中应该存在 指定操作
 - checkActionDisabled 校验指定操作是 disabled
+- checkActionEnable 校验 firstAction 操作是 xxx,并且没有 disabled
 - checkEmptyTable 校验表格为空
 - checkTableRowLength 校验表格非空，且应该存在 rowLength 条数据
 - waitStatusNoError 等待表格状态 no error

@@ -166,7 +166,7 @@ const DropdownActionButton = ({
       moreElement = <div>{actionButton}</div>;
     } else if (allowedFatherCount > 0) {
       moreElement = (
-        <Dropdown overlay={menu} trigger={['click']}>
+        <Dropdown overlay={menu} trigger={['hover']}>
           <Button
             type="link"
             className={classnames(styles['more-action'], 'ant-btn-more')}
