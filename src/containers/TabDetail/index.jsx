@@ -228,7 +228,7 @@ const TabDetail = (props) => {
 
   return (
     <TabDetailContext.Provider value={{ ...props, goBack, fetchData }}>
-      <div className={classnames(styles.main, className)}>
+      <div className={classnames(styles.main, className, 'detail-main')}>
         <Actions />
         <DetailInfos />
         <Tab tabs={tabs} className={className} store={store} />
