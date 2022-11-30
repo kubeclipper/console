@@ -115,8 +115,8 @@ class GeneratorReport {
       .description('Generate test case documents containing test report data')
       .option(
         '-l, --report-link <url>',
-        'Cypress html report link address, default "testcases-e2e-report.html"',
-        'testcases-e2e-report.html'
+        'Cypress html report link address, default "merge-report.html"',
+        'merge-report.html'
       )
       .option(
         '-j, --report-json <path>',
@@ -146,7 +146,7 @@ class GeneratorReport {
       .option(
         '-rjul, --report-json-url-list <urls>',
         'Cypress json report urls, use the comma to separate the urls, default "", these urls are derived from merge-report.json',
-        'http://172.16.30.27/caas-test-case/merge-report.json'
+        ''
       )
       .option(
         '-so, --summary-output-file <path>',
@@ -528,9 +528,8 @@ class GeneratorReport {
   }
 
   async GenerateSummary() {
-    if (!this.reportJsonUrlList?.length && !this.summaryOutputFile) return;
+    // await this.GetCaseMapByReportJsonUrlList(this.reportJsonUrlList);
 
-    await this.GetCaseMapByReportJsonUrlList(this.reportJsonUrlList);
     const moduleList = this.GetHtmlAllModules(this.htmlString, this.caseNames);
     const date = moment().format('YYYY-MM-DD');
     const context = { date };
