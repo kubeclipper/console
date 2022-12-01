@@ -13,13 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { testCase } from '../../../support/common';
 
 let nodeIp;
 
-describe('The Node Info Page', () => {
+describe('节点信息', () => {
   const uuid = Cypress._.random(0, 1e6);
-  const listUrl = 'node/info';
-  const port = '22';
+  const listUrl = 'node';
   const username = `e2e-username-${uuid}`;
   const password = 'e2e-password';
 
@@ -27,19 +27,19 @@ describe('The Node Info Page', () => {
     cy.login(listUrl);
   });
 
-  it('successfully get a ip with more action', () => {
+  afterEach(() => {
+    cy.addContext();
+  });
+
+  it(...testCase('获取最后一行的节点ip').smoke().value(), () => {
     cy.get('.ant-table-body')
-      .find('.ant-btn-more')
       .as('more')
       .its('length')
       .then((res) => {
         if (res > 0) {
           cy.get('@more')
-            .eq(0)
-            .parent()
-            .siblings()
-            .as('row')
-            .find('a')
+            .find('.ant-typography')
+            .eq(-1)
             .then(($a) => {
               nodeIp = $a.text();
             });
@@ -47,46 +47,33 @@ describe('The Node Info Page', () => {
       });
   });
 
-  it('successfully detail', () => {
-    cy.goToDetail()
+  it(...testCase('节点信息-查看节点详情-1').smoke().value(), () => {
+    cy.tableSearchText(nodeIp);
+    cy.goToDetail(0)
       .get('.ant-tabs-content')
       .should('exist')
+      .checkDetailName(nodeIp)
       .goBackToList(listUrl);
   });
 
-  it('successfully disable', () => {
-    cy.tableSearchText(nodeIp)
-      .clickActionInMore('Disable')
-      .clickConfirmActionSubmitButton();
+  it(...testCase('节点信息-节点禁用-1').smoke().value(), () => {
+    cy.tableSearchText(nodeIp);
+    cy.clickActionButtonByTitle('Disable');
+    cy.clickConfirmActionSubmitButton();
   });
 
-  it('successfully enable', () => {
-    cy.tableSearchText(nodeIp)
-      .clickActionInMore('Enable')
-      .clickConfirmActionSubmitButton();
+  it(...testCase('节点信息-节点启用-1').smoke().value(), () => {
+    cy.tableSearchText(nodeIp);
+    cy.clickActionButtonByTitle('Enable');
+    cy.clickConfirmActionSubmitButton();
   });
 
-  it('successfully delete', () => {
-    cy.tableSearchText(nodeIp)
-      .clickActionInMore('Disable')
-      .clickConfirmActionSubmitButton();
-
-    cy.tableSearchText(nodeIp)
-      .clickActionInMore('Delete')
-      .clickConfirmActionSubmitButton();
-  });
-
-  it('successfully open terminal', () => {
-    cy.get('.ant-table-row').first().find('button').eq(1).click();
-
-    cy.window().then((win) => {
-      cy.spy(win, 'open').as('terminal');
-    });
-    cy.formInput('port', port)
-      .formInput('username', username)
-      .formInput('password', password)
-      .clickModalActionSubmitButton();
-
-    cy.get('@terminal').should('be.called');
+  it(...testCase('节点信息-节点连接终端-1').smoke().value(), () => {
+    cy.tableSearchText(nodeIp);
+    cy.clickActionButtonByTitle('Connect Terminal');
+    cy.formInput('username', username);
+    cy.formInput('password', password);
+    cy.clickModalActionSubmitButton();
+    cy.get('.ant-modal-confirm-title').should('contain', nodeIp);
   });
 });

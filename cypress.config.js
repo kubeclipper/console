@@ -32,6 +32,7 @@ module.exports = defineConfig({
       'cypress/e2e/pages/cluster/online-offline-install.cy.js',
       'cypress/e2e/pages/access/oauth2.cy.js',
       'cypress/e2e/pages/access/platform-user-role.cy.js',
+      'cypress/e2e/pages/node/node.cy.js',
     ],
   },
 });
