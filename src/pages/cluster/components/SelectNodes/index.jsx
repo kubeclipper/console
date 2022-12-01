@@ -19,14 +19,11 @@ import { computed } from 'mobx';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 import classnames from 'classnames';
-import { rootStore } from 'stores';
 import { flatten } from 'lodash';
 
 import List from './List';
 import ListWrapper from './ListWrapper';
 import styles from './index.less';
-
-const { nodeStore } = rootStore;
 
 @observer
 export default class Index extends PureComponent {
@@ -53,7 +50,7 @@ export default class Index extends PureComponent {
       values: [], // [{key: 'master', value: [{label: '', value: ''}]},{ key: 'worker', value: [{label: '', value: ''}]}]
     };
 
-    this.store = nodeStore;
+    this.store = props.nodeStore;
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
