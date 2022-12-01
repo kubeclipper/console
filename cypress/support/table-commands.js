@@ -233,8 +233,8 @@ Cypress.Commands.add('freshTable', () => {
 });
 
 // 校验表格为空
-Cypress.Commands.add('checkEmptyTable', () => {
-  cy.get('.ant-empty-normal').should('have.length', 1);
+Cypress.Commands.add('checkEmptyTable', (timeout = 100) => {
+  cy.get('.ant-empty-normal', { timeout }).should('have.length', 1);
   cy.wait(2000);
 });
 

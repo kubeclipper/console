@@ -268,3 +268,16 @@ Cypress.Commands.add('loginByKeycloak', (username, password) => {
   cy.get('[type="submit"]').click();
   cy.wait(1000);
 });
+
+// 插件页选择tab
+Cypress.Commands.add('selectComponentTab', (title) => {
+  cy.get('.ant-row')
+    .contains(`${title} ${getTitle('Set')}`)
+    .click()
+    .wait(200);
+});
+
+// 启用插件
+Cypress.Commands.add('enableComponent', (name) => {
+  cy.get('.ant-checkbox-wrapper').eq(0).contains(name).click().wait(200);
+});

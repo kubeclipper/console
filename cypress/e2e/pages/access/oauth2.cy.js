@@ -17,8 +17,8 @@ import getTitle, { testCase } from '../../../support/common';
 
 describe('外部用户登录', () => {
   const listUrl = '/access/user';
-  const username = 'test';
-  const password = '123456';
+  const username = Cypress.env('oauth2Username');
+  const password = Cypress.env('oauth2Password');
 
   const role = 'platform-admin';
   const phone = '13333333333';

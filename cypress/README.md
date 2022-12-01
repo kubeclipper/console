@@ -8,6 +8,8 @@
 - createClusterQuick 快速创建集群
 - deleteCluster 删除集群
 - loginByKeycloak oauth2 外部用户登录(keycloak)
+- selectComponentTab 插件页选择 tab
+- enableComponent 启用插件
 
 ## Table
 
@@ -46,6 +48,7 @@
 - clickConfirmActionSubmitButton confirm 框确认按钮
 - clickStepActionNextButton 分步表单下一步按钮
 - clickStepActionCancelButton 分步表单取消按钮
+- clickStepActionConfirmButton 分步表单确认按钮
 - formMultiTransfer 多穿梭框
 - formArrayInputAdd ArrayInput 类型表单 添加 按钮
 - formArrayInputRemove ArrayInput 类型表单 移除 按钮， index 表示移除第几个
@@ -68,3 +71,4 @@
 - waitStatusNoError 等待表格状态 no error
 - waitStatusProcessing 等待表格 Processing 状态消失
 - checkBaseDetailValue 校验详情页 BaseDetail 字段值
+- checkDetailValueByKey 表单详情页 key 对应 value 值
