@@ -97,6 +97,7 @@ export default class Add extends ModalAction {
         rightTransfers={this.rightTransfers}
         dataSource={this.dataSource}
         onChange={this.onNodeChange}
+        nodeStore={this.nodeStore}
       />
     );
   }

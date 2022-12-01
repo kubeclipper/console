@@ -209,7 +209,11 @@ export default class Node extends BaseForm {
 
   getSelectNodes() {
     return (
-      <SelectNodes dataSource={this.dataSource} onChange={this.onNodeChange} />
+      <SelectNodes
+        dataSource={this.dataSource}
+        onChange={this.onNodeChange}
+        nodeStore={this.nodeStore}
+      />
     );
   }
 
