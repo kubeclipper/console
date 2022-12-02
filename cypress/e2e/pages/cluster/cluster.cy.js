@@ -24,6 +24,10 @@ describe('集群', () => {
   const region = 'default';
   const externalIP = Cypress.env('externalIP');
   const upgradeVersion = Cypress.env('upgradeVersion');
+  const httpRegistry = Cypress.env('httpRegistry');
+
+  const selectComponentTab = 'NFS CSI';
+  const enableComponent = 'nfs-csi';
 
   beforeEach(() => {
     cy.login(listUrl);
@@ -40,7 +44,7 @@ describe('集群', () => {
     cy.wait(1000).url().should('include', 'cluster/create');
 
     // cluster name
-    cy.get('[name="name"]').clear().type(name).blur();
+    cy.formInput('name', name);
     cy.formSelect('region', region);
     // select node
     cy.waitTransferList();
@@ -53,30 +57,62 @@ describe('集群', () => {
     cy.clickStepActionNextButton('step-confirm');
     // check status
     cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+    cy.deleteCluster(name);
   });
 
-  // 创建高可用集群
-  it(...testCase('集群管理-创建-2').smoke().value(), () => {
+  // 创建带存储插件 nfs 的集群
+  it(...testCase('集群管理-创建-3').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
     cy.wait(1000).url().should('include', 'cluster/create');
 
     // cluster name
-    cy.get('[name="name"]').clear().type(name).blur();
+    cy.formInput('name', name);
     cy.formSelect('region', region);
     // select node
     cy.waitTransferList();
     cy.formMultiTransfer('nodes', 0);
-    cy.formMultiTransfer('nodes', 0, 1);
-    cy.formMultiTransfer('nodes', 0, 1);
+    cy.clickStepActionNextButton('step-next');
+    cy.wait(1000);
+
+    cy.formInput('localRegistry', httpRegistry);
+    cy.wait(1000);
+
+    cy.clickStepActionNextButton('step-next');
+
+    cy.selectComponentTab(selectComponentTab);
+    cy.enableComponent(enableComponent);
+
+    cy.get('input[title="服务地址"]').eq(0).type(Cypress.env('nfsIp'));
+    cy.get('input[title="共享路径"]').eq(0).type(Cypress.env('nfsPath'));
+    cy.get('input[title="NFS 镜像仓库代理"]').eq(0).type(httpRegistry);
+    cy.clickStepActionNextButton('step-quick');
+    cy.clickStepActionNextButton('step-confirm');
+
+    // check status
+    cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+  });
+
+  // 创建同名集群
+  it(...testCase('集群管理-创建-4').smoke().value(), () => {
+    cy.clickHeaderButton(0);
+
+    cy.wait(1000).url().should('include', 'cluster/create');
+
+    // cluster name
+    cy.formInput('name', name);
+    cy.formSelect('region', region);
+    // select node
+    cy.waitTransferList();
+    cy.formMultiTransfer('nodes', 0);
 
     // next step
     cy.clickStepActionNextButton('step-next');
-    cy.wait(2000);
+    cy.wait(1000);
     cy.clickStepActionNextButton('step-quick');
     cy.clickStepActionNextButton('step-confirm');
-    // check status
-    cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+
+    cy.checkActionError();
   });
 
   // 查看集群
@@ -226,7 +262,7 @@ describe('集群', () => {
     cy.goToDetail(1);
     cy.clickByDetailTabs('Storage');
 
-    cy.get('.ant-tabs-content h3').should('contain', 'nfs-provisioner');
+    cy.get('.ant-tabs-content h3').should('contain', enableComponent);
   });
 
   // 查看节点列表
@@ -258,6 +294,36 @@ describe('集群', () => {
         rowLength
       );
     });
+    cy.visitPage(listUrl);
+    cy.waitStatusSuccess();
+  });
+
+  // 移除节点
+  it(...testCase('集群管理-集群-集群详情-节点列表-3').smoke().value(), () => {
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('Nodes List');
+    cy.get('.ant-table-body')
+      .find('.ant-table-row')
+      .its('length')
+      .as('rowLength');
+
+    cy.selectTableListByIndex(1);
+    cy.clickHeaderButton(1);
+    cy.clickConfirmActionSubmitButton();
+    cy.wait(4000);
+
+    cy.freshTable();
+    cy.log('@rowLength');
+
+    cy.get('@rowLength').then((rowLength) => {
+      cy.log(rowLength);
+      cy.get('.ant-table-body .ant-table-row').should(
+        'have.lengthOf.lt',
+        rowLength
+      );
+    });
+    cy.visitPage(listUrl);
+    cy.waitStatusSuccess();
   });
 
   // 查看操作日志
@@ -267,29 +333,6 @@ describe('集群', () => {
 
     cy.clickActionButtonByTitle('ViewLog');
     cy.get('.ant-modal-body').should('exist');
-  });
-
-  // 查看集群备份
-  it(...testCase('集群管理-集群-集群详情-备份-1').smoke().value(), () => {
-    cy.goToDetail(1);
-    cy.clickByDetailTabs('BackUp');
-
-    cy.clickActionButtonByTitle('Edit');
-    cy.formInput('description', 'description');
-    cy.clickModalActionSubmitButton();
-    cy.checkTableColVal(2, 'description');
-
-    cy.clickActionInMore({
-      title: 'Restore',
-    });
-    cy.clickConfirmActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
-
-    cy.clickActionInMore({
-      title: 'Delete',
-    });
-    cy.clickConfirmActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
   });
 
   // 升级集群
@@ -307,7 +350,7 @@ describe('集群', () => {
     cy.get('#form-item-col-version').find('span').contains(upgradeVersion);
     cy.clickModalActionSubmitButton();
 
-    cy.waitStatusSuccess(null, 5 * 1000 * 60);
+    cy.waitStatusSuccess(null, 10 * 60 * 1000);
 
     cy.goToDetail(1);
     cy.get('.ant-tabs-content .ant-row').should('contain', upgradeVersion);
@@ -316,5 +359,29 @@ describe('集群', () => {
   // 删除集群
   it(...testCase('集群管理-集群-删除集群-1').smoke().value(), () => {
     cy.deleteCluster(name);
+  });
+
+  // 创建高可用集群
+  it(...testCase('集群管理-创建-2').smoke().value(), () => {
+    cy.clickHeaderButton(0);
+
+    cy.wait(1000).url().should('include', 'cluster/create');
+
+    // cluster name
+    cy.get('[name="name"]').clear().type(name).blur();
+    cy.formSelect('region', region);
+    // select node
+    cy.waitTransferList();
+    cy.formMultiTransfer('nodes', 0);
+    cy.formMultiTransfer('nodes', 0, 1);
+    cy.formMultiTransfer('nodes', 0, 1);
+
+    // next step
+    cy.clickStepActionNextButton('step-next');
+    cy.wait(2000);
+    cy.clickStepActionNextButton('step-quick');
+    cy.clickStepActionNextButton('step-confirm');
+    // check status
+    cy.wait(2000).tableSearchText(name).waitStatusSuccess();
   });
 });

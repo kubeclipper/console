@@ -72,3 +72,5 @@
 - waitStatusProcessing 等待表格 Processing 状态消失
 - checkBaseDetailValue 校验详情页 BaseDetail 字段值
 - checkDetailValueByKey 表单详情页 key 对应 value 值
+- checkActionError 校验右上角弹窗是否是错误
+- selectTableListByIndex 选择指定列表行
