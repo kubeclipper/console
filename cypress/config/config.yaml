@@ -1,1 +1,6 @@
 baseUrl: http://localhost:80
+env:
+  nfsIp: "172.20.151.105"
+  nfsPath: "/tmp/nfs/data/ly-host"
+  oauth2Username: 'test'
+  oauth2Password: '123456'

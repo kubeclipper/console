@@ -70,3 +70,8 @@ Cypress.Commands.add('checkDetailInfo', (label, value) => {
     .contains(value)
     .should('exist');
 });
+
+// 表单详情页 key 对应 value 值
+Cypress.Commands.add('checkDetailValueByKey', (key, value) => {
+  cy.contains(getTitle(key)).next().should('include.text', value);
+});

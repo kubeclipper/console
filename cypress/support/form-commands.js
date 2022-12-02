@@ -204,6 +204,11 @@ Cypress.Commands.add('clickStepActionCancelButton', (waitTime = 2000) => {
     .wait(waitTime);
 });
 
+// 分步表单确认按钮
+Cypress.Commands.add('clickStepActionConfirmButton', (waitTime = 2000) => {
+  cy.get('.step-form-footer-btns').find('button').eq(1).click().wait(waitTime);
+});
+
 // ip 输入框
 Cypress.Commands.add('inputIP', (_class, value) => {
   value.split('.').forEach((it, index) => {
