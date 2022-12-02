@@ -260,6 +260,58 @@ describe('集群', () => {
     });
   });
 
+// 单独安装存储nfs
+it(...testCase('集群管理-集群-添加存储项-1').smoke().value(), () => {
+  cy.tableSearchText(name);
+  cy.clickActionInMore({
+    title: 'Plugin management',
+    subTitle: 'Add Storage',
+  });
+  cy.get('.ant-row').contains('NFS CSI').click();
+  cy.get('.ant-checkbox-input').eq(0).click();
+  cy.get('input[title = "服务地址"]').eq(0).type(ServerAddr);
+  cy.get('input[title = "共享路径"]').eq(0).type(SharedPath);
+  cy.get('.step-form-footer-btns')
+    .find('.ant-btn-primary')
+    .click()
+    .wait(1000);
+  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
+});
+
+// 单独卸载存储nfs
+it(...testCase('集群管理-集群详情-存储-移除1').smoke().value(), () => {
+  cy.tableSearchText(name);
+  cy.goToDetail(1);
+  cy.clickByDetailTabs('Storage');
+  cy.get('.ant-row').find('.ant-btn-dangerous').click();
+  cy.clickConfirmActionSubmitButton();
+  cy.goBackToList(listUrl);
+  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
+});
+
+// 使用镜像仓库单独安装存储nfs
+it(...testCase('集群管理-集群-添加存储项-2').smoke().value(), () => {
+  cy.tableSearchText(name);
+  cy.clickActionInMore({
+    title: 'Plugin management',
+    subTitle: 'Add Storage',
+  });
+  cy.get('.ant-row').contains('NFS CSI').click();
+  cy.get('.ant-checkbox-input').eq(0).click();
+  cy.get('input[title = "服务地址"]').eq(0).type(ServerAddr);
+  cy.get('input[title = "共享路径"]').eq(0).type(SharedPath);
+  cy.get('input[title = "NFS 镜像仓库代理"]').eq(0).type(Registry);
+  cy.get('.step-form-footer-btns').find('.ant-btn-primary').click().wait(200);
+  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
+  
+  cy.goToDetail(1);
+  cy.clickByDetailTabs('Storage');
+  cy.get('.ant-row').find('.ant-btn-dangerous').click();
+  cy.clickConfirmActionSubmitButton();
+  cy.goBackToList(listUrl);
+  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
+});
+
   // 查看操作日志
   it(...testCase('集群管理-集群-集群详情-操作日志-1').smoke().value(), () => {
     cy.goToDetail(1);
