@@ -13,14 +13,40 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+
+import { testCase } from '../../../support/common';
+
 describe('The Header Page', () => {
   beforeEach(() => {
     cy.login();
   });
 
-  it('successfully change language', () => {
+  afterEach(() => {
+    cy.addContext();
+  });
+
+  it(...testCase('切换语言').smoke().value(), () => {
     cy.clickAvatarButton('EN');
-    cy.wait(5000);
+    cy.hoverAvatar();
+    cy.get('.ant-dropdown-menu')
+      .find('span')
+      .contains('Switch Language')
+      .should('exist')
+      .wait(2000);
+
     cy.clickAvatarButton('CN');
+    cy.hoverAvatar();
+    cy.get('.ant-dropdown-menu')
+      .find('span')
+      .contains('切换语言')
+      .should('exist');
+  });
+
+  it(...testCase('显示用户名').smoke().value(), () => {
+    cy.hoverAvatar();
+    cy.get('.ant-dropdown-menu')
+      .find('span')
+      .contains(Cypress.env('username'))
+      .should('exist');
   });
 });

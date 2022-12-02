@@ -23,8 +23,7 @@ Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
 
 // 校验详情页 BaseDetail 字段值
 Cypress.Commands.add('checkBaseDetailValue', (value) => {
-  cy.goToDetail(1)
-    .get('.detail-card-item')
+  cy.get('.detail-card-item')
     .first()
     .find('.ant-col', { timeout: 100000000 })
     .contains(value)

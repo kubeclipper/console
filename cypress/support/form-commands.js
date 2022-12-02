@@ -156,6 +156,11 @@ Cypress.Commands.add('formCheckboxClick', (formItemName, index = 0) => {
   cy.get(getId(formItemName)).find('input').eq(index).click();
 });
 
+// switch 类型表单
+Cypress.Commands.add('formSwitchClick', (formItemName) => {
+  cy.get(getId(formItemName)).find('.ant-switch').click();
+});
+
 // ip 输入框
 Cypress.Commands.add('formInputIp', (formItemName, value = '0.0.0.0') => {
   cy.get(formItemName).last().as('item');
@@ -174,7 +179,7 @@ Cypress.Commands.add('formTextarea', (formItemName, value) => {
   cy.get(getId(formItemName))
     .find('textarea')
     .clear({ force: true })
-    .type(value, { force: true });
+    .invoke('val', value);
 });
 
 // Radio 类型选择框
@@ -339,3 +344,28 @@ Cypress.Commands.add('clickRoleCheckbox', (index, waitTime) => {
     cy.wait(waitTime);
   }
 });
+
+Cypress.Commands.add(
+  'formInputRegistry',
+  (formItemName, index, value, waitTime) => {
+    cy.get(getId(formItemName)).as('formItem');
+    cy.get('@formItem').find('.ant-select').click().wait(500);
+
+    cy.get('.ant-select-dropdown')
+      .last()
+      .find('.ant-select-item-option')
+      .eq(index)
+      .click({ force: true });
+
+    cy.get('@formItem')
+      .find('input')
+      .last()
+      .clear({ force: true })
+      .type(value)
+      .blur();
+
+    if (waitTime) {
+      cy.wait(waitTime);
+    }
+  }
+);

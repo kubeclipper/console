@@ -25,7 +25,7 @@ before(() => {
 });
 
 after(() => {
-  // cy.deleteCluster(clusterName);
+  cy.deleteCluster(clusterName);
 });
 
 describe('备份空间', () => {
@@ -34,15 +34,15 @@ describe('备份空间', () => {
   const _uuid = Cypress._.random(0, 1e6);
 
   const backupFSName = `fs-${_uuid}`;
-  const backupFSRootDir = '/data/aio-test'; // e2e workflow 中 mkdir 的目录
+  const backupFSRootDir = Cypress.env('backupFSRootDir'); // e2e workflow 中 mkdir 的目录
   const backupFSStorageType = 'FS';
 
   const backupS3Name = `s3-${_uuid}`;
   const backupS3StorageType = 'S3';
   const backupS3BucketName = 'kubeclipper';
-  const backupS3EndPoint = '172.20.163.233:9000';
-  const backupS3Admin = 'admin';
-  const backupS3Password = 'Aa123456';
+  const backupS3EndPoint = Cypress.env('backupS3EndPoint');
+  const backupS3Admin = Cypress.env('admin');
+  const backupS3Password = Cypress.env('backupS3Password');
 
   // 定时备份
   const scheduledTest = 'scheduled-test';
@@ -181,7 +181,7 @@ describe('备份空间', () => {
   });
 
   // 使用 s3 存储备份
-  it.skip(...testCase('集群管理-备份空间-备份-2').smoke().value(), () => {
+  it(...testCase('集群管理-备份空间-备份-2').smoke().value(), () => {
     cy.visitPage('/cluster');
     cy.clickActionInMore({
       title: 'Cluster Settings',
@@ -203,7 +203,7 @@ describe('备份空间', () => {
   });
 
   // 使用 s3 存储恢复
-  it.skip(...testCase('集群管理-备份空间-恢复-1').smoke().value(), () => {
+  it(...testCase('集群管理-备份空间-恢复-1').smoke().value(), () => {
     cy.visitPage('cluster');
 
     cy.clickActionInMore({
@@ -320,7 +320,7 @@ describe('备份空间', () => {
   });
 
   // 定时备份-仅执行一次
-  it.skip(...testCase('集群管理-定时备份-2').smoke().value(), () => {
+  it(...testCase('集群管理-定时备份-2').smoke().value(), () => {
     cy.visitPage('/cluster');
 
     cy.goToDetail(1);
@@ -357,7 +357,7 @@ describe('备份空间', () => {
   });
 
   // 删除定时备份
-  it.skip(...testCase('集群管理-定时备份-5').smoke().value(), () => {
+  it(...testCase('集群管理-定时备份-5').smoke().value(), () => {
     cy.visitPage('/cluster');
     cy.goToDetail(1);
     cy.clickByDetailTabs('Scheduled Backup');
