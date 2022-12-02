@@ -5,7 +5,7 @@ env:
   language: 'zh'
 # nfs
   nfsIp: "172.20.151.105"
-  nfsPath: "/tmp/nfs/data/ly-host"
+  nfsPath: "/tmp/nfs/data/e2e-test"
 # Keycloak
   oauth2Username: test
   oauth2Password: '123456'

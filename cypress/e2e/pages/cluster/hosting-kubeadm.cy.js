@@ -82,45 +82,42 @@ describe('kubeadm 纳管', () => {
   });
 
   // 添加提供商(密码)
-  it.only(
-    ...testCase('集群管理-集群托管-提供商-添加-1').smoke().value(),
-    () => {
-      cy.login('/cluster/hosting');
+  it(...testCase('集群管理-集群托管-提供商-添加-1').smoke().value(), () => {
+    cy.login('/cluster/hosting');
 
-      cy.clickHeaderButton(0);
+    cy.clickHeaderButton(0);
 
-      cy.readFile('cypress/config/kubeconfig.yaml').then((kubeconfig) => {
-        cy.formInput('name', name);
-        cy.formSelect('region', region);
-        cy.get('#form-item-col-sshType').contains(getTitle('Password')).click();
+    cy.readFile('cypress/config/kubeconfig.yaml').then((kubeconfig) => {
+      cy.formInput('name', name);
+      cy.formSelect('region', region);
+      cy.get('#form-item-col-sshType').contains(getTitle('Password')).click();
 
-        cy.formInput('user', 'root');
-        cy.formInput('password', Cypress.env('password'));
-        cy.formInput('clusterName', clusterName);
-        // 输出 kubeconfig
-        cy.get('.ace_text-input')
-          .focus()
-          .invoke('val', kubeconfig)
-          .type(' ', { force: true });
+      cy.formInput('user', 'root');
+      cy.formInput('password', Cypress.env('password'));
+      cy.formInput('clusterName', clusterName);
+      // 输出 kubeconfig
+      cy.get('.ace_text-input')
+        .focus()
+        .invoke('val', kubeconfig)
+        .type(' ', { force: true });
 
-        cy.clickModalActionSubmitButton();
+      cy.clickModalActionSubmitButton();
 
-        // 托管列表校验
-        cy.tableSearchText(name);
+      // 托管列表校验
+      cy.tableSearchText(name);
 
-        cy.get('.ant-table-row')
-          .find('td')
-          .eq(1)
-          .find('span', { timeout: 1000 * 60 })
-          .should('not.exist');
+      cy.get('.ant-table-row')
+        .find('td')
+        .eq(1)
+        .find('span', { timeout: 1000 * 60 })
+        .should('not.exist');
 
-        // 集群列表校验
-        cy.visitPage('/cluster');
-        cy.tableSearchText(clusterName);
-        cy.waitStatusSuccess();
-      });
-    }
-  );
+      // 集群列表校验
+      cy.visitPage('/cluster');
+      cy.tableSearchText(clusterName);
+      cy.waitStatusSuccess();
+    });
+  });
 
   // 编辑提供商 需：节点修改节点的密码
   it.skip(
@@ -193,7 +190,7 @@ describe('kubeadm 纳管', () => {
 
       cy.formInput('name', 'test-backup');
       cy.clickModalActionSubmitButton();
-      cy.wait(2000).waitStatusSuccess();
+      cy.waitStatusSuccess();
 
       // 恢复集群
       cy.clickActionInMore({
@@ -203,7 +200,7 @@ describe('kubeadm 纳管', () => {
 
       cy.clickByTitle('.ant-modal-content .ant-table-tbody', backupFSName);
       cy.clickModalActionSubmitButton();
-      cy.wait(2000).waitStatusSuccess();
+      cy.waitStatusSuccess();
     }
   );
 
@@ -261,7 +258,7 @@ describe('kubeadm 纳管', () => {
     });
     cy.formMultiTransfer('nodes', 0);
     cy.clickModalActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
+    cy.waitStatusSuccess();
   });
 
   // 纳管集群移除节点
@@ -274,11 +271,11 @@ describe('kubeadm 纳管', () => {
     });
     cy.clickByTitle('.ant-modal-content .ant-table-tbody', 'worker');
     cy.clickModalActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
+    cy.waitStatusSuccess();
   });
 
   // 纳管集群的添加存储项
-  it.only(
+  it(
     ...testCase('集群管理-集群-纳管集群详情-添加存储项-2').smoke().value(),
     () => {
       cy.login('/cluster');

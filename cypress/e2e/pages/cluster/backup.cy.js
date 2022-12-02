@@ -46,7 +46,7 @@ describe('备份空间', () => {
 
   // 定时备份
   const scheduledTest = 'scheduled-test';
-  const onlyOnceTest = 'onlyonce-test	';
+  const onlyOnceTest = 'onlyonce-test';
 
   beforeEach(() => {
     cy.login(listUrl);
@@ -75,6 +75,29 @@ describe('备份空间', () => {
     });
 
     cy.formSelect('backupPoint', backupFSName);
+  });
+
+  // 查看集群备份
+  it(...testCase('集群管理-集群-集群详情-备份-1').smoke().value(), () => {
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('BackUp');
+
+    cy.clickActionButtonByTitle('Edit');
+    cy.formInput('description', 'description');
+    cy.clickModalActionSubmitButton();
+    cy.checkTableColVal(2, 'description');
+
+    cy.clickActionInMore({
+      title: 'Restore',
+    });
+    cy.clickConfirmActionSubmitButton();
+    cy.wait(2000).waitStatusSuccess();
+
+    cy.clickActionInMore({
+      title: 'Delete',
+    });
+    cy.clickConfirmActionSubmitButton();
+    cy.wait(2000).waitStatusSuccess();
   });
 
   // 添加s3备份空间

@@ -229,7 +229,7 @@ Cypress.Commands.add('waitStatusGreen', (index) => {
 Cypress.Commands.add('freshTable', () => {
   // eslint-disable-next-line no-console
   console.log('fresh table');
-  cy.clickHeaderButton(0).waitTableLoading();
+  cy.get('.anticon-sync').parent().click({ force: true }).waitTableLoading();
 });
 
 // 校验表格为空
@@ -343,4 +343,21 @@ Cypress.Commands.add('selectByName', (name) => {
     .parent()
     .find('.ant-checkbox-input')
     .click({ force: true });
+});
+
+// 校验右上角弹窗是否是错误
+Cypress.Commands.add('checkActionError', () => {
+  cy.get('.ant-notification-notice-content span span').should(
+    'have.class',
+    'anticon-close-circle'
+  );
+});
+
+// 选择指定列表行
+Cypress.Commands.add('selectTableListByIndex', (index) => {
+  cy.get('.ant-table-tbody .ant-table-row')
+    .eq(index)
+    .find('td')
+    .first()
+    .click();
 });
