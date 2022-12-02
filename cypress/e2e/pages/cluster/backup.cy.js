@@ -46,7 +46,7 @@ describe('备份空间', () => {
 
   // 定时备份
   const scheduledTest = 'scheduled-test';
-  const onlyOnceTest = 'onlyonce-test	';
+  const onlyOnceTest = 'onlyonce-test';
 
   beforeEach(() => {
     cy.login(listUrl);

@@ -383,5 +383,6 @@ describe('集群', () => {
     cy.clickStepActionNextButton('step-confirm');
     // check status
     cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+    cy.deleteCluster(name);
   });
 });
