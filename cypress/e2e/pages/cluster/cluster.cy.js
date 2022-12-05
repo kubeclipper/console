@@ -24,7 +24,10 @@ describe('集群', () => {
   const region = 'default';
   const externalIP = Cypress.env('externalIP');
   const upgradeVersion = Cypress.env('upgradeVersion');
-  const httpRegistry = Cypress.env('httpRegistry');
+
+  const nfsIp = Cypress.env('nfsIp');
+  const nfsPath = Cypress.env('nfsPath');
+  const offLineRegistry = Cypress.env('offLineRegistry');
 
   const selectComponentTab = 'NFS CSI';
   const enableComponent = 'nfs-csi';
@@ -56,7 +59,19 @@ describe('集群', () => {
     cy.clickStepActionNextButton('step-quick');
     cy.clickStepActionNextButton('step-confirm');
     // check status
-    cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+    cy.wait(2000);
+
+    // check log modal
+    cy.tableSearchText(name).goToDetail(1);
+    cy.clickByDetailTabs('Operation Log')
+      .clickActionButtonByTitle('ViewLog')
+      .wait(1000);
+    cy.get('.ant-modal-body').should('exist').wait(6000);
+    cy.get('.ant-modal-body').should('exist');
+    cy.closeModal();
+
+    cy.goBackToList(listUrl).wait(2000);
+    cy.tableSearchText(name).waitStatusSuccess();
     cy.deleteCluster(name);
   });
 
@@ -75,7 +90,7 @@ describe('集群', () => {
     cy.clickStepActionNextButton('step-next');
     cy.wait(1000);
 
-    cy.formInput('localRegistry', httpRegistry);
+    cy.formInput('localRegistry', offLineRegistry);
     cy.wait(1000);
 
     cy.clickStepActionNextButton('step-next');
@@ -85,7 +100,7 @@ describe('集群', () => {
 
     cy.get('input[title="服务地址"]').eq(0).type(Cypress.env('nfsIp'));
     cy.get('input[title="共享路径"]').eq(0).type(Cypress.env('nfsPath'));
-    cy.get('input[title="NFS 镜像仓库代理"]').eq(0).type(httpRegistry);
+    cy.get('input[title="NFS 镜像仓库代理"]').eq(0).type(offLineRegistry);
     cy.clickStepActionNextButton('step-quick');
     cy.clickStepActionNextButton('step-confirm');
 
@@ -141,12 +156,15 @@ describe('集群', () => {
       .value(),
     () => {
       const registryName = `registry-${uuid}`;
-      const registry = Cypress.env('httpRegistry');
 
       // 创建 registy
       cy.visitPage('/cluster/registry').clickHeaderButton(0);
       cy.formInput('name', registryName);
-      cy.formInputRegistry('host', 0, registry).clickModalActionSubmitButton();
+      cy.formInputRegistry(
+        'host',
+        0,
+        offLineRegistry
+      ).clickModalActionSubmitButton();
 
       cy.visitPage('/cluster');
       cy.tableSearchText(name).clickActionInMore({
@@ -164,7 +182,7 @@ describe('集群', () => {
       });
 
       cy.get('.ant-select-item-option')
-        .contains(`${registry} (${registryName})`)
+        .contains(`${offLineRegistry} (${registryName})`)
         .click({ force: true })
         .clickModalActionSubmitButton();
 
@@ -326,57 +344,57 @@ describe('集群', () => {
     cy.waitStatusSuccess();
   });
 
-// 单独安装存储nfs
-it(...testCase('集群管理-集群-添加存储项-1').smoke().value(), () => {
-  cy.tableSearchText(name);
-  cy.clickActionInMore({
-    title: 'Plugin management',
-    subTitle: 'Add Storage',
+  // 单独安装存储nfs
+  it(...testCase('集群管理-集群-添加存储项-1').smoke().value(), () => {
+    cy.tableSearchText(name);
+    cy.clickActionInMore({
+      title: 'Plugin management',
+      subTitle: 'Add Storage',
+    });
+    cy.get('.ant-row').contains('NFS CSI').click();
+    cy.get('.ant-checkbox-input').eq(0).click();
+    cy.get('input[title = "服务地址"]').eq(0).type(nfsIp);
+    cy.get('input[title = "共享路径"]').eq(0).type(nfsPath);
+    cy.get('.step-form-footer-btns')
+      .find('.ant-btn-primary')
+      .click()
+      .wait(1000);
+    cy.tableSearchText(name).wait(2000).waitStatusSuccess();
   });
-  cy.get('.ant-row').contains('NFS CSI').click();
-  cy.get('.ant-checkbox-input').eq(0).click();
-  cy.get('input[title = "服务地址"]').eq(0).type(ServerAddr);
-  cy.get('input[title = "共享路径"]').eq(0).type(SharedPath);
-  cy.get('.step-form-footer-btns')
-    .find('.ant-btn-primary')
-    .click()
-    .wait(1000);
-  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
-});
 
-// 单独卸载存储nfs
-it(...testCase('集群管理-集群详情-存储-移除1').smoke().value(), () => {
-  cy.tableSearchText(name);
-  cy.goToDetail(1);
-  cy.clickByDetailTabs('Storage');
-  cy.get('.ant-row').find('.ant-btn-dangerous').click();
-  cy.clickConfirmActionSubmitButton();
-  cy.goBackToList(listUrl);
-  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
-});
-
-// 使用镜像仓库单独安装存储nfs
-it(...testCase('集群管理-集群-添加存储项-2').smoke().value(), () => {
-  cy.tableSearchText(name);
-  cy.clickActionInMore({
-    title: 'Plugin management',
-    subTitle: 'Add Storage',
+  // 单独卸载存储nfs
+  it(...testCase('集群管理-集群详情-存储-移除1').smoke().value(), () => {
+    cy.tableSearchText(name);
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('Storage');
+    cy.get('.ant-row').find('.ant-btn-dangerous').click();
+    cy.clickConfirmActionSubmitButton();
+    cy.goBackToList(listUrl);
+    cy.tableSearchText(name).wait(2000).waitStatusSuccess();
   });
-  cy.get('.ant-row').contains('NFS CSI').click();
-  cy.get('.ant-checkbox-input').eq(0).click();
-  cy.get('input[title = "服务地址"]').eq(0).type(ServerAddr);
-  cy.get('input[title = "共享路径"]').eq(0).type(SharedPath);
-  cy.get('input[title = "NFS 镜像仓库代理"]').eq(0).type(Registry);
-  cy.get('.step-form-footer-btns').find('.ant-btn-primary').click().wait(200);
-  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
-  
-  cy.goToDetail(1);
-  cy.clickByDetailTabs('Storage');
-  cy.get('.ant-row').find('.ant-btn-dangerous').click();
-  cy.clickConfirmActionSubmitButton();
-  cy.goBackToList(listUrl);
-  cy.tableSearchText(name).wait(2000).waitStatusSuccess();
-});
+
+  // 使用镜像仓库单独安装存储nfs
+  it(...testCase('集群管理-集群-添加存储项-2').smoke().value(), () => {
+    cy.tableSearchText(name);
+    cy.clickActionInMore({
+      title: 'Plugin management',
+      subTitle: 'Add Storage',
+    });
+    cy.get('.ant-row').contains('NFS CSI').click();
+    cy.get('.ant-checkbox-input').eq(0).click();
+    cy.get('input[title = "服务地址"]').eq(0).type(nfsIp);
+    cy.get('input[title = "共享路径"]').eq(0).type(nfsPath);
+    cy.get('input[title = "NFS 镜像仓库代理"]').eq(0).type(offLineRegistry);
+    cy.get('.step-form-footer-btns').find('.ant-btn-primary').click().wait(200);
+    cy.tableSearchText(name).wait(2000).waitStatusSuccess();
+
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('Storage');
+    cy.get('.ant-row').find('.ant-btn-dangerous').click();
+    cy.clickConfirmActionSubmitButton();
+    cy.goBackToList(listUrl);
+    cy.tableSearchText(name).wait(2000).waitStatusSuccess();
+  });
 
   // 查看操作日志
   it(...testCase('集群管理-集群-集群详情-操作日志-1').smoke().value(), () => {
