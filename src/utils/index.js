@@ -524,7 +524,7 @@ export const versionCross = (currentVersion = '', crossVersion = '') => {
   const [x, y] = current;
   const [x1, y1] = cross;
 
-  if ((x === x1 && y1 > y) || x1 > x) {
+  if ((x === x1 && Number(y1) > Number(y) + 1) || Number(x1) > Number(x)) {
     return true;
   }
 
