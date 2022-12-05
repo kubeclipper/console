@@ -24,6 +24,7 @@ import {
   firstUpperCase,
   getNoValue,
   getGBValue,
+  versionCross,
 } from './index';
 
 describe('test utils index.js', () => {
@@ -130,5 +131,12 @@ describe('test utils index.js', () => {
     expect(getGBValue(NaN)).toBe('');
     expect(getGBValue('')).toBe('');
     expect(getGBValue(0)).toBe('');
+  });
+
+  it('versionCross', () => {
+    expect(versionCross('v1.23.1', 'v1.23.6')).toBe(false);
+    expect(versionCross('v1.23.1', 'v1.24.6')).toBe(false);
+    expect(versionCross('v1.23.1', 'v1.25.6')).toBe(true);
+    expect(versionCross('v1.23.1', 'v2.23.1')).toBe(true);
   });
 });
