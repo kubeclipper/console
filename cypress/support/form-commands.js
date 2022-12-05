@@ -369,3 +369,7 @@ Cypress.Commands.add(
     }
   }
 );
+
+Cypress.Commands.add('closeModal', () => {
+  cy.get('.ant-modal-close').click();
+});

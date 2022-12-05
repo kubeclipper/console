@@ -17,10 +17,9 @@ env:
   nodePassword: 'Thinkbig1'
   nodePort: 22
 # 镜像仓库
-  httpRegistry: 172.20.139.239:5000
+  offLineRegistry: 172.20.139.239:5000
   httpsRegistry: 172.16.29.140
   aliyunRegistry: 'registry.aliyuncs.com/google_containers'
-  offLineRegistry: 172.20.150.138:5000
 # 备份
   backupFSRootDir: /data/aio-test
   backupS3EndPoint: 172.20.163.233:9000
