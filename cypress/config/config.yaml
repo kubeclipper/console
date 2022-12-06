@@ -21,7 +21,6 @@ env:
   httpsRegistry: 172.16.29.140
   aliyunRegistry: 'registry.aliyuncs.com/google_containers'
 # 备份
-  backupFSRootDir: /tmp/nfs/data/e2e-test
   backupS3EndPoint: 172.20.163.233:9000
   backupS3Admin: admin
   backupS3Password: Aa123456

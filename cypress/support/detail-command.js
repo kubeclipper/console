@@ -43,17 +43,28 @@ Cypress.Commands.add('clickDetailFirstAction', (title, waitTime = 2000) => {
 });
 
 // 详情页更多中操作
-Cypress.Commands.add('clickDetailActionInMore', (title, waitTime = 2000) => {
+Cypress.Commands.add('clickDetailActionInMore', (titles, waitTime = 2000) => {
   cy.get('.detail-main')
     .children()
     .first()
     .find('.ant-dropdown-trigger')
     .trigger('mouseover');
-  const realTitle = getTitle(title);
-  cy.get('ul.ant-dropdown-menu-light')
-    .contains(realTitle)
-    .click({ force: true })
-    .wait(waitTime);
+
+  if (titles.subTitle) {
+    const { title, subTitle } = titles;
+    const realTitle = getTitle(title);
+    cy.get('ul.ant-dropdown-menu-light')
+      .contains(realTitle)
+      .trigger('mouseover');
+
+    cy.get('ul.ant-dropdown-menu-sub').contains(getTitle(subTitle)).click();
+  } else {
+    const realTitle = getTitle(titles);
+    cy.get('ul.ant-dropdown-menu-light')
+      .contains(realTitle)
+      .click({ force: true })
+      .wait(waitTime);
+  }
 });
 
 // 详情页值校验

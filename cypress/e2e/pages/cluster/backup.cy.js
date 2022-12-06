@@ -30,18 +30,19 @@ after(() => {
 
 describe('备份空间', () => {
   const listUrl = '/cluster/backup-point';
+  const clusterUrl = '/cluster';
 
   const _uuid = Cypress._.random(0, 1e6);
 
   const backupFSName = `fs-${_uuid}`;
-  const backupFSRootDir = Cypress.env('backupFSRootDir'); // e2e workflow 中 mkdir 的目录
+  const backupFSRootDir = Cypress.env('nfsPath');
   const backupFSStorageType = 'FS';
 
   const backupS3Name = `s3-${_uuid}`;
   const backupS3StorageType = 'S3';
   const backupS3BucketName = 'kubeclipper';
   const backupS3EndPoint = Cypress.env('backupS3EndPoint');
-  const backupS3Admin = Cypress.env('admin');
+  const backupS3Admin = Cypress.env('backupS3Admin');
   const backupS3Password = Cypress.env('backupS3Password');
 
   // 定时备份
@@ -68,62 +69,13 @@ describe('备份空间', () => {
     cy.tableSearchText(backupFSName);
     cy.checkTableColVal(3, 'fs');
 
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
     cy.clickActionInMore({
       title: 'Cluster Settings',
       subTitle: 'Edit',
     });
 
     cy.formSelect('backupPoint', backupFSName);
-  });
-
-  // 查看集群备份
-  it(...testCase('集群管理-集群-集群详情-备份-1').smoke().value(), () => {
-    cy.goToDetail(1);
-    cy.clickByDetailTabs('BackUp');
-
-    cy.clickActionButtonByTitle('Edit');
-    cy.formInput('description', 'description');
-    cy.clickModalActionSubmitButton();
-    cy.checkTableColVal(2, 'description');
-
-    cy.clickActionInMore({
-      title: 'Restore',
-    });
-    cy.clickConfirmActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
-
-    cy.clickActionInMore({
-      title: 'Delete',
-    });
-    cy.clickConfirmActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
-  });
-
-  // 添加s3备份空间
-  it(...testCase('集群管理-备份空间-创建-2').smoke().value(), () => {
-    cy.visitPage(listUrl);
-
-    cy.clickHeaderButton(0);
-
-    cy.formInput('name', backupS3Name);
-    cy.formSelect('storageType', backupS3StorageType);
-    cy.formInput('bucket', backupS3BucketName);
-    cy.formInput('endpoint', backupS3EndPoint);
-    cy.formInput('accessKeyID', backupS3Admin);
-    cy.formInput('accessKeySecret', backupS3Password);
-    cy.clickModalActionSubmitButton();
-
-    cy.tableSearchText(backupS3Name);
-    cy.checkTableColVal(3, 's3');
-
-    cy.visitPage('/cluster');
-    cy.clickActionInMore({
-      title: 'Cluster Settings',
-      subTitle: 'Edit',
-    });
-
-    cy.formSelect('backupPoint', backupS3Name);
   });
 
   // 备份空间查看
@@ -147,26 +99,9 @@ describe('备份空间', () => {
     cy.checkTableColVal(4, description);
   });
 
-  // s3 备份空间编辑
-  it(...testCase('集群管理-备份空间-编辑备份空间-2').smoke().value(), () => {
-    const description = 's3-description';
-    cy.tableSearchText(backupS3Name);
-    cy.checkTableColVal(2, backupS3Name);
-    cy.clickActionButtonByTitle('Edit');
-    cy.formInput('description', description);
-    cy.clickModalActionSubmitButton();
-    cy.checkTableColVal(4, description);
-  });
-
   // 使用 fs 存储备份
   it(...testCase('集群管理-备份空间-备份-1').smoke().value(), () => {
-    cy.clickHeaderButton(0);
-    cy.formInput('name', backupFSName);
-    cy.formInput('backupRootDir', backupFSRootDir);
-    cy.formSelect('storageType', backupFSStorageType);
-    cy.clickModalActionSubmitButton();
-
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
     cy.clickActionInMore({
       title: 'Cluster Settings',
       subTitle: 'Edit',
@@ -191,7 +126,7 @@ describe('备份空间', () => {
 
   // 使用 fs 存储恢复
   it(...testCase('集群管理-备份空间-恢复-2').smoke().value(), () => {
-    cy.visitPage('cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
 
     cy.clickActionInMore({
       title: 'Backup and recovery',
@@ -203,9 +138,94 @@ describe('备份空间', () => {
     cy.wait(2000).waitStatusSuccess();
   });
 
+  // 查看集群备份
+  it(...testCase('集群管理-集群-集群详情-备份-1').smoke().value(), () => {
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
+
+    cy.clickByDetailTabs('BackUp');
+
+    cy.clickDetailActionInMore({ title: 'Cluster Settings', subTitle: 'Edit' });
+    cy.formInput('description', 'description');
+    cy.clickModalActionSubmitButton();
+    cy.checkDetailInfo('Description', 'description').wait(1000);
+
+    cy.get('.ant-table-body')
+      .find('.ant-table-row')
+      .first()
+      .find('td')
+      .eq(1)
+      .then(($el) => {
+        cy.log('@rowLength');
+        cy.tableSearchText($el.text());
+      });
+
+    cy.clickActionInMore({
+      title: 'Restore',
+    });
+    cy.clickConfirmActionSubmitButton();
+    cy.wait(2000).waitStatusSuccess();
+
+    cy.clickActionInMore({
+      title: 'Delete',
+    });
+    cy.clickConfirmActionSubmitButton();
+  });
+
+  // 删除备份空间 fs
+  it(...testCase('集群管理-备份空间-删除-1').smoke().value(), () => {
+    cy.tableSearchText(backupFSName);
+    cy.clickActionButtonByTitle('Delete');
+    cy.clickConfirmActionSubmitButton();
+
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
+    cy.clickActionInMore({
+      title: 'Cluster Settings',
+      subTitle: 'Edit',
+    });
+
+    cy.checkFormSelectorNotExist('backupPoint', backupFSName);
+  });
+
+  // 添加s3备份空间
+  it(...testCase('集群管理-备份空间-创建-2').smoke().value(), () => {
+    cy.visitPage(listUrl);
+
+    cy.clickHeaderButton(0);
+
+    cy.formInput('name', backupS3Name);
+    cy.formSelect('storageType', backupS3StorageType);
+    cy.formInput('bucket', backupS3BucketName);
+    cy.formInput('endpoint', backupS3EndPoint);
+    cy.formInput('accessKeyID', backupS3Admin);
+    cy.formInput('accessKeySecret', backupS3Password);
+    cy.clickModalActionSubmitButton();
+
+    cy.tableSearchText(backupS3Name);
+    cy.checkTableColVal(3, 's3');
+
+    cy.visitPage(clusterUrl);
+    cy.clickActionInMore({
+      title: 'Cluster Settings',
+      subTitle: 'Edit',
+    });
+
+    cy.formSelect('backupPoint', backupS3Name);
+  });
+
+  // s3 备份空间编辑
+  it(...testCase('集群管理-备份空间-编辑备份空间-2').smoke().value(), () => {
+    const description = 's3-description';
+    cy.tableSearchText(backupS3Name);
+    cy.checkTableColVal(2, backupS3Name);
+    cy.clickActionButtonByTitle('Edit');
+    cy.formInput('description', description);
+    cy.clickModalActionSubmitButton();
+    cy.checkTableColVal(4, description);
+  });
+
   // 使用 s3 存储备份
   it(...testCase('集群管理-备份空间-备份-2').smoke().value(), () => {
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
     cy.clickActionInMore({
       title: 'Cluster Settings',
       subTitle: 'Edit',
@@ -222,12 +242,12 @@ describe('备份空间', () => {
 
     cy.goToDetail(1);
     cy.clickByDetailTabs('BackUp');
-    cy.waitStatusSuccess(null, 0);
+    cy.waitStatusSuccess(null);
   });
 
   // 使用 s3 存储恢复
   it(...testCase('集群管理-备份空间-恢复-1').smoke().value(), () => {
-    cy.visitPage('cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
 
     cy.clickActionInMore({
       title: 'Backup and recovery',
@@ -241,16 +261,15 @@ describe('备份空间', () => {
 
   // 定时备份-重复执行
   it(...testCase('集群管理-定时备份-1').smoke().value(), () => {
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
 
-    cy.goToDetail(1);
     cy.clickByDetailTabs('BackUp');
     cy.get('.ant-table-body')
       .find('.ant-table-row')
       .its('length')
       .as('rowLength');
 
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
     cy.clickActionInMore({
       title: 'Backup and recovery',
       subTitle: 'Scheduled Backup',
@@ -279,17 +298,16 @@ describe('备份空间', () => {
 
   // 编辑定时备份
   it(...testCase('集群管理-定时备份-3').smoke().value(), () => {
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
 
-    cy.goToDetail(1);
     cy.clickByDetailTabs('BackUp');
     cy.get('.ant-table-body')
       .find('.ant-table-row')
       .its('length')
       .as('rowLength');
 
-    cy.visitPage('/cluster');
-    cy.goToDetail(1);
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
+
     cy.clickByDetailTabs('Scheduled Backup');
 
     cy.clickActionButtonByTitle('Edit');
@@ -311,17 +329,16 @@ describe('备份空间', () => {
 
   // 禁用/启用定时备份
   it(...testCase('集群管理-定时备份-4').smoke().value(), () => {
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
 
-    cy.goToDetail(1);
     cy.clickByDetailTabs('BackUp');
     cy.get('.ant-table-body')
       .find('.ant-table-row')
       .its('length')
       .as('rowLength');
 
-    cy.visitPage('/cluster');
-    cy.goToDetail(1);
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
+
     cy.clickByDetailTabs('Scheduled Backup');
 
     cy.clickActionButtonByTitle('Edit');
@@ -344,16 +361,15 @@ describe('备份空间', () => {
 
   // 定时备份-仅执行一次
   it(...testCase('集群管理-定时备份-2').smoke().value(), () => {
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
 
-    cy.goToDetail(1);
     cy.clickByDetailTabs('BackUp');
     cy.get('.ant-table-body')
       .find('.ant-table-row')
       .its('length')
       .as('rowLength');
 
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
     cy.clickActionInMore({
       title: 'Backup and recovery',
       subTitle: 'Scheduled Backup',
@@ -381,8 +397,8 @@ describe('备份空间', () => {
 
   // 删除定时备份
   it(...testCase('集群管理-定时备份-5').smoke().value(), () => {
-    cy.visitPage('/cluster');
-    cy.goToDetail(1);
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
+
     cy.clickByDetailTabs('Scheduled Backup');
     cy.get('.ant-table-body')
       .find('.ant-table-row')
@@ -402,28 +418,21 @@ describe('备份空间', () => {
     });
   });
 
-  // 删除备份空间 fs
-  it(...testCase('集群管理-备份空间-删除-1').smoke().value(), () => {
-    cy.tableSearchText(backupFSName);
-    cy.clickActionButtonByTitle('Delete');
-    cy.clickConfirmActionSubmitButton();
-
-    cy.visitPage('/cluster');
-    cy.clickActionInMore({
-      title: 'Cluster Settings',
-      subTitle: 'Edit',
-    });
-
-    cy.checkFormSelectorNotExist('backupPoint', backupFSName);
-  });
-
   // 删除备份空间 s3
   it(...testCase('集群管理-备份空间-删除-2').smoke().value(), () => {
-    cy.tableSearchText(backupS3Name);
+    cy.visitPage(clusterUrl).tableSearchText(clusterName).goToDetail(1);
+    cy.clickByDetailTabs('BackUp').wait(2000);
+
+    cy.selectAll()
+      .clickHeaderButton(0)
+      .clickConfirmActionSubmitButton()
+      .wait(2000);
+
+    cy.visitPage(listUrl).tableSearchText(backupS3Name);
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();
 
-    cy.visitPage('/cluster');
+    cy.visitPage(clusterUrl).tableSearchText(clusterName);
     cy.clickActionInMore({
       title: 'Cluster Settings',
       subTitle: 'Edit',

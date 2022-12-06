@@ -127,6 +127,7 @@ export default function FormItem(props) {
     isInItem,
     validateFirst,
     validateTrigger,
+    allowClear,
   } = props;
 
   const getComponentProps = (_type) => {
@@ -150,6 +151,7 @@ export default function FormItem(props) {
           disabled,
           defaultValue,
           dropdownRender,
+          allowClear,
         };
       }
       default: {
@@ -317,8 +319,10 @@ FormItem.propTypes = {
   placeholder: PropTypes.string,
   mode: PropTypes.string,
   onChange: PropTypes.func,
+  allowClear: PropTypes.bool,
 };
 
 FormItem.defaultProps = {
   required: false,
+  allowClear: false,
 };
