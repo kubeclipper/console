@@ -37,7 +37,7 @@ jobs:
       - name: Setup node env and build
         uses: actions/setup-node@v3
         with:
-          node-version: 12.13
+          node-version: 14.17
           cache: 'yarn'
           cache-dependency-path: yarn.lock
 
