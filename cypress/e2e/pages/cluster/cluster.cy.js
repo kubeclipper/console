@@ -120,7 +120,7 @@ describe('集群', () => {
   });
 
   // 创建同名集群
-  it.only(...testCase('集群管理-创建-4').smoke().value(), () => {
+  it(...testCase('集群管理-创建-4').smoke().value(), () => {
     cy.clickHeaderButton(0);
 
     cy.wait(1000).url().should('include', 'cluster/create');
