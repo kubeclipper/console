@@ -41,13 +41,28 @@ describe('外部用户登录', () => {
 
     cy.tableSearchText(username);
     cy.clickActionButtonByTitle('Edit');
-    cy.formSelect('role', role);
+    cy.formSelect('role', role, undefined, false);
     cy.clickModalActionSubmitButton();
 
     cy.loginByKeycloak(username, password);
     cy.visitPage('/access/user');
 
     cy.checkTableRowLength();
+  });
+
+  // 编辑外部用户
+  it(...testCase('访问控制-用户-编辑外部用户-1').smoke().value(), () => {
+    cy.login(listUrl);
+    cy.loginByKeycloak(username, password);
+    cy.visitPage('/access/user');
+    cy.tableSearchText(username);
+    cy.clickActionButtonByTitle('Edit');
+    cy.formInput('phone', phone);
+    cy.formInput('email', email);
+    cy.clickModalActionSubmitButton();
+
+    cy.checkTableColVal(4, phone);
+    cy.checkTableColVal(3, email);
   });
 
   // 查看外部用户
@@ -58,21 +73,6 @@ describe('外部用户登录', () => {
 
     cy.checkTableColVal(5, 'keycloak');
     cy.get('.ant-table-tbody').should('not.contain.text', getTitle('More'));
-  });
-
-  // 编辑外部用户
-  it(...testCase('访问控制-用户-编辑外部用户-1').smoke().value(), () => {
-    cy.loginByKeycloak(username, password);
-
-    cy.visit('/access/user');
-    cy.tableSearchText(username);
-    cy.clickActionButtonByTitle('Edit');
-    cy.formInput('phone', phone);
-    cy.formInput('email', email);
-    cy.clickModalActionSubmitButton();
-
-    cy.checkTableColVal(4, phone);
-    cy.checkTableColVal(3, email);
   });
 
   // 删除外部用户
