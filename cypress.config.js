@@ -27,7 +27,6 @@ module.exports = defineConfig({
       'cypress/e2e/pages/login.cy.js',
       'cypress/e2e/pages/base/header.cy.js',
       'cypress/e2e/pages/cluster/cluster.cy.js',
-      'cypress/e2e/pages/cluster/backup.cy.js',
       'cypress/e2e/pages/cluster/online-offline-install.cy.js',
       'cypress/e2e/pages/cluster/registry.cy.js',
       'cypress/e2e/pages/cluster/template.cy.js',
@@ -36,6 +35,7 @@ module.exports = defineConfig({
       'cypress/e2e/pages/access/platform-user-role.cy.js',
       'cypress/e2e/pages/node/node.cy.js',
       'cypress/e2e/pages/cluster/hosting-kubeadm.cy.js',
+      'cypress/e2e/pages/cluster/backup.cy.js',
     ],
   },
 

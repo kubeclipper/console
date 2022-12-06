@@ -86,6 +86,15 @@ Cypress.Commands.add(
   }
 );
 
+// 清空选择框
+Cypress.Commands.add('clearFormSelect', (formItemName) => {
+  cy.get(getId(formItemName)).find('.ant-select').first().trigger('mouseover');
+  cy.get(getId(formItemName))
+    .find('.ant-select-clear')
+    .first()
+    .click({ force: true });
+});
+
 // 表单 loading
 Cypress.Commands.add('waitFormLoading', () => {
   cy.get('.ant-btn-loading', { timeout: 600000 }).should('not.exist');

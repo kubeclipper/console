@@ -27,7 +27,7 @@ describe('在线/离线安装集群', () => {
   });
 
   // 在线安装 本地未设置镜像仓库代理的话，该用例会失败，workflow 里应该会成功
-  it.skip(...testCase('集群管理-集群安装-1').smoke().value(), () => {
+  it(...testCase('集群管理-集群安装-1').smoke().value(), () => {
     const name = `e2e.cluster.name1${uuid}`;
 
     cy.clickHeaderButton(0);

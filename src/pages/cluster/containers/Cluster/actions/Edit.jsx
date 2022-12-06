@@ -128,6 +128,7 @@ class Edit extends ModalAction {
         label: t('Backup Space'),
         type: 'select',
         options: this.getBackupPointOptions,
+        allowClear: true,
       },
       {
         name: 'externalIP',
@@ -149,8 +150,15 @@ class Edit extends ModalAction {
   onSubmit = (values) => {
     const formTemplate = this.item._originData;
 
-    const { description, externalIP, labels, backupPoint } = values;
+    const { description, externalIP, backupPoint } = values;
     const { name, resourceVersion } = this.item;
+    let { labels = [] } = values;
+
+    if (!backupPoint) {
+      labels = labels.filter(
+        (label) => label.value.key !== 'kubeclipper.io/backupPoint'
+      );
+    }
 
     set(
       formTemplate,

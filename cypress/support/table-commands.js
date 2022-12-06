@@ -107,9 +107,12 @@ Cypress.Commands.add('clickActionInMore', (titles, waitTime = 1000) => {
   cy.get('.ant-table-row').first().find('.ant-dropdown-trigger').click();
   cy.wait(500);
   const realTitle = getTitle(title);
-  cy.log(realTitle);
+
   if (!subTitle) {
-    cy.get('ul.ant-dropdown-menu-light').contains(realTitle).click();
+    cy.get('ul.ant-dropdown-menu-light')
+      .find('span')
+      .contains(realTitle)
+      .click();
   } else {
     cy.get('ul.ant-dropdown-menu-light')
       .contains(realTitle)
@@ -315,7 +318,6 @@ Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
   cy.get('.ant-tabs-nav-list div').contains(getTitle(title)).click();
   waitTime && cy.wait(waitTime);
 });
-
 
 // 校验详情页 BaseDetail 字段值
 Cypress.Commands.add('checkBaseDetailValue', (value) => {
