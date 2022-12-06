@@ -94,6 +94,19 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 
 // 登录
 Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
+  const username = Cypress.env('username');
+  const password = Cypress.env('password');
+
+  cy.visit('/auth/login');
+  cy.loginInput('username', username)
+    .loginInput('password', password)
+    .loginFormSubmit();
+  cy.visitPage(visitUrl || '/cluster', isTable);
+  cy.wait(500);
+});
+
+// 登录
+Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
   cy.session('login', () => {
     cy.setLanguage();
 

@@ -292,7 +292,7 @@ describe('kubeadm 纳管', () => {
       cy.get('input[title="共享路径"]').eq(0).type(Cypress.env('nfsPath'));
       cy.clickStepActionConfirmButton();
 
-      cy.wait(2000).waitStatusSuccess(null, 2 * 60 * 1000);
+      cy.wait(2000).waitStatusSuccess(null, 10 * 60 * 1000);
     }
   );
 
