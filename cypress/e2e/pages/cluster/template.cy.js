@@ -31,7 +31,7 @@ describe('模版管理', () => {
   });
 
   // 集群模版添加
-  it.only(
+  it(
     ...testCase('集群管理-模版管理-Cluster 模版-添加-1').smoke().value(),
     () => {
       cy.clickHeaderButton(0);
