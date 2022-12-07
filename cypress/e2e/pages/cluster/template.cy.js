@@ -98,7 +98,6 @@ describe('模版管理', () => {
     cy.clickStepActionNextButton('step-confirm');
 
     cy.wait(2000).tableSearchText(name).waitStatusSuccess();
-    cy.deleteCluster(name);
   });
 
   // 集群模版保存
@@ -114,9 +113,12 @@ describe('模版管理', () => {
       subTitle: 'Save as template',
     });
 
-    cy.inputText('templateName', `${templateName}1`);
-    cy.inputText('templateDescription', 'templateDescription');
-    cy.clickConfirm();
+    cy.formInput('templateName', `${templateName}1`);
+    cy.formInput('templateDescription', 'templateDescription');
+    cy.clickModalActionSubmitButton();
+
+    cy.wait(2000).tableSearchText(name).waitStatusSuccess();
+    cy.deleteCluster(name);
 
     cy.visitPage(testUrl);
     cy.get('@rowLength').then((rowLength) => {

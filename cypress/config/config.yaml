@@ -19,7 +19,6 @@ env:
 # 镜像仓库
   offLineRegistry: 172.20.139.239:5000
   httpsRegistry: 172.16.29.140
-  aliyunRegistry: 'registry.aliyuncs.com/google_containers'
 # 备份
   backupS3EndPoint: 172.20.163.233:9000
   backupS3Admin: admin

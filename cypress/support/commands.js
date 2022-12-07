@@ -93,7 +93,7 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 });
 
 // 登录
-Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
+Cypress.Commands.add('loginByUI', (visitUrl = '', isTable = true) => {
   const username = Cypress.env('username');
   const password = Cypress.env('password');
 
@@ -106,7 +106,15 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
 });
 
 // 登录
-Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
+Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
+  if (Cypress.config('user')) {
+    cy.setLocalStorageItem('token', Cypress.config('token'));
+    cy.setLocalStorageItem('user', Cypress.config('user'));
+
+    cy.visitPage(visitUrl || '/cluster', isTable);
+    return;
+  }
+
   cy.session('login', () => {
     cy.setLanguage();
 
@@ -133,6 +141,7 @@ Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
         };
 
         cy.setLocalStorageItem('token', token, refreshExpire);
+        Cypress.config('token', token);
       });
 
     cy.get('@token').then((res) => {
@@ -192,6 +201,7 @@ Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
         })
         .then(() => {
           cy.setLocalStorageItem('user', user);
+          Cypress.config('user', user);
         });
     });
   });

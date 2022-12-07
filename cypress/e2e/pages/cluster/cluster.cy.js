@@ -149,6 +149,13 @@ describe('集群', () => {
     cy.get('.ant-modal-body').should('exist');
   });
 
+  it(...testCase('区域管理-区域详情-查看集群列表-1').smoke().value(), () => {
+    cy.visitPage('/region');
+    cy.tableSearchText('default').goToDetail(0);
+    cy.clickByDetailTabs('Cluster List');
+    cy.checkTableRowLength();
+  });
+
   // 使用 http 镜像仓库
   it(
     ...testCase('集群-更多-集群设置-CRI 镜像仓库-http-docker-1')
@@ -318,7 +325,8 @@ describe('集群', () => {
 
   // 移除节点
   it(...testCase('集群管理-集群-集群详情-节点列表-3').smoke().value(), () => {
-    cy.goToDetail(1);
+    cy.tableSearchText(name).goToDetail(1);
+
     cy.clickByDetailTabs('Nodes List');
     cy.get('.ant-table-body')
       .find('.ant-table-row')
@@ -328,7 +336,7 @@ describe('集群', () => {
     cy.selectTableListByIndex(1);
     cy.clickHeaderButton(1);
     cy.clickConfirmActionSubmitButton();
-    cy.wait(4000);
+    cy.wait(10 * 1000);
 
     cy.freshTable();
     cy.log('@rowLength');
@@ -342,6 +350,17 @@ describe('集群', () => {
     });
     cy.visitPage(listUrl);
     cy.waitStatusSuccess();
+  });
+
+  // 单独卸载存储nfs
+  it(...testCase('集群管理-集群详情-存储-移除1').smoke().value(), () => {
+    cy.tableSearchText(name);
+    cy.goToDetail(1);
+    cy.clickByDetailTabs('Storage');
+    cy.get('.ant-row').find('.ant-btn-dangerous').click();
+    cy.clickConfirmActionSubmitButton();
+    cy.goBackToList(listUrl);
+    cy.tableSearchText(name).wait(2000).waitStatusSuccess();
   });
 
   // 单独安装存储nfs
@@ -360,11 +379,8 @@ describe('集群', () => {
       .click()
       .wait(1000);
     cy.tableSearchText(name).wait(2000).waitStatusSuccess();
-  });
 
-  // 单独卸载存储nfs
-  it(...testCase('集群管理-集群详情-存储-移除1').smoke().value(), () => {
-    cy.tableSearchText(name);
+    // 移除
     cy.goToDetail(1);
     cy.clickByDetailTabs('Storage');
     cy.get('.ant-row').find('.ant-btn-dangerous').click();

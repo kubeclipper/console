@@ -34,12 +34,6 @@ describe('The Region Page', () => {
     cy.checkTableRowLength();
   });
 
-  it(...testCase('区域管理-区域详情-查看集群列表-1').smoke().value(), () => {
-    cy.tableSearchText(region).goToDetail(0);
-    cy.clickByDetailTabs('Cluster List');
-    cy.checkTableRowLength();
-  });
-
   it(...testCase('区域管理-区域详情-查看节点列表-1').smoke().value(), () => {
     cy.tableSearchText(region).goToDetail(0);
     cy.clickByDetailTabs('Nodes List');
