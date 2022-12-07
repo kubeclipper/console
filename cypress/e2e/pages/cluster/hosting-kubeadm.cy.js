@@ -27,6 +27,8 @@ describe('kubeadm 纳管', () => {
   const backupFSRootDir = Cypress.env('nfsPath') || '/root';
   const backupFSStorageType = 'FS';
 
+  const offLineRegistry = Cypress.env('offLineRegistry');
+
   afterEach(() => {
     cy.addContext();
   });
@@ -70,16 +72,57 @@ describe('kubeadm 纳管', () => {
         cy.visitPage('/cluster');
         cy.tableSearchText(clusterName);
         cy.waitStatusSuccess();
-
-        cy.login('/cluster/hosting');
-        cy.tableSearchText(name);
-
-        cy.clickActionInMore({ title: 'Remove' });
-        cy.clickConfirmActionSubmitButton();
-        cy.checkEmptyTable(100000000);
       });
     });
   });
+
+  // 纳管集群添加CRI镜像仓库
+  it(
+    ...testCase('集群管理-集群-纳管集群详情-添加CRI镜像仓库-3').smoke().value(),
+    () => {
+      cy.login('/cluster/registry');
+
+      const registryName = `registry-${_uuid}`;
+
+      // 创建 registy
+      cy.visitPage('/cluster/registry').clickHeaderButton(0);
+      cy.formInput('name', registryName);
+      cy.formInputRegistry(
+        'host',
+        0,
+        offLineRegistry
+      ).clickModalActionSubmitButton();
+
+      cy.visitPage('/cluster');
+      cy.tableSearchText(clusterName).clickActionInMore({
+        title: 'Cluster Settings',
+        subTitle: 'CRI Registry',
+      });
+
+      cy.formArrayInputAdd('registries');
+
+      cy.get('.item-detail').find('.ant-select').click().wait(500);
+      cy.get('.ant-select-item-option-content').should(($div) => {
+        const text = $div.text();
+
+        expect(text).to.include(registryName);
+      });
+
+      cy.get('.ant-select-item-option')
+        .contains(`${offLineRegistry} (${registryName})`)
+        .click({ force: true })
+        .clickModalActionSubmitButton();
+
+      cy.deleteRegistry(registryName);
+
+      cy.login('/cluster/hosting');
+      cy.tableSearchText(name);
+
+      cy.clickActionInMore({ title: 'Remove' });
+      cy.clickConfirmActionSubmitButton();
+      cy.checkEmptyTable(100000000);
+    }
+  );
 
   // 添加提供商(密码)
   it(...testCase('集群管理-集群托管-提供商-添加-1').smoke().value(), () => {

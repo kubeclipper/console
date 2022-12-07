@@ -19,7 +19,6 @@ describe('在线/离线安装集群', () => {
   const listUrl = '/cluster';
 
   const uuid = Cypress._.random(0, 1e6);
-  const aliyunRegistry = Cypress.env('aliyunRegistry');
   const offLineRegistry = Cypress.env('offLineRegistry');
 
   beforeEach(() => {
@@ -36,9 +35,7 @@ describe('在线/离线安装集群', () => {
 
     cy.formInput('name', name).waitTransferList().formMultiTransfer('nodes', 0);
     cy.formArrayInputRemove('taints').clickStepActionNextButton('step-next');
-    cy.formRadioChoose('offline', 0)
-      .formInput('localRegistry', aliyunRegistry)
-      .clickStepActionNextButton('step-next');
+    cy.formRadioChoose('offline', 0).clickStepActionNextButton('step-next');
     cy.clickStepActionNextButton('step-next');
     cy.checkConfirmStepItemContent('cluster', getTitle('Online'));
     cy.clickStepActionNextButton('step-confirm');

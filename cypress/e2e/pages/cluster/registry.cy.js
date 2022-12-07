@@ -19,7 +19,7 @@ describe('镜像仓库', () => {
   const listUrl = '/cluster/registry';
   const uuid = Cypress._.random(0, 1e6);
   const registryName = `registry-${uuid}`;
-  const registry = Cypress.env('httpRegistry');
+  const offLineRegistry = Cypress.env('offLineRegistry');
   const harbor = Cypress.env('httpsRegistry');
   const des = 'des';
 
@@ -36,12 +36,16 @@ describe('镜像仓库', () => {
     cy.clickHeaderButton(0);
 
     cy.formInput('name', registryName).formInput('description', des);
-    cy.formInputRegistry('host', 0, registry).clickModalActionSubmitButton();
+    cy.formInputRegistry(
+      'host',
+      0,
+      offLineRegistry
+    ).clickModalActionSubmitButton();
 
     cy.tableSearchText(registryName)
       .checkTableRowLength()
       .checkTableColVal(1, registryName)
-      .checkTableColVal(2, `http://${registry}`)
+      .checkTableColVal(2, `http://${offLineRegistry}`)
       .checkTableColVal(3, des)
       .clearSearchInput();
 
