@@ -40,50 +40,6 @@ describe('集群', () => {
     cy.addContext();
   });
 
-  // 创建带存储插件 nfs 的集群
-  it(...testCase('集群管理-创建-3').smoke().value(), () => {
-    Cypress.on('fail', (error) => {
-      if (error.message.indexOf('Timed out retrying') !== 0) throw error;
-    });
-    cy.visit('/');
-    cy.loginInput('username', Cypress.env('username'))
-      .loginInput('password', Cypress.env('password'))
-      .loginFormSubmit();
-    cy.wait(3000);
-
-    cy.clickHeaderButton(0);
-
-    cy.wait(1000).url().should('include', 'cluster/create');
-
-    // cluster name
-    cy.formInput('name', name);
-    cy.formSelect('region', region);
-    // select node
-    cy.waitTransferList();
-    cy.formMultiTransfer('nodes', 0);
-    cy.clickStepActionNextButton('step-next');
-    cy.wait(1000);
-
-    cy.formInput('localRegistry', offLineRegistry);
-    cy.wait(1000);
-
-    cy.clickStepActionNextButton('step-next');
-
-    cy.selectComponentTab('NFS CSI');
-    cy.enableComponent('nfs-csi');
-
-    cy.get('input[title="服务地址"]').eq(0).type(Cypress.env('nfsIp'));
-    cy.get('input[title="共享路径"]').eq(0).type(Cypress.env('nfsPath'));
-    cy.get('input[title="NFS 镜像仓库代理"]').eq(0).type(offLineRegistry);
-    cy.clickStepActionNextButton('step-quick');
-    cy.clickStepActionNextButton('step-confirm');
-
-    // check status
-    cy.wait(2000).tableSearchText(name).waitStatusSuccess();
-
-    cy.deleteCluster(name);
-  });
-
   // 创建单机集群
   it(...testCase('集群管理-创建-1').smoke().value(), () => {
     cy.clickHeaderButton(0);
@@ -117,28 +73,6 @@ describe('集群', () => {
     cy.goBackToList(listUrl).wait(2000);
     cy.tableSearchText(name).waitStatusSuccess();
     cy.deleteCluster(name);
-  });
-
-  // 创建同名集群
-  it(...testCase('集群管理-创建-4').smoke().value(), () => {
-    cy.clickHeaderButton(0);
-
-    cy.wait(1000).url().should('include', 'cluster/create');
-
-    // cluster name
-    cy.formInput('name', name);
-    cy.formSelect('region', region);
-    // select node
-    cy.waitTransferList();
-    cy.formMultiTransfer('nodes', 0);
-
-    // next step
-    cy.clickStepActionNextButton('step-next');
-    cy.wait(1000);
-    cy.clickStepActionNextButton('step-quick');
-    cy.clickStepActionNextButton('step-confirm');
-
-    cy.checkActionError();
   });
 
   // 创建带存储插件 nfs 的集群
