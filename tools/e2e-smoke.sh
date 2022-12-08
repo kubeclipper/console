@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wget http://172.16.30.27/caas-test-case/testcases.html
+wget https://oss.kubeclipper.io/test/testcase/main/testcases.html
 
 echo "generate e2e report"
 npm run test:e2e
