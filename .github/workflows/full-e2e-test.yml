@@ -76,14 +76,15 @@ jobs:
             pushd /root/console/github/workspace
             yarn config set registry https://registry.npm.taobao.org/
             yarn install
+            sed -i "s/localhost/172.20.139.233/" cypress/config/config.yaml
             sh tools/e2e-smoke.sh
             scp testcases-cases.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
             scp testcases-e2e-summary.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
-            scp cypress/report/* root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
+            scp cypress/report/merge-report.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
+            scp cypress/report/merge-report.json root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
             if [ -d "cypress/screenshots" ];then
             echo e2e-test fail
             exit 110
             else
             echo e2e-test successfully
             fi
-  
