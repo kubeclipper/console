@@ -47,14 +47,14 @@ const funcMap = {
       `;
     return new Handlebars.SafeString(deployHtml);
   },
-  // skipped: (test, caseName, reportLink) => {
-  //   const deployHtml = `
-  // <div>
-  //   <a style="color: ${color.skipped};" href="${reportLink}#${test.uuid}">SKIPPED: ${caseName}</a>
-  // </div>
-  //     `;
-  //   return new Handlebars.SafeString(deployHtml);
-  // },
+  skipped: (test, caseName, reportLink) => {
+    const deployHtml = `
+  <div>
+    <a style="color: ${color.skipped};" href="${reportLink}#${test.uuid}">PENDING: ${caseName}</a>
+  </div>
+      `;
+    return new Handlebars.SafeString(deployHtml);
+  },
   unknown: () => {
     const deployHtml = `
   <div>
