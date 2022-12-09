@@ -25,7 +25,7 @@ Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
 Cypress.Commands.add('checkBaseDetailValue', (value) => {
   cy.get('.detail-card-item')
     .first()
-    .find('.ant-col', { timeout: 100000000 })
+    .find('.ant-col', { timeout: 2 * 60 * 1000 })
     .contains(value)
     .should('exist');
 });

@@ -195,7 +195,7 @@ Cypress.Commands.add('clickTab', (label, urlTab, waitTime = 2000) => {
 });
 
 // 等待状态成功
-Cypress.Commands.add('waitStatusSuccess', (index, timeout = 100000000) => {
+Cypress.Commands.add('waitStatusSuccess', (index, timeout = 20 * 60 * 1000) => {
   if (!index) {
     cy.get('.ant-table-row')
       .first()
@@ -216,14 +216,14 @@ Cypress.Commands.add('waitStatusGreen', (index) => {
   if (!index) {
     cy.get('.ant-table-row')
       .first()
-      .find('.ant-badge-status-green', { timeout: 100000000 })
+      .find('.ant-badge-status-green', { timeout: 20 * 60 * 1000 })
       .should('exist');
   } else {
     cy.get('.ant-table-row')
       .first()
       .find('.ant-table-cell')
       .eq(index)
-      .find('.ant-badge-status-green', { timeout: 100000000 })
+      .find('.ant-badge-status-green', { timeout: 20 * 60 * 1000 })
       .should('exist');
   }
 });
@@ -244,7 +244,7 @@ Cypress.Commands.add('checkEmptyTable', (timeout = 100) => {
 // 校验表格非空，且应该存在 rowLength 条数据
 Cypress.Commands.add('checkTableRowLength', (rowLength) => {
   cy.get('.ant-table-tbody')
-    .find('.ant-empty-normal', { timeout: 100000000 })
+    .find('.ant-empty-normal', { timeout: 20 * 60 * 1000 })
     .should('not.exist');
   if (rowLength) {
     cy.get('.ant-table-body .ant-table-row').should('have.length', rowLength);
@@ -256,14 +256,14 @@ Cypress.Commands.add('waitStatusNoError', (index) => {
   if (!index) {
     cy.get('.ant-table-row')
       .first()
-      .find('.ant-badge-status-error', { timeout: 100000000 })
+      .find('.ant-badge-status-error', { timeout: 2 * 60 * 1000 })
       .should('not.exist');
   } else {
     cy.get('.ant-table-row')
       .first()
       .find('.ant-table-cell')
       .eq(index)
-      .find('.ant-badge-status-error', { timeout: 100000000 })
+      .find('.ant-badge-status-error', { timeout: 2 * 60 * 1000 })
       .should('not.exist');
   }
 });
@@ -273,14 +273,14 @@ Cypress.Commands.add('waitStatusProcessing', (index) => {
   if (!index) {
     cy.get('.ant-table-row')
       .first()
-      .find('.ant-badge-status-processing', { timeout: 100000000 })
+      .find('.ant-badge-status-processing', { timeout: 2 * 60 * 1000 })
       .should('not.exist');
   } else {
     cy.get('.ant-table-row')
       .first()
       .find('.ant-table-cell')
       .eq(index)
-      .find('.ant-badge-status-processing', { timeout: 100000000 })
+      .find('.ant-badge-status-processing', { timeout: 2 * 60 * 1000 })
       .should('not.exist');
   }
 });
@@ -289,7 +289,7 @@ Cypress.Commands.add('waitStatusProcessing', (index) => {
 Cypress.Commands.add('waitStatusBackuping', () => {
   cy.get('.ant-table-row')
     .first()
-    .find('.ant-badge-status-default', { timeout: 100000000 })
+    .find('.ant-badge-status-default', { timeout: 2 * 60 * 1000 })
     .should('not.exist');
 });
 
@@ -323,7 +323,7 @@ Cypress.Commands.add('clickByDetailTabs', (title, waitTime) => {
 Cypress.Commands.add('checkBaseDetailValue', (value) => {
   cy.get('.detail-card-item')
     .first()
-    .find('.ant-col', { timeout: 100000000 })
+    .find('.ant-col', { timeout: 2 * 60 * 1000 })
     .contains(value)
     .should('exist');
 });

@@ -52,7 +52,7 @@ Cypress.Commands.add('deleteCluster', (clusterName) => {
   cy.clickConfirmActionSubmitButton();
   // check delete finished
   cy.get('.ant-table-tbody')
-    .find('.ant-table-row', { timeout: 100000000 })
+    .find('.ant-table-row', { timeout: 20 * 60 * 1000 })
     .should('not.exist');
 
   cy.clearSearchInput();

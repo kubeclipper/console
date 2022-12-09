@@ -436,7 +436,7 @@ describe('集群', () => {
     cy.get('#form-item-col-version').find('span').contains(upgradeVersion);
     cy.clickModalActionSubmitButton();
 
-    cy.waitStatusSuccess(null, 10 * 60 * 1000);
+    cy.waitStatusSuccess(null, 20 * 60 * 1000);
 
     cy.goToDetail(1);
     cy.get('.ant-tabs-content .ant-row').should('contain', upgradeVersion);
