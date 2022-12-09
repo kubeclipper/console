@@ -16,7 +16,7 @@
 import { ConfirmAction } from 'containers/Action';
 import { rootStore } from 'stores';
 
-const { backupPointStore } = rootStore;
+const { backupPointStore, clusterStore } = rootStore;
 
 export default class DeleteAction extends ConfirmAction {
   get id() {
@@ -40,6 +40,26 @@ export default class DeleteAction extends ConfirmAction {
   }
 
   policy = 'backuppoints:edit';
+
+  confirmContext = async (data) => {
+    const res = await clusterStore.fetchList({ limit: -1 });
+    const usedCluster = res.filter((item) => item.backupPoint === data.name);
+
+    if (usedCluster.length) {
+      return t(
+        'Cluster {clusters} is using this backup space. Deleting the backup space will automatically unbind the relationship. Are you sure you want to delete this backup space?',
+        {
+          clusters: usedCluster.map((item) => item.name).join(', '),
+        }
+      );
+    }
+
+    const name = this.getName(data);
+    return t('Are you sure to { action } {name}?', {
+      action: this.actionName || this.title,
+      name,
+    });
+  };
 
   onSubmit = (item) => {
     const { name } = item;
