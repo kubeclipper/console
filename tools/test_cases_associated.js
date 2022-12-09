@@ -6,24 +6,16 @@ const moment = require('moment');
 const cheerio = require('cheerio');
 
 const { resolve } = require('path');
-const { isObject } = require('lodash');
+const { isObject, assign } = require('lodash');
 
 const root = (dir) => resolve(__dirname, `../${dir}`);
 
 const color = {
   passed: '#4caf50',
   failed: '#f44336',
-  pending: '#03a9f4',
-  skipped: '#ffac11',
+  pending: '#ffac11',
+  skipped: '#03a9f4',
   unknown: '#f4eb36',
-};
-
-const totalByCase = {
-  passed: 0,
-  failed: 0,
-  pending: 0,
-  skipped: 0,
-  unknown: 0,
 };
 
 const funcMap = {
@@ -50,19 +42,19 @@ const funcMap = {
   pending: (test, caseName, reportLink) => {
     const deployHtml = `
   <div>
-    <a style="color: ${color.pending};" href="${reportLink}#${test.uuid}">PENDING: ${caseName}</a>
+    <a style="color: ${color.pending};" href="${reportLink}#${test.uuid}">SKIPPED: ${caseName}</a>
   </div>
       `;
     return new Handlebars.SafeString(deployHtml);
   },
-  skipped: (test, caseName, reportLink) => {
-    const deployHtml = `
-  <div>
-    <a style="color: ${color.skipped};" href="${reportLink}#${test.uuid}">SKIPPED: ${caseName}</a>
-  </div>
-      `;
-    return new Handlebars.SafeString(deployHtml);
-  },
+  // skipped: (test, caseName, reportLink) => {
+  //   const deployHtml = `
+  // <div>
+  //   <a style="color: ${color.skipped};" href="${reportLink}#${test.uuid}">SKIPPED: ${caseName}</a>
+  // </div>
+  //     `;
+  //   return new Handlebars.SafeString(deployHtml);
+  // },
   unknown: () => {
     const deployHtml = `
   <div>
@@ -90,6 +82,17 @@ class GeneratorReport {
     this.reportJsonUrlList = null;
     this.summaryOutputFile = null;
 
+    this.totalTable = 0;
+    this.totalByCase = {
+      passed: 0,
+      failed: 0,
+      pending: 0,
+      skipped: 0,
+      unknown: 0,
+    };
+    this.totalList = [];
+    this.detailList = [];
+
     this.reportData = {};
     this.caseNames = {};
 
@@ -102,12 +105,18 @@ class GeneratorReport {
   Init() {
     this.InitCommandParams();
     this.InitTemplate();
+    this.InitTotalTable();
   }
 
   Main() {
     this.ParseReportJson();
     this.GenerateResult();
     this.GenerateSummary();
+  }
+
+  InitTotalTable() {
+    const totalTable = this.htmlString.split('<table>').length - 1;
+    this.totalTable = totalTable;
   }
 
   InitCommandParams() {
@@ -306,6 +315,7 @@ class GeneratorReport {
       passed: 0,
       failed: 0,
       skipped: 0,
+      pending: 0,
       e2eTotal: 0,
       totalPercent: '0.00%',
     };
@@ -375,21 +385,20 @@ class GeneratorReport {
     return modules;
   }
 
-  UpdateHtmlWithDetail() {
-    const template =
-      '<table style="font-size:14px;line-height:1.5" class="table table-hover table-bordered table-striped">' +
-      '<thead class="table-dark"><tr><th style="width: 40%">模块</th><th>用例数</th><th>E2E用例数</th><th>E2E覆盖率</th><th>E2E用例通过</th><th>E2E用例失败</th><th>E2E用例跳过</th></tr></thead>' +
-      '<tbody>{{#detailList}}<tr><td>{{name}}</td><td>{{caseCount}}</td><td>{{e2eTotal}}</td><td>{{totalPercent}}</td><td>{{passed}}</td><td>{{failed}}</td><td>{{skipped}}</td></tr>{{/detailList}}' +
-      '</tbody></table>';
-    return template;
-  }
-
   UpdateHtmlWithTotal(htmlString, tag, isSummary = false) {
     const contentStr = tag;
     const totalSource =
-      '<ul style="font-size: 14px;line-height:2" class="list-group">{{#totalList}}<li class="list-group-item">{{name}}: {{value}}</li>{{/totalList}}</ul>';
+      '<ul style="font-size: 14px;line-height:2" class="list-group">{{#totalList}}' +
+      ' <li class="list-group-item">{{name}}: {{value}}</li>' +
+      '{{/totalList}}' +
+      '</ul>';
     const totalContent = `<h1 id="汇总">汇总<h1> ${totalSource}`;
-    const detailContent = this.UpdateHtmlWithDetail();
+    const detailContent =
+      '<table style="font-size:14px;line-height:1.5" class="table table-hover table-bordered table-striped">' +
+      '<thead class="table-dark"><tr><th style="width: 40%">模块</th><th>用例数</th><th>E2E用例数</th><th>E2E覆盖率</th><th>E2E用例通过</th><th>E2E用例失败</th><th>E2E用例跳过</th></tr></thead>' +
+      '<tbody>{{#detailList}}<tr><td>{{name}}</td><td>{{caseCount}}</td><td>{{e2eTotal}}</td><td>{{totalPercent}}</td><td>{{passed}}</td><td>{{failed}}</td><td>{{pending}}</td></tr>{{/detailList}}' +
+      '</tbody></table>';
+
     const navStr = '<ul>';
     const navIndex = htmlString.indexOf(navStr) + navStr.length;
     const totalNavStr = '<li><a href="#汇总">汇总</a></li>';
@@ -410,34 +419,33 @@ class GeneratorReport {
     return newHtmlString;
   }
 
-  UpdateContextWithTotal = (context, htmlString, totals) => {
-    const totalTable = htmlString.split('<table>').length - 1;
-    // totals.total = totalTable;
-    const totalList = [];
-    const { passed, failed, skipped } = totals;
-    const caseTotal = passed + failed + skipped;
+  UpdateContextWithTotal = () => {
+    const { totalTable, totalByCase: totals } = this;
+    const { passed, failed, pending } = totals;
+    const caseTotal = passed + failed + pending;
     const result = {
       测试用例总量: totalTable,
+      e2e用例总量: caseTotal,
       e2e用例通过: passed,
       e2e用例失败: failed,
-      e2e用例跳过: skipped,
-      e2e用例总量: caseTotal,
+      e2e用例跳过: pending,
       e2e用例通过覆盖率: `${((passed / totalTable) * 100).toFixed(2)}%`,
       e2e用例失败覆盖率: `${((failed / totalTable) * 100).toFixed(2)}%`,
-      e2e用例跳过覆盖率: `${((skipped / totalTable) * 100).toFixed(2)}%`,
+      e2e用例跳过覆盖率: `${((pending / totalTable) * 100).toFixed(2)}%`,
       e2e用例总覆盖率: `${((caseTotal / totalTable) * 100).toFixed(2)}%`,
     };
+
+    const totalList = [];
     Object.keys(result).forEach((key) => {
       totalList.push({
         name: key,
         value: result[key],
       });
     });
-    context.totalList = totalList;
-    return context;
+    this.totalList = totalList;
   };
 
-  UpdateContextWithDetail(context, moduleList) {
+  UpdateContextWithDetail(moduleList) {
     const detailList = [];
     moduleList.forEach((module) => {
       const { first, second, third } = module;
@@ -446,7 +454,7 @@ class GeneratorReport {
             second
           )}-${this.GetSimpleName(third)}`
         : `${this.GetSimpleName(first)}-${this.GetSimpleName(second)}`;
-      const { passed, e2eTotal, totalPercent, failed, skipped, caseCount } =
+      const { passed, e2eTotal, totalPercent, failed, pending, caseCount } =
         module;
       detailList.push({
         name,
@@ -455,29 +463,33 @@ class GeneratorReport {
         e2eTotal: e2eTotal || '-',
         totalPercent: totalPercent === '0.00%' ? '-' : totalPercent,
         failed: failed || '-',
-        skipped: skipped || '-',
+        pending: pending || '-',
       });
     });
-    context.detailList = detailList;
+    this.detailList = detailList;
   }
 
   async GenerateResult() {
     // read html template
-
     const moduleList = this.GetHtmlAllModules(this.htmlString, this.caseNames);
-
     const newHtmlString = this.UpdateHtmlWithTotal(this.htmlString, contentTag);
     const template = Handlebars.compile(newHtmlString);
-    this.UpdateContextWithTotal(this.reportData, this.htmlString, totalByCase);
-    this.UpdateContextWithDetail(this.reportData, moduleList);
+
+    this.UpdateContextWithTotal();
+    this.UpdateContextWithDetail(moduleList);
     Handlebars.registerHelper(
       'CheckAuto',
       (caseName) => caseName || funcMap.unknown()
     );
-    // // remove useless videos
-    // // dealWithVideos();
-    // // write new html
-    fs.writeFileSync(this.outputFile, template(this.reportData));
+    // remove useless videos
+    // dealWithVideos();
+    // write new html
+    const data = {
+      ...this.reportData,
+      totalList: this.totalList,
+      detailList: this.detailList,
+    };
+    fs.writeFileSync(this.outputFile, template(data));
 
     // eslint-disable-next-line no-console
     console.log(
@@ -516,7 +528,7 @@ class GeneratorReport {
             if (!context) {
               return;
             }
-            this.GetCaseMap(totalByCase, test);
+            this.GetCaseMap(this.totalByCase, test);
           });
         });
       });
@@ -531,8 +543,6 @@ class GeneratorReport {
     // await this.GetCaseMapByReportJsonUrlList(this.reportJsonUrlList);
 
     const moduleList = this.GetHtmlAllModules(this.htmlString, this.caseNames);
-    const date = moment().format('YYYY-MM-DD');
-    const context = { date };
 
     const templateFilePath = root('tools/summary-template.html');
     const templateFile = fs.readFileSync(templateFilePath);
@@ -541,9 +551,15 @@ class GeneratorReport {
     const tag = '<div id="summary">';
     const newHtmlString = this.UpdateHtmlWithTotal(templateString, tag, true);
     const template = Handlebars.compile(newHtmlString);
-    this.UpdateContextWithTotal(context, this.htmlString, totalByCase);
-    this.UpdateContextWithDetail(context, moduleList);
-    fs.writeFileSync(this.summaryOutputFile, template(context));
+    this.UpdateContextWithTotal();
+    this.UpdateContextWithDetail(moduleList);
+
+    const data = {
+      date: moment().format('YYYY-MM-DD'),
+      totalList: this.totalList,
+      detailList: this.detailList,
+    };
+    fs.writeFileSync(this.summaryOutputFile, template(data));
     // eslint-disable-next-line no-console
     console.log(
       'Generate e2e coverage summary successfully, saved to:',
@@ -557,27 +573,19 @@ class GeneratorReport {
       const item = context.find((it) => isObject(it) && it.value);
       return item.value || {};
     }
-    return (context || {}).value.unverifiedTestConfig || {};
+    return (
+      ((context || {}).value && (context || {}).value.unverifiedTestConfig) ||
+      {}
+    );
   }
 
   GetCaseMap(totals, test) {
-    const { caseName, cases = [] } = this.GetTestContextCaseValue(test);
-    const { state } = test;
+    const cases = [];
+    const { state, title: caseName } = test;
     const updateNames = (name) => {
-      //   if (
-      //     (name.startsWith('login_') ||
-      //       name.startsWith('console_') ||
-      //       name.startsWith('administrator_') ||
-      //       name.startsWith('user_center_')) &&
-      //     /\d/.test(name)
-      //   ) {
       if (!this.caseNames[name]) {
         this.caseNames[name] = state;
         totals[state] += 1;
-        // } else {
-        //   // eslint-disable-next-line no-console
-        //   console.log('case', name, 'already tested, this time result:', state);
-        // }
       }
     };
 
@@ -592,24 +600,26 @@ class GeneratorReport {
 
   ParseReportJson() {
     const reportDataAll = JSON.parse(fs.readFileSync(this.reportJson));
+    const { passes, failures, pending, skipped } = reportDataAll.stats;
+
+    this.reportDataAll = reportDataAll;
+    this.totalByCase = assign(this.totalByCase, {
+      passed: passes,
+      failed: failures,
+      pending,
+      skipped,
+    });
 
     reportDataAll.results.forEach((result) => {
       const file = result.file.split('e2e')[1];
       result.suites.forEach((suite) => {
         const fileTitle = suite.title;
         suite.tests.forEach((test) => {
-          if (!test.context) {
-            return;
-          }
-          const context = JSON.parse(test.context);
-          if (!context) {
-            return;
-          }
-          const { caseName, cases = [] } = this.GetTestContextCaseValue(test);
+          const cases = [];
+          const { title: caseName, state } = test;
           if (!caseName) {
             return;
           }
-          const { state } = test;
           const imageUrl =
             state === 'failed'
               ? `${this.screenshotDir}${file}/${fileTitle} -- ${test.title} (failed).png`
@@ -628,7 +638,7 @@ class GeneratorReport {
             videoUrl
           );
 
-          this.GetCaseMap(totalByCase, test);
+          this.GetCaseMap(this.totalByCase, test);
 
           if (cases.length) {
             cases.forEach((cname) => {
