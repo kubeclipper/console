@@ -276,6 +276,7 @@ class GeneratorReport {
     let caseCount = 0;
     let tmpString = '';
     const caseIds = [];
+    let tmpStringDom = null;
     if (moduleIndex < modules.length - 1) {
       const { second, third } = modules[moduleIndex];
       const { second: nextSecond, third: nextThird } = modules[moduleIndex + 1];
@@ -288,19 +289,21 @@ class GeneratorReport {
 
       const startIndex = htmlString.indexOf(tag1);
       const endIndex = htmlString.indexOf(tag2);
-      const tmpStringDom = htmlString.substring(startIndex, endIndex);
-
-      if (tmpStringDom) {
-        const $ = cheerio.load(tmpStringDom);
-        $('table').each((index, el) => {
-          caseIds.push($(el).find('tr td').eq(1).text());
-        });
-      }
+      tmpStringDom = htmlString.substring(startIndex, endIndex);
     } else {
       const { second, third } = modules[moduleIndex];
       const tag = third ? `<h3 id="${third}">` : `<h2 id="${second}">`;
       // eslint-disable-next-line prefer-destructuring
       tmpString = htmlString.split(tag)[1];
+      const startIndex = htmlString.indexOf(tag);
+      tmpStringDom = htmlString.substring(startIndex);
+    }
+
+    if (tmpStringDom) {
+      const $ = cheerio.load(tmpStringDom);
+      $('table').each((index, el) => {
+        caseIds.push($(el).find('tr td').eq(1).text());
+      });
     }
     caseCount = tmpString.split('<table').length - 1;
 
@@ -528,7 +531,7 @@ class GeneratorReport {
             if (!context) {
               return;
             }
-            this.GetCaseMap(this.totalByCase, test);
+            this.GetCaseMap(test);
           });
         });
       });
@@ -579,13 +582,12 @@ class GeneratorReport {
     );
   }
 
-  GetCaseMap(totals, test) {
+  GetCaseMap(test) {
     const cases = [];
     const { state, title: caseName } = test;
     const updateNames = (name) => {
       if (!this.caseNames[name]) {
         this.caseNames[name] = state;
-        totals[state] += 1;
       }
     };
 
@@ -638,7 +640,7 @@ class GeneratorReport {
             videoUrl
           );
 
-          this.GetCaseMap(this.totalByCase, test);
+          this.GetCaseMap(test);
 
           if (cases.length) {
             cases.forEach((cname) => {
