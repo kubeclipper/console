@@ -61,6 +61,7 @@ Cypress.Commands.add('clearSearchInput', () => {
   cy.get('.magic-input-wrapper')
     .first()
     .find('.anticon-close')
+    .first()
     .click({ force: true });
 });
 
