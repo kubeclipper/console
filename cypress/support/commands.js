@@ -80,16 +80,19 @@ Cypress.Commands.add('setLanguage', () => {
 
 // 前往 url
 Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
-  cy.visit(url);
-
-  cy.get('#app', { timeout: 120000 }).should('exist');
-  if (url) {
-    cy.wait(2000);
-    if (isTable) {
-      cy.get('.ant-table-wrapper', { timeout: 120000 }).should('exist');
-      cy.waitTableLoading();
+  cy.url().then((_url) => {
+    if (!_url.endsWith(url)) {
+      cy.visit(url);
+      cy.get('#app', { timeout: 120000 }).should('exist');
+      if (url) {
+        cy.wait(2000);
+        if (isTable) {
+          cy.get('.ant-table-wrapper', { timeout: 120000 }).should('exist');
+          cy.waitTableLoading();
+        }
+      }
     }
-  }
+  });
 });
 
 // 登录

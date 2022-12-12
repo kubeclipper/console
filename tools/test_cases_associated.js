@@ -613,7 +613,7 @@ class GeneratorReport {
     });
 
     reportDataAll.results.forEach((result) => {
-      const file = result.file.split('e2e')[1];
+      const file = result.file.split('e2e/pages/')[1];
       result.suites.forEach((suite) => {
         const fileTitle = suite.title;
         suite.tests.forEach((test) => {
@@ -624,7 +624,7 @@ class GeneratorReport {
           }
           const imageUrl =
             state === 'failed'
-              ? `${this.screenshotDir}${file}/${fileTitle} -- ${test.title} (failed).png`
+              ? `${this.screenshotDir}/${file}/${fileTitle} -- ${test.title} (failed).png`
               : '';
           const videoName = `${file}.mp4`;
           const videoUrl =
