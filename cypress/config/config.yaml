@@ -11,7 +11,7 @@ env:
   oauth2Password: '123456'
 # 集群
   externalIP: 142.22.2.2
-  upgradeVersion: v1.23.9
+  upgradeVersion: v1.23.6
 # 节点
   nodeUsername: 'root'
   nodePassword: 'Thinkbig1'
