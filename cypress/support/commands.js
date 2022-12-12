@@ -118,36 +118,34 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
     return;
   }
 
-  cy.session('login', () => {
-    cy.setLanguage();
+  cy.setLanguage();
 
-    cy.request({
-      url: '/apis/oauth/login',
-      body: {
-        username: Cypress.env('username'),
-        password: Cypress.env('password'),
-      },
-      method: 'POST',
+  cy.request({
+    url: '/apis/oauth/login',
+    body: {
+      username: Cypress.env('username'),
+      password: Cypress.env('password'),
+    },
+    method: 'POST',
+  })
+    .its('body')
+    .then((res) => {
+      const { access_token, refresh_token, expires_in, refresh_expires_in } =
+        res || {};
+      const expire = Number(expires_in) * 1000;
+      const refreshExpire = Number(refresh_expires_in) * 1000;
+      const token = {
+        token: access_token,
+        refreshToken: refresh_token,
+        // expire,
+        expires: new Date().getTime() + expire,
+      };
+
+      cy.setLocalStorageItem('token', token, refreshExpire);
+      Cypress.config('token', token);
+      return Promise.resolve(token);
     })
-      .its('body')
-      .as('token')
-      .then((res) => {
-        const { access_token, refresh_token, expires_in, refresh_expires_in } =
-          res || {};
-        const expire = Number(expires_in) * 1000;
-        const refreshExpire = Number(refresh_expires_in) * 1000;
-        const token = {
-          token: access_token,
-          refreshToken: refresh_token,
-          // expire,
-          expires: new Date().getTime() + expire,
-        };
-
-        cy.setLocalStorageItem('token', token, refreshExpire);
-        Cypress.config('token', token);
-      });
-
-    cy.get('@token').then((res) => {
+    .then((res) => {
       const rules = {};
       const user = {
         username: null,
@@ -159,7 +157,7 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
         url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env('username')}`,
         method: 'GET',
         headers: {
-          authorization: `bearer ${res.access_token}`,
+          authorization: `bearer ${res.token}`,
         },
       })
         .its('body')
@@ -177,7 +175,7 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
         )}/roles`,
         method: 'GET',
         headers: {
-          authorization: `bearer ${res.access_token}`,
+          authorization: `bearer ${res.token}`,
         },
       })
         .its('body')
@@ -207,7 +205,7 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
           Cypress.config('user', user);
         });
     });
-  });
+
   cy.visitPage(visitUrl || '/cluster', isTable);
   cy.wait(500);
 });
