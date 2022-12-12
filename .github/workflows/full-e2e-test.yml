@@ -83,6 +83,7 @@ jobs:
             scp cypress/report/merge-report.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
             scp cypress/report/merge-report.json root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
             if [ -d "cypress/screenshots" ];then
+            scp -r cypress/screenshots root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/
             echo e2e-test fail
             exit 110
             else
