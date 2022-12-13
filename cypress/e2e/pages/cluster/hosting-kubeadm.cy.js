@@ -204,7 +204,7 @@ describe('kubeadm 纳管', () => {
 
   // 纳管集群的备份恢复
   it(
-    ...testCase('集群管理-集群-纳管集群详情-备份恢复-1').smoke().value(),
+    ...testCase('集群管理-集群-纳管集群详情-备份恢复-6').smoke().value(),
     () => {
       cy.login('/cluster/backup-point');
       // 添加备份空间
@@ -249,13 +249,15 @@ describe('kubeadm 纳管', () => {
 
   // 纳管集群访问kubectl
   it.skip(
-    ...testCase('集群管理-集群托管-提供商-访问kubectl-3').smoke().value(),
+    ...testCase('集群管理-集群-纳管集群详情-访问kubectl-1').smoke().value(),
     () => {}
   );
 
   // 纳管集群更新集群证书
   it(
-    ...testCase('集群管理-集群托管-提供商-更新集群证书-4').smoke().value(),
+    ...testCase('集群管理-集群托管-纳管集群详情-更新集群证书-9')
+      .smoke()
+      .value(),
     () => {
       cy.login('/cluster');
       cy.tableSearchText(clusterName);
@@ -275,7 +277,7 @@ describe('kubeadm 纳管', () => {
 
   // 纳管集群查看kubeconfig文件
   it(
-    ...testCase('集群管理-集群托管-提供商-查看kubeconfig文件-5')
+    ...testCase('集群管理-集群托管-纳管集群详情-查看kubeconfig文件-10')
       .smoke()
       .value(),
     () => {
@@ -292,34 +294,40 @@ describe('kubeadm 纳管', () => {
   );
 
   // 纳管集群添加节点
-  it(...testCase('集群管理-集群托管-提供商-添加节点-6').smoke().value(), () => {
-    cy.login('/cluster');
-    cy.tableSearchText(clusterName);
-    cy.clickActionInMore({
-      title: 'Node management',
-      subTitle: 'AddNode',
-    });
-    cy.formMultiTransfer('nodes', 0);
-    cy.clickModalActionSubmitButton();
-    cy.waitStatusSuccess();
-  });
+  it(
+    ...testCase('集群管理-集群托管-纳管集群详情-添加节点-4').smoke().value(),
+    () => {
+      cy.login('/cluster');
+      cy.tableSearchText(clusterName);
+      cy.clickActionInMore({
+        title: 'Node management',
+        subTitle: 'AddNode',
+      });
+      cy.formMultiTransfer('nodes', 0);
+      cy.clickModalActionSubmitButton();
+      cy.waitStatusSuccess();
+    }
+  );
 
   // 纳管集群移除节点
-  it(...testCase('集群管理-集群托管-提供商-移除节点-7').smoke().value(), () => {
-    cy.login('/cluster');
-    cy.tableSearchText(clusterName);
-    cy.clickActionInMore({
-      title: 'Node management',
-      subTitle: 'RemoveNode',
-    });
-    cy.clickByTitle('.ant-modal-content .ant-table-tbody', 'worker');
-    cy.clickModalActionSubmitButton();
-    cy.waitStatusSuccess();
-  });
+  it(
+    ...testCase('集群管理-集群托管-纳管集群详情-移除节点-5').smoke().value(),
+    () => {
+      cy.login('/cluster');
+      cy.tableSearchText(clusterName);
+      cy.clickActionInMore({
+        title: 'Node management',
+        subTitle: 'RemoveNode',
+      });
+      cy.clickByTitle('.ant-modal-content .ant-table-tbody', 'worker');
+      cy.clickModalActionSubmitButton();
+      cy.waitStatusSuccess();
+    }
+  );
 
   // 纳管集群的添加存储项
   it(
-    ...testCase('集群管理-集群-纳管集群详情-添加存储项-2').smoke().value(),
+    ...testCase('集群管理-集群-纳管集群详情-添加存储项-7').smoke().value(),
     () => {
       cy.login('/cluster');
       cy.tableSearchText(clusterName);
