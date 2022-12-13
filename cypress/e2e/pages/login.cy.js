@@ -13,21 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { testCase } from '../../support/common';
 
-describe('The Login Page', () => {
-  it('successfully login and check menu', () => {
-    cy.visit('/');
-    cy.loginInput('username', Cypress.env('username'))
-      .loginInput('password', Cypress.env('password'))
-      .loginFormSubmit()
-      .url()
-      .should('include', '/cluster-admin');
+describe('登录kubeclipper', () => {
+  const username = Cypress.env('username');
+  const password = Cypress.env('password');
+
+  afterEach(() => {
+    cy.addContext();
   });
 
-  it('successfully error username and password', () => {
+  it(...testCase('登录kubeclipper-1').smoke().value(), () => {
     cy.visit('/');
-    cy.loginInput('username', `${Cypress.env('username')}1`)
-      .loginInput('password', `${Cypress.env('password')}1`)
+    cy.loginInput('username', username)
+      .loginInput('password', password)
+      .loginFormSubmit()
+      .url()
+      .should('include', '/cluster');
+  });
+
+  it(...testCase('登录kubeclipper-2').smoke().value(), () => {
+    cy.visit('/');
+    cy.loginInput('username', `${username}1`)
+      .loginInput('password', `${password}1`)
       .loginFormSubmit()
       .get('.ant-notification')
       .should('have.length', 1);

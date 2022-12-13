@@ -40,8 +40,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'cypress-localstorage-commands';
-import getTitle from './common';
 import { get, uniq, isArray } from 'lodash';
+import getTitle from './common';
 
 Cypress.Commands.add('interceptGetAll', (requestList) => {
   const names = requestList.map((it, index) => {
@@ -57,6 +57,7 @@ Cypress.Commands.add('interceptGetAll', (requestList) => {
   });
 });
 
+// 点击菜单
 Cypress.Commands.add('clickMenu', (fatherIndex, sonIndex) => {
   const ele = cy
     .get('.ant-menu-dark')
@@ -68,6 +69,7 @@ Cypress.Commands.add('clickMenu', (fatherIndex, sonIndex) => {
   cy.wait(1000);
 });
 
+// 设置语言
 Cypress.Commands.add('setLanguage', () => {
   const exp = Date.now() + 864000000;
   const language = Cypress.env('language') || 'zh';
@@ -76,61 +78,86 @@ Cypress.Commands.add('setLanguage', () => {
   window.localStorage.setItem('lang', JSON.stringify(langValue));
 });
 
+// 前往 url
 Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
-  cy.visit(url);
-
-  cy.get('#app', { timeout: 120000 }).should('exist');
-  if (url) {
-    cy.wait(2000);
-    if (isTable) {
-      cy.get('.ant-table-wrapper', { timeout: 120000 }).should('exist');
-      cy.waitTableLoading();
+  cy.url().then((_url) => {
+    if (!_url.endsWith(url)) {
+      cy.visit(url);
+      cy.get('#app', { timeout: 120000 }).should('exist');
+      if (url) {
+        cy.wait(2000);
+        if (isTable) {
+          cy.get('.ant-table-wrapper', { timeout: 120000 }).should('exist');
+          cy.waitTableLoading();
+        }
+      }
     }
-  }
+  });
 });
 
+// 登录
+Cypress.Commands.add('loginByUI', (visitUrl = '', isTable = true) => {
+  const username = Cypress.env('username');
+  const password = Cypress.env('password');
+
+  cy.visit('/auth/login');
+  cy.loginInput('username', username)
+    .loginInput('password', password)
+    .loginFormSubmit();
+  cy.visitPage(visitUrl || '/cluster', isTable);
+  cy.wait(500);
+});
+
+// 登录
 Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
-  cy.session('login', () => {
-    cy.setLanguage();
+  if (Cypress.config('user')) {
+    cy.setLocalStorageItem('token', Cypress.config('token'));
+    cy.setLocalStorageItem('user', Cypress.config('user'));
 
-    cy.request({
-      url: '/apis/oauth/login',
-      body: {
-        username: Cypress.env('username'),
-        password: `${Cypress.env('password')}`,
-      },
-      method: 'POST',
+    cy.visitPage(visitUrl || '/cluster', isTable);
+    return;
+  }
+
+  cy.setLanguage();
+
+  cy.request({
+    url: '/apis/oauth/login',
+    body: {
+      username: Cypress.env('username'),
+      password: Cypress.env('password'),
+    },
+    method: 'POST',
+  })
+    .its('body')
+    .then((res) => {
+      const { access_token, refresh_token, expires_in, refresh_expires_in } =
+        res || {};
+      const expire = Number(expires_in) * 1000;
+      const refreshExpire = Number(refresh_expires_in) * 1000;
+      const token = {
+        token: access_token,
+        refreshToken: refresh_token,
+        // expire,
+        expires: new Date().getTime() + expire,
+      };
+
+      cy.setLocalStorageItem('token', token, refreshExpire);
+      Cypress.config('token', token);
+      return Promise.resolve(token);
     })
-      .its('body')
-      .as('token')
-      .then((res) => {
-        const { access_token, refresh_token, expires_in, refresh_expires_in } =
-          res || {};
-        const expire = Number(expires_in) * 1000;
-        const refreshExpire = Number(refresh_expires_in) * 1000;
-        const token = {
-          token: access_token,
-          refreshToken: refresh_token,
-          // expire,
-          expires: new Date().getTime() + expire,
-        };
-
-        cy.setLocalStorageItem('token', token, refreshExpire);
-      });
-
-    cy.get('@token').then((res) => {
+    .then((res) => {
       const rules = {};
       const user = {
         username: null,
         globalrole: null,
-        rules,
+        globalRules: rules,
       };
 
       cy.request({
         url: `/apis/api/iam.kubeclipper.io/v1/users/${Cypress.env('username')}`,
         method: 'GET',
         headers: {
-          authorization: `bearer ${res.access_token}`,
+          authorization: `bearer ${res.token}`,
         },
       })
         .its('body')
@@ -148,7 +175,7 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
         )}/roles`,
         method: 'GET',
         headers: {
-          authorization: `bearer ${res.access_token}`,
+          authorization: `bearer ${res.token}`,
         },
       })
         .its('body')
@@ -175,21 +202,29 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
         })
         .then(() => {
           cy.setLocalStorageItem('user', user);
+          Cypress.config('user', user);
         });
     });
-  });
+
   cy.visitPage(visitUrl || '/cluster', isTable);
   cy.wait(500);
 });
 
+// 国际化
 Cypress.Commands.add('t', (text) => {
   const translated = getTitle(text);
   cy.get(translated);
 });
 
+Cypress.Commands.add('hoverAvatar', () => {
+  cy.get('.ant-layout-header')
+    .find('.ant-dropdown-trigger')
+    .trigger('mouseover');
+});
+// 点击右侧用户名处下拉
 Cypress.Commands.add('clickAvatarButton', (label) => {
   const realTitle = getTitle(label);
-  cy.get('.ant-layout-header').find('.ant-dropdown-trigger').click().wait(2000);
+  cy.hoverAvatar();
   cy.get('.ant-dropdown-menu')
     .last()
     .find('.ant-btn-link')
@@ -197,6 +232,7 @@ Cypress.Commands.add('clickAvatarButton', (label) => {
     .click();
 });
 
+// set localstorage
 Cypress.Commands.add(
   'setLocalStorageItem',
   (key, value, maxAge = 864000000, expiry = 0) => {
@@ -210,33 +246,25 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add('createClusterQuick', () => {
-  cy.visitPage('/cluster');
-
-  cy.clickHeaderButton(0);
-
-  const uuid = Cypress._.random(0, 1e6);
-  const name = `e2e.cluster.name${uuid}`;
-
-  // cluster name
-  cy.get('[name="name"]').clear().type(name).blur();
-  cy.formSelect('region', 'default');
-  // select node
-  cy.waitTransferList();
-  cy.formMultiTransfer('nodes', 0);
-
-  // next step
-  cy.clickStepActionNextButton('step-next');
+// oauth2 登录 keycloak
+Cypress.Commands.add('loginByKeycloak', (username, password) => {
+  cy.visit('/auth/login');
+  cy.get('[name="keycloak"]').click();
+  cy.get('#username').type(username);
+  cy.get('#password').type(password);
+  cy.get('[type="submit"]').click();
   cy.wait(1000);
-  cy.clickStepActionNextButton('step-quick');
-  cy.clickStepActionNextButton('step-confirm');
-  // check status
-  cy.wait(2000).tableSearchText(name).waitStatusSuccess();
 });
 
-Cypress.Commands.add('checkClusterExist', () => {
-  cy.visitPage('/cluster');
-  if (Cypress.$('.ant-empty-description').length) {
-    cy.createClusterQuick();
-  }
+// 插件页选择tab
+Cypress.Commands.add('selectComponentTab', (title) => {
+  cy.get('.ant-row')
+    .contains(`${title} ${getTitle('Set')}`)
+    .click()
+    .wait(200);
+});
+
+// 启用插件
+Cypress.Commands.add('enableComponent', (name) => {
+  cy.get('.ant-checkbox-wrapper').eq(0).contains(name).click().wait(200);
 });
