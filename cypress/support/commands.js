@@ -150,7 +150,7 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
       const user = {
         username: null,
         globalrole: null,
-        rules,
+        globalRules: rules,
       };
 
       cy.request({

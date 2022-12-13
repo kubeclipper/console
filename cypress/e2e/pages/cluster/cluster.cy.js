@@ -72,6 +72,31 @@ describe('集群', () => {
 
     cy.goBackToList(listUrl).wait(2000);
     cy.tableSearchText(name).waitStatusSuccess();
+  });
+
+  // 添加节点
+  it(...testCase('集群管理-集群-添加节点-1').smoke().value(), () => {
+    cy.tableSearchText(name);
+    cy.clickActionInMore({
+      title: 'Node management',
+      subTitle: 'AddNode',
+    });
+    cy.formMultiTransfer('nodes', 0);
+    cy.clickModalActionSubmitButton();
+    cy.waitStatusSuccess();
+  });
+
+  // 移除节点
+  it(...testCase('集群管理-集群-移除节点-1').smoke().value(), () => {
+    cy.tableSearchText(name);
+    cy.clickActionInMore({
+      title: 'Node management',
+      subTitle: 'RemoveNode',
+    });
+    cy.clickByTitle('.ant-modal-content .ant-table-tbody', 'worker');
+    cy.clickModalActionSubmitButton();
+    cy.waitStatusSuccess();
+
     cy.deleteCluster(name);
   });
 
@@ -248,8 +273,8 @@ describe('集群', () => {
     cy.clickConfirmActionSubmitButton().waitStatusSuccess();
   });
 
-  // 添加节点
-  it(...testCase('集群管理-集群-添加节点-1').smoke().value(), () => {
+  // 带插件集群添加节点
+  it(...testCase('集群管理-集群-添加节点-2').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
@@ -257,11 +282,11 @@ describe('集群', () => {
     });
     cy.formMultiTransfer('nodes', 0);
     cy.clickModalActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
+    cy.waitStatusSuccess();
   });
 
   // 移除节点
-  it(...testCase('集群管理-集群-移除节点-1').smoke().value(), () => {
+  it(...testCase('集群管理-集群-移除节点-3').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
       title: 'Node management',
@@ -269,7 +294,7 @@ describe('集群', () => {
     });
     cy.clickByTitle('.ant-modal-content .ant-table-tbody', 'worker');
     cy.clickModalActionSubmitButton();
-    cy.wait(2000).waitStatusSuccess();
+    cy.waitStatusSuccess();
   });
 
   // 查看集群详情
