@@ -147,6 +147,10 @@ export default class BaseStore {
     return newData;
   }
 
+  async fetchListAll() {
+    return this.fetchList({ limit: -1 });
+  }
+
   updateList(more, params, data, result) {
     this.list.update({
       data: more ? [...this.list.data, ...data] : data,

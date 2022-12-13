@@ -18,7 +18,7 @@ import { message } from 'antd';
 import BaseForm from 'components/Form';
 import LabelInput from 'components/FormItem/LabelInput';
 import TaintInput from 'components/FormItem/TaintInput';
-import { isEmpty, flatten, isNumber, uniq, get } from 'lodash';
+import { isEmpty, flatten, isNumber, uniq } from 'lodash';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import SelectNodes from 'pages/cluster/components/SelectNodes';
@@ -131,7 +131,9 @@ export default class Node extends BaseForm {
   }
 
   get projectOptions() {
-    return (get(rootStore, 'user.projects') || []).map(({ name }) => ({
+    const { projects = [] } = this.props.context;
+
+    return projects.map(({ name }) => ({
       label: name,
       value: name,
     }));
