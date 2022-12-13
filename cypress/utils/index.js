@@ -16,8 +16,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const _ = require('lodash');
 const yaml = require('js-yaml');
+const _ = require('lodash');
 
 const root = (dir) =>
   `${path.resolve(__dirname, '../../')}/${dir}`.replace(/(\/+)/g, '/');
@@ -32,9 +32,11 @@ const loadYaml = (filePath) => {
 
 function getZhJson() {
   const jsonPath = root('src/locales/zh.json');
+  const jsonPath2 = root('src/locales/basezh.json');
   try {
     const rawData = fs.readFileSync(jsonPath);
-    const translate = JSON.parse(rawData);
+    const rawData2 = fs.readFileSync(jsonPath2);
+    const translate = { ...JSON.parse(rawData), ...JSON.parse(rawData2) };
     return translate;
   } catch (e) {
     return {};
@@ -45,7 +47,6 @@ function getConfig() {
   const cypressFolder = 'cypress';
   const config = loadYaml(root(`${cypressFolder}/config/config.yaml`)) || {};
   const tryFile = root(`${cypressFolder}/config/local_config.yaml`);
-
   if (fs.existsSync(tryFile)) {
     // merge local_config
     const local_config = loadYaml(tryFile);

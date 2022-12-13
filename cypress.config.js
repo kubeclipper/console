@@ -23,9 +23,6 @@ module.exports = defineConfig({
       return require('./cypress/plugins/index.js')(on, config);
     },
     experimentalSessionAndOrigin: true,
-    specPattern: [
-      'cypress/e2e/pages/login.cy.js',
-      'cypress/e2e/pages/cluster/*.cy.js',
-    ],
+    specPattern: ['cypress/e2e/pages/login.cy.js'],
   },
 });
