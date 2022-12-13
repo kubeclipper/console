@@ -54,8 +54,6 @@ Cypress.Commands.add('deleteCluster', (clusterName) => {
   cy.get('.ant-table-tbody')
     .find('.ant-table-row', { timeout: 20 * 60 * 1000 })
     .should('not.exist');
-
-  cy.clearSearchInput();
 });
 
 // 创建平台角色
