@@ -47,6 +47,11 @@ describe('节点信息', () => {
       });
   });
 
+  it(...testCase('节点信息-查看节点信息-1').smoke().value(), () => {
+    cy.tableSearchText(nodeIp);
+    cy.checkTableRowLength();
+  });
+
   it(...testCase('节点信息-查看节点详情-1').smoke().value(), () => {
     cy.tableSearchText(nodeIp);
     cy.goToDetail(0)
