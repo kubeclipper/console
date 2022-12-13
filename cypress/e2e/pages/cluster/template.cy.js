@@ -22,6 +22,8 @@ describe('模版管理', () => {
   const testUrl = 'cluster/template';
   const templateName = `e2e.template.name${uuid}`;
 
+  const templatePluginName = `e2e.template.name${uuid}`;
+
   beforeEach(() => {
     cy.login(testUrl);
   });
@@ -141,4 +143,34 @@ describe('模版管理', () => {
       cy.get('.ant-empty-image').should('exist');
     }
   );
+
+  // nfs 模版添加
+  it(...testCase('集群管理-模版管理-插件模版-添加-1').smoke().value(), () => {
+    cy.visitPage('/cluster/template');
+
+    cy.clickByDetailTabs('nfs-csi 模版');
+    cy.clickHeaderButton(0);
+
+    cy.formInput('templateName', templatePluginName);
+
+    cy.get('input[title="服务地址"]').eq(0).type(Cypress.env('nfsIp'));
+    cy.get('input[title="共享路径"]').eq(0).type(Cypress.env('nfsPath'));
+    cy.get('.step-form-footer-btns')
+      .find('.ant-btn-primary')
+      .click()
+      .wait(1000);
+
+    cy.checkTableRowLength(1);
+  });
+
+  // nfs 模版添加
+  it(...testCase('集群管理-模版管理-插件模版-删除-1').smoke().value(), () => {
+    cy.visitPage('/cluster/template');
+    cy.clickByDetailTabs('nfs-csi 模版');
+    cy.wait(1000);
+    cy.clickActionButtonByTitle('Delete');
+    cy.clickConfirmActionSubmitButton();
+
+    cy.checkEmptyTable();
+  });
 });
