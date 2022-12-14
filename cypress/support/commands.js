@@ -96,7 +96,7 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 });
 
 // 登录
-Cypress.Commands.add('loginByUI', (visitUrl = '', isTable = true) => {
+Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
   const username = Cypress.env('username');
   const password = Cypress.env('password');
 
@@ -109,7 +109,7 @@ Cypress.Commands.add('loginByUI', (visitUrl = '', isTable = true) => {
 });
 
 // 登录
-Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
+Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
   if (Cypress.config('user')) {
     cy.setLocalStorageItem('token', Cypress.config('token'));
     cy.setLocalStorageItem('user', Cypress.config('user'));
