@@ -37,12 +37,12 @@ export const clusterParams = {
   IPVersion: 'IPv4',
   proxyMode: 'ipvs',
   IPManger: true,
-  podIPv4CIDR: '172.25.0.0/24',
+  podIPv4CIDR: '172.25.0.0/16',
   podIPv6CIDR: 'fd05::/120',
   pod_network_underlay: 'first-found',
   pod_network_underlay_v6: 'first-found',
   mtu: 1440,
-  serviceSubnet: '10.96.0.0/16',
+  serviceSubnet: '10.96.0.0/12',
   serviceSubnetV6: 'fd03::/112',
 };
 
