@@ -206,8 +206,10 @@ export default class Create extends StepAction {
     } = values;
 
     const isIPv4 = IPVersion === 'IPv4';
-    const servicesCidr = isIPv4 ? [podIPv4CIDR] : [podIPv4CIDR, podIPv6CIDR];
-    const podCidr = isIPv4 ? [serviceSubnet] : [serviceSubnet, serviceSubnetV6];
+    const servicesCidr = isIPv4
+      ? [serviceSubnet]
+      : [serviceSubnet, serviceSubnetV6];
+    const podCidr = isIPv4 ? [podIPv4CIDR] : [podIPv4CIDR, podIPv6CIDR];
 
     const { IPv4AutoDetection, IPv6AutoDetection } =
       computeAutoDetection(values);
