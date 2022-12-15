@@ -305,7 +305,7 @@ describe('kubeadm 纳管', () => {
       });
       cy.formMultiTransfer('nodes', 0);
       cy.clickModalActionSubmitButton();
-      cy.waitStatusSuccess();
+      cy.waitStatusSuccess(null, 30 * 60 * 1000);
     }
   );
 
