@@ -163,7 +163,9 @@ describe('集群', () => {
 
   // 区域管理-区域详情-查看集群详情
   it(...testCase('区域管理-区域详情-查看集群详情-1').smoke().value(), () => {
-    cy.visitPage('/region');
+    cy.selectMenu({
+      title: 'Region',
+    });
     cy.tableSearchText('default').goToDetail(0);
     cy.tableSearchText(name);
     cy.goToDetail(0).checkBaseDetailValue(name);
@@ -175,7 +177,9 @@ describe('集群', () => {
   });
 
   it(...testCase('区域管理-区域详情-查看集群列表-1').smoke().value(), () => {
-    cy.visitPage('/region');
+    cy.selectMenu({
+      title: 'Region',
+    });
     cy.tableSearchText('default').goToDetail(0);
     cy.clickByDetailTabs('Cluster List');
     cy.checkTableRowLength();
@@ -190,7 +194,10 @@ describe('集群', () => {
       const registryName = `registry-${uuid}`;
 
       // 创建 registy
-      cy.visitPage('/cluster/registry').clickHeaderButton(0);
+      cy.selectMenu({
+        subTitle: 'Registry',
+      });
+      cy.clickHeaderButton(0);
       cy.formInput('name', registryName);
       cy.formInputRegistry(
         'host',
@@ -198,7 +205,9 @@ describe('集群', () => {
         offLineRegistry
       ).clickModalActionSubmitButton();
 
-      cy.visitPage('/cluster');
+      cy.selectMenu({
+        subTitle: 'Cluster',
+      });
       cy.tableSearchText(name).clickActionInMore({
         title: 'Cluster Settings',
         subTitle: 'CRI Registry',
@@ -344,7 +353,9 @@ describe('集群', () => {
         rowLength
       );
     });
-    cy.visitPage(listUrl);
+    cy.selectMenu({
+      subTitle: 'Cluster',
+    });
     cy.waitStatusSuccess();
   });
 
@@ -373,7 +384,9 @@ describe('集群', () => {
         rowLength
       );
     });
-    cy.visitPage(listUrl);
+    cy.selectMenu({
+      subTitle: 'Cluster',
+    });
     cy.waitStatusSuccess();
   });
 

@@ -268,3 +268,18 @@ Cypress.Commands.add('selectComponentTab', (title) => {
 Cypress.Commands.add('enableComponent', (name) => {
   cy.get('.ant-checkbox-wrapper').eq(0).contains(name).click().wait(200);
 });
+
+// 选择按钮 可代替 visitPage
+Cypress.Commands.add('selectMenu', (option) => {
+  const { title, subTitle } = option;
+
+  if (!title) {
+    cy.get('.ant-menu-sub').contains(getTitle(subTitle)).click();
+  } else if (!subTitle) {
+    cy.get('.ant-menu-root').contains(getTitle(title)).click();
+  } else {
+    cy.get('.ant-menu-root').contains(getTitle(title)).click();
+    cy.get('.ant-menu-sub').contains(getTitle(subTitle)).click();
+  }
+  cy.wait(1000);
+});
