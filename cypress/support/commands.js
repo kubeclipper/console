@@ -96,7 +96,7 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 });
 
 // 登录
-Cypress.Commands.add('loginByUI', (visitUrl = '', isTable = true) => {
+Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
   const username = Cypress.env('username');
   const password = Cypress.env('password');
 
@@ -109,7 +109,7 @@ Cypress.Commands.add('loginByUI', (visitUrl = '', isTable = true) => {
 });
 
 // 登录
-Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
+Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
   if (Cypress.config('user')) {
     cy.setLocalStorageItem('token', Cypress.config('token'));
     cy.setLocalStorageItem('user', Cypress.config('user'));
@@ -267,4 +267,19 @@ Cypress.Commands.add('selectComponentTab', (title) => {
 // 启用插件
 Cypress.Commands.add('enableComponent', (name) => {
   cy.get('.ant-checkbox-wrapper').eq(0).contains(name).click().wait(200);
+});
+
+// 选择按钮 可代替 visitPage
+Cypress.Commands.add('selectMenu', (option) => {
+  const { title, subTitle } = option;
+
+  if (!title) {
+    cy.get('.ant-menu-sub').contains(getTitle(subTitle)).click();
+  } else if (!subTitle) {
+    cy.get('.ant-menu-root').contains(getTitle(title)).click();
+  } else {
+    cy.get('.ant-menu-root').contains(getTitle(title)).click();
+    cy.get('.ant-menu-sub').contains(getTitle(subTitle)).click();
+  }
+  cy.wait(1000);
 });
