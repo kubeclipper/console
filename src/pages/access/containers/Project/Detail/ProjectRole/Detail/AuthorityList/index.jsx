@@ -18,7 +18,7 @@ import styles from './index.less';
 
 export default function AuthorityList({ templates }) {
   return (
-    <ul className={styles.wrapper} data-test="rule-list">
+    <ul className={styles.wrapper} data-action="rule-list">
       {Object.keys(templates).map((key) => (
         <li key={key}>
           <span className={styles.name}>{t(key)}</span>
