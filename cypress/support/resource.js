@@ -16,8 +16,7 @@
 
 // 快速创建集群
 Cypress.Commands.add('createClusterQuick', (clusterName) => {
-  cy.visitPage('/cluster');
-
+  // cy.visitPage('/cluster');
   cy.clickHeaderButton(0);
 
   const uuid = Cypress._.random(0, 1e6);
@@ -41,7 +40,7 @@ Cypress.Commands.add('createClusterQuick', (clusterName) => {
 
 // 删除集群
 Cypress.Commands.add('deleteCluster', (clusterName) => {
-  cy.visitPage('/cluster');
+  // cy.visitPage('/cluster');
   cy.tableSearchText(clusterName);
 
   cy.clickActionInMore({
@@ -77,7 +76,7 @@ Cypress.Commands.add('deleteUser', (userName) => {
 
 // 删除镜像仓库
 Cypress.Commands.add('deleteRegistry', (name) => {
-  cy.visitPage('/cluster/registry');
+  // cy.visitPage('/cluster/registry');
   cy.tableSearchText(name)
     .clickActionButtonByTitle('Delete')
     .clickConfirmActionSubmitButton()

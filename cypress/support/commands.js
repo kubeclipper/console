@@ -283,3 +283,16 @@ Cypress.Commands.add('selectMenu', (option) => {
   }
   cy.wait(1000);
 });
+
+// 选择平台  管理平台/工作台
+Cypress.Commands.add('selectPlatform', (title) => {
+  cy.get('.ant-layout-header .anticon-swap')
+    .next()
+    .then((res) => {
+      cy.log(res.text());
+      cy.log(title);
+      if (res.text() !== title) {
+        cy.get('.ant-layout-header .anticon-swap').next().click();
+      }
+    });
+});
