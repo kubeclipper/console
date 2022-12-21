@@ -635,5 +635,7 @@
   "Container Registry": "容器镜像仓库",
   "Host Cluster Name": "主机集群名称",
   "Only the node is assigned to the project, it can be used under the project": "节点被分配到项目后，才可以在该项目下使用。",
-  "Assign node": "分配节点"
+  "Assign node": "分配节点",
+  "Custom Certificate": "自定义证书",
+  "CA Key": "CA 密钥"
 }

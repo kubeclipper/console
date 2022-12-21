@@ -635,5 +635,7 @@
   "Container Registry": "Container Registry",
   "Host Cluster Name": "Host Cluster Name",
   "Only the node is assigned to the project, it can be used under the project": "Only the node is assigned to the project, it can be used under the project",
-  "Assign node": "Assign node"
+  "Assign node": "Assign node",
+  "Custom Certificate": "Custom Certificate",
+  "CA Key": "CA Key"
 }

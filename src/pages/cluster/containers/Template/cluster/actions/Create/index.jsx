@@ -168,6 +168,10 @@ export default class Create extends StepAction {
       etcdDataDir,
       kubeletDataDir,
       kubernetesVersion,
+      // externalCA
+      externalCA,
+      externalCaCert,
+      externalCaKey,
       // container runtime
       containerRuntimeType,
       dockerInsecureRegistry,
@@ -223,6 +227,8 @@ export default class Create extends StepAction {
         },
       },
       certSANs: arrayInputValue(certSANs),
+      externalCaCert: externalCA ? externalCaCert : '',
+      externalCaKey: externalCA ? externalCaKey : '',
       localRegistry,
       workerNodeVip,
       kubernetesVersion,
