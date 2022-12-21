@@ -91,6 +91,8 @@ class SaveAsTemplate extends ModalAction {
 
     const decryptCategory = ['cinder'];
     const decryptKeys = ['password', 'caCert'];
+    const decryptCom = ['externalCaKey', 'externalCaCert'];
+
     if (decryptCategory.includes(pluginName)) {
       decryptKeys.forEach((key) => {
         component[key] = safeAtob(component[key]);
@@ -105,7 +107,14 @@ class SaveAsTemplate extends ModalAction {
           });
         }
       });
+
+      decryptCom.forEach((key) => {
+        if (component?.[key]) {
+          component[key] = safeAtob(component[key]);
+        }
+      });
     }
+
     return this.store.create(params, component);
   };
 }
