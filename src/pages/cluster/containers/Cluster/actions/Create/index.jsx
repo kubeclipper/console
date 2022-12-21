@@ -194,6 +194,10 @@ export default class Create extends StepAction {
       certSANs,
       etcdDataDir,
       kubeletDataDir,
+      // externalCA
+      externalCA,
+      externalCaCert,
+      externalCaKey,
       // container runtime
       containerRuntimeType,
       dockerInsecureRegistry,
@@ -260,6 +264,8 @@ export default class Create extends StepAction {
         name: 'kubeadm',
       },
       certSANs: arrayInputValue(certSANs),
+      externalCaCert: externalCA ? externalCaCert : '',
+      externalCaKey: externalCA ? externalCaKey : '',
       masters: formatNodesWithLabel(values).master,
       workers: formatNodesWithLabel(values).worker || [],
       localRegistry,

@@ -184,6 +184,9 @@ const ClusterTemplateMapper = (item) => {
   const containerRuntimeVersion = get(config, 'containerRuntime.version');
   const containerRuntimeType = get(config, 'containerRuntime.type');
 
+  const externalCaKey = get(config, 'externalCaKey');
+  const externalCaCert = get(config, 'externalCaCert');
+
   return {
     offline,
     description,
@@ -206,6 +209,10 @@ const ClusterTemplateMapper = (item) => {
         value: val,
         index,
       })),
+    // externalCa
+    externalCA: !!(externalCaKey || externalCaCert),
+    externalCaKey,
+    externalCaCert,
     // networking
     podIPv4CIDR,
     podIPv6CIDR,

@@ -273,7 +273,14 @@ export default class Cluster extends BaseForm {
       'calicoMode',
       'pod_network_underlay',
       'pod_network_underlay_v6',
+      'externalCA',
     ];
+  }
+
+  get isExternalCA() {
+    const { externalCA } = this.props.context;
+
+    return !!externalCA;
   }
 
   get isCalico() {
@@ -561,6 +568,29 @@ export default class Cluster extends BaseForm {
           type: 'input',
           maxLength: 256,
           placeholder: t('Please input {name} data dir', { name: 'kubelet' }),
+        },
+        {
+          name: 'externalCA',
+          label: t('Custom Certificate'),
+          type: 'check',
+          content: t('Custom Certificate'),
+          onChange: (val) => {
+            this.updateContext({
+              externalCA: val,
+            });
+          },
+        },
+        {
+          name: 'externalCaKey',
+          label: t('CA Key'),
+          type: 'textarea',
+          hidden: !this.isExternalCA,
+        },
+        {
+          name: 'externalCaCert',
+          label: t('CA Certificate'),
+          type: 'textarea',
+          hidden: !this.isExternalCA,
         },
         // certSANs 数组string， 填 ip 和域名
         {
