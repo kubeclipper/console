@@ -636,6 +636,7 @@
   "Host Cluster Name": "Host Cluster Name",
   "Only the node is assigned to the project, it can be used under the project": "Only the node is assigned to the project, it can be used under the project",
   "Assign node": "Assign node",
+  "Cluster {clusters} is using this backup space. Deleting the backup space will automatically unbind the relationship. Are you sure you want to delete this backup space?": "Cluster {clusters} is using this backup space. Deleting the backup space will automatically unbind the relationship. Are you sure you want to delete this backup space?",
   "Custom Certificate": "Custom Certificate",
   "CA Key": "CA Key"
 }

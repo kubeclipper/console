@@ -16,7 +16,7 @@
 import { ConfirmAction } from 'containers/Action';
 import { rootStore } from 'stores';
 
-const { backupPointStore } = rootStore;
+const { backupPointStore, clusterStore } = rootStore;
 
 export default class DeleteAction extends ConfirmAction {
   get id() {
@@ -41,9 +41,50 @@ export default class DeleteAction extends ConfirmAction {
 
   policy = 'backuppoints:edit';
 
+  confirmContext = async (data) => {
+    const res = await clusterStore.fetchList({ limit: -1 });
+    const usedCluster = res.filter((item) => item.backupPoint === data.name);
+    this.usedCluster = usedCluster;
+
+    if (usedCluster.length) {
+      return t(
+        'Cluster {clusters} is using this backup space. Deleting the backup space will automatically unbind the relationship. Are you sure you want to delete this backup space?',
+        {
+          clusters: usedCluster.map((item) => item.name).join(', '),
+        }
+      );
+    }
+
+    const name = this.getName(data);
+    return t('Are you sure to { action } {name}?', {
+      action: this.actionName || this.title,
+      name,
+    });
+  };
+
   onSubmit = (item) => {
     const { name } = item;
 
+    if (this.usedCluster.length) {
+      this.usedCluster.forEach(({ _originData }) => {
+        delete _originData.metadata.labels['kubeclipper.io/backupPoint'];
+      });
+
+      const editClusterPromise = this.usedCluster.map(
+        (cluster) =>
+          new Promise((resolve) => {
+            clusterStore
+              .edit({ id: cluster.name }, cluster._originData)
+              .then((res) => {
+                resolve(res);
+              });
+          })
+      );
+
+      return Promise.all(editClusterPromise).then(() =>
+        backupPointStore.delete({ id: name })
+      );
+    }
     return backupPointStore.delete({ id: name });
   };
 }
