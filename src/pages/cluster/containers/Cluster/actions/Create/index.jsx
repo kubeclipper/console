@@ -21,6 +21,7 @@ import { computeAutoDetection } from 'resources/cluster';
 import { formatNodesWithLabel } from 'resources/node';
 import { rootStore } from 'stores';
 import { arrayInputValue, arrayInput2Label, encodeProperty } from 'utils';
+import { safeBtoa } from 'utils/base64';
 import Cluster from './Cluster';
 import Confirm from './Confirm';
 import Node from './Node';
@@ -264,8 +265,8 @@ export default class Create extends StepAction {
         name: 'kubeadm',
       },
       certSANs: arrayInputValue(certSANs),
-      externalCaCert: externalCA ? externalCaCert : '',
-      externalCaKey: externalCA ? externalCaKey : '',
+      externalCaCert: externalCA ? safeBtoa(externalCaCert) : '',
+      externalCaKey: externalCA ? safeBtoa(externalCaKey) : '',
       masters: formatNodesWithLabel(values).master,
       workers: formatNodesWithLabel(values).worker || [],
       localRegistry,
