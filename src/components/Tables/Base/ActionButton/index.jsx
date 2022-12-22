@@ -223,7 +223,7 @@ const ActionButton = (props) => {
       data = items;
     }
     const content = confirmContext
-      ? confirmContext(data)
+      ? await confirmContext(data)
       : getDefaultMsg(action, data).confirmContext;
 
     const onConfirmOK = (modal) => {
