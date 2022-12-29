@@ -89,6 +89,7 @@ export const operationStatus = {
   successful: t('Successful'),
   failed: t('Failed'),
   unknown: t('Unknown'),
+  termination: t('Break Off'),
 };
 
 export const reclaimPolicyOption = [
@@ -271,11 +272,11 @@ export const columns = (self) => [
     dataIndex: 'name',
     isHideable: true,
     copyable: true,
-    render: (name) => (
+    render: (name, data) => (
       <Link
         to={self?.isAdminPage ? `/cluster-admin/${name}` : `/cluster/${name}`}
       >
-        {name}
+        {data.displayName}
       </Link>
     ),
     extraRender: (name, data) => {

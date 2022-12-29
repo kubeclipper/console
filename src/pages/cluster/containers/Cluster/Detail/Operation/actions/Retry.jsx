@@ -38,15 +38,18 @@ export default class Index extends ConfirmAction {
     return ['BackupCluster', 'UpgradeCluster', 'RecoveryCluster'];
   }
 
-  isFailedStatus = ({ id }) => {
+  isFailedStatus = (item) => {
     const firstPage = operationStore.list.page;
     const firstData = operationStore.list.data[0];
+    const { id, status } = item;
     if (
       firstPage === 1 &&
       firstData.id === id &&
       firstData.status === 'failed' &&
       !this.notAllowAction.includes(firstData.operationName)
     ) {
+      return true;
+    } else if (firstData.id === id && status === 'termination') {
       return true;
     }
 

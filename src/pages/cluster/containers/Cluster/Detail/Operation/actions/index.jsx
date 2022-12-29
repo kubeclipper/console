@@ -15,11 +15,12 @@
  */
 import PipelineLogDialog from './PipelineLogDialog';
 import Retry from './Retry';
+import Stop from './Stop';
 
 const actionConfigs = {
   rowActions: {
     firstAction: PipelineLogDialog,
-    moreActions: [{ action: Retry }],
+    moreActions: [{ action: Stop }, { action: Retry }],
   },
   batchActions: [],
   primaryActions: [],
