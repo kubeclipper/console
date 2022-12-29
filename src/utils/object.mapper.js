@@ -141,6 +141,7 @@ const ClusterMapper = (item) => {
     plugin: filterComponents(item.addons, PLUGINS) || [],
     storage: filterComponents(item.addons, STORAGES) || [],
     region: get(metadata, 'labels["topology.kubeclipper.io/region"]'),
+    displayName: get(metadata, 'annotations["kubeclipper.io/display-name"]'),
     description: get(metadata, 'annotations["kubeclipper.io/description"]'),
     backupPoint: get(metadata, 'labels["kubeclipper.io/backupPoint"]'),
     providerName: get(metadata, 'labels["kubeclipper.io/clusterProviderName"]'),

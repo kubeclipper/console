@@ -53,6 +53,12 @@ class OperationStore extends BaseStore {
     );
   }
 
+  stop(params) {
+    return this.submitting(
+      request.post(`${this.getDetailUrl(params)}/termination`)
+    );
+  }
+
   reset() {
     this.currentOperation = {};
     this.operationSteps = [];
