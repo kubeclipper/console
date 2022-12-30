@@ -40,7 +40,7 @@ const Plugin = (props) => {
 
   useEffect(() => {
     async function init() {
-      const _templates = await templatesStore.fetchAll();
+      const _templates = await templatesStore.fetchListAll();
 
       const { storage = [] } = await store.updateDetail({ id });
       const enabledStorageClass = storage

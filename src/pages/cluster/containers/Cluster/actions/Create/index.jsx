@@ -20,7 +20,12 @@ import { observer } from 'mobx-react';
 import { computeAutoDetection } from 'resources/cluster';
 import { formatNodesWithLabel } from 'resources/node';
 import { rootStore } from 'stores';
-import { arrayInputValue, arrayInput2Label, encodeProperty } from 'utils';
+import {
+  arrayInputValue,
+  arrayInput2Label,
+  encodeProperty,
+  versionCompare,
+} from 'utils';
 import { safeBtoa } from 'utils/base64';
 import Cluster from './Cluster';
 import Confirm from './Confirm';
@@ -187,6 +192,7 @@ export default class Create extends StepAction {
     const {
       /* step1: Node config */
       region,
+      taints,
       /* step2: Cluster config */
       // image
       offline,
@@ -228,6 +234,13 @@ export default class Create extends StepAction {
       externalIP,
       labels,
     } = values;
+
+    const isAfter24 = versionCompare('v1.24.0', kubernetesVersion) <= 0;
+    if (isAfter24) {
+      taints.forEach((item) => {
+        item.value.key = 'node-role.kubernetes.io/control-plane';
+      });
+    }
 
     const isIPv4 = IPVersion === 'IPv4';
     const servicesCidr = isIPv4

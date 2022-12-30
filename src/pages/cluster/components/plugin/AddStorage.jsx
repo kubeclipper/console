@@ -60,7 +60,7 @@ const Storage = observer((props) => {
   useEffect(() => {
     async function init() {
       const { storage = [] } = await store.updateDetail({ id });
-      const _templates = await templatesStore.fetchAll();
+      const _templates = await templatesStore.fetchListAll();
 
       const _baseStorage = storage
         .map((item) => item?.config?.scName)
