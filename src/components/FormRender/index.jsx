@@ -26,6 +26,7 @@ import ArrayString from './widgets/ArrayString';
 import ArrayText from './widgets/ArrayText';
 import KSPlugins from './widgets/KSPlugins';
 import MyCheckBox from './widgets/MyCheckBox';
+import SelectInput from './widgets/SelectInput';
 
 /**
  * 自定义组件（widget）
@@ -41,6 +42,7 @@ const widgets = {
   // mapping
   CustomBoolean,
   collapse: Collapses,
+  'select-input': SelectInput,
 };
 
 /**

@@ -35,7 +35,7 @@ export const uiSchemas = [
           widget: 'KSPlugins',
         },
         storageClass: {
-          widget: 'select',
+          widget: 'select-input',
         },
         HostClusterName: {
           hidden:
