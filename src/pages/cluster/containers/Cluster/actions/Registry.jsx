@@ -14,12 +14,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import SelectWithInput from 'components/FormItem/SelectWithInput';
-import { ModalAction } from 'containers/Action';
-import { set, get } from 'lodash';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
+import { toJS } from 'mobx';
 import { rootStore } from 'stores';
+import SelectWithInput from 'components/FormItem/SelectWithInput';
+import { set, get } from 'lodash';
 import { isDisableByProviderType } from 'utils';
 
 @observer

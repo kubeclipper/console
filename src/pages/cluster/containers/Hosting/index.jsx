@@ -15,14 +15,14 @@
  */
 
 import React from 'react';
-import StatusReason from 'components/StatusReason';
-import BaseList from 'containers/List';
-import { get } from 'lodash';
 import { observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
+import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
-import actionConfigs from './actions';
+import StatusReason from 'components/StatusReason';
+import { get } from 'lodash';
 
+import actionConfigs from './actions';
 
 function Providers(props) {
   const { cloudProviderStore: store } = useRootStore();
@@ -82,7 +82,6 @@ function Providers(props) {
     ],
     actionConfigs,
     store,
-    showProjectColumn: true,
   };
 
   return <BaseList {...currentProps} />;

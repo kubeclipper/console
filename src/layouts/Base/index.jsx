@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React, { useEffect, useReducer } from 'react';
-import Tools from 'components/Tools';
-import { observer } from 'mobx-react';
-import { useRootStore } from 'stores';
-import LeftContext from './Left/index';
+import { toJS } from 'mobx';
 import RightContext from './Right/index';
-import styles from './index.less';
+import LeftContext from './Left/index';
+import { useRootStore } from 'stores';
+import { getLocalStorageItem } from 'utils/localStorage';
 
+import styles from './index.less';
 
 export const BaseContext = React.createContext();
 
@@ -42,6 +42,24 @@ function BaseLayout(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!rootStore.user) {
+      const user = getLocalStorageItem('user');
+
+      if (!user) {
+        rootStore.gotoLoginPage(window.location.pathname);
+      }
+
+      user && rootStore.updateUser(user);
+    }
+
+    const user = toJS(rootStore.user);
+
+    if (user && (!user?.globalrole || !user?.globalRules)) {
+      rootStore.getCurrentUser({ username: rootStore.user.username });
+    }
+  }, []);
+
   return (
     <BaseContext.Provider
       value={{ state, setState, Routes: props }}
@@ -49,9 +67,8 @@ function BaseLayout(props) {
     >
       <LeftContext />
       <RightContext />
-      <Tools />
     </BaseContext.Provider>
   );
 }
 
-export default observer(BaseLayout);
+export default BaseLayout;

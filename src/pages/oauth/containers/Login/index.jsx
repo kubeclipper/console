@@ -15,35 +15,58 @@
  */
 import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
-import Notify from 'components/Notify';
+import background from 'src/asset/image/background.png';
 import SelectLang from 'components/SelectLang';
 import VersionInfo from 'components/VersionInfo';
-import { useModal } from 'hooks';
-import background from 'src/asset/image/background.png';
 import { useRootStore } from 'stores';
 import { setLocalStorageItem } from 'utils/localStorage';
+import Notify from 'components/Notify';
+import { defaultRoute } from 'utils';
+import { useModal } from 'hooks';
+import OAuth from './oauth';
 import Verification from './Verification';
 import styles from './index.less';
-import OAuth from './oauth';
 
-export default function Login() {
+export default function Login(props) {
   const rootStore = useRootStore();
   const [modal, ModalDOM] = useModal();
 
   const [isSubmmiting, setIsSubmmiting] = useState(false);
 
-  const handleLoginResponse = async () => {
+  const nextPage = (globalRules) => {
+    const { location = {} } = props;
+    const { search } = location;
+    if (search) {
+      return search.split('=')[1];
+    }
+
+    return defaultRoute(globalRules);
+  };
+
+  const handleLoginResponse = async (res) => {
+    setLocalStorageItem('user', res, res.expire);
     setLocalStorageItem('isExternal', false);
     setIsSubmmiting(false);
+
+    const currentUser = await rootStore.getCurrentUser({
+      username: res.username,
+    });
+
+    if (currentUser) {
+      const { globalRules = {} } = currentUser;
+      rootStore.routing.push(nextPage(globalRules));
+    }
   };
 
   const onFinish = async (values) => {
     setIsSubmmiting(true);
 
     try {
-      await rootStore.login({ params: values });
+      const res = await rootStore.login({ params: values });
 
-      handleLoginResponse();
+      if (res) {
+        handleLoginResponse(res);
+      }
     } catch (error) {
       if (error.status === 428) {
         const { providers } = error.data;
@@ -59,11 +82,11 @@ export default function Login() {
           };
 
           try {
-            await rootStore.verifyLogin(params);
-
-            handleLoginResponse();
-            modal.close();
-
+            const res = await rootStore.verifyLogin(params);
+            if (res) {
+              handleLoginResponse(res);
+              modal.close();
+            }
             // eslint-disable-next-line no-shadow
           } catch (error) {
             Notify.error(error?.reason);

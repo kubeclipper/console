@@ -15,9 +15,9 @@
  */
 import React, { useState, memo } from 'react';
 import { Modal, Button } from 'antd';
-import Notify from 'components/Notify';
 import PropTypes from 'prop-types';
 import { generateId } from 'utils';
+import Notify from 'components/Notify';
 
 function ModalButton(props) {
   const [visible, setVisible] = useState(false);

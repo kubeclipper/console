@@ -13,10 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import baseen from './baseen.json';
-import basezh from './basezh.json';
-import enData from './en.json';
 import zhData from './zh.json';
+import enData from './en.json';
+import basezh from './basezh.json';
+import baseen from './baseen.json';
 
 export const zh = { ...zhData, ...basezh };
 export const en = { ...enData, ...baseen };

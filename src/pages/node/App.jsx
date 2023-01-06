@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import { renderRoutes } from 'utils/router.config';
-import routes from './routes';
 
+import routes from './routes';
 
 const App = () => renderRoutes(routes);
 

@@ -15,14 +15,14 @@
  */
 
 import React, { useEffect, useReducer } from 'react';
+import PropTypes from 'prop-types';
+import FileSaver from 'file-saver';
 import { DownloadOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button, Menu, Dropdown, Progress, Tooltip } from 'antd';
-import Notify from 'components/Notify';
-import FileSaver from 'file-saver';
-import { Parser } from 'json2csv';
 import { get, isObject, isArray } from 'lodash';
-import PropTypes from 'prop-types';
+import { Parser } from 'json2csv';
 import { toLocalTime } from 'utils';
+import Notify from 'components/Notify';
 import styles from './index.less';
 
 export default function Download(props) {

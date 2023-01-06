@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React from 'react';
-import BaseTabDetail from 'containers/TabDetail';
 import { Link } from 'react-router-dom';
 import { getNodeRole } from 'resources/node';
-import { useRootStore } from 'stores';
 import { getLocalStorageItem } from 'utils/localStorage';
-import actionConfigs from '../actions';
+import BaseTabDetail from 'containers/TabDetail';
 import BaseDetail from './BaseDetail';
+import { useRootStore } from 'stores';
+import actionConfigs from '../actions';
 
 function NodeDetail(props) {
   const { nodeStore: store } = useRootStore();
@@ -34,6 +34,7 @@ function NodeDetail(props) {
   const currentProps = {
     ...props,
     name: t('NodeDetail'),
+    authKey: 'node-detail',
     listUrl: '/node',
     store,
     actionConfigs,

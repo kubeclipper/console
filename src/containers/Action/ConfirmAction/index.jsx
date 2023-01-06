@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 import { isArray } from 'lodash';
-import { firstUpperCase, isAdminPage } from 'utils';
+import { firstUpperCase } from 'utils';
 
 export default class ConfirmAction {
   static actionType = 'confirm';
@@ -65,11 +65,6 @@ export default class ConfirmAction {
 
   get isAsyncAction() {
     return false;
-  }
-
-  get isAdminPage() {
-    const { pathname } = window.location;
-    return isAdminPage(pathname);
   }
 
   // eslint-disable-next-line no-unused-vars

@@ -16,11 +16,11 @@
 
 import React from 'react';
 import Notify from 'components/Notify';
+import { getPasswordOtherRule } from 'utils/validate';
+import { rootStore } from 'stores';
+import styles from './index.less';
 import ActionButton from 'components/Tables/Base/ActionButton';
 import { ModalAction } from 'containers/Action';
-import { rootStore } from 'stores';
-import { getPasswordOtherRule } from 'utils/validate';
-import styles from './index.less';
 
 export default function ModifyPassword() {
   const currentProps = {

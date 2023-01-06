@@ -15,10 +15,10 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Button, Select } from 'antd';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import styles from './index.less';
 
 export default function Pagination(props) {

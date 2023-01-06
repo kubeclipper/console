@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-import BaseForm from 'components/Form';
-import { get, flatten, isEmpty } from 'lodash';
 import { observer } from 'mobx-react';
-import { rootStore } from 'stores';
+import BaseForm from 'components/Form';
 import { arrayInputValue } from 'utils';
+import { get, flatten, isEmpty } from 'lodash';
+import { rootStore } from 'stores';
 
 export class ConfirmStep extends BaseForm {
   init() {}

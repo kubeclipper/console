@@ -16,11 +16,11 @@
 
 import React, { useEffect, useMemo } from 'react';
 import { message } from 'antd';
-import FR from 'components/FormRender';
 import { useForm } from 'form-render';
-import { isEmpty } from 'lodash';
+import FR from 'components/FormRender';
 import { computeSchema, getSchema } from 'utils/schemaForm';
 import { uiSchemas } from './uiSchemas';
+import { isEmpty } from 'lodash';
 
 const RenderForm = (props) => {
   const {

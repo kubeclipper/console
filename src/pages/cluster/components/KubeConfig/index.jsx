@@ -14,14 +14,14 @@
  *  limitations under the License.
  */
 import React, { useEffect, useState } from 'react';
-import { DownloadOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
-import CodeEditor from 'components/CodeEditor';
-import Notify from 'components/Notify';
+import { DownloadOutlined } from '@ant-design/icons';
 import { saveAs } from 'file-saver';
+import CodeEditor from 'components/CodeEditor';
 import { useRootStore } from 'stores';
-import styles from './index.less';
+import Notify from 'components/Notify';
 
+import styles from './index.less';
 
 export default function KubeConfigModal(props) {
   const { name } = props;

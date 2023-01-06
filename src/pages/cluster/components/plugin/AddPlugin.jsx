@@ -14,18 +14,20 @@
  *  limitations under the License.
  */
 import React, { useEffect, useRef, useReducer } from 'react';
-import classnames from 'classnames';
-import Footer from 'components/Footer';
-import { Forms } from 'components/Form';
-import Notify from 'components/Notify';
-import Tabs from 'components/Tabs';
-import { cloneDeep, omit, isArray, get, set, isMatch } from 'lodash';
-import Tips from 'pages/cluster/components/Tips';
-import { Context } from 'pages/cluster/components/plugin/Context';
-import { useParams, useHistory } from 'react-router';
 import { useRootStore } from 'stores';
-import RenderForm from './RenderForm';
+import { cloneDeep, omit, isArray, get, set, isMatch } from 'lodash';
+import { Forms } from 'components/Form';
+import classnames from 'classnames';
 import styles from './index.less';
+import RenderForm from './RenderForm';
+import { Context } from 'pages/cluster/components/plugin/Context';
+import Tips from 'pages/cluster/components/Tips';
+import Notify from 'components/Notify';
+
+import Tabs from 'components/Tabs';
+import Footer from 'components/Footer';
+
+import { useParams, useHistory } from 'react-router';
 
 const Plugin = (props) => {
   const { state, setState } = props;

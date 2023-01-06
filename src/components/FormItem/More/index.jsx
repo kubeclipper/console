@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import React, { useEffect, useState } from 'react';
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
 export default function More(props) {

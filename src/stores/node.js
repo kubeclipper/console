@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import { APIVERSION } from 'utils/constants';
 import BaseStore from './base';
+import { APIVERSION } from 'utils/constants';
 
 export default class NodeStore extends BaseStore {
   module = 'nodes';
@@ -40,12 +40,6 @@ export default class NodeStore extends BaseStore {
   async enable(name) {
     return this.submitting(
       request.patch(`${this.getDetailUrl({ id: name })}/enable`)
-    );
-  }
-
-  async assignProject(id, data) {
-    return this.submitting(
-      request.put(`${this.getDetailUrl({ id })}/join`, data)
     );
   }
 }

@@ -15,10 +15,10 @@
  */
 
 import React from 'react';
-import { QuestionCircleOutlined } from '@ant-design/icons';
+import { isString, get, isArray } from 'lodash';
 import { Tooltip } from 'antd';
 import Status from 'components/Status';
-import { isString, get, isArray } from 'lodash';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { renderFilterMap } from 'utils';
 import { getAction } from 'utils/allowed';
 import { checkPolicy } from 'utils/policy';

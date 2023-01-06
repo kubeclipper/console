@@ -15,11 +15,12 @@
  */
 import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
-import Card from 'components/DetailCard';
-import { isEmpty } from 'lodash';
 import { toJS } from 'mobx';
+import { isEmpty } from 'lodash';
 import { observer } from 'mobx-react';
+
 import styles from './index.less';
+import Card from 'components/DetailCard';
 
 const Item = observer((props) => {
   const { it, index, store } = props;

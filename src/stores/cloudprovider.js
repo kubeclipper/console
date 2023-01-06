@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import ObjectMapper from 'utils/object.mapper';
 import BaseStore from './base';
+import ObjectMapper from 'utils/object.mapper';
 
 class CloudProviderStore extends BaseStore {
   module = 'cloudproviders';
@@ -23,8 +23,6 @@ class CloudProviderStore extends BaseStore {
   get mapper() {
     return ObjectMapper[this.module] || ((data) => data);
   }
-
-  // getListUrl = () => `${this.apiVersion}/${this.module}`;
 
   sync(data) {
     return this.submitting(request.post(`${this.getDetailUrl(data)}/sync`));

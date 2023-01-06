@@ -15,9 +15,9 @@
  */
 import React from 'react';
 import BaseTabDetail from 'containers/TabDetail';
+import LoginLog from './LoginLog/index';
 import { useRootStore } from 'stores';
 import actionConfigs from '../actions';
-import LoginLog from './LoginLog/index';
 
 export default function UserDetail(props) {
   const { userStore: store } = useRootStore();
@@ -25,12 +25,12 @@ export default function UserDetail(props) {
   const currentProps = {
     ...props,
     name: t('role'),
-    listUrl: `/access/user-admin`,
+    listUrl: '/access/user',
     store,
     actionConfigs,
     detailInfos: [
       {
-        title: t('User Name'),
+        title: t('Role Name'),
         dataIndex: 'name',
       },
       {

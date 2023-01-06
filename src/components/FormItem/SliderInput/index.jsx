@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import React, { useState } from 'react';
-import { Slider, InputNumber, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
+import { Slider, InputNumber, Row, Col } from 'antd';
 
 export default function SliderInput(props) {
   const { value, max, min, description, onChange } = props;

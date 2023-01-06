@@ -18,6 +18,4 @@ import BaseStore from './base';
 
 export default class RegionStore extends BaseStore {
   module = 'regions';
-
-  // getListUrl = () => `${this.apiVersion}/${this.module}`;
 }

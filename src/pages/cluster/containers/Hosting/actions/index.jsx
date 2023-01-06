@@ -15,9 +15,9 @@
  */
 
 import Create from './Create';
-import Edit from './Edit';
-import Remove from './Remove';
 import Sync from './Sync';
+import Remove from './Remove';
+import Edit from './Edit';
 
 const actionConfigs = {
   rowActions: {

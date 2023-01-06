@@ -14,16 +14,16 @@
  *  limitations under the License.
  */
 import React from 'react';
+import { notification } from 'antd';
+import PropTypes from 'prop-types';
 import {
   InfoCircleOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
   LoadingOutlined,
 } from '@ant-design/icons';
-import { notification } from 'antd';
-import { isEmpty, isString } from 'lodash';
-import PropTypes from 'prop-types';
 import { statusMap } from 'utils/constants';
+import { isEmpty, isString } from 'lodash';
 import styles from './index.less';
 
 const open = (args) => {

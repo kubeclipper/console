@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { ModalAction } from 'containers/Action';
-import { set, get } from 'lodash';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import { phoneNumberValidate, emailValidate } from 'utils/validate';
+import { set, get } from 'lodash';
 
 @observer
 class Edit extends ModalAction {
@@ -51,7 +51,7 @@ class Edit extends ModalAction {
   }
 
   get listUrl() {
-    return this.getUrl('/access/user-admin');
+    return this.getUrl('/access/user');
   }
 
   get data() {

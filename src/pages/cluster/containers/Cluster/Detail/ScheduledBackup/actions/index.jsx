@@ -15,9 +15,9 @@
  */
 import Add from './Add';
 import Delete from './Delete';
-import Disable from './Disable';
 import Edit from './Edit';
 import Enable from './Enable';
+import Disable from './Disable';
 
 const actionConfigs = {
   rowActions: {

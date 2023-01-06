@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Badge, Tooltip } from 'antd';
 import { isBoolean, isString } from 'lodash';
-import PropTypes from 'prop-types';
 
 const statusMap = {
   enabled: 'success',

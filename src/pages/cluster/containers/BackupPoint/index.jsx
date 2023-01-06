@@ -15,8 +15,8 @@
  */
 import React from 'react';
 import BaseList from 'containers/List';
-import { useRootStore } from 'stores';
 import actionConfigs from './actions';
+import { useRootStore } from 'stores';
 import styles from './index.less';
 
 function BackupPoint(props) {

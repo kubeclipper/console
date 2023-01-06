@@ -37,9 +37,7 @@ export default class LinkAddStorage extends LinkAction {
     );
 
   static path(item) {
-    return `/cluster${super.isAdminPage ? '-admin' : ''}/add-storage/${
-      item.name
-    }`;
+    return `/cluster/add-storage/${item.name}`;
   }
 
   static policy = 'clusters:edit';

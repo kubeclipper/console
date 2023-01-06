@@ -15,18 +15,20 @@
  */
 
 import React from 'react';
-import { InputNumber } from 'antd';
-import i18n from 'core/i18n';
 import FormRender from 'form-render';
+import i18n from 'core/i18n';
+import { InputNumber } from 'antd';
+import MyCheckBox from './widgets/MyCheckBox';
+import ArrayText from './widgets/ArrayText';
+import ArrayString from './widgets/ArrayString';
+import KSPlugins from './widgets/KSPlugins';
+import Collapses from './mapping/Collapses';
+import SelectInput from './widgets/SelectInput';
+
+import CustomBoolean from './mapping/CustomBoolean';
+
 // eslint-disable-next-line no-unused-vars
 import styles from './index.less';
-import Collapses from './mapping/Collapses';
-import CustomBoolean from './mapping/CustomBoolean';
-import ArrayString from './widgets/ArrayString';
-import ArrayText from './widgets/ArrayText';
-import KSPlugins from './widgets/KSPlugins';
-import MyCheckBox from './widgets/MyCheckBox';
-import SelectInput from './widgets/SelectInput';
 
 /**
  * 自定义组件（widget）

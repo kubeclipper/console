@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
-import BaseList from 'containers/List';
 import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
-import { getNodeRole } from 'resources/node';
+import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
 import actionConfigs from './actions';
+import { getNodeRole } from 'resources/node';
+import { useParams } from 'react-router-dom';
 
 function NodeList() {
   const { nodeStore: store, clusterStore } = useRootStore();

@@ -16,8 +16,8 @@
 import React from 'react';
 import BaseList from 'containers/List';
 import { transitionStatus, columns } from 'resources/cluster';
-import { useRootStore } from 'stores';
 import actionConfigs from './actions';
+import { useRootStore } from 'stores';
 
 const ClusterList = (props) => {
   const { clusterStore: store } = useRootStore();
@@ -25,7 +25,7 @@ const ClusterList = (props) => {
   const currentProps = {
     ...props,
     name: t('Cluster'),
-    columns: columns(props),
+    columns,
     searchFilters: [
       {
         label: t('Name'),
@@ -35,7 +35,6 @@ const ClusterList = (props) => {
     transitionStatusList: transitionStatus,
     actionConfigs,
     store,
-    showProjectColumn: true,
   };
 
   return <BaseList {...currentProps} />;

@@ -20,21 +20,21 @@ import React, {
   useMemo,
   useContext,
 } from 'react';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
-import { Button, Divider, Typography, Skeleton } from 'antd';
-import classnames from 'classnames';
-import Infos from 'components/Infos';
-import NotFound from 'components/NotFound';
-import ItemAction from 'components/Tables/Base/ItemAction';
-import { useInterval, useAdminPage } from 'hooks';
-import { isEmpty, get } from 'lodash';
-import { toJS } from 'mobx';
-import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
-import Tab from 'src/containers/Tab/TrendsTab';
-import { useRootStore } from 'stores';
+import classnames from 'classnames';
+import { isEmpty, get } from 'lodash';
 import { renderFilterMap } from 'utils';
+import { Button, Divider, Typography, Skeleton } from 'antd';
+import { UpOutlined, DownOutlined } from '@ant-design/icons';
+import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
+import NotFound from 'components/NotFound';
+import Infos from 'components/Infos';
 import styles from './index.less';
+import { useRootStore } from 'stores';
+import ItemAction from 'components/Tables/Base/ItemAction';
+import Tab from 'src/containers/Tab/TrendsTab';
+import { useInterval } from 'hooks';
 
 const { Paragraph } = Typography;
 export const TabDetailContext = React.createContext();
@@ -164,28 +164,14 @@ const TabDetail = (props) => {
     store,
     name,
     listUrl,
-    listUrlAdmin = '',
     className,
     transitionStatusList = [],
     transitionDataIndex = 'status',
     tabs,
-    onlyConsole = false,
   } = props;
 
   const [notFound, setNotFound] = useState(false);
   const { routing } = useRootStore();
-  const { isAdminPage } = useAdminPage();
-
-  // 某些路径带 admin 不能正确判断是否管理平台；比如项目管理员的项目角色详情页路径：project/role/xxx-admin; 添加 onlyConsole 控制
-  const getListUrl = () => {
-    if (isAdminPage && !onlyConsole) {
-      if (listUrlAdmin) return listUrlAdmin;
-
-      return `${listUrl}-admin`;
-    }
-
-    return listUrl;
-  };
 
   const detail = toJS(store.detail);
 
@@ -220,7 +206,7 @@ const TabDetail = (props) => {
   );
 
   const goBack = () => {
-    routing.push(getListUrl());
+    routing.push(listUrl);
   };
 
   const _catch = (e) => {
@@ -237,7 +223,7 @@ const TabDetail = (props) => {
   };
 
   if (notFound) {
-    return <NotFound title={t(`${name}s`)} link={getListUrl()} />;
+    return <NotFound title={t(`${name}s`)} link={listUrl} />;
   }
 
   return (
@@ -255,6 +241,7 @@ TabDetail.defaultProps = {
   listUrl: '/base/tmp',
   name: '',
   module: '',
+  authKey: '',
   tabs: [],
   detailInfos: [],
   className: '',

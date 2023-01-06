@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React, { useState, useEffect } from 'react';
 import { Form, Input, Select, Button } from 'antd';
-import Notify from 'components/Notify';
-import { debounce } from 'lodash';
+import React, { useState, useEffect } from 'react';
 import { rootStore } from 'stores';
+import { debounce } from 'lodash';
+import Notify from 'components/Notify';
 import styles from './index.less';
 
 const { Option } = Select;

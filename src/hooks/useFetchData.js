@@ -16,12 +16,12 @@
 
 /* eslint-disable no-unused-vars */
 import { useRef, useEffect, useLayoutEffect, useMemo } from 'react';
-import { runFunction } from 'utils';
-import useDebounceFn from './useDebounceFn';
-import useDeepCompareEffect from './useDeepCompareEffect';
 import useMountMergeState from './useMountMergeState';
-import usePrevious from './usePrevious';
 import useRefFunction from './useRefFunction';
+import useDebounceFn from './useDebounceFn';
+import usePrevious from './usePrevious';
+import useDeepCompareEffect from './useDeepCompareEffect';
+import { runFunction } from 'utils';
 
 /**
  * 合并分页配置和默认配置

@@ -16,10 +16,10 @@
 import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import ContainerTerminal from 'components/Terminal';
-import { encrypt } from 'utils';
 import { getToken } from 'utils/localStorage';
-import styles from './index.less';
+import { encrypt } from 'utils';
 
+import styles from './index.less';
 
 function ContainerTerminalModal(props) {
   const { store, id, val } = props;

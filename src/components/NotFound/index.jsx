@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
-import emptyCard from 'asset/image/empty-card.svg';
-import i18n from 'core/i18n';
 import PropTypes from 'prop-types';
+import emptyCard from 'asset/image/empty-card.svg';
 import { Link } from 'react-router-dom';
-import styles from './index.less';
+import i18n from 'core/i18n';
 
+import styles from './index.less';
 
 const { t } = i18n;
 

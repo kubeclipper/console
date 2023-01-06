@@ -13,8 +13,6 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { parseExpression } from 'cron-parser';
-import JSEncrypt from 'jsencrypt';
 import {
   get,
   set,
@@ -30,12 +28,14 @@ import {
   isNull,
   isEmpty,
 } from 'lodash';
-import moment from 'moment';
 import { customAlphabet } from 'nanoid';
-import { MODULE_ROUTE, MODULE_ROUTE_ADMIN } from 'utils/constants';
+import moment from 'moment';
+import JSEncrypt from 'jsencrypt';
+import { MODULE_ROUTE } from 'utils/constants';
 import { getLocalStorageItem, getToken } from 'utils/localStorage';
-import { SIZE_VALUE, SECOND_IN_TIME_UNIT } from './constants';
+import { parseExpression } from 'cron-parser';
 
+import { SIZE_VALUE, SECOND_IN_TIME_UNIT } from './constants';
 
 /**
  * format size, output the value with unit
@@ -288,17 +288,6 @@ export const getOptions = (obj) =>
 
 /**
  *
- * @param {*} data
- * @returns
- */
-export const getOptionsByListData = (data = []) =>
-  data.map(({ name }) => ({
-    label: name,
-    value: name,
-  }));
-
-/**
- *
  * @param {*} enable
  * @param {*} options
  * @returns
@@ -406,21 +395,19 @@ export const safeParseJSON = (json, defaultValue) => {
  * @param {*} globalRules
  * @returns
  */
-export const defaultRoute = (globalRules, globalrole) => {
+export const defaultRoute = (globalRules) => {
   let path = '';
-  const isAdminPageRole = globalrole !== 'platform-regular';
-  const MODULE = isAdminPageRole ? MODULE_ROUTE_ADMIN : MODULE_ROUTE;
 
   const token = getToken();
 
   if (!isEmpty(token)) {
     if (isEmpty(globalRules)) {
-      return MODULE.empty;
+      return MODULE_ROUTE.empty;
     }
 
-    for (const key in MODULE) {
+    for (const key in MODULE_ROUTE) {
       if (has(globalRules, key) && globalRules[key].length > 0) {
-        path = MODULE[key];
+        path = MODULE_ROUTE[key];
 
         break;
       }
@@ -790,5 +777,3 @@ Array.prototype.insert = function (index, ...items) {
 
   return this;
 };
-
-export const isAdminPage = (url) => url && url.indexOf('admin') >= 0;

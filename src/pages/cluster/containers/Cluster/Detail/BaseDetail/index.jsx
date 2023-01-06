@@ -16,8 +16,8 @@
 import React from 'react';
 import Base from 'containers/BaseDetail';
 import { get, uniq } from 'lodash';
-import { observer } from 'mobx-react';
 import { useRootStore } from 'stores';
+import { observer } from 'mobx-react';
 import { isDisableByProviderType } from 'utils';
 
 function BaseDetail() {

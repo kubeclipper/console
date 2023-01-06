@@ -15,6 +15,7 @@
  */
 
 import React, { useEffect, useRef, useMemo } from 'react';
+import classNames from 'classnames';
 import {
   CaretRightOutlined,
   CaretDownOutlined,
@@ -23,13 +24,12 @@ import {
   CloseCircleFilled,
 } from '@ant-design/icons';
 import { Spin } from 'antd';
-import classNames from 'classnames';
-import { useInterval } from 'hooks';
 import { observer } from 'mobx-react';
+import styles from './index.less';
 import { useRootStore } from 'stores';
 import LogStore from 'stores/log';
 import { formatSeconds } from 'utils';
-import styles from './index.less';
+import { useInterval } from 'hooks';
 
 function LogItemContent(props) {
   const { isExpand, isLoading, logdata } = props;

@@ -15,8 +15,8 @@
  */
 
 import ObjectMapper from 'utils/object.mapper';
-import BaseStore from './base';
 
+import BaseStore from './base';
 
 export default class UserStore extends BaseStore {
   module = 'users';

@@ -14,10 +14,11 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { ModalAction } from 'containers/Action';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
+import styles from './index.less';
 import {
   versionCompare,
   versionCross,
@@ -25,7 +26,6 @@ import {
   isDisableByProviderType,
 } from 'utils';
 import { isIPv4, isDomain, isIpPort } from 'utils/validate';
-import styles from './index.less';
 
 @observer
 export default class Upgrade extends ModalAction {

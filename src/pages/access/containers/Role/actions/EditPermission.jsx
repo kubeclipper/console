@@ -14,13 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
+import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { set, uniq } from 'lodash';
 import { toJS } from 'mobx';
-import { observer } from 'mobx-react';
-import EditAuthorization from 'pages/access/componnets/EditAuthorization';
 import { rootStore } from 'stores';
-import { ROLE_MODULES } from 'utils/constants';
+import EditAuthorization from 'pages/access/componnets/EditAuthorization';
 
 @observer
 class Edit extends ModalAction {
@@ -61,10 +60,6 @@ class Edit extends ModalAction {
     };
   }
 
-  get roleModule() {
-    return ROLE_MODULES.globalroles;
-  }
-
   get formItems() {
     return [
       {
@@ -78,7 +73,6 @@ class Edit extends ModalAction {
             formTemplate={this.item}
             tabStyles={{ width: '180px' }}
             isModlal
-            roleModule={this.roleModule}
           />
         ),
       },

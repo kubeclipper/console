@@ -14,16 +14,16 @@
  *  limitations under the License.
  */
 
-import { ModalAction } from 'containers/Action';
-import { merge } from 'lodash';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import { safeBtoa } from 'utils/base64';
 import FORM_TEMPLATES from 'utils/form.templates';
-import styles from './index.less';
+import { merge } from 'lodash';
+import { safeBtoa } from 'utils/base64';
+import { toJS } from 'mobx';
 
 // eslint-disable-next-line no-unused-vars
+import styles from './index.less';
 
 class Create extends ModalAction {
   static id = 'add-provider';
@@ -49,9 +49,6 @@ class Create extends ModalAction {
   init() {
     this.store = rootStore.cloudProviderStore;
     this.regionStore = rootStore.regionStore;
-    this.projectStore = rootStore.projectStore;
-
-    this.getProject();
 
     this.getRegion();
   }
@@ -65,18 +62,6 @@ class Create extends ModalAction {
       type: 'kubeadm',
       sshType: 'privateKey',
     };
-  }
-
-  get projectOptions() {
-    const options = (this.projectStore.list.data || []).map((item) => ({
-      value: item.name,
-      label: item.name,
-    }));
-    return options;
-  }
-
-  getProject() {
-    this.projectStore.fetchList({ limit: -1 });
   }
 
   get tips() {
@@ -117,6 +102,14 @@ class Create extends ModalAction {
         maxLength: 256,
       },
       {
+        name: 'region',
+        label: t('Region'),
+        type: 'select-input',
+        placeholder: t('Please input region which cluster and node belong'),
+        required: true,
+        options: this.getRegionOptions(),
+      },
+      {
         name: 'type',
         label: t('Provider Type'),
         type: 'radio',
@@ -129,21 +122,6 @@ class Create extends ModalAction {
             value: 'kubeadm',
           },
         ],
-      },
-      {
-        name: 'region',
-        label: t('Region'),
-        type: 'select-input',
-        placeholder: t('Please input region which cluster and node belong'),
-        required: true,
-        options: this.getRegionOptions(),
-      },
-      {
-        name: 'project',
-        label: t('Project'),
-        type: 'select',
-        options: this.projectOptions,
-        required: true,
       },
       {
         name: 'sshType',
@@ -219,7 +197,6 @@ class Create extends ModalAction {
       privateKey,
       clusterName,
       kubeConfig,
-      project,
     } = values;
 
     const data = {
@@ -227,9 +204,6 @@ class Create extends ModalAction {
         name,
         annotations: {
           'kubeclipper.io/description': description,
-        },
-        labels: {
-          'kubeclipper.io/project': project,
         },
       },
       type,

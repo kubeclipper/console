@@ -32,9 +32,6 @@ describe('集群', () => {
   const selectComponentTab = 'NFS CSI';
   const enableComponent = 'nfs-csi';
 
-  const projectName = `e2e.project.name${uuid}`;
-  const projectManager = 'admin';
-
   beforeEach(() => {
     cy.login(listUrl);
   });
@@ -47,17 +44,6 @@ describe('集群', () => {
   it(...testCase('集群管理-创建-1').smoke().value(), () => {
     cy.selectPlatform('工作台');
 
-    // 创建项目
-    cy.selectMenu({
-      title: 'Access Control',
-      subTitle: 'Project',
-    });
-    cy.clickHeaderButton(0);
-
-    cy.formInput('name', projectName);
-    cy.formSelect('manager', projectManager);
-    cy.clickModalActionSubmitButton();
-
     // 创建集群
     cy.selectMenu({
       title: 'Cluster Management',
@@ -66,7 +52,6 @@ describe('集群', () => {
     cy.clickHeaderButton(0);
 
     cy.formInput('name', name);
-    cy.formSelect('project', projectName);
     cy.formSelect('region', region);
     // select node
     cy.waitTransferList();

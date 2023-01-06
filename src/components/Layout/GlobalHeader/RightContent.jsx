@@ -14,58 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { SwapOutlined } from '@ant-design/icons';
-import { Button, Col, Row } from 'antd';
-import { useRootStore } from 'stores';
 import Avatar from './AvatarDropdown';
 import styles from './index.less';
 
-const GlobalHeaderRight = ({ isAdminPage }) => {
-  const rootStore = useRootStore();
-
-  const Console = () => {
-    if (isAdminPage) {
-      return (
-        <Button
-          type="link"
-          href="/cluster" // TODO deafultRoute
-          className={styles['single-link']}
-        >
-          <SwapOutlined />
-          {t('Console')}
-        </Button>
-      );
-    }
-    return null;
-  };
-  const Administrator = () => {
-    if (!isAdminPage && rootStore.isAdminPageRole) {
-      return (
-        <Button
-          type="link"
-          href="/cluster-admin"
-          className={styles['single-link']}
-        >
-          <SwapOutlined />
-          {t('Administrator')}
-        </Button>
-      );
-    }
-    return null;
-  };
-
-  return (
-    <div className={styles.right}>
-      <Row justify="space-between" align="middle" gutter={10}>
-        <Col>
-          <Console />
-          <Administrator />
-        </Col>
-        <Col>
-          <Avatar menu />
-        </Col>
-      </Row>
-    </div>
-  );
-};
+const GlobalHeaderRight = () => (
+  <div className={styles.right}>
+    <Avatar menu />
+  </div>
+);
 export default GlobalHeaderRight;

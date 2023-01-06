@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { ModalAction } from 'containers/Action';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import { namespace, path } from 'utils/regex';
 import { passwordRegex, isIp, isIpPort } from 'utils/validate';

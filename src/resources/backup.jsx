@@ -13,10 +13,10 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { parseExpression, fieldsToExpression } from 'cron-parser';
-import { parseInt, set, cloneDeep } from 'lodash';
-import moment from 'moment';
 import { dayOfWeekOption } from 'resources/date';
+import moment from 'moment';
+import { parseInt, set, cloneDeep } from 'lodash';
+import { parseExpression, fieldsToExpression } from 'cron-parser';
 
 export const backupStatus = {
   creating: t('Creating'),

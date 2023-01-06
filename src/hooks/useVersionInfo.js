@@ -15,8 +15,8 @@
  */
 import React, { useEffect } from 'react';
 import Version from 'components/VersionInfo/Version';
-import { useRootStore } from 'stores';
 import useModal from './useModal';
+import { useRootStore } from 'stores';
 
 export default function useVersionInfo() {
   const [modal, ModalDOM] = useModal();

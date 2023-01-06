@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 
-import React from 'react';
-import { InfoCircleOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
-import { SuccessIcon, ErrorIcon } from 'components/Icon';
 import { get } from 'lodash';
+import React from 'react';
+import { Tooltip } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { SuccessIcon, ErrorIcon } from 'components/Icon';
 import styles from './index.less';
 
 const isSuccess = (type, condition) => {

@@ -46,6 +46,7 @@ export default function Registry() {
 
   const currentProps = {
     columns,
+    authKey: 'localRegistry',
     module: 'registries',
     name: t('LocalRegistry'),
     searchFilters: [],

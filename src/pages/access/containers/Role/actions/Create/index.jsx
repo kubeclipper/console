@@ -14,16 +14,15 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { Collapse } from 'antd';
-import Footer from 'components/Footer';
-import Notify from 'components/Notify';
-import { LinkAction } from 'containers/Action';
-import { uniq, set } from 'lodash';
 import { toJS } from 'mobx';
+import { Collapse } from 'antd';
 import { observer } from 'mobx-react';
-import EditAuthorization from 'pages/access/componnets/EditAuthorization';
+import { LinkAction } from 'containers/Action';
+import Footer from 'components/Footer';
 import { rootStore } from 'stores';
-import { ROLE_MODULES } from 'utils/constants';
+import { uniq, set } from 'lodash';
+import Notify from 'components/Notify';
+import EditAuthorization from 'pages/access/componnets/EditAuthorization';
 import FORM_TEMPLATES from 'utils/form.templates';
 import BaseInfo from './baseInfo';
 import styles from './index.less';
@@ -31,6 +30,7 @@ import styles from './index.less';
 const { Panel } = Collapse;
 
 const { roleStore } = rootStore;
+
 @observer
 export default class Create extends LinkAction {
   constructor(props) {
@@ -46,7 +46,7 @@ export default class Create extends LinkAction {
 
   static title = t('Create Role');
 
-  static path = `/access/role-admin/create`;
+  static path = `/access/role/create`;
 
   static allowed = () => Promise.resolve(true);
 
@@ -61,7 +61,7 @@ export default class Create extends LinkAction {
   }
 
   get listUrl() {
-    return '/access/role-admin';
+    return '/access/role';
   }
 
   get name() {
@@ -74,14 +74,6 @@ export default class Create extends LinkAction {
 
   get baseInfo() {
     return this.baseInfoRef.current;
-  }
-
-  get roleModule() {
-    return ROLE_MODULES.globalroles;
-  }
-
-  get project() {
-    return '';
   }
 
   componentDidMount() {
@@ -111,7 +103,7 @@ export default class Create extends LinkAction {
       set(formTemplate, 'metadata.annotations', annotations);
 
       try {
-        await this.store.create(formTemplate, { project: this.project });
+        await this.store.create(formTemplate);
         Notify.success(
           t('Role {name} has been created successfully.', { name })
         );
@@ -145,7 +137,6 @@ export default class Create extends LinkAction {
               ref={this.authRef}
               roleTemplates={toJS(this.store.roleTemplates.data)}
               formTemplate={this.formTemplate}
-              roleModule={this.roleModule}
             />
           </Panel>
         </Collapse>

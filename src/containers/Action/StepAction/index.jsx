@@ -15,7 +15,6 @@
  */
 
 import StepForm from 'components/StepForm';
-import { isAdminPage } from 'utils';
 
 export default class StepAction extends StepForm {
   static actionType = 'link';
@@ -28,15 +27,9 @@ export default class StepAction extends StepForm {
 
   static path = '/';
 
-  static isAdminPage = isAdminPage(window.location.pathname);
-
   static get allowed() {
     return Promise.resolve();
   }
-
-  // get isAdminPage() {
-  //   return isAdminPage(window.location.pathname);
-  // }
 
   get hasConfirmStep() {
     return true;

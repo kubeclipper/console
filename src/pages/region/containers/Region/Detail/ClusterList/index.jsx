@@ -15,9 +15,9 @@
  */
 import React from 'react';
 import BaseList from 'containers/List';
-import { useParams } from 'react-router-dom';
 import { columns, transitionStatus } from 'resources/cluster';
 import { useRootStore } from 'stores';
+import { useParams } from 'react-router-dom';
 
 export default function Cluster() {
   const { clusterStore: store } = useRootStore();
@@ -25,7 +25,7 @@ export default function Cluster() {
 
   const currentProps = {
     store,
-    columns: columns({ isAdminPage: true }),
+    columns,
     module: 'cluster',
     name: 'cluster',
     transitionStatusList: transitionStatus,

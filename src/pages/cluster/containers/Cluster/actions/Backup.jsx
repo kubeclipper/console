@@ -13,13 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import Notify from 'components/Notify';
-import { ModalAction } from 'containers/Action';
-import { set } from 'lodash';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import { isDisableByProviderType } from 'utils';
 import FORM_TEMPLATES from 'utils/form.templates';
+import { set } from 'lodash';
+import Notify from 'components/Notify';
+import { isDisableByProviderType } from 'utils';
 
 @observer
 export default class Backup extends ModalAction {

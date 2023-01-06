@@ -15,16 +15,16 @@
  */
 import React, { PureComponent } from 'react';
 import { Radio, Tag } from 'antd';
-import classnames from 'classnames';
-import MagicInput from 'components/MagicInput';
-import Pagination from 'components/Pagination';
-import SimpleTable from 'components/Tables/SimpleTable';
-import { get, isString, isEqual, isEmpty } from 'lodash';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
+import MagicInput from 'components/MagicInput';
+import SimpleTable from 'components/Tables/SimpleTable';
+import Pagination from 'components/Pagination';
+import { get, isString, isEqual, isEmpty } from 'lodash';
+import classnames from 'classnames';
 import { deleteObjectProperties, joinSelector } from 'utils';
-import styles from './index.less';
 
+import styles from './index.less';
 
 const getItemKey = (item) => item.key || item.id;
 

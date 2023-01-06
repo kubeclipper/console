@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
+import { Modal } from 'antd';
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   QuestionCircleFilled,
 } from '@ant-design/icons';
-import { Modal } from 'antd';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import styles from './index.less';

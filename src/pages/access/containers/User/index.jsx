@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React from 'react';
-import BaseList from 'containers/List';
 import { Link } from 'react-router-dom';
+import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
+
 import actionConfigs from './actions';
 
-
-const User = ({ isAdminPage }) => {
+const User = () => {
   const { userStore } = useRootStore();
 
   const columns = [
@@ -30,17 +30,16 @@ const User = ({ isAdminPage }) => {
       extraNameIndex: 'displayName',
       render: (name, record) => {
         if (name) {
-          return (
-            <Link
-              to={`/access/user${isAdminPage ? '-admin' : ''}/${record.id}`}
-            >
-              {name}
-            </Link>
-          );
+          return <Link to={`/access/user/${record.id}`}>{name}</Link>;
         }
         return '-';
       },
     },
+    // {
+    //   title: t('Status'),
+    //   dataIndex: 'status',
+    //   render: (value) => userStatus[value] || '-',
+    // },
     {
       title: t('Role'),
       dataIndex: 'role',
