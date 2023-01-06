@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 import BaseForm from 'components/Form';
-import { isAdminPage } from 'utils';
 
 export default class ModalAction extends BaseForm {
   static id = 'modalAction';
@@ -27,11 +26,6 @@ export default class ModalAction extends BaseForm {
 
   static get modalSize() {
     return 'small';
-  }
-
-  static get isAdminPage() {
-    const { pathname } = window.location;
-    return isAdminPage(pathname);
   }
 
   get name() {
@@ -56,10 +50,6 @@ export default class ModalAction extends BaseForm {
     };
   }
 
-  get isAsyncAction() {
-    return false;
-  }
-
   static allowed() {
     return Promise.resolve();
   }
@@ -68,27 +58,16 @@ export default class ModalAction extends BaseForm {
     return this.item?.name || this.values?.name;
   }
 
-  get actionName() {
-    return this.name.toLowerCase() || this.title;
-  }
-
   get successText() {
-    if (this.isAsyncAction) {
-      return t(
-        'The {name} {action} instruction has been executed. \n You can wait for a few seconds to follow the changes or manually refresh the data to get the final display result.',
-        { action: this.actionName, name: this.instanceName }
-      );
-    }
-
     return t('{action} {name} successfully.', {
-      action: this.actionName,
+      action: this.name.toLowerCase(),
       name: this.instanceName,
     });
   }
 
   get errorText() {
     return t('Unable to {action} {name}.', {
-      action: this.actionName,
+      action: this.name.toLowerCase(),
       name: this.instanceName,
     });
   }

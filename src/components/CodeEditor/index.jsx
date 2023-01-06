@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React from 'react';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import AceEditor from './AceEditor';
-import styles from './index.less';
 
+import styles from './index.less';
 
 export default function CodeEditor(props) {
   const { className, mode, options, value, onChange } = props;

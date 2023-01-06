@@ -13,20 +13,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React, { useContext, Suspense } from 'react';
+import React, { useContext } from 'react';
 import { Layout } from 'antd';
 import classnames from 'classnames';
-import ErrorBoundary from 'components/ErrorBoundary';
+import { renderRoutes } from 'utils/router.config';
 import { GlobalHeader } from 'components/Layout';
-import PageLoading from 'components/PageLoading';
-import { useAdminPage } from 'hooks';
 import { observer } from 'mobx-react';
 import { useRootStore } from 'stores';
-import { renderRoutes } from 'utils/router.config';
-import { BaseContext } from '..';
-import styles from '../index.less';
 import Breadcrumbs from './Breadcrumb';
+import { BaseContext } from '..';
+import ErrorBoundary from 'components/ErrorBoundary';
+import Tools from 'components/Tools';
 
+import styles from '../index.less';
 
 const { Header, Content } = Layout;
 
@@ -52,15 +51,14 @@ function Right() {
   );
 }
 
-const MainContent = observer(() => {
+function MainContent() {
   const { state, Routes } = useContext(BaseContext);
   const { currentRoutes, hover, collapsed } = state;
   const { routes } = Routes.route;
 
   const rootStore = useRootStore();
-  const { isAdminPage } = useAdminPage();
 
-  if (!rootStore.user || rootStore.isLoading) return null;
+  if (!rootStore.user) return null;
 
   const hasMainTab = () => {
     if (currentRoutes.length === 0) {
@@ -88,7 +86,6 @@ const MainContent = observer(() => {
   const extraProps = {
     sliderHover: hover,
     sliderCollapsed: collapsed,
-    isAdminPage,
   };
 
   return (
@@ -97,11 +94,10 @@ const MainContent = observer(() => {
         !hasBreadcrumb ? styles['main-no-breadcrumb'] : ''
       }  ${mainTabClass}`}
     >
-      <Suspense fallback={<PageLoading className="sl-page-loading" />}>
-        <ErrorBoundary>{renderRoutes(routes, extraProps)}</ErrorBoundary>
-      </Suspense>
+      <ErrorBoundary>{renderRoutes(routes, extraProps)}</ErrorBoundary>
+      <Tools />
     </div>
   );
-});
+}
 
 export default observer(Right);

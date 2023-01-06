@@ -16,14 +16,14 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Skeleton, Tooltip } from 'antd';
-import classNames from 'classnames';
-import Status from 'components/Status';
-import { useDeepCompareEffect } from 'hooks';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import { useRootStore } from 'stores';
+import classNames from 'classnames';
 import { toLocalTime } from 'utils';
+import { useRootStore } from 'stores';
+import Status from 'components/Status';
 import styles from './index.less';
+import { useDeepCompareEffect } from 'hooks';
 
 const StepItem = observer((props) => {
   const { step, activeByStep, index } = props;

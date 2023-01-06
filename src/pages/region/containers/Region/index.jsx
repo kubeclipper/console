@@ -14,9 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import BaseList from 'containers/List';
 import { Link } from 'react-router-dom';
+import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
+import actionConfigs from './actions';
 
 export default function Region(props) {
   const { regionStore: store } = useRootStore();
@@ -27,7 +28,7 @@ export default function Region(props) {
       dataIndex: 'name',
       render: (name, record) => {
         if (name) {
-          return <Link to={`/region-admin/${record.id}`}>{name}</Link>;
+          return <Link to={`/region/${record.id}`}>{name}</Link>;
         }
         return '-';
       },
@@ -45,6 +46,7 @@ export default function Region(props) {
     ...props,
     columns,
     tabs: [],
+    authKey: 'regions',
     module: 'regions',
     name: t('regions'),
     searchFilters: [
@@ -53,6 +55,7 @@ export default function Region(props) {
         name: 'name',
       },
     ],
+    actionConfigs,
     store,
   };
 

@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React from 'react';
-import queryParser from 'querystring';
-import cookie from 'cookie';
-import escapeHtml from 'escape-html';
 import IntlMessageFormat from 'intl-messageformat';
+import escapeHtml from 'escape-html';
+import cookie from 'cookie';
+import queryParser from 'querystring';
 import invariant from 'invariant';
-import { merge } from 'lodash';
 import { getLocalStorageItem } from 'utils/localStorage';
+import { merge } from 'lodash';
 
 // eslint-disable-next-line no-extend-native
 String.prototype.defaultMessage = function (msg) {

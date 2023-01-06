@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 import React from 'react';
-import ActionButton from 'components/Tables/Base/ActionButton';
 import Base from 'containers/BaseDetail';
+import { useRootStore } from 'stores';
 import { get, isEmpty } from 'lodash';
+import { componentStatus } from 'resources/cluster';
+import ActionButton from 'components/Tables/Base/ActionButton';
+import Delete from './actions/RemovePlugin';
+import SaveAsTemplate from '../../actions/SaveAsTemplate';
+import { getAction } from 'utils/allowed';
 import { toJS } from 'mobx';
 import { useParams } from 'react-router';
-import { componentStatus } from 'resources/cluster';
-import { useRootStore } from 'stores';
 import { checkExpired, isDisableByProviderType } from 'utils';
-import { getAction } from 'utils/allowed';
-import SaveAsTemplate from '../../actions/SaveAsTemplate';
-import Delete from './actions/RemovePlugin';
 
 function Plugins() {
   const { clusterStore: store, components } = useRootStore();

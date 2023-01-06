@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { message } from 'antd';
-import BaseForm from 'components/Form';
-import LabelInput from 'components/FormItem/LabelInput';
-import TaintInput from 'components/FormItem/TaintInput';
-import { isEmpty, flatten, isNumber, uniq } from 'lodash';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import SelectNodes from 'pages/cluster/components/SelectNodes';
+import { toJS } from 'mobx';
+import BaseForm from 'components/Form';
 import { rootStore } from 'stores';
 import { joinSelector } from 'utils';
+import { isEmpty, flatten, isNumber, uniq } from 'lodash';
+import TaintInput from 'components/FormItem/TaintInput';
+import LabelInput from 'components/FormItem/LabelInput';
+import { message } from 'antd';
 import { subdomain } from 'utils/regex';
+import SelectNodes from 'pages/cluster/components/SelectNodes';
 import { nameMessage } from 'utils/validate';
 
 const { nodeStore, regionStore } = rootStore;
@@ -127,15 +127,6 @@ export default class Node extends BaseForm {
     return currentTemplates.map((it) => ({
       value: it.id,
       label: it.templateName,
-    }));
-  }
-
-  get projectOptions() {
-    const { projects = [] } = this.props.context;
-
-    return projects.map(({ name }) => ({
-      label: name,
-      value: name,
     }));
   }
 
@@ -259,7 +250,7 @@ export default class Node extends BaseForm {
     }
 
     if (!subdomain.test(value)) {
-      return Promise.reject(nameMessage());
+      return Promise.reject(nameMessage);
     }
 
     return Promise.resolve(true);
@@ -277,14 +268,6 @@ export default class Node extends BaseForm {
           maxLength: 32,
           required: true,
           validator: this.checkName,
-        },
-        {
-          name: 'project',
-          label: t('Project'),
-          type: 'select',
-          options: this.projectOptions,
-          required: true,
-          hidden: !this.isAdminPage,
         },
         {
           name: 'clusterTemplate',

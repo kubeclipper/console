@@ -14,17 +14,17 @@
  *  limitations under the License.
  */
 import React, { useState, useEffect } from 'react';
-import classnames from 'classnames';
-import Notify from 'components/Notify';
-import BaseTable from 'components/Tables/Base';
-import { useQuery, useAdminPage } from 'hooks';
-import { isEmpty, get, omit, uniq } from 'lodash';
-import { toJS } from 'mobx';
-import { parse } from 'qs';
 import { useParams, useRouteMatch } from 'react-router-dom';
+import { useQuery } from 'hooks';
+import { parse } from 'qs';
+import classnames from 'classnames';
+import { toJS } from 'mobx';
+import { isEmpty, get, omit, uniq } from 'lodash';
+import BaseTable from 'components/Tables/Base';
+import Notify from 'components/Notify';
+import styles from './index.less';
 import { useRootStore } from 'stores';
 import { initTagByUrlParams, generateUrlParamsByTag } from 'utils';
-import styles from './index.less';
 
 /**
  * notify Error
@@ -54,9 +54,7 @@ const mergeFieldSelector = (field1, field2) => {
 function BaseList(props) {
   const params = useParams();
 
-  const rootStore = useRootStore();
-  const { routing } = rootStore;
-
+  const { routing } = useRootStore();
   let dataTimer = null;
   const dataDuration = 5;
 
@@ -82,7 +80,6 @@ function BaseList(props) {
     isRenderFooter,
     isShowDownLoadIcon,
     isShowEyeIcon,
-    showProjectColumn = false,
   } = props;
 
   const { list } = store;
@@ -94,7 +91,6 @@ function BaseList(props) {
 
   const urlParams = useQuery();
   const match = useRouteMatch();
-  const { isAdminPage } = useAdminPage();
 
   const initFilters = initTagByUrlParams(urlParams, searchFilters);
   const [filters, setFilters] = useState(initFilters);
@@ -134,11 +130,7 @@ function BaseList(props) {
       dataParams = { ...dataParams, ..._params };
     }
 
-    const fieldSelectorValue = mergeFieldSelector(_locationParams, propsParams);
-
-    if (fieldSelectorValue) {
-      dataParams.fieldSelector = fieldSelectorValue;
-    }
+    dataParams.fieldSelector = mergeFieldSelector(_locationParams, propsParams);
 
     getData(dataParams);
   };
@@ -239,6 +231,7 @@ function BaseList(props) {
       ...match.params,
       ..._params,
     };
+
     fetchListWithTry(async () => {
       await store.fetchList({ ...newParams });
       list.silent = false;
@@ -300,23 +293,6 @@ function BaseList(props) {
       clearTimer();
     }
   };
-
-  if (isAdminPage && showProjectColumn) {
-    const projects = get(rootStore, 'user.projects') || [];
-    const filterOptions = projects.map((p) => ({
-      value: p.name,
-      text: p.name,
-    }));
-    const projectColumn = {
-      title: t('Project'),
-      dataIndex: 'project',
-      filters: filterOptions,
-      onFilter: (value, record) => record.project.indexOf(value) > -1,
-      width: '8%',
-    };
-
-    columns.splice(1, 0, projectColumn);
-  }
 
   return (
     <div className={classnames(styles.wrapper, 'list-container', className)}>

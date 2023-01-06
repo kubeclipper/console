@@ -13,19 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import AssignProject from './AssignProject';
-import Delete from './Delete';
 import Disable from './Disable';
 import Enable from './Enable';
+import Delete from './Delete';
 import Terminal from './Terminal';
 
 const actionConfigs = {
   rowActions: {
     firstAction: Terminal,
     moreActions: [
-      {
-        action: AssignProject,
-      },
       {
         action: Disable,
       },

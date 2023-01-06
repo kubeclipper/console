@@ -25,6 +25,7 @@ function Detail() {
   const currentProps = {
     store,
     name: t('RegionDetail'),
+    authKey: 'region-detail',
     listUrl: '/region',
     detailInfos: [
       {

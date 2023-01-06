@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { isString } from 'lodash';
 import { Address4, Address6 } from 'ip-address';
 import yaml from 'js-yaml/dist/js-yaml';
-import { isString } from 'lodash';
 
 // eslint-disable-next-line no-unused-vars
 const ip =
@@ -103,20 +103,18 @@ export const isIpCidr = (value) => ipCidr.test(value);
 
 export const isIPv6Cidr = (value) => ipv6Cidr.test(value);
 
-export const isName = (value, maxLength = 64) => {
+export const isName = (value) => {
   if (value && isString(value)) {
-    return nameRegex.test(value) && value.length <= maxLength;
+    return nameRegex.test(value) && value.length <= 64;
   }
   return false;
 };
 
 export const isPasswordRegex = (value) => passwordRegex.test(value);
 
-export const nameMessage = (maxLength = 64) =>
-  t(
-    `The name can only contain lowercase letters, numbers, and separators ("-" or "."), and must start and end with a lowercase letter or number, up to a maximum of {maxLength} characters.`,
-    { maxLength }
-  );
+export const nameMessage = t(
+  'The name can only contain lowercase letters, numbers, and separators ("-" or "."), and must start and end with a lowercase letter or number, up to a maximum of 64 characters'
+);
 
 export const portMessage = t('Enter an integer value between 1 and 65535.');
 
@@ -150,21 +148,21 @@ export const emailValidate = (rule, value) => {
   );
 };
 
-export const nameValidate = (rule, value, maxLength = 64) => {
+export const nameValidate = (rule, value) => {
   if (!rule.required && value === undefined) {
     return Promise.resolve(true);
   }
-  if (isName(value, maxLength)) {
+  if (isName(value)) {
     return Promise.resolve(true);
   }
-  return Promise.reject(new Error(`${nameMessage(maxLength)}`));
+  return Promise.reject(new Error(`${nameMessage}`));
 };
 
 export const macAddressValidate = (rule, value) => {
   if (isMacAddress(value)) {
     return Promise.resolve(true);
   }
-  return Promise.reject(new Error(`${t('Invalid: ')}${nameMessage()}`));
+  return Promise.reject(new Error(`${t('Invalid: ')}${nameMessage}`));
 };
 
 export const portRangeValidate = (rule, value) => {

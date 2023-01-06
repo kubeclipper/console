@@ -15,9 +15,9 @@
  */
 
 import React, { useContext } from 'react';
+import styles from '../index.less';
 import logo from 'asset/logos/logo.svg';
 import { BaseContext } from '..';
-import styles from '../index.less';
 
 export default function Logo() {
   const { state } = useContext(BaseContext);

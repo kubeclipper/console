@@ -14,9 +14,9 @@
  *  limitations under the License.
  */
 /* eslint-disable import/no-unresolved */
-import { lazy } from 'react';
-import E404 from 'components/E404';
 import BlankLayout from 'layouts/Blank';
+import E404 from 'components/E404';
+import { lazy } from 'react';
 import { homePageRoute } from 'utils';
 
 const Oauth = lazy(() =>
@@ -35,9 +35,6 @@ const Access = lazy(() =>
 const Region = lazy(() =>
   import(/* webpackChunkName: "Region" */ 'region/App.jsx')
 );
-const Project = lazy(() =>
-  import(/* webpackChunkName: "Project" */ 'project/App.jsx')
-);
 
 const defaultPath = homePageRoute() || 'auth/login';
 
@@ -54,19 +51,11 @@ export default [
         component: Cluster,
       },
       {
-        path: '/cluster-admin',
-        component: Cluster,
-      },
-      {
-        path: '/region-admin',
+        path: '/region',
         component: Region,
       },
       {
         path: '/node',
-        component: Node,
-      },
-      {
-        path: '/node-admin',
         component: Node,
       },
       {
@@ -80,10 +69,6 @@ export default [
       {
         path: '/oauth2',
         component: Oauth2,
-      },
-      {
-        path: '/project',
-        component: Project,
       },
       {
         path: '*',

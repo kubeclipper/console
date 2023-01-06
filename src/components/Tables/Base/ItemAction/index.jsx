@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React, { useState } from 'react';
-import { useDeepCompareEffect } from 'hooks';
-import { observer } from 'mobx-react';
 import { useRootStore } from 'stores';
 import { getAllowedResults, getActionList } from 'utils/allowed';
+import { useDeepCompareEffect } from 'hooks';
 import DropdownActions from './DropdownActions';
+import { observer } from 'mobx-react';
 
 const ItemAction = ({
   actions,

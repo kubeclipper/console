@@ -13,12 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import Notify from 'components/Notify';
-import { ModalAction } from 'containers/Action';
 import { observer } from 'mobx-react';
-import { formatFormTemplates } from 'resources/backup';
-import { cronTypeOption } from 'resources/date';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
+import Notify from 'components/Notify';
+import { cronTypeOption } from 'resources/date';
+import { formatFormTemplates } from 'resources/backup';
 
 const { cornBackupStore: store, clusterStore } = rootStore;
 

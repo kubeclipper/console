@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import { isEmpty, get, merge } from 'lodash';
-import { rootStore } from 'stores';
 import {
   getToken,
   getLocalStorageItem,
   setLocalStorageItem,
 } from 'utils/localStorage';
+import { rootStore } from 'stores';
 
 const qs = require('qs');
 

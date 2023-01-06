@@ -14,23 +14,20 @@
  *  limitations under the License.
  */
 
-import BackUpStore from './backup';
-import BackupPointStore from './backupPoint';
-import CloudProviderStore from './cloudprovider';
 import ClusterStore from './cluster';
-import CornBackupStore from './cronBackup';
-import LicenseStore from './license';
-import LogStore from './log';
+import UserStore from './user';
+import RoleStore from './role';
+import RegionStore from './region';
 import NodeStore from './node';
 import OperationStore from './operation';
-import ProjectStore from './project';
-import ProjectRoleStore from './project/role';
-import ProjectUserStore from './project/user';
-import RegionStore from './region';
+import LicenseStore from './license';
+import BackUpStore from './backup';
 import RegistryStore from './registry';
-import RoleStore from './role';
 import TemplatesStore from './templates';
-import UserStore from './user';
+import BackupPointStore from './backupPoint';
+import LogStore from './log';
+import CornBackupStore from './cronBackup';
+import CloudProviderStore from './cloudprovider';
 
 export default {
   ClusterStore,
@@ -47,7 +44,4 @@ export default {
   LogStore,
   CornBackupStore,
   CloudProviderStore,
-  ProjectStore,
-  ProjectUserStore,
-  ProjectRoleStore,
 };

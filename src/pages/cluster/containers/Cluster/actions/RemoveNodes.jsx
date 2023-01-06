@@ -13,12 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import { observer } from 'mobx-react';
 import { ModalAction } from 'containers/Action';
 import { get } from 'lodash';
-import { observer } from 'mobx-react';
+import { checkExpired, isDisableByProviderType } from 'utils';
 import { getNodeRole } from 'resources/node';
 import { rootStore } from 'stores';
-import { checkExpired, isDisableByProviderType } from 'utils';
 
 const { clusterStore, nodeStore } = rootStore;
 

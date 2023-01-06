@@ -13,11 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+@lightest: #f9fbfd;
+@size-normal: 14px;
+@font-bold: 600;
+@text-color: #242e42;
+
 .wrapper {
   & > li {
     padding: 20px 24px;
     border-radius: 4px;
-    background-color: #f9fbfd;
+    background-color: @lightest;
 
     & + li {
       margin-top: 8px;
@@ -33,9 +38,9 @@
   .name {
     width: 200px;
     margin-right: 60px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: @size-normal;
+    font-weight: @font-bold;
     line-height: 1.43;
-    color: #242e42;
+    color: @text-color;
   }
 }

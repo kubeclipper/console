@@ -13,17 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-
 import React from 'react';
+import { Menu, Spin, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { Button, Menu, Spin } from 'antd';
 import i18n from 'core/i18n';
-import { observer } from 'mobx-react';
-import { useRootStore } from 'stores';
-import { getLocalStorageItem } from 'utils/localStorage';
 import HeaderDropdown from './HeaderDropdown';
-import ModifyPassword from './ModifyPassword';
 import styles from './index.less';
+import { useRootStore } from 'stores';
+import ModifyPassword from './ModifyPassword';
+import { observer } from 'mobx-react';
+import { getLocalStorageItem } from 'utils/localStorage';
 
 const { getLocale, setLocale } = i18n;
 

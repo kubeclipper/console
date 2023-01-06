@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React from 'react';
+import { Row, Col, Skeleton, Tooltip, Typography, Popover } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { Col, Popover, Row, Skeleton, Tooltip, Typography } from 'antd';
-import classnames from 'classnames';
-import Status from 'components/Status';
-import { get, has, isArray, isEmpty, isNumber } from 'lodash';
+import { has, get, isNumber, isArray, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { renderFilterMap } from 'utils';
+import Status from 'components/Status';
 import styles from './index.less';
 
 const { Paragraph } = Typography;

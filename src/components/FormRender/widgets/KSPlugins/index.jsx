@@ -20,8 +20,8 @@ import FR from 'components/FormRender';
 import { useForm } from 'form-render';
 import { get, isEmpty, values } from 'lodash';
 import { Context } from 'pages/cluster/components/plugin/Context';
-import styles from './index.less';
 
+import styles from './index.less';
 
 /**
  * 自定义 KSPlugins

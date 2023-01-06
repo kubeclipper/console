@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React, { useEffect, useMemo, useState } from 'react';
-import { Tabs, Skeleton } from 'antd';
 import classnames from 'classnames';
-import { useMergedState } from 'hooks';
-import { useRootStore } from 'stores';
+import { Tabs, Skeleton } from 'antd';
 import styles from './index.less';
+import { useRootStore } from 'stores';
+import { useMergedState } from 'hooks';
 
 const TabComponent = (props) => {
   const { tabItem, activeKey, store } = props;

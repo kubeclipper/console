@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React from 'react';
-import { GlobalOutlined } from '@ant-design/icons';
 import { Menu, Dropdown } from 'antd';
-import classNames from 'classnames';
 import i18n from 'core/i18n';
+import React from 'react';
+import classNames from 'classnames';
+import { GlobalOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
 const { getLocale, setLocale } = i18n;

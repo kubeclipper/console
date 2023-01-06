@@ -82,21 +82,5 @@
   "CLOUDPROVIDER_EDIT_DESC": "编辑集群提供商",
   "SyncFailed": "同步失败",
   "STATUS_INFORMATION": "状态信息",
-  "Syncing": "同步中",
-  "ProjectRole View": "查看项目角色",
-  "PROJECTROLE_VIEW_DESC": "查看项目下所有角色",
-  "ProjectRole Edit": "编辑项目角色",
-  "PROJECTROLE_EDIT_DESC": "编辑项目角色",
-  "ProjectRole Delete": "删除项目角色",
-  "PROJECTROLE_DELETE_DESC": "删除项目角色",
-  "ProjectRole Create": "创建自定义项目角色",
-  "PROJECTROLE_CREATE_DESC": "创建自定义项目角色",
-  "ProjectMember View": "查看项目用户",
-  "PROJECTMEMBER_VIEW_DESC": "查看项目下所有用户",
-  "ProjectMember Edit": "编辑项目用户",
-  "PROJECTMEMBER_EDIT_DESC": "编辑项目用户",
-  "ProjectMember Delete": "移除项目用户",
-  "PROJECTMEMBER_DELETE_DESC": "移除项目用户",
-  "ProjectMember Create": "邀请项目用户",
-  "PROJECTMEMBER_CREATE_DESC": "邀请项目用户"
+  "Syncing": "同步中"
 }

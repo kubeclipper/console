@@ -19,9 +19,7 @@ export default class LinkLog extends LinkAction {
   static title = t('ViewLog');
 
   static path(item) {
-    return `/cluster${super.isAdminPage ? '-admin' : ''}/${
-      item.name
-    }?tab=Operation`;
+    return `/cluster/${item.name}?tab=Operation`;
   }
 
   policy = 'clusters:view';

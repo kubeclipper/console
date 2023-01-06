@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import React from 'react';
-import enUS from '../../tests/unit/locales/en-US';
 import zhCN from '../../tests/unit/locales/zh-CN';
+import enUS from '../../tests/unit/locales/en-US';
 import ReactIntlUniversal from './translate';
 
 const intl = new ReactIntlUniversal();

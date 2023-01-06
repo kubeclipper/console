@@ -15,8 +15,8 @@
  */
 import React, { Suspense } from 'react';
 import { getWebSocketProtocol } from 'utils';
-import { devIp } from '../../../config/common';
 import ContainerTerminal from './terminal';
+import { devIp } from '../../../config/common';
 
 const BG_COLOR = '#181d28';
 

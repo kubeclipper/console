@@ -14,8 +14,9 @@
  *  limitations under the License.
  */
 import React from 'react';
-import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
+
+import BaseList from 'containers/List';
 import actionConfigs from './actions';
 
 const ClusterTemplate = (props) => {

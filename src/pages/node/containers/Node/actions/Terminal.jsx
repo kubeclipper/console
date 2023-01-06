@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { CloseOutlined } from '@ant-design/icons';
-import { Modal, Button } from 'antd';
-import { ModalAction } from 'containers/Action';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
+import { Modal, Button } from 'antd';
 import ContainerTerminalModal from './terminalCtl';
+import { CloseOutlined } from '@ant-design/icons';
 
 @observer
 export default class Terminal extends ModalAction {

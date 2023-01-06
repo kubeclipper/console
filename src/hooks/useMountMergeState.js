@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 
-import { useEffect, useRef } from 'react';
 import useMergedState from './useMergedState';
+import { useEffect, useRef } from 'react';
 
 /**
  *

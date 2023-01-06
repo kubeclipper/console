@@ -14,20 +14,20 @@
  *  limitations under the License.
  */
 import React from 'react';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Tooltip } from 'antd';
 import TabDetail from 'containers/TabDetail';
-import { isEmpty } from 'lodash';
-import { clusterStatus, transitionStatus } from 'resources/cluster';
 import { useRootStore } from 'stores';
-import actionConfigs from '../actions';
-import BackUp from './Backup';
+import { clusterStatus, transitionStatus } from 'resources/cluster';
+import { Tooltip } from 'antd';
+import { QuestionCircleOutlined } from '@ant-design/icons';
+import { isEmpty } from 'lodash';
 import BaseDetail from './BaseDetail';
+import Storage from './Storage';
+import Plugins from './Plugins';
 import NodesList from './NodesList';
 import Operation from './Operation';
-import Plugins from './Plugins';
+import BackUp from './Backup';
 import ScheduledBackup from './ScheduledBackup';
-import Storage from './Storage';
+import actionConfigs from '../actions';
 
 const StatusTitle = () => (
   <span>
@@ -50,6 +50,7 @@ function ClusterDetail() {
 
   const currentProps = {
     name: t('ClusterDetail'),
+    authKey: 'cluster-detail',
     listUrl: '/cluster',
     actionConfigs,
     store,

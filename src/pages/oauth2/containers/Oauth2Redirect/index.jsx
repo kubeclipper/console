@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 import React, { useEffect } from 'react';
-import Notify from 'components/Notify';
-import { parse } from 'qs';
-import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { useRootStore } from 'stores';
-import { defaultRoute } from 'utils';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
+import { parse } from 'qs';
 import { setLocalStorageItem } from 'utils/localStorage';
+import Notify from 'components/Notify';
+import { defaultRoute } from 'utils';
 
 export default function Oauth2Redirect() {
   const rootStore = useRootStore();
@@ -43,8 +43,8 @@ export default function Oauth2Redirect() {
           });
 
           if (currentUser) {
-            const { globalRules = {}, globalrole } = currentUser;
-            history.push(defaultRoute(globalRules, globalrole));
+            const { globalRules = {} } = currentUser;
+            history.push(defaultRoute(globalRules));
           }
         }
       } catch (error) {

@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import BaseForm from 'components/Form';
 import { rootStore } from 'stores';
+import BaseForm from 'components/Form';
 import { subdomain } from 'utils/regex';
 
 export default class BaseInfo extends BaseForm {

@@ -15,11 +15,11 @@
  */
 
 import React from 'react';
-import { Badge, Divider } from 'antd';
 import classNames from 'classnames';
 import Text from 'components/Text';
-import styles from './index.less';
+import { Badge, Divider } from 'antd';
 
+import styles from './index.less';
 
 const Tabs = (props) => {
   const {

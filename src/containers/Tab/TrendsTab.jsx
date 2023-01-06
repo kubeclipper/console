@@ -14,13 +14,13 @@
  *  limitations under the License.
  */
 import React, { useEffect, useState } from 'react';
-import { Tabs, Skeleton } from 'antd';
 import classnames from 'classnames';
-import { useQuery } from 'hooks';
-import { isEmpty } from 'lodash';
+import { Tabs, Skeleton } from 'antd';
 import { observer } from 'mobx-react';
-import { useRootStore } from 'stores';
 import styles from './index.less';
+import { useRootStore } from 'stores';
+import { isEmpty } from 'lodash';
+import { useQuery } from 'hooks';
 
 const TabComponent = observer((props) => {
   const { tabItem, activeKey, store } = props;

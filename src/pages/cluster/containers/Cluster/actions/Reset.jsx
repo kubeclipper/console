@@ -14,8 +14,8 @@
  *  limitations under the License.
  */
 import { ConfirmAction } from 'containers/Action';
-import { failedStatus } from 'resources/cluster';
 import { rootStore } from 'stores';
+import { failedStatus } from 'resources/cluster';
 import { isDisableByProviderType } from 'utils';
 
 const { clusterStore } = rootStore;

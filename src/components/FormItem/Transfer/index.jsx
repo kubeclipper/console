@@ -23,7 +23,6 @@ const TableTransfer = ({
   leftColumns,
   rightColumns,
   pageSize,
-  isLoading,
   ...restProps
 }) => (
   <Transfer {...restProps} showSelectAll={false}>
@@ -74,7 +73,6 @@ const TableTransfer = ({
               onItemSelect(key, !listSelectedKeys.includes(key));
             },
           })}
-          loading={isLoading}
         />
       );
     }}
@@ -93,7 +91,6 @@ export default function CustomTransfer(props) {
     filterOption,
     titles,
     pageSize,
-    isLoading,
   } = props;
   const [targetKeys, setTargetKeys] = useState(value);
 
@@ -115,7 +112,6 @@ export default function CustomTransfer(props) {
         filterOption={filterOption}
         leftColumns={leftTableColumns}
         rightColumns={rightTableColumns}
-        isLoading={isLoading}
       />
     </>
   );
@@ -132,7 +128,6 @@ CustomTransfer.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.array,
   pageSize: PropTypes.number,
-  isLoading: PropTypes.bool,
 };
 
 CustomTransfer.defaultProps = {
@@ -143,5 +138,4 @@ CustomTransfer.defaultProps = {
   onChange: () => {},
   value: [],
   pageSize: 5,
-  isLoading: false,
 };

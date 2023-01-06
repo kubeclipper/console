@@ -16,10 +16,10 @@
 
 import React, { useMemo } from 'react';
 import { Table } from 'antd';
-import classNames from 'classnames';
 import Pagination from 'components/Pagination';
-import styles from './index.less';
+import classNames from 'classnames';
 
+import styles from './index.less';
 
 /**
  *TableRender

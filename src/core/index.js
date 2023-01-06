@@ -14,21 +14,19 @@
  *  limitations under the License.
  */
 import React, { Suspense } from 'react';
-import { syncHistoryWithStore } from '@superwf/mobx-react-router';
-import { ConfigProvider } from 'antd';
-import enUS from 'antd/es/locale/en_US';
-import zhCN from 'antd/es/locale/zh_CN';
-import PageLoading from 'components/PageLoading';
-import { createBrowserHistory } from 'history';
 import ReactDOM from 'react-dom';
+import { createBrowserHistory } from 'history';
+import { syncHistoryWithStore } from '@superwf/mobx-react-router';
 import { AppContainer } from 'react-hot-loader';
-import { routingStore, rootStore } from 'stores';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
+import enUS from 'antd/es/locale/en_US';
 import request from 'utils/request';
+import PageLoading from 'components/PageLoading';
 import App from './App';
-import GlobalValue from './global';
 import i18n from './i18n';
-
-const store = rootStore;
+import { routingStore, rootStore } from 'stores';
+import GlobalValue from './global';
 
 require('@babel/polyfill');
 
@@ -72,27 +70,7 @@ const render = (component) => {
   );
 };
 
-const getUser = async (callback) => {
-  const currentPath = window.location.pathname;
-  if (!currentPath.includes('/auth/login')) {
-    try {
-      await store.getCurrentUser();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(e);
-      store.gotoLoginPage(currentPath);
-    } finally {
-      callback && callback();
-    }
-    return;
-  }
-
-  callback && callback();
-};
-
-getUser(() => {
-  render(<App rootStore={rootStore} history={history} />);
-});
+render(<App rootStore={rootStore} history={history} />);
 
 module.hot &&
   module.hot.accept('./App', () => {

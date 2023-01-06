@@ -14,13 +14,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { ModalAction } from 'containers/Action';
-import { merge } from 'lodash';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import FORM_TEMPLATES from 'utils/form.templates';
 import { isIp, isIpPort, isDomainPath } from 'utils/validate';
+import FORM_TEMPLATES from 'utils/form.templates';
+import { merge } from 'lodash';
 
 @observer
 class Add extends ModalAction {

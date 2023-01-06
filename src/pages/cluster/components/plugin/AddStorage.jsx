@@ -15,11 +15,9 @@
  */
 
 import React, { useEffect, useReducer, useRef } from 'react';
-import classnames from 'classnames';
-import Footer from 'components/Footer';
-import { Forms } from 'components/Form';
-import Notify from 'components/Notify';
 import Tabs from 'components/Tabs';
+import styles from './index.less';
+import RenderForm from './RenderForm';
 import {
   cloneDeep,
   uniq,
@@ -30,12 +28,15 @@ import {
   isMatch,
   orderBy,
 } from 'lodash';
-import { observer } from 'mobx-react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useRootStore } from 'stores';
 import { encodeProperty } from 'utils';
-import RenderForm from './RenderForm';
-import styles from './index.less';
+import Notify from 'components/Notify';
+
+import classnames from 'classnames';
+import { Forms } from 'components/Form';
+import { useRootStore } from 'stores';
+import { observer } from 'mobx-react';
+import Footer from 'components/Footer';
 
 const Storage = observer((props) => {
   const {

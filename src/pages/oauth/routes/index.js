@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import EmptyRole from '../containers/EmptyRole';
 import Login from '../containers/Login';
 import UpdateLicense from '../containers/UpdateLicense';
+import EmptyRole from '../containers/EmptyRole';
 
 const PATH = '/auth';
 export default [

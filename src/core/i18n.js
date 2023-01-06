@@ -13,12 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import _ from 'lodash';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import _ from 'lodash';
 import cookie from 'utils/cookie';
-import { setLocalStorageItem } from 'utils/localStorage';
 import SLI18n from 'utils/translate';
+import { setLocalStorageItem } from 'utils/localStorage';
+
 import locales from '../locales';
 
 const SUPPOER_LOCALES = [

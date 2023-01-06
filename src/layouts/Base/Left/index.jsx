@@ -16,11 +16,11 @@
 
 import React, { useContext } from 'react';
 import classnames from 'classnames';
-import { BaseContext } from '..';
 import styles from '../index.less';
 import Logo from './logo';
-import Menus from './menus';
 import Trigger from './trigger';
+import Menus from './menus';
+import { BaseContext } from '..';
 
 const Left = () => {
   const { state, setState } = useContext(BaseContext);

@@ -13,13 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import React from 'react';
 import { ConfirmAction } from 'containers/Action';
-import { failedStatus } from 'resources/cluster';
+import React from 'react';
 import { rootStore } from 'stores';
+import { failedStatus } from 'resources/cluster';
 import { isDisableByProviderType } from 'utils';
-import styles from './index.less';
 
+import styles from './index.less';
 
 const { clusterStore } = rootStore;
 

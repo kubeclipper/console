@@ -14,11 +14,11 @@
  *  limitations under the License.
  */
 import React from 'react';
-import BaseList from 'containers/List';
 import { Link } from 'react-router-dom';
+import BaseList from 'containers/List';
+import actionConfigs from './actions';
 import { useRootStore } from 'stores';
 import { INTERNAL_ROLE_DES } from 'utils/constants';
-import actionConfigs from './actions';
 
 export default function Role(props) {
   const { roleStore } = useRootStore();
@@ -29,7 +29,7 @@ export default function Role(props) {
       dataIndex: 'name',
       render: (name, record) => {
         if (name) {
-          return <Link to={`/access/role-admin/${record.id}`}>{name}</Link>;
+          return <Link to={`/access/role/${record.id}`}>{name}</Link>;
         }
         return '-';
       },

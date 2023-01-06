@@ -16,8 +16,8 @@
 
 import React from 'react';
 import { Form } from 'antd';
-import CodeEditor from 'components/CodeEditor';
 import { yamlValidator } from 'utils/validate';
+import CodeEditor from 'components/CodeEditor';
 
 function YamlInput(props) {
   const getRules = (rules) => {

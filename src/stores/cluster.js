@@ -15,11 +15,11 @@
  */
 
 import { get, uniqBy } from 'lodash';
-import { versionCompare } from 'utils';
 import { APIVERSION } from 'utils/constants';
 import ObjectMapper from 'utils/object.mapper';
-import BaseStore from './base';
+import { versionCompare } from 'utils';
 
+import BaseStore from './base';
 
 export default class ClusterStore extends BaseStore {
   nodes = [];

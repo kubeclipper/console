@@ -16,9 +16,9 @@
 
 import React from 'react';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import classNames from 'classnames';
 import { useVersionInfo } from 'hooks';
 import styles from './index.less';
+import classNames from 'classnames';
 
 const VersionInfo = (props) => {
   const { className } = props;

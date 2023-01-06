@@ -16,10 +16,10 @@
 
 import { get, set } from 'lodash';
 import { action, makeObservable, observable } from 'mobx';
-import { APIVERSION } from 'utils/constants';
 import ObjectMapper from 'utils/object.mapper';
-import List from './base.list';
+import { APIVERSION } from 'utils/constants';
 
+import List from './base.list';
 
 export default class BaseStore {
   list = new List();
@@ -65,7 +65,7 @@ export default class BaseStore {
     return (params) => {
       if (params.limit === -1) {
         params.limit = -1;
-        // params.page = 1;
+        params.page = 1;
       }
 
       params.limit = params.limit || 10;
@@ -82,22 +82,9 @@ export default class BaseStore {
     return APIVERSION[this.apiType] || 'api/core.kubeclipper.io/v1';
   }
 
-  get hasAdminRole() {
-    return this.rootStore.hasAdminRole;
-  }
+  getListUrl = () => `${this.apiVersion}/${this.module}`;
 
-  getListUrl = ({ project } = {}) => {
-    const currentProject = this.rootStore?.currentProject;
-
-    if (project || currentProject)
-      return `${this.apiVersion}/projects/${project || currentProject}/${
-        this.module
-      }`;
-
-    return `${this.apiVersion}/${this.module}`;
-  };
-
-  getDetailUrl = ({ id, project }) => `${this.getListUrl({ project })}/${id}`;
+  getDetailUrl = ({ id }) => `${this.getListUrl()}/${id}`;
 
   setSelectRowKeys(key, selectedRowKeys) {
     this[key] && this[key].selectedRowKeys.replace(selectedRowKeys);
@@ -128,11 +115,11 @@ export default class BaseStore {
   getListData = (result, mapper) =>
     this.getListDataFromResult(result)?.map(mapper || this.mapper) ?? null;
 
-  async fetchList({ project, more, ...params } = {}) {
+  async fetchList({ more, ...params } = {}) {
     !this.list.silent && this.list.reset();
+
     const newParams = this.paramsFunc(this.pageParamsFunc(params));
-    const result =
-      (await request.get(`${this.getListUrl({ project })}`, newParams)) || [];
+    const result = (await request.get(`${this.getListUrl()}`, newParams)) || [];
     const data = this.getListData(result);
 
     let newData = [];

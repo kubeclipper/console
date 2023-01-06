@@ -14,10 +14,10 @@
  *  limitations under the License.
  */
 import React from 'react';
-import actionConfigs from 'pages/node/containers/Node/actions';
 import { Link, useParams } from 'react-router-dom';
-import { getNodeRole } from 'resources/node';
+import actionConfigs from 'pages/node/containers/Node/actions';
 import BaseList from 'src/containers/List';
+import { getNodeRole } from 'resources/node';
 import { useRootStore } from 'stores';
 
 export default function Node() {
@@ -32,7 +32,7 @@ export default function Node() {
       extraNameCopyable: true,
       width: 200,
       render: (_, record) => (
-        <Link to={`/node-admin/${record.id}`}>{record.hostname}</Link>
+        <Link to={`/node/${record.id}`}>{record.hostname}</Link>
       ),
     },
     {

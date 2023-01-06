@@ -27,6 +27,7 @@ import {
   versionCompare,
 } from 'utils';
 import { safeBtoa } from 'utils/base64';
+
 import Cluster from './Cluster';
 import Confirm from './Confirm';
 import Node from './Node';
@@ -41,9 +42,7 @@ export default class Create extends StepAction {
 
   static title = t('Create Cluster');
 
-  static path() {
-    return `/cluster${super.isAdminPage ? '-admin' : ''}/create`;
-  }
+  static path = '/cluster/create';
 
   static policy = 'clusters:create';
 
@@ -55,12 +54,8 @@ export default class Create extends StepAction {
     return true;
   }
 
-  get isAdminPage() {
-    return this.constructor.isAdminPage;
-  }
-
   get listUrl() {
-    return this.isAdminPage ? '/cluster-admin' : '/cluster';
+    return '/cluster';
   }
 
   get name() {
@@ -111,21 +106,14 @@ export default class Create extends StepAction {
   init() {
     this.store = rootStore.clusterStore;
     this.templatesStore = rootStore.templatesStore;
-    this.projectStore = rootStore.projectStore;
 
     this.fetchTemplates();
     this.fetchVersion();
-    this.fetchProject();
   }
 
   async fetchTemplates() {
     const templates = await this.templatesStore.fetchListAll();
     this.updateData({ templates });
-  }
-
-  async fetchProject() {
-    const projects = await this.projectStore.fetchListAll();
-    this.updateData({ projects });
   }
 
   async fetchVersion() {
@@ -179,14 +167,6 @@ export default class Create extends StepAction {
 
     return encodeProperty(this.components, enabledComponents);
   };
-
-  getProject(values) {
-    if (this.isAdminPage) {
-      return values.project;
-    }
-
-    return rootStore.currentProject;
-  }
 
   onSubmit = (values) => {
     const {
@@ -263,7 +243,6 @@ export default class Create extends StepAction {
       metadata: {
         name,
         labels: {
-          'kubeclipper.io/project': this.getProject(values),
           'topology.kubeclipper.io/region': region,
           'kubeclipper.io/backupPoint': backupPoint,
           ...externalIPLabel,

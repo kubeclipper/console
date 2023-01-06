@@ -14,16 +14,18 @@
  *  limitations under the License.
  */
 
-import { StepAction } from 'containers/Action';
-import { flatten, get, set, omit, assign, filter } from 'lodash';
 import { observer } from 'mobx-react';
-import { computeAutoDetection } from 'resources/cluster';
+import { StepAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import { arrayInputValue } from 'utils';
+import { computeAutoDetection } from 'resources/cluster';
+import { flatten, get, set, omit, assign, filter } from 'lodash';
+
 import Cluster from './Cluster';
-import Confirm from './Confirm';
 import Plugin from './Plugin';
 import Storage from './Storage';
+import Confirm from './Confirm';
+
 // eslint-disable-next-line no-unused-vars
 import styles from './index.less';
 

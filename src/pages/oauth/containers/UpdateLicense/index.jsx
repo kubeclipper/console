@@ -15,14 +15,14 @@
  */
 
 import React, { useEffect } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Observer } from 'mobx-react';
 import Notify from 'components/Notify';
 import { toJS } from 'mobx';
-import { Observer } from 'mobx-react';
+import { Form, Input, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { useRootStore } from 'stores';
-import styles from './index.less';
 
+import styles from './index.less';
 
 const { TextArea } = Input;
 

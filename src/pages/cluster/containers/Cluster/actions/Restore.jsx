@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { ModalAction } from 'containers/Action';
-import { get } from 'lodash';
 import { observer } from 'mobx-react';
-import { backupTableProps } from 'resources/backup';
+import { ModalAction } from 'containers/Action';
 import BackUpStore from 'stores/backup';
+import { get } from 'lodash';
+import { backupTableProps } from 'resources/backup';
 import { checkExpired, isDisableByProviderType } from 'utils';
 
 @observer

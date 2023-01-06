@@ -14,19 +14,18 @@
  *  limitations under the License.
  */
 
-import useAdminPage from './useAdminPage';
-import useDebounceFn from './useDebounceFn';
-import useDeepCompareEffect from './useDeepCompareEffect';
 import useDidUpdateEffect from './useDidUpdateEffect';
-import useFetchData from './useFetchData';
-import useInterval from './useInterval';
-import useMergedState from './useMergedState';
-import useModal from './useModal';
-import useMountMergeState from './useMountMergeState';
+import useDeepCompareEffect from './useDeepCompareEffect';
 import usePrevious from './usePrevious';
-import useQuery from './useQuery';
-import useRefFunction from './useRefFunction';
 import useUnmount from './useUnmount';
+import useDebounceFn from './useDebounceFn';
+import useInterval from './useInterval';
+import useFetchData from './useFetchData';
+import useMountMergeState from './useMountMergeState';
+import useMergedState from './useMergedState';
+import useRefFunction from './useRefFunction';
+import useQuery from './useQuery';
+import useModal from './useModal';
 import useVersionInfo from './useVersionInfo';
 
 export {
@@ -43,5 +42,4 @@ export {
   useQuery,
   useModal,
   useVersionInfo,
-  useAdminPage,
 };

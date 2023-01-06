@@ -13,8 +13,8 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { ModalAction } from 'containers/Action';
 import { observer } from 'mobx-react';
+import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import { isDisableByProviderType } from 'utils';
 import { safeAtob } from 'utils/base64';
@@ -33,7 +33,7 @@ class SaveAsTemplate extends ModalAction {
 
   static policy = 'clusters:edit';
 
-  static listUrl = `/cluster${super.isAdminPage ? '-admin' : ''}`;
+  static listUrl = '/cluster';
 
   static get modalSize() {
     return 'middle';

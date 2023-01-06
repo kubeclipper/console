@@ -15,17 +15,16 @@
  */
 
 import React, { useContext } from 'react';
-import { Menu } from 'antd';
-import renderAdminMenu from 'core/admin-menu';
-import i18n from 'core/i18n';
 import renderMenu from 'core/menu';
-import { useDeepCompareEffect, useAdminPage } from 'hooks';
+import i18n from 'core/i18n';
 import { isEmpty, has } from 'lodash';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import { Link } from 'react-router-dom';
-import { useRootStore } from 'stores';
 import { BaseContext } from '..';
+import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
+import { toJS } from 'mobx';
+import { useRootStore } from 'stores';
+import { useDeepCompareEffect } from 'hooks';
 import styles from '../index.less';
 
 const { SubMenu } = Menu;
@@ -34,8 +33,8 @@ const { SubMenu } = Menu;
  * filter menu by permission
  * @returns
  */
-const permissionMenu = (isAdminPage) => {
-  const menus = isAdminPage ? renderAdminMenu(i18n.t) : renderMenu(i18n.t);
+const menu = () => {
+  const menus = renderMenu(i18n.t);
   const navs = [];
 
   menus.forEach((item) => {
@@ -71,14 +70,14 @@ const checkPath = (path, targetPath) => {
  * @param {*} path
  * @returns
  */
-const getCurrentMenu = (path, menuData) => {
-  const item = menuData.find((it) => checkPath(it.path, path));
+const getCurrentMenu = (path) => {
+  const item = menu().find((it) => checkPath(it.path, path));
 
   if (item) {
     return [item];
   }
 
-  for (const detail of menuData) {
+  for (const detail of menu()) {
     if (detail.children) {
       const current = detail.children.find((it) => checkPath(it.path, path));
 
@@ -130,15 +129,8 @@ function Menus() {
   const { state, setState, Routes } = useContext(BaseContext);
   const { collapsed, hover, openKeys, currentRoutes } = state;
   const { pathname } = Routes.location;
-  let { isAdminPage } = useAdminPage();
 
-  // 特例：某些路径带 admin 不能正确判断是否管理平台；比如项目管理员的项目角色详情页路径：project/role/xxx-admin;
-  if (pathname.indexOf('/project/role') > -1) {
-    isAdminPage = false;
-  }
-
-  const menuData = permissionMenu(isAdminPage);
-  const menus = getCurrentMenu(pathname, menuData);
+  const menus = getCurrentMenu(pathname);
 
   useDeepCompareEffect(() => {
     setState({
@@ -205,7 +197,7 @@ function Menus() {
   const selectedKeys = getSelectedKeys(currentRoutes);
   const newOpenKeys = openKeys.length === 0 ? toJS(defaultOpenKeys) : openKeys;
 
-  const menuItems = menuData
+  const menuItems = menu()
     .map((item) => renderMenuItem(item))
     .filter((it) => it !== null);
 

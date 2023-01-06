@@ -15,8 +15,9 @@
  */
 
 import { get } from 'lodash';
-import BaseStore from './base';
 import List from './base.list';
+
+import BaseStore from './base';
 
 export default class RoleStore extends BaseStore {
   roleTemplates = new List();

@@ -19,15 +19,7 @@ import BaseStore from './base';
 export default class BackupPointStore extends BaseStore {
   module = 'backupPoints';
 
-  getListUrl = ({ project } = {}) => {
-    const { currentProject } = this.rootStore;
-    if (project || currentProject)
-      return `${this.apiVersion}/projects/${
-        project || currentProject
-      }/backuppoints`;
-
-    return `${this.apiVersion}/backuppoints`;
-  };
+  getListUrl = () => `${this.apiVersion}/backuppoints`;
 
   restore(data, { cluster }) {
     return this.submitting(

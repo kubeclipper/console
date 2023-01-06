@@ -14,18 +14,20 @@
  *  limitations under the License.
  */
 import React, { useEffect, useRef, useReducer } from 'react';
-import classnames from 'classnames';
-import Footer from 'components/Footer';
-import { Forms } from 'components/Form';
-import Notify from 'components/Notify';
-import { set, cloneDeep, isEmpty } from 'lodash';
-import { observer } from 'mobx-react';
-import Tips from 'pages/cluster/components/Tips';
-import { Context } from 'pages/cluster/components/plugin/Context';
-import RenderForm from 'pages/cluster/components/plugin/RenderForm';
 import { useParams, useHistory } from 'react-router';
 import { useRootStore } from 'stores';
+import { set, cloneDeep, isEmpty } from 'lodash';
+import classnames from 'classnames';
+import RenderForm from 'pages/cluster/components/plugin/RenderForm';
+import { Context } from 'pages/cluster/components/plugin/Context';
+import Tips from 'pages/cluster/components/Tips';
+
+import Notify from 'components/Notify';
+import Footer from 'components/Footer';
+import { Forms } from 'components/Form';
+
 import styles from './index.less';
+import { observer } from 'mobx-react';
 
 const Plugin = (props) => {
   const { state, setState } = props;

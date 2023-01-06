@@ -15,12 +15,12 @@
  */
 import React, { useLayoutEffect } from 'react';
 import { Layout, Empty } from 'antd';
-import { GlobalHeader } from 'components/Layout';
-import { useHistory } from 'react-router-dom';
 import { useRootStore } from 'stores';
-import { defaultRoute } from 'utils';
 import { getLocalStorageItem } from 'utils/localStorage';
+import { GlobalHeader } from 'components/Layout';
 import styles from './index.less';
+import { defaultRoute } from 'utils';
+import { useHistory } from 'react-router-dom';
 
 const { Header, Content } = Layout;
 
@@ -34,14 +34,12 @@ function EmptyRole() {
       if (!user) {
         rootStore.gotoLoginPage(window.location.pathname);
       } else {
-        const { globalRules = {}, globalrole } = user;
+        const { globalRules = {} } = user;
         user && rootStore.updateUser(user);
-        history.push(defaultRoute(globalRules, globalrole));
+        history.push(defaultRoute(globalRules));
       }
     } else {
-      history.push(
-        defaultRoute(rootStore.user.globalRules, rootStore.user.globalrole)
-      );
+      history.push(defaultRoute(rootStore.user.globalRules));
     }
   }, []);
 
