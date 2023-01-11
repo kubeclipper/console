@@ -136,4 +136,26 @@ export const uiSchemas = [
       },
     },
   },
+
+  {
+    name: 'metallb',
+    schema: {
+      properties: {
+        enable: {
+          default: false,
+          priority: 0,
+          title: 'metallb',
+          type: 'boolean',
+        },
+
+        addresses: {
+          widget: 'ArrayString',
+          props: {
+            isInput: true,
+            width: '100%',
+          },
+        },
+      },
+    },
+  },
 ];
