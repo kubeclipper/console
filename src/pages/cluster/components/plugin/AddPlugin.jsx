@@ -44,7 +44,12 @@ const Plugin = (props) => {
     async function init() {
       const _templates = await templatesStore.fetchListAll();
 
-      const { storage = [] } = await store.updateDetail({ id });
+      const { storage = [], plugin = [] } = await store.updateDetail({ id });
+
+      const _basePluginName = plugin
+        .map((item) => item?.name)
+        .filter((item) => !!item);
+
       const enabledStorageClass = storage
         .map((item) => item?.config?.scName)
         .filter((item) => !!item);
@@ -85,6 +90,10 @@ const Plugin = (props) => {
           hidden: '{{formData.enable === false}}',
         });
 
+        const disabled =
+          item.unique &&
+          _basePluginName.findIndex((name) => name === item.name) !== -1;
+
         return {
           ...item,
           state: 'Not Enabled',
@@ -92,13 +101,14 @@ const Plugin = (props) => {
           formData: [],
           formInstances: [],
           switchChecked: false,
+          disabled,
         };
       });
 
       setState({
         ...state,
         tabs: newTabs,
-        current: pluginComponents[0]?.name,
+        current: newTabs.find((item) => !item?.disabled)?.name,
         templates: _templates,
       });
     }
@@ -139,10 +149,13 @@ const Plugin = (props) => {
         item.formData[index] = formInstance.formData;
         item.formInstances[index] = formInstance;
       }
-
-      item.state = item.formData.some((_item) => _item.enable)
-        ? 'Enabled'
-        : 'Not Enabled';
+      if (item.disabled) {
+        item.state = t('Cannot be added repeatedly');
+      } else {
+        item.state = item.formData.some((_item) => _item.enable)
+          ? 'Enabled'
+          : 'Not Enabled';
+      }
 
       state[item.name] = item.formInstances;
     });
@@ -168,20 +181,22 @@ const Plugin = (props) => {
   return (
     <Context.Provider value={{ context: tabs, setState }}>
       <Tabs tabs={tabs} current={current} onChange={handleTabChange}>
-        {tabs.map((item) =>
-          item.schemas.map((_item, _index) => (
-            <>
-              {item.name === 'kubesphere' && <Tips />}
-              <RenderForm
-                schema={_item}
-                name={current}
-                onChange={(name, formInstance, formData, type) =>
-                  handleFRChange(name, formInstance, formData, type, _index)
-                }
-              />
-            </>
-          ))
-        )}
+        {tabs.map((item, index) => (
+          <div key={index} style={{ display: item.name !== current && 'none' }}>
+            {item.schemas.map((_item, _index) => (
+              <div key={_index} className={styles.item}>
+                {item.name === 'kubesphere' && <Tips />}
+                <RenderForm
+                  schema={_item}
+                  name={current}
+                  onChange={(name, formInstance, formData, type) =>
+                    handleFRChange(name, formInstance, formData, type, _index)
+                  }
+                />
+              </div>
+            ))}
+          </div>
+        ))}
       </Tabs>
     </Context.Provider>
   );

@@ -198,22 +198,19 @@ const PluginForm = (props) => {
         onChange={handleTabChange}
         styles={{ paddingLeft: '10px' }}
       >
-        {tabs.map((tab) => (
-          <>
+        {tabs.map((tab, index) => (
+          <div key={index} style={{ display: tab.name !== current && 'none' }}>
             {tab.category === 'PAAS' && <Tips />}
-            {!isEmpty(enabledStorageClass) &&
-              (tab?.dependence || []).includes('storage') && (
-                <RenderForm
-                  schema={tab.schema}
-                  name={current}
-                  value={tab.formData || {}}
-                  onChange={(name, formInstance, formData, type) =>
-                    handleFRChange(name, formInstance, formData, type)
-                  }
-                  onMount={onMount}
-                />
-              )}
-          </>
+            <RenderForm
+              schema={tab.schema}
+              name={current}
+              value={tab.formData || {}}
+              onChange={(name, formInstance, formData, type) =>
+                handleFRChange(name, formInstance, formData, type)
+              }
+              onMount={onMount}
+            />
+          </div>
         ))}
       </Tabs>
     </Context.Provider>
