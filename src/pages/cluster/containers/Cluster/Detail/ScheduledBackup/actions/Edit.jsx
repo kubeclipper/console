@@ -17,7 +17,7 @@ import { observer } from 'mobx-react';
 import moment from 'moment';
 import { ModalAction } from 'containers/Action';
 import { rootStore } from 'stores';
-import { formatCron } from 'utils';
+import { toLocalTime, formatCron } from 'utils';
 import { circleDayofFirstLevel, formatFormTemplates } from 'resources/backup';
 import * as dateOption from 'resources/date';
 
@@ -57,7 +57,7 @@ class Edit extends ModalAction {
     if (type === 'OnlyOnce') {
       return {
         ...baseDefault,
-        date: moment(runAt, 'YYYY-MM-DD HH:mm:ss'),
+        date: moment(toLocalTime(runAt), 'YYYY-MM-DD HH:mm:ss'),
       };
     } else {
       const { time, localsFormat, firstVal } = formatCron(schedule);
