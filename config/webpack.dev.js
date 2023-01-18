@@ -49,8 +49,9 @@ module.exports = () => {
 
   devServer.proxy = {
     '/apis': {
-      target: `http://${devIp}`, //9节点 172.20.151.92:8099
+      target: `https://${devIp}`, //9节点 172.20.151.92:8099
       changeOrigin: true,
+      secure: false,
       pathRewrite: {
         '^/apis': '/',
       },

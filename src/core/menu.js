@@ -113,9 +113,9 @@ const renderMenu = (t) => {
           ],
         },
         {
-          path: '/cluster/local-registry',
-          name: t('LocalRegistry'),
-          key: '/cluster/local-registry',
+          path: '/cluster/registry',
+          name: t('Registry'),
+          key: '/cluster/registry',
           level: 1,
           module: 'registries',
         },

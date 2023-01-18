@@ -22,7 +22,7 @@ import NodeStore from './node';
 import OperationStore from './operation';
 import LicenseStore from './license';
 import BackUpStore from './backup';
-import TemplateStore from './template';
+import RegistryStore from './registry';
 import TemplatesStore from './templates';
 import BackupPointStore from './backupPoint';
 import LogStore from './log';
@@ -38,7 +38,7 @@ export default {
   OperationStore,
   LicenseStore,
   BackUpStore,
-  TemplateStore,
+  RegistryStore,
   TemplatesStore,
   BackupPointStore,
   LogStore,

@@ -32,7 +32,6 @@ function Tools() {
         onClick={handleVersionClick}
         type="primary"
         icon={<InfoCircleFilled style={{ fontSize: '16px' }} />}
-        iconType="light"
       />
       {Version}
     </div>

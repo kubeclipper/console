@@ -18,22 +18,27 @@ import BaseList from 'containers/List';
 import { useRootStore } from 'stores';
 import actionConfigs from './actions';
 
-export default function LocalRegistry() {
-  const { templateStore: store } = useRootStore();
+export default function Registry() {
+  const { registryStore: store } = useRootStore();
 
   const columns = [
     {
-      title: t('Registry Address'),
-      dataIndex: 'host',
+      title: t('Name'),
+      dataIndex: 'name',
     },
     {
-      title: t('Remarks Column'),
+      title: t('Registry Address'),
+      dataIndex: 'host',
+      render: (data, record) => `${record?.scheme}://${data}`,
+    },
+    {
+      title: t('Description'),
       dataIndex: 'description',
       isHideable: true,
     },
     {
       title: t('Create Time'),
-      dataIndex: 'createAt',
+      dataIndex: 'createTime',
       valueRender: 'toLocalTime',
       isHideable: true,
     },
@@ -42,12 +47,11 @@ export default function LocalRegistry() {
   const currentProps = {
     columns,
     authKey: 'localRegistry',
-    module: 'localRegistry',
+    module: 'registries',
     name: t('LocalRegistry'),
     searchFilters: [],
     actionConfigs,
     store,
-    isRenderFooter: false,
     isShowDownLoadIcon: false,
     isShowEyeIcon: false,
     hideSearch: true,
