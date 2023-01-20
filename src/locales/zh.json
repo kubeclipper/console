@@ -601,5 +601,7 @@
   "Master Node Healthy Status": "控制节点健康状态",
   "Container Registry": "容器镜像仓库",
   "Host Cluster Name": "主机集群名称",
-  "Cluster {clusters} is using this backup space. Deleting the backup space will automatically unbind the relationship. Are you sure you want to delete this backup space?": "集群 {clusters} 正在使用此备份空间，删除备份空间将自动解除绑定关系，确认删除此备份空间？"
+  "Cluster {clusters} is using this backup space. Deleting the backup space will automatically unbind the relationship. Are you sure you want to delete this backup space?": "集群 {clusters} 正在使用此备份空间，删除备份空间将自动解除绑定关系，确认删除此备份空间？",
+  "Cluster Node Name": "集群节点名称",
+  "If IP is selected, this IP string will be used as the node ID instead of the actual host name.": "如果选择了 IP，将使用此 IP 字符串作为节点标识，而不是实际的主机名。"
 }

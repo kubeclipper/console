@@ -173,6 +173,7 @@ export default class Create extends StepAction {
       /* step1: Node config */
       region,
       taints,
+      ipAsName,
       /* step2: Cluster config */
       // image
       offline,
@@ -289,6 +290,7 @@ export default class Create extends StepAction {
       },
       kubelet: {
         rootDir: kubeletDataDir,
+        ipAsName,
       },
       cni: {
         type: cniType,
