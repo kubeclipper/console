@@ -31,6 +31,12 @@ const { nodeStore, regionStore } = rootStore;
 
 @observer
 export default class Node extends BaseForm {
+  get defaultValue() {
+    return {
+      ipAsName: false,
+    };
+  }
+
   async init() {
     this.nodeStore = nodeStore;
     this.regionStore = regionStore;
@@ -300,6 +306,25 @@ export default class Node extends BaseForm {
             },
           },
           validator: this.checkNodes,
+        },
+        {
+          name: 'ipAsName',
+          label: t('Cluster Node Name'),
+          type: 'radio',
+          optionType: 'default',
+          options: [
+            {
+              label: t('Hostname'),
+              value: false,
+            },
+            {
+              label: t('IP Address'),
+              value: true,
+            },
+          ],
+          tip: t(
+            'If IP is selected, this IP string will be used as the node ID instead of the actual host name.'
+          ),
         },
       ],
       [
