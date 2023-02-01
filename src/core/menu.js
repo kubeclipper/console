@@ -19,6 +19,7 @@ import {
   UserOutlined,
   NodeCollapseOutlined,
   ClusterOutlined,
+  AuditOutlined,
 } from '@ant-design/icons';
 
 const renderMenu = (t) => {
@@ -213,6 +214,28 @@ const renderMenu = (t) => {
               module: 'roles',
             },
           ],
+        },
+      ],
+    },
+    {
+      path: '/audit',
+      name: t('Audit'),
+      key: '/audit',
+      icon: <AuditOutlined />,
+      children: [
+        {
+          path: '/audit/security-log',
+          name: t('Login Log'),
+          key: '/audit/security',
+          level: 1,
+          module: 'audit',
+        },
+        {
+          path: '/audit/operation-log',
+          name: t('Operation Log'),
+          key: '/audit/operation-log',
+          level: 1,
+          module: 'audit',
         },
       ],
     },

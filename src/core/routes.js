@@ -35,6 +35,9 @@ const Access = lazy(() =>
 const Region = lazy(() =>
   import(/* webpackChunkName: "Region" */ 'region/App.jsx')
 );
+const Audit = lazy(() =>
+  import(/* webpackChunkName: "Terminal" */ 'audit/App.jsx')
+);
 
 const defaultPath = homePageRoute() || 'auth/login';
 
@@ -57,6 +60,10 @@ export default [
       {
         path: '/node',
         component: Node,
+      },
+      {
+        path: '/audit',
+        component: Audit,
       },
       {
         path: '/access',
