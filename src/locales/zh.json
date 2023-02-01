@@ -452,7 +452,6 @@
   "TIP_CLUSTER_IMAGE_TYPE_DESC": "选择“在线”，将自动从 k8s 官网 gcr.k8s.io 中拉取所需镜像；选择“离线”，可指定其他镜像来源。",
   "TIP_CLUSTER_UPGRADE_DESC": "集群升级可以跨小版本，但不支持略过次版本的升级，如您可以从 v1.20.2 升级到 v1.20.13，或由 v1.20.x 升级到 v1.21.x，但不支持从 v1.20.x 升级到 v1.22.x",
   "TIP_CLUSTER_LOCALREGISTRY": "存放 k8s 自身组件镜像的仓库地址，不填则使用内置镜像",
-  "Kubernetes Healthy": "Kubernetes 健康状态",
   "The registry for image, such as the insecure registry in the daemon.json of docker.": "存放镜像仓库的地址，如：docker 的 daemon.json 文件中的 insecure registry。",
   "Healthy Status": "健康状态",
   "Registry Address": "仓库地址",
@@ -597,5 +596,19 @@
   "Delete the registry will invalidate the configured cluster CRI registry. Please ensure that registry is no longer used before deleting.": "删除镜像仓库会导致已配置的集群 CRI 镜像仓库失效，请确保此镜像仓库不再使用再删除。",
   "Update CRI Registry": "更新 CRI 镜像仓库",
   "Cluster {name} {action} successfully.": "集群 {name} {action}成功",
-  "Master Node Healthy Status": "控制节点健康状态"
+  "Audit": "审计管理",
+  "Client Agent": "客户端标识",
+  "Operation Status": "操作状态",
+  "Request URI": "请求地址",
+  "Resource ID": "资源 ID",
+  "Resource Type": "资源类型",
+  "Cluster {clusters} is using this backup space. Deleting the backup space will automatically unbind the relationship. Are you sure you want to delete this backup space?": "集群 {clusters} 正在使用此备份空间，删除备份空间将自动解除绑定关系，确认删除此备份空间？",
+  "Custom Certificate": "自定义证书",
+  "CA Key": "CA 密钥",
+  "Container Registry": "容器镜像仓库",
+  "Stop": "中止",
+  "Host Cluster Name": "主机集群名称",
+  "Login": "登录",
+  "Logout": "退出",
+  "Break Off": "中断"
 }

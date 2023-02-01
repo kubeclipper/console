@@ -25,9 +25,6 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { devIp } = require('./common');
 const root = (path) => resolve(__dirname, `../${path}`);
-const GitRevisionPlugin = require('git-revision-webpack-plugin');
-
-const gitRevision = new GitRevisionPlugin();
 
 module.exports = () => {
   const devServer = {
@@ -44,6 +41,14 @@ module.exports = () => {
     disableHostCheck: true,
     stats: {
       children: false,
+      chunks: false,
+      chunkModules: false,
+      modules: false,
+      reasons: false,
+      useExports: false,
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
     },
   };
 
@@ -72,9 +77,31 @@ module.exports = () => {
     devServer: devServer,
     module: {
       rules: [
+        // `react-refresh` only works in develop mode
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: [
+            'thread-loader',
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: ['react-refresh/babel'],
+              },
+            },
+          ],
+        },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          use: [
+            {
+              loader: 'style-loader',
+            },
+            'thread-loader',
+            {
+              loader: 'css-loader',
+            },
+          ],
         },
         {
           test: /\.less$/,
@@ -115,6 +142,7 @@ module.exports = () => {
             {
               loader: MiniCssExtractPlugin.loader,
             },
+            'thread-loader',
             {
               loader: 'css-loader',
             },
@@ -133,7 +161,6 @@ module.exports = () => {
       new MiniCssExtractPlugin({
         filename: '[name].[chunkhash].css',
       }),
-      new webpack.HotModuleReplacementPlugin(),
       new ReactRefreshWebpackPlugin({ overlay: false }),
       new HtmlWebPackPlugin({
         template: root('src/asset/template/index.html'),
@@ -148,11 +175,9 @@ module.exports = () => {
           },
         ],
       }),
-      gitRevision,
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-          COMMITHASH: JSON.stringify(gitRevision.version()),
         },
       }),
     ],

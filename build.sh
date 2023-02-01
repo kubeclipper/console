@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# 软件版本信息
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+COMMIT_REF=$(git rev-parse --verify HEAD)
+BUILD_TIME=$(date -u '+%Y-%m-%d/%I:%M:%S')
+COMMIT_TIME=$(git show --pretty=format:"%ci %cr" | HEAD -1)
+
+yarn run build:run -- --env.BRANCH=$BRANCH --env.COMMIT_REF=$COMMIT_REF --env.BUILD_TIME=$BUILD_TIME --env.COMMIT_TIME="${COMMIT_TIME}"

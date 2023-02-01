@@ -15,9 +15,6 @@
  */
 const webpack = require('webpack');
 const { normalize, resolve } = require('path');
-const HappyPack = require('happypack');
-const os = require('os');
-const WebpackBar = require('webpackbar');
 
 const root = (path) => resolve(__dirname, `../${path}`);
 const version = Math.floor(Date.now() / 1000);
@@ -29,20 +26,8 @@ module.exports = {
       rules: [
         {
           test: /\.jsx?$/,
-          include: [root('src'), root('common')],
-          use: 'happypack/loader?id=jsx',
-        },
-        {
-          test: /\.jsx?$/,
-          include: root('node_modules'),
-          use: 'cache-loader',
-        },
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-          },
+          include: [root('src')],
+          use: ['thread-loader', 'cache-loader'],
         },
         {
           test: /\.(png|gif|jpg)$/,
@@ -103,15 +88,7 @@ module.exports = {
         resources: root('src/resources'),
       },
     },
-    plugins: [
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-      new HappyPack({
-        threads: os.cpus().length - 1,
-        id: 'jsx',
-        loaders: ['babel-loader?cacheDirectory'],
-      }),
-      new WebpackBar(),
-    ],
+    plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
     externals: {
       _config: 'global_config',
     },

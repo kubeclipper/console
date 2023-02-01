@@ -23,7 +23,6 @@
     ],
     "@babel/plugin-transform-modules-commonjs",
     "@babel/plugin-syntax-dynamic-import",
-    "react-hot-loader/babel",
     [
       "@babel/plugin-proposal-decorators",
       {

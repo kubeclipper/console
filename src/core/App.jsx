@@ -20,7 +20,6 @@ import { renderRoutes } from 'utils/router.config';
 import { Provider } from 'mobx-react';
 import 'styles/main.less';
 import { Helmet } from 'react-helmet';
-import { hot } from 'react-hot-loader/root';
 import { RootStoreProvider } from 'stores';
 
 import routes from './routes';
@@ -60,4 +59,4 @@ App.propTypes = {
   history: PropTypes.object,
 };
 
-export default hot(App);
+export default App;

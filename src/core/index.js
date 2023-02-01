@@ -17,7 +17,6 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import { syncHistoryWithStore } from '@superwf/mobx-react-router';
-import { AppContainer } from 'react-hot-loader';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 import enUS from 'antd/es/locale/en_US';
@@ -61,19 +60,11 @@ const localeProvider = lang === 'en' ? enUS : zhCN;
 
 const render = (component) => {
   ReactDOM.render(
-    <AppContainer>
-      <Suspense fallback={<PageLoading className="sl-page-loading" />}>
-        <ConfigProvider locale={localeProvider}>{component}</ConfigProvider>
-      </Suspense>
-    </AppContainer>,
+    <Suspense fallback={<PageLoading className="sl-page-loading" />}>
+      <ConfigProvider locale={localeProvider}>{component}</ConfigProvider>
+    </Suspense>,
     document.getElementById('app')
   );
 };
 
 render(<App rootStore={rootStore} history={history} />);
-
-module.hot &&
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default;
-    render(<NextApp rootStore={rootStore} history={history} />);
-  });
