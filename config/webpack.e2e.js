@@ -26,16 +26,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionWebpackPlugin = require('compression-webpack-plugin');
-const GitRevisionPlugin = require('git-revision-webpack-plugin');
-
-const gitRevision = new GitRevisionPlugin({
-  versionCommand: "describe --tags --dirty --match='v*' --abbrev=14",
-});
 
 const root = (path) => resolve(__dirname, `../${path}`);
 const version = common.version;
 
-module.exports = () => {
+module.exports = (env = {}) => {
   return merge(common.commonConfig, {
     entry: {
       main: ['@babel/polyfill', root('src/core/index.js')],
@@ -49,6 +44,11 @@ module.exports = () => {
     mode: 'production',
     module: {
       rules: [
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          use: ['babel-loader'],
+        },
         {
           test: /\.css$/,
           use: [MiniCssExtractPlugin.loader, 'css-loader'],
@@ -139,11 +139,10 @@ module.exports = () => {
         threshold: 10240,
         minRatio: 0.8,
       }),
-      gitRevision,
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-          COMMITHASH: JSON.stringify(gitRevision.version()),
+          env: JSON.stringify(env),
         },
       }),
     ],

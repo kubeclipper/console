@@ -21,6 +21,7 @@ import { useRootStore } from 'stores';
 
 function Version() {
   const { licenseStore: store } = useRootStore();
+  const { env: { BRANCH = '', COMMIT_REF = '' } = {} } = process.env;
 
   return (
     <div className={styles['version-content']}>
@@ -33,7 +34,7 @@ function Version() {
       />
       <div>
         <span>kc-console:</span>
-        <span>{process.env?.COMMITHASH}</span>
+        <span>{`${BRANCH}-${COMMIT_REF}`}</span>
       </div>
       <div>
         <span>kc-server:</span>
