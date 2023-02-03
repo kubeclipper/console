@@ -279,6 +279,7 @@
   "RULE_RELATED_WITH": "当前权限被 {resource} 依赖，无法移除。",
   "Depend on": "依赖于",
   "Setting": "设置中",
+  "Set": "设置",
   "Please input role name": "请输入角色名称",
   "Please input description": "请输入描述",
   "all": "",

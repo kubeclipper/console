@@ -279,6 +279,7 @@
   "RULE_RELATED_WITH": "The permission cannot be deselected because {resource} depends on it.",
   "Depend on": "Depend on",
   "Setting": "Setting",
+  "Set": "Set",
   "Please input role name": "Please input role name",
   "Please input description": "Please input description",
   "all": "all",

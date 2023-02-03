@@ -40,8 +40,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import 'cypress-localstorage-commands';
-import { get, uniq, isArray } from 'lodash';
 import getTitle from './common';
+import { get, uniq, isArray } from 'lodash';
 
 Cypress.Commands.add('interceptGetAll', (requestList) => {
   const names = requestList.map((it, index) => {
@@ -282,17 +282,4 @@ Cypress.Commands.add('selectMenu', (option) => {
     cy.get('.ant-menu-sub').contains(getTitle(subTitle)).click();
   }
   cy.wait(1000);
-});
-
-// 选择平台  管理平台/工作台
-Cypress.Commands.add('selectPlatform', (title) => {
-  cy.get('.ant-layout-header .anticon-swap')
-    .next()
-    .then((res) => {
-      cy.log(res.text());
-      cy.log(title);
-      if (res.text() !== title) {
-        cy.get('.ant-layout-header .anticon-swap').next().click();
-      }
-    });
 });
