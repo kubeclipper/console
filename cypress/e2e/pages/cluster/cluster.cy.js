@@ -16,7 +16,7 @@
 import getTitle, { testCase } from '../../../support/common';
 
 describe('集群', () => {
-  const listUrl = '/cluster-admin';
+  const listUrl = '/cluster';
 
   const uuid = Cypress._.random(0, 1e6);
   const name = `e2e.cluster.name${uuid}`;
@@ -42,15 +42,11 @@ describe('集群', () => {
 
   // 创建单机集群
   it(...testCase('集群管理-创建-1').smoke().value(), () => {
-    cy.selectPlatform('工作台');
-
-    // 创建集群
-    cy.selectMenu({
-      title: 'Cluster Management',
-      subTitle: 'Cluster',
-    });
     cy.clickHeaderButton(0);
 
+    cy.wait(1000).url().should('include', 'cluster/create');
+
+    // cluster name
     cy.formInput('name', name);
     cy.formSelect('region', region);
     // select node
@@ -62,7 +58,20 @@ describe('集群', () => {
     cy.wait(1000);
     cy.clickStepActionNextButton('step-quick');
     cy.clickStepActionNextButton('step-confirm');
-    cy.waitStatusSuccess();
+    // check status
+    cy.wait(2000);
+
+    // check log modal
+    cy.tableSearchText(name).goToDetail(1);
+    cy.clickByDetailTabs('Operation Log')
+      .clickActionButtonByTitle('ViewLog')
+      .wait(1000);
+    cy.get('.ant-modal-body').should('exist').wait(6000);
+    cy.get('.ant-modal-body').should('exist');
+    cy.closeModal();
+
+    cy.goBackToList(listUrl).wait(2000);
+    cy.tableSearchText(name).waitStatusSuccess();
   });
 
   // 添加节点
@@ -88,15 +97,14 @@ describe('集群', () => {
     cy.clickModalActionSubmitButton();
     cy.waitStatusSuccess();
 
-    cy.selectMenu({
-      subTitle: 'Cluster',
-    });
     cy.deleteCluster(name);
   });
 
   // 创建带存储插件 nfs 的集群
   it(...testCase('集群管理-创建-3').smoke().value(), () => {
     cy.clickHeaderButton(0);
+
+    cy.wait(1000).url().should('include', 'cluster/create');
 
     // cluster name
     cy.formInput('name', name);
@@ -128,6 +136,8 @@ describe('集群', () => {
   // 创建同名集群
   it(...testCase('集群管理-创建-4').smoke().value(), () => {
     cy.clickHeaderButton(0);
+
+    cy.wait(1000).url().should('include', 'cluster/create');
 
     // cluster name
     cy.formInput('name', name);
@@ -217,10 +227,6 @@ describe('集群', () => {
         .click({ force: true })
         .clickModalActionSubmitButton();
 
-      cy.selectMenu({
-        subTitle: 'Registry',
-      });
-
       cy.deleteRegistry(registryName);
     }
   );
@@ -237,7 +243,7 @@ describe('集群', () => {
 
     cy.clickModalActionSubmitButton();
     cy.wait(500).waitStatusSuccess();
-    cy.checkTableColVal(4, description);
+    cy.checkTableColVal(3, description);
   });
 
   // 查看 kubeconfig 文件
@@ -482,6 +488,8 @@ describe('集群', () => {
   // 创建高可用集群
   it(...testCase('集群管理-创建-2').smoke().value(), () => {
     cy.clickHeaderButton(0);
+
+    cy.wait(1000).url().should('include', 'cluster/create');
 
     // cluster name
     cy.get('[name="name"]').clear().type(name).blur();
