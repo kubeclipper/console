@@ -44,6 +44,7 @@ export default class DeleteAction extends ConfirmAction {
   confirmContext = async (data) => {
     const res = await clusterStore.fetchList({ limit: -1 });
     const usedCluster = res.filter((item) => item.backupPoint === data.name);
+    this.usedCluster = usedCluster;
 
     if (usedCluster.length) {
       return t(
@@ -63,6 +64,27 @@ export default class DeleteAction extends ConfirmAction {
 
   onSubmit = (item) => {
     const { name } = item;
+
+    if (this.usedCluster.length) {
+      this.usedCluster.forEach(({ _originData }) => {
+        delete _originData.metadata.labels['kubeclipper.io/backupPoint'];
+      });
+
+      const editClusterPromise = this.usedCluster.map(
+        (cluster) =>
+          new Promise((resolve) => {
+            clusterStore
+              .edit({ id: cluster.name }, cluster._originData)
+              .then((res) => {
+                resolve(res);
+              });
+          })
+      );
+
+      return Promise.all(editClusterPromise).then(() =>
+        backupPointStore.delete({ id: name })
+      );
+    }
 
     return backupPointStore.delete({ id: name });
   };
