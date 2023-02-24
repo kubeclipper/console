@@ -44,7 +44,8 @@ const Plugin = (props) => {
     async function init() {
       const _templates = await templatesStore.fetchAll();
 
-      const { storage = [] } = await store.updateDetail({ id });
+      const { storage = [], plugin = [] } = await store.updateDetail({ id });
+      const installedPlugin = plugin.map((item) => item.name);
       const enabledStorageClass = storage
         .map((item) => item?.config?.scName)
         .filter((item) => !!item);
@@ -85,10 +86,16 @@ const Plugin = (props) => {
           hidden: '{{formData.enable === false}}',
         });
 
+        // unique true 表示只能安装一次
+        const disabled =
+          item.unique &&
+          installedPlugin.findIndex((name) => name === item.name) !== -1;
+
         return {
           ...item,
-          state: 'Not Enabled',
+          state: disabled ? 'Cannot be added repeatedly' : 'Not Enabled',
           schemas: [item.schema],
+          disabled,
           formData: [],
           formInstances: [],
           switchChecked: false,
@@ -98,7 +105,7 @@ const Plugin = (props) => {
       setState({
         ...state,
         tabs: newTabs,
-        current: pluginComponents[0]?.name,
+        current: newTabs.find((item) => !item?.disabled)?.name,
         templates: _templates,
       });
     }
@@ -110,41 +117,57 @@ const Plugin = (props) => {
     setState({ ...state, current: tab });
   };
 
-  const handleFRChange = (name, formInstance, formData, type, index) => {
-    if (type) {
+  const handleFRChange = (name, formInstance, formData, index) => {
+    if (typeof formData === 'object' && formData.pluginTemplate) {
       if (formData.pluginTemplate !== 'notUseTemplate') {
-        const selectedTemplate = templates.find(
-          (item) => item.name === formData.pluginTemplate
+        const { flatData = {} } = templates.find(
+          (item) => item.id === formData.pluginTemplate
         );
-
-        if (!isMatch(formData, selectedTemplate.flatData)) {
+        if (!isMatch(formData, flatData)) {
           formInstance.setValues({
-            ...selectedTemplate.flatData,
-            pluginTemplate: formData.pluginTemplate,
-            enable: true,
+            ...formData,
+            pluginTemplate: '',
           });
         }
-      } else {
+      }
+    }
+
+    if (typeof formData === 'string') {
+      if (formData === 'notUseTemplate') {
         const { baseFormData } = tabs.find((item) => item.name === current);
         formInstance.setValues({
           ...baseFormData,
           pluginTemplate: 'notUseTemplate',
           enable: true,
         });
+      } else {
+        const [{ flatData = {} }] = templates.filter(
+          (item) => item.name === formData
+        );
+        formInstance.setValues({
+          ...flatData,
+          pluginTemplate: formData,
+          enable: true,
+        });
       }
     }
 
-    tabs.forEach((item) => {
+    const _tabs = tabs.map((item) => {
       if (item.name === name) {
-        item.formData[index] = formInstance.formData;
+        item.formData[index] = formData;
         item.formInstances[index] = formInstance;
       }
 
-      item.state = item.formData.some((_item) => _item.enable)
-        ? 'Enabled'
-        : 'Not Enabled';
+      if (item.disabled) {
+        item.state = t('Cannot be added repeatedly');
+      } else {
+        item.state = item.formData.some((_item) => _item.enable)
+          ? 'Enabled'
+          : 'Not Enabled';
+      }
 
       state[item.name] = item.formInstances;
+      return item;
     });
 
     let enable = true;
@@ -161,6 +184,7 @@ const Plugin = (props) => {
       ...state,
       currentForms: state[name],
       confirmDisabled: enable,
+      tabs: _tabs,
     };
     setState(endState);
   };
@@ -172,13 +196,15 @@ const Plugin = (props) => {
           item.schemas.map((_item, _index) => (
             <>
               {item.name === 'kubesphere' && <Tips />}
-              <RenderForm
-                schema={_item}
-                name={current}
-                onChange={(name, formInstance, formData, type) =>
-                  handleFRChange(name, formInstance, formData, type, _index)
-                }
-              />
+              {current && (
+                <RenderForm
+                  schema={_item}
+                  name={current}
+                  onChange={(name, formInstance, formData) =>
+                    handleFRChange(name, formInstance, formData, _index)
+                  }
+                />
+              )}
             </>
           ))
         )}
