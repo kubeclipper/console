@@ -23,6 +23,7 @@ import ArrayText from './widgets/ArrayText';
 import ArrayString from './widgets/ArrayString';
 import KSPlugins from './widgets/KSPlugins';
 import Collapses from './mapping/Collapses';
+import SelectInput from './widgets/SelectInput';
 
 import CustomBoolean from './mapping/CustomBoolean';
 
@@ -43,6 +44,7 @@ const widgets = {
   // mapping
   CustomBoolean,
   collapse: Collapses,
+  'select-input': SelectInput,
 };
 
 /**
