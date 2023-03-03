@@ -76,6 +76,7 @@ Cypress.Commands.add('setLanguage', () => {
   const value = language === 'zh' ? 'zh-cn' : 'en';
   const langValue = { value, expires: exp };
   window.localStorage.setItem('lang', JSON.stringify(langValue));
+  cy.setCookie('lang', value);
 });
 
 // 前往 url
@@ -99,6 +100,7 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
   const username = Cypress.env('username');
   const password = Cypress.env('password');
+  cy.setLanguage();
 
   cy.visit('/auth/login');
   cy.loginInput('username', username)
