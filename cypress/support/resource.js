@@ -80,7 +80,7 @@ Cypress.Commands.add('deleteRegistry', (name) => {
   cy.visitPage('/cluster/registry');
   cy.tableSearchText(name)
     .clickActionButtonByTitle('Delete')
-    .clickConfirmActionSubmitButton()
+    .clickConfirmActionSubmitButton(2000)
     .checkEmptyTable()
     .clearSearchInput();
 });

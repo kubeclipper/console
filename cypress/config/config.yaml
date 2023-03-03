@@ -2,7 +2,7 @@ baseUrl: http://localhost:80
 env:
   username: "admin"
   password: "Thinkbig1"
-  language: "zh"
+  language: "en"
   # nfs
   nfsIp: "172.20.151.105"
   nfsPath: "/tmp/nfs/data/e2e-test"
