@@ -163,7 +163,7 @@ describe('模版管理', () => {
     cy.checkTableRowLength(1);
   });
 
-  // nfs 模版添加
+  // nfs 模版删除
   it(...testCase('集群管理-模版管理-插件模版-删除-1').smoke().value(), () => {
     cy.visitPage('/cluster/template');
     cy.clickByDetailTabs('nfs-csi 模版');
