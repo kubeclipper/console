@@ -405,7 +405,7 @@ describe('集群', () => {
   it(...testCase('集群管理-集群-添加存储项-1').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
-      title: 'Plugin management',
+      title: 'Plugin Management',
       subTitle: 'Add Storage',
     });
     cy.get('.ant-row').contains('NFS CSI').click();
@@ -431,7 +431,7 @@ describe('集群', () => {
   it(...testCase('集群管理-集群-添加存储项-2').smoke().value(), () => {
     cy.tableSearchText(name);
     cy.clickActionInMore({
-      title: 'Plugin management',
+      title: 'Plugin Management',
       subTitle: 'Add Storage',
     });
     cy.get('.ant-row').contains('NFS CSI').click();

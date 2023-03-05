@@ -26,14 +26,14 @@ const { clusterStore, nodeStore } = rootStore;
 export default class RemoveNodes extends ModalAction {
   static id = 'remove';
 
-  static title = t('Remove Nodes');
+  static title = t('RemoveNode');
 
   static get modalSize() {
     return 'middle';
   }
 
   get name() {
-    return t('Remove Nodes');
+    return t('RemoveNode');
   }
 
   init() {

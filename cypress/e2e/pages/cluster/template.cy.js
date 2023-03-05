@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { testCase } from '../../../support/common';
+import getTitle, { testCase } from '../../../support/common';
 
 const uuid = Cypress._.random(0, 1e6);
 const name = `e2e.cluster.name.${uuid}`;
@@ -148,7 +148,7 @@ describe('模版管理', () => {
   it(...testCase('集群管理-模版管理-插件模版-添加-1').smoke().value(), () => {
     cy.visitPage('/cluster/template');
 
-    cy.clickByDetailTabs('nfs-csi 模版');
+    cy.clickByDetailTabs(`nfs-csi ${getTitle('Template')}`);
     cy.clickHeaderButton(0);
 
     cy.formInput('templateName', templatePluginName);
@@ -166,7 +166,7 @@ describe('模版管理', () => {
   // nfs 模版删除
   it(...testCase('集群管理-模版管理-插件模版-删除-1').smoke().value(), () => {
     cy.visitPage('/cluster/template');
-    cy.clickByDetailTabs('nfs-csi 模版');
+    cy.clickByDetailTabs(`nfs-csi ${getTitle('Template')}`);
     cy.wait(1000);
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();
