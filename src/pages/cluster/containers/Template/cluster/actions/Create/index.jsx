@@ -77,7 +77,7 @@ export default class Create extends StepAction {
       ...(this.hasPlugin
         ? [
             {
-              title: t('Plugin Manage'),
+              title: t('Plugin Management'),
               component: Plugin,
             },
           ]

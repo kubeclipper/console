@@ -270,7 +270,7 @@ describe('kubeadm 纳管', () => {
 
       cy.wait(2000).waitStatusSuccess();
       cy.goToDetail(1);
-      const nextYear = moment().add(1, 'y').format('YYYY-MM-DD');
+      const nextYear = moment().add(1, 'y').format('YYYY-MM');
       cy.checkDetailValueByKey('License Expiration Time', nextYear);
     }
   );
@@ -332,7 +332,7 @@ describe('kubeadm 纳管', () => {
       cy.login('/cluster');
       cy.tableSearchText(clusterName);
       cy.clickActionInMore({
-        title: 'Plugin Manage',
+        title: 'Plugin Management',
         subTitle: 'Add Storage',
       });
 

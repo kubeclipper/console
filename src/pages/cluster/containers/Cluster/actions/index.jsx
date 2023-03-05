@@ -54,7 +54,7 @@ const actionConfigs = {
         actions: [Reset, Upgrade, Delete],
       },
       {
-        title: t('Plugin management'),
+        title: t('Plugin Management'),
         actions: [LinkAddPlugin, LinkAddStorage],
       },
       {
