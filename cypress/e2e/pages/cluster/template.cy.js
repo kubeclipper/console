@@ -167,7 +167,7 @@ describe('模版管理', () => {
   it(...testCase('集群管理-模版管理-插件模版-删除-1').smoke().value(), () => {
     cy.visitPage('/cluster/template');
     cy.clickByDetailTabs(`nfs-csi ${getTitle('Template')}`);
-    cy.wait(1000);
+    cy.wait(2000);
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();
 

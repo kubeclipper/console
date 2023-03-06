@@ -182,7 +182,7 @@ describe('kubeadm 纳管', () => {
     cy.tableSearchText(name);
 
     cy.log(getTitle('SyncFailed'));
-
+    cy.wait(1000);
     cy.get('.ant-table-row')
       .find('td')
       .eq(1)
