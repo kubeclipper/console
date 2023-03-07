@@ -97,7 +97,7 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 });
 
 // 登录
-Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
+Cypress.Commands.add('login', (visitUrl = '') => {
   const username = Cypress.env('username');
   const password = Cypress.env('password');
   cy.setLanguage();
@@ -106,8 +106,9 @@ Cypress.Commands.add('login', (visitUrl = '', isTable = true) => {
   cy.loginInput('username', username)
     .loginInput('password', password)
     .loginFormSubmit();
-  cy.visitPage(visitUrl || '/cluster', isTable);
-  cy.wait(500);
+  // cy.visitPage(visitUrl || '/cluster', isTable);
+  cy.visit(visitUrl || '/cluster');
+  cy.wait(2000);
 });
 
 // 登录
