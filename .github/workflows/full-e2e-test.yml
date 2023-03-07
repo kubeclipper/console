@@ -98,7 +98,7 @@ jobs:
             set -e
             pushd /root/console/github/workspace
             cp cypress/config/config-cluster.yaml cypress/config/local_config.yaml
-            sed -i "s/localhost/172.20.139.233/" cypress/config/config.yaml
+            sed -i "s/localhost/${{ secrets.CHJ_GITHUB_BACK1 }}/" cypress/config/config.yaml
             sh tools/e2e-smoke.sh
             ssh root@172.16.30.27 "mkdir -pv /var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}"/cluster/
             scp testcases-cases.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/cluster/
@@ -141,7 +141,7 @@ jobs:
             cp -r /root/console /root/console-others
             pushd /root/console-others/github/workspace
             cp cypress/config/config-others.yaml cypress/config/local_config.yaml
-            sed -i "s/localhost/172.20.139.233/" cypress/config/config.yaml
+            sed -i "s/localhost/${{ secrets.CHJ_GITHUB_BACK1 }}/" cypress/config/config.yaml
             sh tools/e2e-smoke.sh
             ssh root@172.16.30.27 "mkdir -pv /var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}"/others/
             scp testcases-cases.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/others/
