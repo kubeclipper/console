@@ -22,6 +22,7 @@ describe('集群', () => {
   const name = `e2e.cluster.name${uuid}`;
   const description = 'e2e-description';
   const region = 'default';
+
   const externalIP = Cypress.env('externalIP');
   const upgradeVersion = Cypress.env('upgradeVersion');
 
@@ -430,6 +431,7 @@ describe('集群', () => {
   // 使用镜像仓库单独安装存储nfs
   it(...testCase('集群管理-集群-添加存储项-2').smoke().value(), () => {
     cy.tableSearchText(name);
+
     cy.clickActionInMore({
       title: 'Plugin Management',
       subTitle: 'Add Storage',

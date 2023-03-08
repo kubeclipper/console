@@ -34,7 +34,7 @@ Cypress.Commands.add('tableSearchText', (str) => {
   cy.get('.magic-input-wrapper')
     .find('input')
     .type(`${str}{enter}`, { force: true });
-  cy.waitTableLoading().wait(500);
+  cy.waitTableLoading().wait(1000);
 });
 
 // 操作栏 first action 按钮

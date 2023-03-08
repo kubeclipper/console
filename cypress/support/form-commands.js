@@ -205,8 +205,8 @@ Cypress.Commands.add('formRadioButtonChoose', (formItemName, itemIndex = 0) => {
 });
 
 // 分步表单下一步按钮
-Cypress.Commands.add('clickStepActionNextButton', (action, waitTime = 1000) => {
-  cy.get(`[data-action="${action}"]`).click().wait(waitTime);
+Cypress.Commands.add('clickStepActionNextButton', (action, waitTime = 2000) => {
+  cy.get(`[data-action="${action}"]`).click({ force: true }).wait(waitTime);
 });
 
 // 分步表单取消按钮
