@@ -1,2 +1,4 @@
 specPattern:
+  - cypress/e2e/pages/node/node.cy.js
+  - cypress/e2e/pages/cluster/hosting-kubeadm.cy.js
   - cypress/e2e/pages/cluster/backup.cy.js

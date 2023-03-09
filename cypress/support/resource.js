@@ -15,7 +15,7 @@
  */
 
 // 快速创建集群
-Cypress.Commands.add('createClusterQuick', (clusterName) => {
+Cypress.Commands.add('createClusterQuick', (clusterName, nodeIndex) => {
   cy.visitPage('/cluster');
 
   cy.clickHeaderButton(0);
@@ -28,7 +28,7 @@ Cypress.Commands.add('createClusterQuick', (clusterName) => {
   cy.formSelect('region', 'default');
   // select node
   cy.waitTransferList();
-  cy.formMultiTransfer('nodes', 0);
+  cy.formMultiTransfer('nodes', nodeIndex);
 
   // next step
   cy.clickStepActionNextButton('step-next');

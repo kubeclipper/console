@@ -176,7 +176,7 @@ describe('kubeadm 纳管', () => {
 
     cy.get('.ace_text-input')
       .focus()
-      .type('{backspace}{backspace}{backspace}', { force: true });
+      .type('{backspace}{backspace}{backspace} 1', { force: true });
     cy.clickModalActionSubmitButton();
 
     cy.tableSearchText(name);

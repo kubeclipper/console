@@ -98,19 +98,21 @@ Cypress.Commands.add('visitPage', (url = '', isTable = true) => {
 
 // 登录
 Cypress.Commands.add('login', (visitUrl = '') => {
-  const username = Cypress.env('username');
-  const password = Cypress.env('password');
-  cy.setLanguage();
+  // const username = Cypress.env('username');
+  // const password = Cypress.env('password');
+  // cy.setLanguage();
 
-  cy.visit('/auth/login');
-  cy.loginInput('username', username)
-    .loginInput('password', password)
-    .loginFormSubmit();
-  // cy.visitPage(visitUrl || '/cluster', isTable);
-  // cy.visit(visitUrl || '/cluster');
-  cy.wait(2000);
-  visitUrl && cy.visit(visitUrl);
-  cy.wait(2000);
+  // cy.visit('/auth/login');
+  // cy.loginInput('username', username)
+  //   .loginInput('password', password)
+  //   .loginFormSubmit();
+  // // cy.visitPage(visitUrl || '/cluster', isTable);
+  // // cy.visit(visitUrl || '/cluster');
+  // cy.wait(2000);
+  // visitUrl && cy.visit(visitUrl);
+  // cy.wait(2000);
+
+  cy.loginByApi(visitUrl);
 });
 
 // 登录
@@ -148,6 +150,7 @@ Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
 
       cy.setLocalStorageItem('token', token, refreshExpire);
       Cypress.config('token', token);
+      cy.log(access_token);
       return Promise.resolve(token);
     })
     .then((res) => {
@@ -167,6 +170,7 @@ Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
       })
         .its('body')
         .then((userInfo) => {
+          cy.log(res.token);
           user.username = get(userInfo, 'metadata.name');
           user.globalrole = get(
             userInfo,
@@ -212,7 +216,7 @@ Cypress.Commands.add('loginByApi', (visitUrl = '', isTable = true) => {
     });
 
   cy.visitPage(visitUrl || '/cluster', isTable);
-  cy.wait(500);
+  cy.wait(3000);
 });
 
 // 国际化
