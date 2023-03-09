@@ -29,6 +29,7 @@ jobs:
           script: |
             rm -rf /root/console
             rm -rf /root/console-others
+            rm -rf /root/console-backup
 
       - name: Copy
         uses: appleboy/scp-action@master
@@ -145,7 +146,7 @@ jobs:
             cp cypress/config/config-others.yaml cypress/config/local_config.yaml
             sed -i "s/localhost/${{ secrets.CHJ_GITHUB_BACK1 }}/" cypress/config/config.yaml
             sh tools/e2e-smoke.sh
-            ssh root@172.16.30.27 "mkdir -pv /var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}"/others/
+            ssh root@${{ secrets.CHJ_DOCS }} "mkdir -pv /var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}"/others/
             scp testcases-cases.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/others/
             scp testcases-e2e-summary.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/others/
             scp cypress/report/merge-report.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/others/
@@ -183,7 +184,8 @@ jobs:
           port: ${{ secrets.CHJ_REMOTE_PORT }}
           script: |
             set -e
-            pushd /root/console/github/workspace
+            cp -r /root/console /root/console-backup
+            pushd /root/console-backup/github/workspace
             cp cypress/config/config-backup.yaml cypress/config/local_config.yaml
             sed -i "s/localhost/${{ secrets.CHJ_GITHUB_BACK1 }}/" cypress/config/config.yaml
             sh tools/e2e-smoke.sh

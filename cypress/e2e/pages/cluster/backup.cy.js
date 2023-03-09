@@ -34,7 +34,7 @@ describe('备份空间', () => {
   const _uuid = Cypress._.random(0, 1e6);
 
   const backupFSName = `fs-${_uuid}`;
-  const backupFSRootDir = Cypress.env('nfsPath');
+  const backupFSRootDir = Cypress.env('backuppath');
   const backupFSStorageType = 'FS';
 
   const backupS3Name = `s3-${_uuid}`;

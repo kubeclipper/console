@@ -24,7 +24,7 @@ describe('kubeadm 纳管', () => {
   const clusterName = `e2e.cluster.name${_uuid}`;
 
   const backupFSName = `fs-${_uuid}`;
-  const backupFSRootDir = Cypress.env('nfsPath') || '/root';
+  const backupFSRootDir = Cypress.env('backuppath') || '/root';
   const backupFSStorageType = 'FS';
 
   const offLineRegistry = Cypress.env('offLineRegistry');
