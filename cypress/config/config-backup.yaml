@@ -1,0 +1,2 @@
+specPattern:
+  - cypress/e2e/pages/cluster/backup.cy.js

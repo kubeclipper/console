@@ -107,7 +107,9 @@ Cypress.Commands.add('login', (visitUrl = '') => {
     .loginInput('password', password)
     .loginFormSubmit();
   // cy.visitPage(visitUrl || '/cluster', isTable);
-  cy.visit(visitUrl || '/cluster');
+  // cy.visit(visitUrl || '/cluster');
+  cy.wait(2000);
+  visitUrl && cy.visit(visitUrl);
   cy.wait(2000);
 });
 

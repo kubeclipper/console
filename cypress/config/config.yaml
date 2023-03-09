@@ -6,6 +6,7 @@ env:
   # nfs
   nfsIp: "172.20.151.105"
   nfsPath: "/tmp/nfs/data/e2e-test"
+  backuppath: "/root"
   # Keycloak
   oauth2Username: test
   oauth2Password: "123456"
