@@ -130,6 +130,8 @@ jobs:
 
       - name: Run e2e others
         uses: appleboy/ssh-action@master
+        # env:
+        #   docs: ${{ secrets.CHJ_DOCS }}
         with:
           command_timeout: 120m
           host: ${{ secrets.CHJ_REMOTE_HOST }}
@@ -157,4 +159,46 @@ jobs:
             exit 110
             else
             echo e2e-test-others successfully
+            fi
+
+  backup:
+    name: e2e backup
+    runs-on: ubuntu-latest
+    needs: Deploy
+
+    steps:
+
+      - name: Get branch name
+        id: extract_branch
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+
+      - name: Run e2e backup
+        uses: appleboy/ssh-action@master
+        with:
+          command_timeout: 120m
+          host: ${{ secrets.CHJ_REMOTE_HOST }}
+          username: root
+          key: ${{ secrets.CHJ_REMOTE_KEY }}
+          port: ${{ secrets.CHJ_REMOTE_PORT }}
+          script: |
+            set -e
+            pushd /root/console/github/workspace
+            cp cypress/config/config-backup.yaml cypress/config/local_config.yaml
+            sed -i "s/localhost/${{ secrets.CHJ_GITHUB_BACK1 }}/" cypress/config/config.yaml
+            sh tools/e2e-smoke.sh
+            ssh root@172.16.30.27 "mkdir -pv /var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}"/backup/
+            scp testcases-cases.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/
+            scp testcases-e2e-summary.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/
+            scp cypress/report/merge-report.html root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/
+            scp cypress/report/merge-report.json root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/
+            ssh root@172.16.30.27 "rm -rf /var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/assets"
+            scp -r cypress/report/assets root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/
+            if [ -d "cypress/screenshots" ];then
+            ssh root@172.16.30.27 "rm -rf /var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/screenshots"
+            scp -r cypress/screenshots root@172.16.30.27:/var/www/html/caas-test-case/github/${{ steps.extract_branch.outputs.branch }}/backup/
+            echo e2e-test-backup fail
+            exit 110
+            else
+            echo e2e-test-backup successfully
             fi
