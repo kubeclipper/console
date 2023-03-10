@@ -15,7 +15,7 @@
  */
 
 import getTitle from './common';
-import { isArray } from 'lodash';
+import { isArray, isString } from 'lodash';
 
 function getId(formItemName) {
   return `#form-item-col-${formItemName}`;
@@ -247,7 +247,9 @@ Cypress.Commands.add(
       .find('.ant-checkbox-wrapper')
       .as('leftCheckbox');
 
-    if (!leftIndex) {
+    if (isString(leftIndex)) {
+      cy.get('@leftCheckbox').last().click();
+    } else if (!leftIndex) {
       cy.get('@leftCheckbox').first().click();
     } else if (isArray(leftIndex)) {
       leftIndex.forEach((index) => {

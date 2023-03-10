@@ -168,6 +168,9 @@ describe('模版管理', () => {
     cy.visitPage('/cluster/template');
     cy.clickByDetailTabs(`nfs-csi ${getTitle('Template')}`);
     cy.wait(2000);
+    cy.freshTable();
+    cy.wait(2000);
+
     cy.clickActionButtonByTitle('Delete');
     cy.clickConfirmActionSubmitButton();
 

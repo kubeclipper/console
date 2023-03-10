@@ -21,7 +21,7 @@ const clusterName = `e2e.cluster.name.${uuid}`;
 
 before(() => {
   cy.login();
-  cy.createClusterQuick(clusterName);
+  cy.createClusterQuick(clusterName, 'last');
 });
 
 after(() => {
