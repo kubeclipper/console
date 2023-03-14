@@ -29,7 +29,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 
 const gitRevision = new GitRevisionPlugin({
-  versionCommand: "describe --tags --dirty --match='v*' --abbrev=14",
+  versionCommand: "describe --tags --dirty --always --match='v*' --abbrev=14",
 });
 
 const root = (path) => resolve(__dirname, `../${path}`);
