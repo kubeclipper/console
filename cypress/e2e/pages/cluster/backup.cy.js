@@ -142,6 +142,7 @@ describe('备份空间', () => {
 
   // 查看集群备份
   it(...testCase('集群管理-集群-集群详情-备份-1').smoke().value(), () => {
+    cy.wait(5 * 60 * 1000);
     cy.selectMenu({
       subTitle: 'Cluster',
     })
