@@ -611,5 +611,9 @@
   "Host Cluster Name": "Host Cluster Name",
   "Login": "Login",
   "Logout": "Logout",
-  "Break Off": "Break Off"
+  "Break Off": "Break Off",
+  "Cluster Node Name": "Cluster Node Name",
+  "If IP is selected, this IP string will be used as the node ID instead of the actual host name.": "If IP is selected, this IP string will be used as the node ID instead of the actual host name.",
+  "Please enter a legal domain": "Please enter a legal domain",
+  "External Access Domain": "External Access Domain"
 }

@@ -235,7 +235,7 @@ export class ConfirmStep extends BaseForm {
 
     return [
       ...this.notFilled(t('Description'), 'description'),
-      ...this.notFilled(t('External Access IP'), 'externalIP'),
+      ...this.notFilled(t('External Access IP'), 'externalIP.ip'),
       {
         label: t('Image Type'),
         value: offline ? t('Offline') : t('Online'),
