@@ -32,6 +32,7 @@ import SelectTable from './SelectTable';
 import More from './More';
 import ArrayInput from './ArrayInput';
 import IpInput from './IpInput';
+import IpPort from './IpPort';
 import Radio from './Radio';
 import Descriptions from './Descriptions';
 import NameInput from './NameInput';
@@ -91,6 +92,7 @@ export const type2component = {
   'dns-record': DNSRecord,
   'yaml-input': YamlInput,
   'ip-group': IPGroup,
+  'ip-port': IpPort,
 };
 
 export default function FormItem(props) {
