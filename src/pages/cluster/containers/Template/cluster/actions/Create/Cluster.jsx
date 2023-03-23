@@ -890,8 +890,13 @@ export default class Cluster extends BaseForm {
         {
           name: 'externalIP',
           label: t('External Access IP'),
-          type: 'ip-input',
+          type: 'ip-port',
           tip: t('Set up a floating IP for end users to access.'),
+        },
+        {
+          name: 'externalDomain',
+          label: t('External Access Domain'),
+          type: 'input',
         },
         {
           name: 'backupPoint',
