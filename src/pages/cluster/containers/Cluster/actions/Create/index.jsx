@@ -209,6 +209,7 @@ export default class Create extends StepAction {
       name,
       description,
       externalIP,
+      externalDomain,
       labels,
     } = values;
 
@@ -228,8 +229,21 @@ export default class Create extends StepAction {
     const { IPv4AutoDetection, IPv6AutoDetection } =
       computeAutoDetection(values);
 
-    const externalIPLabel = externalIP
-      ? { 'kubeclipper.io/externalIP': externalIP }
+    const externalIPLabel = externalIP.ip
+      ? { 'kubeclipper.io/externalIP': externalIP.ip }
+      : {};
+
+    const externalPortLabel = externalIP.port
+      ? { 'kubeclipper.io/externalPort': String(externalIP.port) }
+      : {};
+
+    const [domain, domainPort] = externalDomain.split(':');
+    const externalDomainlabel = domain
+      ? { 'kubeclipper.io/externalDomain': domain }
+      : {};
+
+    const externalDomainPortlabel = domainPort
+      ? { 'kubeclipper.io/externalDomainPort': domainPort }
       : {};
 
     const offlineAnnotations = offline ? { 'kubeclipper.io/offline': '' } : {};
@@ -243,6 +257,9 @@ export default class Create extends StepAction {
           'topology.kubeclipper.io/region': region,
           'kubeclipper.io/backupPoint': backupPoint,
           ...externalIPLabel,
+          ...externalPortLabel,
+          ...externalDomainlabel,
+          ...externalDomainPortlabel,
           ...arrayInput2Label(labels),
         },
         annotations: {

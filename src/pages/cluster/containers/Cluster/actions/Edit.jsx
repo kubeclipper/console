@@ -23,7 +23,7 @@ import {
   label2ArrayInput,
   isDisableByProviderType,
 } from 'utils';
-import { isIp } from 'utils/validate';
+import { isIp, isDomainPort } from 'utils/validate';
 
 @observer
 class Edit extends ModalAction {
@@ -55,10 +55,27 @@ class Edit extends ModalAction {
       this.item,
       'metadata.labels["kubeclipper.io/externalIP"]'
     );
+    const externalPort = get(
+      this.item,
+      'metadata.labels["kubeclipper.io/externalPort"]'
+    );
+
+    const externalDomain = get(
+      this.item,
+      'metadata.labels["kubeclipper.io/externalDomain"]'
+    );
+
+    const externalDomainPort = get(
+      this.item,
+      'metadata.labels["kubeclipper.io/externalDomainPort"]'
+    );
 
     const labels = label2ArrayInput(
       omit(metadata.labels, [
         'kubeclipper.io/externalIP',
+        'kubeclipper.io/externalPort',
+        'kubeclipper.io/externalDomain',
+        'kubeclipper.io/externalDomainPort',
         'topology.kubeclipper.io/region',
         'kubeclipper.io/clusterProviderName',
         'kubeclipper.io/clusterProviderType',
@@ -68,7 +85,13 @@ class Edit extends ModalAction {
     return {
       name,
       description,
-      externalIP,
+      externalIP: {
+        ip: externalIP,
+        port: externalPort,
+      },
+      externalDomain: `${externalDomain}${
+        externalDomainPort ? `:${externalDomainPort}` : ''
+      }`,
       labels,
       backupPoint,
     };
@@ -105,7 +128,8 @@ class Edit extends ModalAction {
   };
 
   checkIP = async (_, value) => {
-    if (value && !isIp(value)) {
+    const { ip } = value;
+    if (ip && !isIp(ip)) {
       return Promise.reject(t('IP invalid'));
     }
     return Promise.resolve();
@@ -133,9 +157,23 @@ class Edit extends ModalAction {
       {
         name: 'externalIP',
         label: t('External Access IP'),
-        type: 'ip-input',
+        type: 'ip-port',
         tip: t('Set up a floating IP for end users to access.'),
         validator: this.checkIP,
+      },
+      {
+        name: 'externalDomain',
+        label: t('External Access Domain'),
+        type: 'input',
+        validator: (rule, value) => {
+          if (!value) return Promise.resolve(true);
+
+          if (isDomainPort(value)) {
+            return Promise.resolve(true);
+          } else {
+            return Promise.reject(t('Please enter a legal domain'));
+          }
+        },
       },
       {
         name: 'labels',
@@ -150,7 +188,14 @@ class Edit extends ModalAction {
   onSubmit = (values) => {
     const formTemplate = this.item._originData;
 
-    const { description, externalIP, backupPoint } = values;
+    const {
+      description,
+      externalIP: { ip, port },
+      externalDomain,
+      backupPoint,
+    } = values;
+    const [domain, domainPort] = externalDomain.split(':');
+
     const { name, resourceVersion } = this.item;
     let { labels = [] } = values;
 
@@ -173,7 +218,12 @@ class Edit extends ModalAction {
     ];
     set(formTemplate, 'metadata.labels', {
       ...pick(formTemplate.metadata.labels, pickLabels),
-      ...(externalIP ? { 'kubeclipper.io/externalIP': externalIP } : {}),
+      ...(ip ? { 'kubeclipper.io/externalIP': ip } : {}),
+      ...(port ? { 'kubeclipper.io/externalPort': String(port) } : {}),
+      ...(domain ? { 'kubeclipper.io/externalDomain': domain } : {}),
+      ...(domainPort
+        ? { 'kubeclipper.io/externalDomainPort': domainPort }
+        : {}),
       ...arrayInput2Label(labels),
       ...(backupPoint ? { 'kubeclipper.io/backupPoint': backupPoint } : {}),
     });

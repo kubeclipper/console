@@ -39,7 +39,8 @@ const domain =
 const domainPath =
   // eslint-disable-next-line no-useless-escape
   /[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/;
-
+const domainPort =
+  /^((http|https):\/\/)?([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}(:[0-9]{1,5})?$/i;
 const emailRegex =
   /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
 const phoneNumberRegex = /^1[3456789]\d{9}$/;
@@ -61,6 +62,7 @@ export const regex = {
   portRangeRegex,
   ipWithMask,
   emailRegex,
+  domainPort,
 };
 
 export const isPhoneNumber = (value) => phoneNumberRegex.test(value);
@@ -96,6 +98,8 @@ export const isIpv6 = (value) => value && Address6.isValid(value);
 export const isDomain = (value) => domain.test(value);
 
 export const isDomainPath = (value) => domainPath.test(value);
+
+export const isDomainPort = (value) => domainPort.test(value);
 
 export const isCidr = (value) => cidr.test(value);
 

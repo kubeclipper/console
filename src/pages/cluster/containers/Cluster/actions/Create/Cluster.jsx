@@ -24,6 +24,8 @@ import {
   isDomain,
   isDomainPath,
   isIpPort,
+  isDomainPort,
+  isIp,
 } from 'utils/validate';
 import {
   clusterParams,
@@ -469,7 +471,8 @@ export default class Cluster extends BaseForm {
   };
 
   checkIP = async (_, value) => {
-    if (value && !isIPv4(value)) {
+    const { ip } = value;
+    if (ip && !isIp(ip)) {
       return Promise.reject(t('IP invalid'));
     }
     return Promise.resolve();
@@ -875,9 +878,23 @@ export default class Cluster extends BaseForm {
         {
           name: 'externalIP',
           label: t('External Access IP'),
-          type: 'ip-input',
+          type: 'ip-port',
           tip: t('Set up a floating IP for end users to access.'),
           validator: this.checkIP,
+        },
+        {
+          name: 'externalDomain',
+          label: t('External Access Domain'),
+          type: 'input',
+          validator: (rule, value) => {
+            if (!value) return Promise.resolve(true);
+
+            if (isDomainPort(value)) {
+              return Promise.resolve(true);
+            } else {
+              return Promise.reject(t('Please enter a legal domain'));
+            }
+          },
         },
         {
           name: 'backupPoint',
