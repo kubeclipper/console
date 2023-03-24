@@ -62,12 +62,14 @@ class Edit extends ModalAction {
 
     const externalDomain = get(
       this.item,
-      'metadata.labels["kubeclipper.io/externalDomain"]'
+      'metadata.labels["kubeclipper.io/externalDomain"]',
+      ''
     );
 
     const externalDomainPort = get(
       this.item,
-      'metadata.labels["kubeclipper.io/externalDomainPort"]'
+      'metadata.labels["kubeclipper.io/externalDomainPort"]',
+      ''
     );
 
     const labels = label2ArrayInput(

@@ -240,7 +240,7 @@ export default class Create extends StepAction {
       ? { 'kubeclipper.io/externalPort': String(externalIP.port) }
       : {};
 
-    const [domain, domainPort] = externalDomain.split(':');
+    const [domain, domainPort] = (externalDomain || '').split(':');
     const externalDomainlabel = domain
       ? { 'kubeclipper.io/externalDomain': domain }
       : {};
