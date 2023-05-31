@@ -42,9 +42,13 @@
 .body {
   padding: 6px 0;
   min-height: 160px;
-  overflow-y: auto;
+  overflow: auto;
+  height: calc(100% - 40px);
+
   .group {
     width: 100%;
+    height: calc(100% - 32px);
+    overflow: auto;
   }
 
   :global {
@@ -122,6 +126,7 @@
   }
   .target {
     text-align: center;
+    max-height: 290px;
   }
 
   > :not(:last-child) {
@@ -129,7 +134,7 @@
   }
 
   .body {
-    max-height: 200px;
+    // max-height: 200px;
   }
 }
 
