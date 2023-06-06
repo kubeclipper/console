@@ -184,6 +184,7 @@ class RootStore {
     };
 
     setLocalStorageItem('token', token, refreshExpire);
+    setLocalStorageItem('access_token', access_token, refreshExpire);
 
     return {
       username,

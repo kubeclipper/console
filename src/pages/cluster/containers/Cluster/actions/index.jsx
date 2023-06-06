@@ -31,12 +31,14 @@ import KubeConfig from './KubeConfig';
 import AddNodes from '../Detail/NodesList/actions/Add';
 import RemoveNodes from './RemoveNodes';
 import Registry from './Registry';
+import WorkLoad from './WorkLoad';
 
 const actionConfigs = {
   rowActions: {
     firstAction: LinkLog,
     moreActions: [
       { action: Terminal },
+      { action: WorkLoad },
       {
         title: t('Cluster Settings'),
         actions: [Edit, SaveAsTemplate, Registry],

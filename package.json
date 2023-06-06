@@ -8,7 +8,10 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.dev.js",
+    "start-with-args": "npm run dev --",
+    "start-with-workload": "npm run dev -- --env.ADD_WORKLOAD=true",
     "build": "bash build.sh",
+    "build-with-args": "npm run build --",
     "build:run": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=2048 webpack --progress --config config/webpack.prod.js",
     "build_win": "set NODE_OPTIONS=--max-old-space-size=2048 && webpack --progress --config config/webpack.prod.js",
     "build:test": "cross-env NODE_ENV=test NODE_OPTIONS=--max-old-space-size=2048 webpack --progress --config config/webpack.e2e.js",
@@ -160,6 +163,7 @@
     "prettier": "^2.3.2",
     "promise-polyfill": "^8.1.3",
     "prop-types": "^15.7.2",
+    "qiankun": "^2.10.8",
     "qs": "^6.9.4",
     "react": "^16.14.0",
     "react-ace": "^8.1.0",

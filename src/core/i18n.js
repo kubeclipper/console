@@ -106,6 +106,7 @@ const init = () => {
 const t = (key, options) => intl.get(key, options);
 
 t.html = (key, options) => intl.getHTML(key, options);
+window.t = t;
 
 export default {
   getLocale,

@@ -26,31 +26,34 @@ import App from './App';
 import i18n from './i18n';
 import { routingStore, rootStore } from 'stores';
 import GlobalValue from './global';
+import { registerMicroApps, start } from 'qiankun';
 
 require('@babel/polyfill');
 
-window.t = i18n.t;
-window.request = request;
-
-window.globals = new GlobalValue();
-
-// request error handler
-window.onunhandledrejection = function (e) {
-  if (e && (e.status === 'Failure' || e.status >= 400)) {
-    if (e.status === 401) {
-      // session timeout handler, except app store page.
-      /* eslint-disable no-alert */
-      const currentPath = window.location.pathname;
-      if (currentPath.indexOf('login') < 0) {
-        window.location.href = `/auth/login?referer=${currentPath}`;
+const initProject = () => {
+  // request error handler
+  window.onunhandledrejection = function (e) {
+    if (e && (e.status === 'Failure' || e.status >= 400)) {
+      if (e.status === 401) {
+        // session timeout handler, except app store page.
+        /* eslint-disable no-alert */
+        const currentPath = window.location.pathname;
+        if (currentPath.indexOf('login') < 0) {
+          window.location.href = `/auth/login?referer=${currentPath}`;
+        }
+      } else if (e.reason || e.message) {
+        // notification.error({
+        //   message: e.reason,
+        //   description: t(e.message),
+        // });
       }
-    } else if (e.reason || e.message) {
-      // notification.error({
-      //   message: e.reason,
-      //   description: t(e.message),
-      // });
     }
-  }
+  };
+
+  window.t = i18n.t;
+  window.request = request;
+
+  window.globals = new GlobalValue();
 };
 
 const browserHistory = createBrowserHistory();
@@ -67,4 +70,18 @@ const render = (component) => {
   );
 };
 
-render(<App rootStore={rootStore} history={history} />);
+const initApps = (apps) => {
+  render(<App rootStore={rootStore} history={history} />);
+
+  registerMicroApps(apps);
+
+  start();
+};
+
+export default class Common {
+  constructor(props) {
+    const { apps } = props;
+    initProject();
+    initApps(apps);
+  }
+}

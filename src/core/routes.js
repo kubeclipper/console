@@ -15,6 +15,7 @@
  */
 /* eslint-disable import/no-unresolved */
 import BlankLayout from 'layouts/Blank';
+import SubContent from 'layouts/Blank/microContent';
 import E404 from 'components/E404';
 import { lazy } from 'react';
 import { homePageRoute } from 'utils';
@@ -76,6 +77,10 @@ export default [
       {
         path: '/oauth2',
         component: Oauth2,
+      },
+      {
+        path: '/kube',
+        component: SubContent,
       },
       {
         path: '*',
