@@ -26,7 +26,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { devIp } = require('./common');
 const root = (path) => resolve(__dirname, `../${path}`);
 
-module.exports = () => {
+module.exports = (env = {}) => {
   const devServer = {
     host: 'localhost',
     port: 8089,
@@ -65,7 +65,7 @@ module.exports = () => {
 
   return merge(common.commonConfig, {
     entry: {
-      main: ['@babel/polyfill', root('src/core/index.js')],
+      main: ['@babel/polyfill', root('src/core/index.dev.js')],
     },
     output: {
       filename: '[name].js',
@@ -178,6 +178,7 @@ module.exports = () => {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          env: JSON.stringify(env),
         },
       }),
     ],

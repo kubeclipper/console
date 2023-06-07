@@ -70,6 +70,7 @@ async function checkToken(callback) {
       const resp = await rootStore.getNewToken(token);
 
       setLocalStorageItem('token', resp, resp.refreshExpire);
+      setLocalStorageItem('access_token', resp.token, resp.refreshExpire);
 
       return callback();
     }

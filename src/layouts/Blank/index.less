@@ -57,3 +57,31 @@
     }
   }
 }
+
+:global {
+  .caasopen-header {
+    top: 0;
+    left: 0;
+    z-index: 200;
+    background-color: #26262b;
+    color: @white;
+    box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.09);
+    height: @header-height;
+    padding: 0;
+  }
+}
+
+.header {
+  padding-left: 36px;
+  overflow: hidden;
+  background-color: #26262b;
+  height: 100%;
+  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}

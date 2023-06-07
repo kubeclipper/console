@@ -33,7 +33,7 @@ const version = common.version;
 module.exports = (env = {}) => {
   return merge(common.commonConfig, {
     entry: {
-      main: ['@babel/polyfill', root('src/core/index.js')],
+      main: ['@babel/polyfill', root('src/core/index.dev.js')],
     },
     output: {
       filename: '[name].js',

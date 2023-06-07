@@ -279,7 +279,6 @@
   "RULE_RELATED_WITH": "当前权限被 {resource} 依赖，无法移除。",
   "Depend on": "依赖于",
   "Setting": "设置中",
-  "Set": "设置",
   "Please input role name": "请输入角色名称",
   "Please input description": "请输入描述",
   "all": "",
@@ -612,8 +611,7 @@
   "Login": "登录",
   "Logout": "退出",
   "Break Off": "中断",
-  "Cluster Node Name": "集群节点名称",
-  "If IP is selected, this IP string will be used as the node ID instead of the actual host name.": "如果选择了 IP，将使用此 IP 字符串作为节点标识，而不是实际的主机名。",
   "Please enter a legal domain": "请输入合法的域名",
-  "External Access Domain": "外部访问域名"
+  "External Access Domain": "外部访问域名",
+  "WorkLoad": "工作负载"
 }

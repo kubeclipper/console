@@ -279,7 +279,6 @@
   "RULE_RELATED_WITH": "The permission cannot be deselected because {resource} depends on it.",
   "Depend on": "Depend on",
   "Setting": "Setting",
-  "Set": "Set",
   "Please input role name": "Please input role name",
   "Please input description": "Please input description",
   "all": "all",
@@ -612,8 +611,7 @@
   "Login": "Login",
   "Logout": "Logout",
   "Break Off": "Break Off",
-  "Cluster Node Name": "Cluster Node Name",
-  "If IP is selected, this IP string will be used as the node ID instead of the actual host name.": "If IP is selected, this IP string will be used as the node ID instead of the actual host name.",
   "Please enter a legal domain": "Please enter a legal domain",
-  "External Access Domain": "External Access Domain"
+  "External Access Domain": "External Access Domain",
+  "WorkLoad": "WorkLoad"
 }

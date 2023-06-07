@@ -44,6 +44,8 @@ export default function Login(props) {
   };
 
   const handleLoginResponse = async (res) => {
+    setLocalStorageItem('loginType', 'caasOpen');
+    setLocalStorageItem('username', 'admin');
     setLocalStorageItem('user', res, res.expire);
     setLocalStorageItem('isExternal', false);
     setIsSubmmiting(false);
