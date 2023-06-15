@@ -291,15 +291,17 @@ export class ConfirmStep extends BaseForm {
 
   getPluginsItems = () => {
     const { context } = this.props;
-    const enablePaaS =
-      get(context, 'plugins.forms.kubesphere.formData.enable') || false;
+    const pluginTabs = get(context, 'plugins.tabs') || [];
 
-    return [
-      {
-        label: t('PaaS Platform'),
-        value: enablePaaS ? t('Enabled') : t('Not Config'),
-      },
-    ];
+    const result = [];
+    pluginTabs.forEach((item) => {
+      result.push({
+        label: item.name === 'kubesphere' ? t('PaaS Platform') : item.name,
+        value: item.formData.enable ? t('Enabled') : t('Not Config'),
+      });
+    });
+
+    return result;
   };
 
   getStorageItems = () => {
