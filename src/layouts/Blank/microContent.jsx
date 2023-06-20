@@ -15,18 +15,10 @@
  */
 import React from 'react';
 import styles from './index.less';
-import { GlobalHeader } from './microHeader';
-import { Layout } from 'antd';
-
-const { Header } = Layout;
 
 export default function BlankLayout() {
   return (
     <div className={styles.container}>
-      <Header prefixCls="caasopen-header">
-        <GlobalHeader />
-      </Header>
-
       <div className={styles.main} id="sub-app" />
     </div>
   );
