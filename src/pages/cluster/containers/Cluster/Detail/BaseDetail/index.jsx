@@ -82,6 +82,7 @@ function BaseDetail() {
       {
         label: t('Cluster Name'),
         dataIndex: 'name',
+        render: (name, data) => data.displayName || name,
       },
       {
         label: t('Kubernetes Version'),

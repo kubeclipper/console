@@ -100,6 +100,7 @@ function ClusterDetail() {
       {
         title: t('Name'),
         dataIndex: 'name',
+        render: (name, data) => data.displayName || name,
       },
       {
         title: <StatusTitle />,
