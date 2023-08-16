@@ -272,7 +272,9 @@ export const columns = [
     dataIndex: 'name',
     isHideable: true,
     copyable: true,
-    render: (name) => <Link to={`/cluster/${name}`}>{name}</Link>,
+    render: (name, data) => (
+      <Link to={`/cluster/${name}`}>{data.displayName || name}</Link>
+    ),
     extraRender: (name, data) => {
       let isExpired = null;
       if (data.licenseExpirationTime) {
