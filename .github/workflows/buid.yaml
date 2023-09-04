@@ -9,8 +9,6 @@ on:
     branches:
       - 'master'
       - 'release*'
-  schedule:
-    - cron: '0 0 * * *'
 
 # This ensures that previous jobs for the branch are canceled when the branch is updated.
 concurrency:
@@ -25,7 +23,7 @@ jobs:
       GO111MODULE: on
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
