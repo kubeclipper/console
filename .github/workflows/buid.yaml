@@ -42,7 +42,7 @@ jobs:
       - name: Build
         run: |
             yarn install
-            yarn run build
+            yarn run build-with-args true
 
       - name: Compress
         run: |
