@@ -36,11 +36,15 @@ jobs:
       - name: Build
         run: |
           yarn install
-          yarn run build
+          yarn run build-with-args true
 
       - name: Compress
         run: |
           pushd dist
+          curl -O https://oss.kubeclipper.io/kube-console/master/kube-console.tar.gz
+          mkdir kube
+          tar -C kube/ -xvzf kube-console.tar.gz
+          rm -rf kube-console.tar.gz
           ls -F | xargs tar -zcvf kc-console.tar.gz
           popd
 
