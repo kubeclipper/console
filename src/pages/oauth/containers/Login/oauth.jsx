@@ -27,9 +27,9 @@ export default function OAuth() {
 
   useEffect(() => {
     const fetchOauth2 = async () => {
-      const { identityProviders } = await rootStore.oauth2Info();
+      const { identityProviders = [] } = await rootStore.oauth2Info();
       const [firstiIdentity = {}] = identityProviders;
-      const { authURL, clientID, redirectURL, scopes } = firstiIdentity;
+      const { authURL, clientID, redirectURL, scopes = [] } = firstiIdentity;
 
       const identity = identityProviders.map((item) => {
         const params = {
