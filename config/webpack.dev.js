@@ -23,8 +23,11 @@ const theme = require('./theme');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { devIp } = require('./common');
 const root = (path) => resolve(__dirname, `../${path}`);
+
+const util = require('./util');
+const { getConfig } = util;
+const { devIp } = getConfig();
 
 module.exports = (env = {}) => {
   const devServer = {
@@ -187,6 +190,7 @@ module.exports = (env = {}) => {
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
           env: JSON.stringify(env),
+          devIp: JSON.stringify(devIp),
         },
       }),
     ],

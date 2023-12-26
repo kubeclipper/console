@@ -16,3 +16,4 @@ cypress/config/local_config.yaml
 coverage
 unitCoverage
 .history
+config/local_config.yaml

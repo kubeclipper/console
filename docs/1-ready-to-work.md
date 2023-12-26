@@ -30,12 +30,10 @@
 - 准备好可用的后端
 
   - 准备好可访问的后端，举个例子：<https://172.20.150.52:8080>
-  - 修改`config/common.js`中的相应配置：
+  - 修改`config/config.yaml`中的相应配置：
 
     ```javascript
-    module.exports = {
-      devIp: '172.20.150.52:8080',
-    };
+    devIp: 'xxxx:8080',
     ```
 
 - 配置访问的 host 与 port
