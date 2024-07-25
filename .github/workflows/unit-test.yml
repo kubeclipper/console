@@ -25,12 +25,16 @@ jobs:
       - name: Setup node env and build
         uses: actions/setup-node@v3
         with:
-          node-version: 14.17
+          node-version: 16.13
           cache: 'yarn'
           cache-dependency-path: yarn.lock
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          yarn cache clean
+          yarn config set strict-ssl false
+          rm -rf yarn.lock
+          yarn install --frozen-lockfile
 
       - name: Unit test
         run: yarn run test:unit:coverage
