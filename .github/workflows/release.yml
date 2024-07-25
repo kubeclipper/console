@@ -25,7 +25,7 @@ jobs:
       - name: Setup node env and build
         uses: actions/setup-node@v3
         with:
-          node-version: 14.17
+          node-version: 16.13
           cache: 'yarn'
           cache-dependency-path: yarn.lock
 
@@ -35,6 +35,9 @@ jobs:
 
       - name: Build
         run: |
+          yarn cache clean
+          yarn config set strict-ssl false
+          rm -rf yarn.lock
           yarn install
           yarn run build-with-args true
 
