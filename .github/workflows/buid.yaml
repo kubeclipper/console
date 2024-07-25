@@ -41,6 +41,8 @@ jobs:
 
       - name: Build
         run: |
+            yarn cache clean
+            rm -rf yarn.lock
             yarn config set strict-ssl false
             yarn install
             yarn run build-with-args true
