@@ -36,8 +36,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14.17
-          cache: 'yarn'
-          cache-dependency-path: yarn.lock
+         #cache: 'yarn'
+         #cache-dependency-path: yarn.lock
 
       - name: Build
         run: |
