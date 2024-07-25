@@ -41,6 +41,7 @@ jobs:
 
       - name: Build
         run: |
+            yarn config set strict-ssl false
             yarn install
             yarn run build-with-args true
 
