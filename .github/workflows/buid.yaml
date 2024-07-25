@@ -32,15 +32,18 @@ jobs:
         shell: bash
         run: echo ::set-output name=branch::${GITHUB_REF#refs/heads/}
 
-      - name: Setup node env and build
+      - name: Setup node env and build1
         uses: actions/setup-node@v3
         with:
-          node-version: 14.17
-          cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          node-version: 16.13
+         #cache: 'yarn'
+         #cache-dependency-path: yarn.lock
 
       - name: Build
         run: |
+            yarn cache clean
+            rm -rf yarn.lock
+            yarn config set strict-ssl false
             yarn install
             yarn run build-with-args true
 
