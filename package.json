@@ -128,7 +128,7 @@
     "babel-preset-react-app": "^10.0.0",
     "cache-loader": "^4.1.0",
     "camelcase": "^6.2.0",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "1.0.0-rc.12",
     "cidr-regex": "^3.1.1",
     "classnames": "^2.2.6",
     "commander": "^9.4.1",
