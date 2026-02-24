@@ -47,15 +47,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.13
-          #cache: 'yarn'
-          #cache-dependency-path: yarn.lock
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
 
       - name: Build
         run: |
-            yarn cache clean
             yarn config set strict-ssl false
-            rm -rf yarn.lock
-            yarn install
+            yarn install --frozen-lockfile
             yarn run build-with-args true
 
       - name: Compress

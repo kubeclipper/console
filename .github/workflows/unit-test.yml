@@ -31,9 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn cache clean
           yarn config set strict-ssl false
-          rm -rf yarn.lock
           yarn install --frozen-lockfile
 
       - name: Unit test
