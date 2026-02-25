@@ -27,12 +27,12 @@ const root = (path) => resolve(__dirname, `../${path}`);
 
 const util = require('./util');
 const { getConfig } = util;
-const { devIp } = getConfig();
+const { devIp, host, port } = getConfig();
 
 module.exports = (env = {}) => {
   const devServer = {
-    host: 'localhost',
-    port: 8089,
+    host: host || 'localhost',
+    port: port || 8089,
     contentBase: root('dist'),
     historyApiFallback: {
       disableDotRule: true,
@@ -56,21 +56,10 @@ module.exports = (env = {}) => {
   };
 
   devServer.proxy = {
-    '/apis/cluster': {
-      target: `https://${devIp}`,
-      secure: false,
-      changeOrigin: true,
-      pathRewrite: {
-        '^/apis/cluster/': '/cluster-proxy/',
-      },
-    },
     '/apis': {
-      target: `https://${devIp}`, //9节点 172.20.151.92:8099
+      target: devIp || 'http://localhost:8080',
       secure: false,
       changeOrigin: true,
-      pathRewrite: {
-        '^/apis': '/',
-      },
     },
   };
 
