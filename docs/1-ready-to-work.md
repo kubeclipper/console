@@ -4,7 +4,7 @@
 
 - node 环境
 
-  - package.json 中要求：`"node": ">=12"`
+  - package.json 中要求：`"node": ">=18"`
   - 验证 nodejs 版本
 
     ```shell

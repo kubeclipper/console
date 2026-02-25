@@ -25,7 +25,7 @@ jobs:
       - name: Setup node env and build
         uses: actions/setup-node@v3
         with:
-          node-version: 16.13
+          node-version: 18.20
           cache: 'yarn'
           cache-dependency-path: yarn.lock
 

@@ -15,7 +15,7 @@
 # $ docker run -d --name kc-console --restart=always --net=host -v /var/log/nginx:/var/log/nginx -v your_nginx_file:/etc/nginx/nginx.conf kc-console:latest
 
 # Setp1. Build dist
-FROM --platform=${BUILDPLATFORM} node:12-alpine AS builder
+FROM --platform=${BUILDPLATFORM} node:18-alpine AS builder
 
 COPY ./ /root/kc-console/
 WORKDIR /root/kc-console
