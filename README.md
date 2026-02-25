@@ -8,17 +8,17 @@ KubeClipper console is the web for [KubeClipper](https://github.com/kubeclipper/
 
 #### Node.js
 
-Console is written using Javascript. If you don't have a Node.js development environment, please [set it up](https://nodejs.org/en/download/). The minimum version required is `12.18`.
+Console is written using Javascript. If you don't have a Node.js development environment, please [set it up](https://nodejs.org/en/download/). The minimum version required is `18.x`.
 
 #### Yarn
 
 We use [Yarn](https://yarnpkg.com/) to do package management. If you don't have yarn, use the following to install:
 
 ```
-npm install -g yarn@1.22.4
+npm install -g yarn@1.22.22
 ```
 
-The minimum version required is `1.22.4`, but you can use a newer version.
+The minimum version required is `1.22.22`, but you can use a newer version.
 
 ### Install dependencies
 

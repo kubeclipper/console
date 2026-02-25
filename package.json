@@ -12,9 +12,9 @@
     "start-with-workload": "npm run dev -- --env.ADD_WORKLOAD=true",
     "build": "bash build.sh",
     "build-with-args": "npm run build --",
-    "build:run": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=2048 webpack --progress --config config/webpack.prod.js",
-    "build_win": "set NODE_OPTIONS=--max-old-space-size=2048 && webpack --progress --config config/webpack.prod.js",
-    "build:test": "cross-env NODE_ENV=test NODE_OPTIONS=--max-old-space-size=2048 webpack --progress --config config/webpack.e2e.js",
+    "build:run": "cross-env NODE_ENV=production NODE_OPTIONS=\"--max-old-space-size=2048 --openssl-legacy-provider\" webpack --progress --config config/webpack.prod.js",
+    "build_win": "set NODE_OPTIONS=\"--max-old-space-size=2048 --openssl-legacy-provider\" && webpack --progress --config config/webpack.prod.js",
+    "build:test": "cross-env NODE_ENV=test NODE_OPTIONS=\"--max-old-space-size=2048 --openssl-legacy-provider\" webpack --progress --config config/webpack.e2e.js",
     "i18n": "grunt",
     "lint": "eslint src --fix --quiet --ext .js,.jsx",
     "report:delete-json": "rm -rf cypress/results/* || true",
@@ -64,7 +64,7 @@
     "babel-plugin-import": "^1.8.0",
     "babel-plugin-istanbul": "^6.0.0",
     "clean-webpack-plugin": "^1.0.0",
-    "compression-webpack-plugin": "5.0.1",
+    "compression-webpack-plugin": "6.1.1",
     "conventional-changelog-cli": "^2.1.1",
     "copy-webpack-plugin": "6.2.1",
     "cross-env": "^7.0.3",
@@ -85,7 +85,7 @@
     "husky": "^7.0.4",
     "i18next-scanner": "2.9.2",
     "istanbul-lib-coverage": "^3.0.0",
-    "jest": "^26.6.0",
+    "jest": "26.6.0",
     "json-loader": "^0.5.7",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
@@ -181,7 +181,10 @@
     "yarn": "^1.22.17"
   },
   "engines": {
-    "node": ">=12",
+    "node": ">=18",
     "yarn": ">=1.22.4"
+  },
+  "resolutions": {
+    "cheerio": "1.0.0-rc.12"
   }
 }

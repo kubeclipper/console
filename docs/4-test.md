@@ -17,7 +17,7 @@
 
 - node.js 环境
 
-  - 中要求：`"node.js": ">=12"`
+  - 中要求：`"node.js": ">=18"`
   - 验证 node.js 版本
 
     ```shell
