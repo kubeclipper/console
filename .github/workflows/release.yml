@@ -69,11 +69,11 @@ jobs:
           access-key-secret: ${{ secrets.OSS_ACCESS_SECRET }}
       - name: Upload to oss
         run: |
-          ossutil cp -rf dist/kc-console.tar.gz oss://${{ secrets.OSS_BUCKET }}/kc-console/${{ steps.extract_tag.outputs.version }}/
+          ossutil cp -rf dist/kc-console.tar.gz oss://${{ secrets.OSS_BUCKET }}/kc-console/${{ steps.extract_branch.outputs.branch }}/
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(steps.extract_tag.outputs.version, 'v')
+        if: startsWith(steps.extract_branch.outputs.branch, 'v')
         with:
           files: |
             dist/kc-console.tar.gz
