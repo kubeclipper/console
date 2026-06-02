@@ -61,22 +61,10 @@ jobs:
           ls -F | xargs tar -zcvf kc-console.tar.gz
           popd
 
-      - name: Setup ossutil
-        uses: manyuanrong/setup-ossutil@v2.0
-        with:
-          endpoint:  ${{ secrets.OSS_ENDPOINT }}
-          access-key-id: ${{ secrets.OSS_ACCESS_KEY }}
-          access-key-secret: ${{ secrets.OSS_ACCESS_SECRET }}
-      - name: Upload to oss
-        run: |
-          ossutil cp -rf dist/kc-console.tar.gz oss://${{ secrets.OSS_BUCKET }}/kc-console/${{ steps.extract_branch.outputs.branch }}/
-
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(steps.extract_branch.outputs.branch, 'v')
         with:
           files: |
             dist/kc-console.tar.gz
-          # note you'll typically need to create a personal access token
-          # with permissions to create releases in the other repo
           token: ${{ secrets.GH_TOKEN }}
