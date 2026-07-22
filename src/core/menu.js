@@ -47,7 +47,7 @@ const renderMenu = (t) => {
               module: 'clusters',
             },
             {
-              path: /^\/cluster\/.[^/]+$/,
+              path: /^\/cluster\/[^/]+$/,
               name: t('Cluster Detail'),
               key: 'cluster-detail',
               level: 2,

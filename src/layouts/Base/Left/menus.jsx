@@ -201,8 +201,6 @@ function Menus() {
     .map((item) => renderMenuItem(item))
     .filter((it) => it !== null);
 
-  if (!openKeys.length && !currentRoutes.length) return;
-
   return (
     <Menu
       theme="dark"
