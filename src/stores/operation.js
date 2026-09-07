@@ -16,6 +16,8 @@
 
 import BaseStore from './base';
 import { makeObservable, observable } from 'mobx';
+import { get } from 'lodash';
+import { APIVERSION } from 'utils/constants';
 
 class OperationStore extends BaseStore {
   operations = [];
@@ -29,6 +31,14 @@ class OperationStore extends BaseStore {
   activeStepIndex = 0;
 
   module = 'operations';
+
+  get apiType() {
+    return 'operations';
+  }
+
+  get taskListUrl() {
+    return `${APIVERSION.operations}/operationtasks`;
+  }
 
   constructor(props) {
     super(props);
@@ -47,16 +57,79 @@ class OperationStore extends BaseStore {
     return items;
   }
 
-  retry(params, data) {
+  async fetchTasks(operationUID) {
+    const result = await request.get(this.taskListUrl, {
+      fieldSelector: `spec.operationRef.uid=${operationUID}`,
+    });
+    return get(result, 'items', []);
+  }
+
+  control(params, action, data) {
+    const operation =
+      data || this.list.data.find((item) => item.id === params.id);
+    const uid = get(operation, 'uid');
+    const resourceVersion = get(operation, 'resourceVersion');
+
+    if (!uid || !resourceVersion) {
+      return Promise.reject(
+        new Error('operation UID and resourceVersion are required')
+      );
+    }
+
     return this.submitting(
-      request.post(`${this.getDetailUrl(params)}/retry`, data)
+      request.post(`${this.getDetailUrl(params)}/${action}`, {
+        uid,
+        resourceVersion,
+      })
     );
   }
 
-  stop(params) {
-    return this.submitting(
-      request.post(`${this.getDetailUrl(params)}/termination`)
+  retry(params, data) {
+    return this.control(params, 'retry', data);
+  }
+
+  stop(params, data) {
+    return this.control(params, 'cancel', data);
+  }
+
+  /*
+   * Operation V2 uses Kubernetes ListOptions. It supports limit/continue but
+   * not the legacy page/reverse/totalCount parameters used by BaseStore.
+   * Load the operation list once and paginate it locally for the existing UI.
+   */
+  async fetchList({ more, ...params } = {}) {
+    !this.list.silent && this.list.reset();
+
+    const page = Number(params.page) || 1;
+    const limit = Number(params.limit) || 10;
+    const query = { ...params };
+    delete query.page;
+    delete query.limit;
+    delete query.reverse;
+    delete query.silent;
+    const operationName = query.operationName;
+    delete query.operationName;
+    const result = (await request.get(this.getListUrl(), query)) || {};
+    const allData = this.getListData(result).filter(
+      (item) =>
+        !operationName ||
+        String(item.operationName || '').includes(String(operationName))
     );
+    const start = (page - 1) * limit;
+    const data = limit > 0 ? allData.slice(start, start + limit) : allData;
+    const newData = await this.listDidFetch(data, query);
+
+    this.list.update({
+      data: more ? [...this.list.data, ...newData] : newData,
+      total: allData.length,
+      limit,
+      page,
+      ...query,
+      ...(operationName ? { operationName } : {}),
+      isLoading: false,
+      ...(this.list.silent ? {} : { selectedRowKeys: [] }),
+    });
+    return newData;
   }
 
   reset() {

@@ -100,6 +100,7 @@ export const statusMap = {
 
 export const APIVERSION = {
   core: 'api/core.kubeclipper.io/v1',
+  operations: 'api/operations.kubeclipper.io/v1alpha1',
   iam: 'api/iam.kubeclipper.io/v1',
   config: 'api/config.kubeclipper.io/v1',
   audit: 'api/audit.kubeclipper.io/v1',

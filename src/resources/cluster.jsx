@@ -85,11 +85,12 @@ export const componentStatus = {
 };
 
 export const operationStatus = {
-  running: t('Ongoing'),
-  successful: t('Successful'),
-  failed: t('Failed'),
-  unknown: t('Unknown'),
-  termination: t('Break Off'),
+  Pending: t('Ongoing'),
+  Running: t('Ongoing'),
+  Succeeded: t('Successful'),
+  Failed: t('Failed'),
+  TimedOut: t('Failed'),
+  Canceled: t('Break Off'),
 };
 
 export const reclaimPolicyOption = [

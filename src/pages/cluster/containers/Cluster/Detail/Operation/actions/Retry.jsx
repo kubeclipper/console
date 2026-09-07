@@ -41,15 +41,17 @@ export default class Index extends ConfirmAction {
   isFailedStatus = (item) => {
     const firstPage = operationStore.list.page;
     const firstData = operationStore.list.data[0];
-    const { id, status } = item;
+    const { id, phase } = item;
+    if (!firstData) return false;
+
     if (
       firstPage === 1 &&
       firstData.id === id &&
-      firstData.status === 'failed' &&
+      ['Failed', 'TimedOut'].includes(phase) &&
       !this.notAllowAction.includes(firstData.operationName)
     ) {
       return true;
-    } else if (firstData.id === id && status === 'termination') {
+    } else if (firstData.id === id && phase === 'Canceled') {
       return true;
     }
 
@@ -71,6 +73,6 @@ export default class Index extends ConfirmAction {
   onSubmit = (data) => {
     const { id } = data;
 
-    return operationStore.retry({ id });
+    return operationStore.retry({ id }, data);
   };
 }
