@@ -30,6 +30,10 @@ class OperationStore extends BaseStore {
 
   activeStepIndex = 0;
 
+  operationQueryKey = '';
+
+  operationContinueTokens = {};
+
   module = 'operations';
 
   get apiType() {
@@ -93,9 +97,8 @@ class OperationStore extends BaseStore {
   }
 
   /*
-   * Operation V2 uses Kubernetes ListOptions. It supports limit/continue but
-   * not the legacy page/reverse/totalCount parameters used by BaseStore.
-   * Load the operation list once and paginate it locally for the existing UI.
+   * Operation V2 uses Kubernetes ListOptions. Keep the page-number UI while
+   * translating it to the server-side limit/continue cursor API.
    */
   async fetchList({ more, ...params } = {}) {
     !this.list.silent && this.list.reset();
@@ -109,19 +112,76 @@ class OperationStore extends BaseStore {
     delete query.silent;
     const operationName = query.operationName;
     delete query.operationName;
-    const result = (await request.get(this.getListUrl(), query)) || {};
-    const allData = this.getListData(result).filter(
-      (item) =>
-        !operationName ||
-        String(item.operationName || '').includes(String(operationName))
-    );
-    const start = (page - 1) * limit;
-    const data = limit > 0 ? allData.slice(start, start + limit) : allData;
+    const queryKey = JSON.stringify({ query, operationName, limit });
+    if (page === 1 || queryKey !== this.operationQueryKey) {
+      this.operationQueryKey = queryKey;
+      this.operationContinueTokens = {};
+    }
+
+    // The operation-name search is a client-side contains filter. Fetching a
+    // complete filtered result keeps that behavior until the API exposes a
+    // matching field selector; normal browsing remains cursor-paginated.
+    const paged = !operationName && limit > 0;
+    const requestQuery = { ...query };
+    if (paged) {
+      requestQuery.limit = limit;
+    }
+
+    let result = {};
+    let data = [];
+    if (paged) {
+      let currentPage = 1;
+      let continueToken = '';
+      while (
+        currentPage < page &&
+        this.operationContinueTokens[currentPage]
+      ) {
+        continueToken = this.operationContinueTokens[currentPage];
+        currentPage += 1;
+      }
+      while (currentPage <= page) {
+        const pageQuery = {
+          ...requestQuery,
+          ...(continueToken ? { continue: continueToken } : {}),
+        };
+        // Cursor pages must be fetched in order because each token is issued
+        // by the preceding response.
+        // eslint-disable-next-line no-await-in-loop
+        result = (await request.get(this.getListUrl(), pageQuery)) || {};
+        data = this.getListData(result);
+        this.operationContinueTokens[currentPage] = get(
+          result,
+          'metadata.continue',
+          ''
+        );
+        continueToken = this.operationContinueTokens[currentPage];
+        if (currentPage < page && !continueToken) {
+          data = [];
+          break;
+        }
+        currentPage += 1;
+      }
+    } else {
+      result = (await request.get(this.getListUrl(), requestQuery)) || {};
+      data = this.getListData(result).filter(
+        (item) =>
+          !operationName ||
+          String(item.operationName || '').includes(String(operationName))
+      );
+    }
+
     const newData = await this.listDidFetch(data, query);
+    const remaining = get(result, 'metadata.remainingItemCount');
+    const pageOffset = (page - 1) * limit;
+    const total = paged
+      ? Number.isFinite(Number(remaining))
+        ? pageOffset + data.length + Number(remaining)
+        : pageOffset + data.length
+      : data.length;
 
     this.list.update({
       data: more ? [...this.list.data, ...newData] : newData,
-      total: allData.length,
+      total,
       limit,
       page,
       ...query,

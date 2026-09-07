@@ -345,11 +345,6 @@ export default class Cluster extends BaseForm {
     return Promise.resolve(true);
   };
 
-  checkImageRegistry = (rule, value) =>
-    !value && this.isOffLine
-      ? Promise.reject(t('Please select a Registry resource'))
-      : Promise.resolve(true);
-
   checkLabels = (rule, value = []) => {
     const checkFunc = (item) => {
       if (!item) return true;
@@ -460,10 +455,8 @@ export default class Cluster extends BaseForm {
           label: t('Image Registry'),
           type: 'select',
           options: this.registryOptions,
-          validator: this.checkImageRegistry,
-          required: this.isOffLine,
           tip: t(
-            'Select a configured Registry resource for image pulls. If none is selected, online installation uses the official registries.'
+            'Optionally select a configured Registry resource. If none is selected, offline installation loads packaged images on each node.'
           ),
         },
         {

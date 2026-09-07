@@ -339,6 +339,7 @@
   "{name} {action} successfully.": "{name} {action} successfully.",
   "Image Repository": "Image Repository",
   "Image Registry": "Image Registry",
+  "Optionally select a configured Registry resource. If none is selected, offline installation loads packaged images on each node.": "Optionally select a configured Registry resource. If none is selected, offline installation loads packaged images on each node.",
   "Select a configured Registry resource. Its address and access settings will be used to pull offline installation images, and components inherit this Registry by default.": "Select a configured Registry resource. Its address and access settings will be used to pull offline installation images, and components inherit this Registry by default.",
   "Optionally select a configured Registry resource for image pulls. If none is selected, images are pulled from the official registries.": "Optionally select a configured Registry resource for image pulls. If none is selected, images are pulled from the official registries.",
   "Select a configured Registry resource for image pulls. If none is selected, online installation uses the official registries.": "Select a configured Registry resource for image pulls. If none is selected, online installation uses the official registries.",

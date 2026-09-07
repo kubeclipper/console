@@ -199,9 +199,8 @@ export default class Upgrade extends ModalAction {
         type: 'select',
         options: this.registryOptions,
         hidden: !this.isOffLine,
-        required: this.isOffLine,
         tip: t(
-          'Select a configured Registry resource. Its address and access settings will be used to pull offline installation images, and components inherit this Registry by default.'
+          'Optionally select a configured Registry resource. If none is selected, offline installation loads packaged images on each node.'
         ),
       },
     ];
