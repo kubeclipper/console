@@ -104,7 +104,7 @@ const LogItem = observer((props) => {
     <div className={styles.LogItem} ref={inputEl}>
       <div className={classNames(styles.LogItem__title)} onClick={toggleExpand}>
         {isExpand ? <CaretDownOutlined /> : <CaretRightOutlined />}
-        {`${nodes.name || nodes.ipv4 || nodes.id}`}
+        {nodes.ipv4 ? `${nodes.id}(${nodes.ipv4})` : nodes.id}
         <span className={styles.logitem_status}>
           <span>{runtime || ''}</span>
           {stateIcons(false, nodeStatus)}

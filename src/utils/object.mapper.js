@@ -272,8 +272,7 @@ const mapOperationStep = (step, tasks) => {
       id: target.name,
       name: target.name,
       uid: target.uid,
-      // Operation V2 exposes the stable node name, not the node IP.
-      ipv4: target.name,
+      ipv4: target.ip || get(task, 'spec.nodeRef.ip', ''),
       taskName: get(task, 'metadata.name'),
       status: phase,
       startAt: get(task, 'status.startedAt'),

@@ -45,7 +45,7 @@ describe('operation mapper', () => {
       steps: [
         {
           id: 'step-1',
-          targets: [{ name: 'node-1', uid: 'node-uid' }],
+          targets: [{ name: 'node-1', uid: 'node-uid', ip: '10.0.0.1' }],
           payload: { step: { name: 'installRuntime' } },
         },
       ],
@@ -57,6 +57,7 @@ describe('operation mapper', () => {
     const result = [operation].map(ObjectMapper.operations)[0];
 
     expect(result.operationSteps[0].nodes[0].status).toBe('Pending');
+    expect(result.operationSteps[0].nodes[0].ipv4).toBe('10.0.0.1');
     expect(result.operationSteps[0].name).toBe('installRuntime');
   });
 
@@ -74,5 +75,32 @@ describe('operation mapper', () => {
 
     expect(result.operationSteps[0].nodes[0].status).toBe('Succeeded');
     expect(result.operationSteps[0].nodes[0].taskName).toBe('task-1');
+  });
+
+  it('uses the task node IP when the operation target omits it', () => {
+    const operationWithoutTargetIP = {
+      ...operation,
+      spec: {
+        ...operation.spec,
+        steps: [
+          {
+            ...operation.spec.steps[0],
+            targets: [{ name: 'node-1', uid: 'node-uid' }],
+          },
+        ],
+      },
+    };
+    const result = ObjectMapper.operations(operationWithoutTargetIP, [
+      {
+        metadata: { name: 'task-1' },
+        spec: {
+          stepID: 'step-1',
+          nodeRef: { name: 'node-1', uid: 'node-uid', ip: '10.0.0.2' },
+        },
+        status: { phase: 'Running' },
+      },
+    ]);
+
+    expect(result.operationSteps[0].nodes[0].ipv4).toBe('10.0.0.2');
   });
 });

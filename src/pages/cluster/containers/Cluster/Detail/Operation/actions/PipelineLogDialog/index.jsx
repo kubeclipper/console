@@ -53,6 +53,7 @@ export default class PipelineLog extends ViewAction {
     this.taskTimer = null;
     this.refreshing = false;
     this.disposer = null;
+    this.manuallySelectedStepID = null;
   }
 
   componentDidMount() {
@@ -139,6 +140,12 @@ export default class PipelineLog extends ViewAction {
   updateOperation = async (operation, tasks) => {
     if (!operation) return;
 
+    if (
+      this.rawOperation?.metadata?.uid &&
+      this.rawOperation.metadata.uid !== operation.metadata?.uid
+    ) {
+      this.manuallySelectedStepID = null;
+    }
     this.rawOperation = operation;
     const operationTasks = tasks || (await this.fetchTasks(operation));
     const result = ObjectMapper.operations(operation, operationTasks);
@@ -148,12 +155,31 @@ export default class PipelineLog extends ViewAction {
     this.store.currentOperation = result;
     this.store.operationSteps = operationSteps;
 
-    const activeIndex = operationSteps.findIndex((step) => !step.isComplete);
-    const index = activeIndex === -1 ? operationSteps.length - 1 : activeIndex;
-    this.activeByStep(operationSteps[index], index);
+    let index = this.manuallySelectedStepID
+      ? operationSteps.findIndex(
+          (step) => step.stepID === this.manuallySelectedStepID
+        )
+      : -1;
+
+    if (index === -1) {
+      const activeIndex = operationSteps.findIndex((step) => !step.isComplete);
+      index = activeIndex === -1 ? operationSteps.length - 1 : activeIndex;
+      if (this.manuallySelectedStepID) {
+        this.manuallySelectedStepID = null;
+      }
+    }
+
+    if (index >= 0) {
+      this.activeByStep(operationSteps[index], index);
+    }
   };
 
-  activeByStep = async (step, index) => {
+  activeByStep = async (step, index, manuallySelected = false) => {
+    if (!step) return;
+
+    if (manuallySelected) {
+      this.manuallySelectedStepID = step.stepID;
+    }
     this.store.currentNodesByStep = step;
     this.store.activeStepIndex = index;
   };
