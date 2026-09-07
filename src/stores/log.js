@@ -16,6 +16,7 @@
 
 import BaseStore from './base';
 import { makeObservable, observable } from 'mobx';
+import { APIVERSION } from 'utils/constants';
 
 export default class LogStore extends BaseStore {
   logdata = '';
@@ -36,13 +37,28 @@ export default class LogStore extends BaseStore {
   }
 
   async fetchStepLog(params) {
-    const res = await request.get(`${this.apiVersion}/logs`, params);
-    this.cumulativeSize += res.deliverySize || 0;
+    if (!params.taskName) {
+      this.isLoading = false;
+      return;
+    }
+
+    const res = await request.get(
+      `${APIVERSION.operations}/operationtasks/${encodeURIComponent(
+        params.taskName
+      )}/logs`,
+      { offset: params.offset || 0 }
+    );
+    const deliverySize = res.deliverySize || 0;
+    this.cumulativeSize += deliverySize;
     this.logdata += res.content || '';
 
-    if (this.isStepFinished && this.cumulativeSize < res.logSize) {
+    if (
+      this.isStepFinished &&
+      deliverySize > 0 &&
+      this.cumulativeSize < res.logSize
+    ) {
       params = { ...params, offset: this.cumulativeSize };
-      this.fetchStepLog(params);
+      await this.fetchStepLog(params);
     }
     this.isExpand = true;
     this.isLoading = false;

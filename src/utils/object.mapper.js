@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-import { get, omit, merge, intersectionBy, has, set } from 'lodash';
+import { get, omit, intersectionBy, has, set } from 'lodash';
 import { status as nodeStatus } from 'resources/node';
 import { formatRoleRules, safeParseJSON } from 'utils';
 import { INTERNAL_ROLE_DES } from 'utils/constants';
@@ -229,22 +229,122 @@ const ClusterTemplateMapper = (item) => {
   };
 };
 
-/**
- * 操作记录
- * @param {*} item
- * @returns
- */
-const OperationMapper = (item) => {
-  const conditions = get(item, 'status.conditions') || [];
-  const steps = get(item, 'steps');
+const operationTerminalPhases = ['Succeeded', 'Failed', 'TimedOut', 'Canceled'];
 
-  const operationSteps = merge(conditions, steps);
+const taskStatusByPhase = (phase) => phase || 'Pending';
+
+const latestTaskForTarget = (tasks, step, target) => {
+  const candidates = tasks.filter((task) => {
+    const taskStepID = get(task, 'spec.stepID');
+    const taskNode = get(task, 'spec.nodeRef', {});
+    return (
+      taskStepID === step.id &&
+      (taskNode.uid === target.uid || taskNode.name === target.name)
+    );
+  });
+
+  return candidates.sort((left, right) => {
+    const retryGeneration =
+      Number(get(left, 'spec.retryGeneration', 0)) -
+      Number(get(right, 'spec.retryGeneration', 0));
+    if (retryGeneration !== 0) return retryGeneration;
+
+    const attempt =
+      Number(get(left, 'spec.attempt', 0)) -
+      Number(get(right, 'spec.attempt', 0));
+    if (attempt !== 0) return attempt;
+
+    return String(get(left, 'metadata.creationTimestamp', '')).localeCompare(
+      String(get(right, 'metadata.creationTimestamp', ''))
+    );
+  })[candidates.length - 1];
+};
+
+const stepName = (step) =>
+  get(step, 'payload.step.name') || get(step, 'payload.name') || step.id;
+
+const mapOperationStep = (step, tasks) => {
+  const nodes = (step.targets || []).map((target) => {
+    const task = latestTaskForTarget(tasks, step, target);
+    const phase = taskStatusByPhase(get(task, 'status.phase'));
+
+    return {
+      id: target.name,
+      name: target.name,
+      uid: target.uid,
+      // Operation V2 exposes the stable node name, not the node IP.
+      ipv4: target.name,
+      taskName: get(task, 'metadata.name'),
+      status: phase,
+      startAt: get(task, 'status.startedAt'),
+      endAt: get(task, 'status.finishedAt'),
+      reason: get(task, 'status.result.reason'),
+      message: get(task, 'status.result.message'),
+    };
+  });
+
+  const phases = nodes.map((node) => node.status);
+  const hasFailure = phases.some((phase) =>
+    ['Failed', 'TimedOut', 'Canceled'].includes(phase)
+  );
+  const isComplete =
+    phases.length > 0 &&
+    phases.every((phase) => operationTerminalPhases.includes(phase));
+  const isSuccessful =
+    isComplete && phases.every((phase) => phase === 'Succeeded');
+  const hasRunning = phases.some((phase) => phase === 'Running');
+  const hasStartedTask = nodes.some((node) => node.taskName);
+  const hasPending = phases.some((phase) => phase === 'Pending');
+
+  return {
+    stepID: step.id,
+    name: stepName(step),
+    nodes,
+    status: nodes.map((node) => ({
+      node: node.id,
+      status: node.status,
+      startAt: node.startAt,
+      endAt: node.endAt,
+      taskName: node.taskName,
+      reason: node.reason,
+      message: node.message,
+    })),
+    errIgnore: get(step, 'payload.step.errIgnore', false),
+    isComplete,
+    stepStatus: hasFailure
+      ? 'failed'
+      : isSuccessful
+      ? 'success'
+      : hasRunning || (hasPending && hasStartedTask)
+      ? 'processing'
+      : 'warning',
+  };
+};
+
+/**
+ * Operation V2 mapper. The UI keeps the step-oriented view, while the API
+ * stores per-node execution state as OperationTask resources.
+ */
+const OperationMapper = (item, tasks) => {
+  // OperationMapper is also passed directly to Array.prototype.map by the
+  // operation store. In that case the second argument is the item index, not
+  // an OperationTask list.
+  const operationTasks = Array.isArray(tasks) ? tasks : [];
+  const operationSteps = (get(item, 'spec.steps') || []).map((step) =>
+    mapOperationStep(step, operationTasks)
+  );
 
   return {
     ...getBaseInfo(item),
+    uid: get(item, 'metadata.uid'),
+    phase: get(item, 'status.phase'),
+    status: get(item, 'status.phase'),
+    reason: get(item, 'status.reason'),
+    message: get(item, 'status.message'),
     operationSteps,
-    status: get(item, 'status.status'),
-    operationName: get(item, 'metadata.labels["kubeclipper.io/operation"]'),
+    operationName: get(item, 'spec.action'),
+    targetRef: get(item, 'spec.targetRef'),
+    _originData: item,
   };
 };
 

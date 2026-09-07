@@ -58,7 +58,7 @@ function OperationList() {
         name: 'operationName',
       },
     ],
-    transitionStatusList: ['running'],
+    transitionStatusList: ['Pending', 'Running'],
     actionConfigs,
     store,
     detail: clusterStore.detail,

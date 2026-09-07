@@ -339,6 +339,7 @@
   "{name} {action} successfully.": "{name} {action} 成功。",
   "Image Repository": "镜像仓库",
   "Image Registry": "镜像仓库（Registry）",
+  "Optionally select a configured Registry resource. If none is selected, offline installation loads packaged images on each node.": "可选：选择已配置的 Registry 资源；未选择时离线安装会在各节点加载安装包中的镜像。",
   "Select a configured Registry resource. Its address and access settings will be used to pull offline installation images, and components inherit this Registry by default.": "请选择已配置的 Registry 资源。系统将使用该资源的地址及访问配置拉取离线安装镜像，组件默认继承此 Registry。",
   "Optionally select a configured Registry resource for image pulls. If none is selected, images are pulled from the official registries.": "可选：选择已配置的 Registry 资源用于拉取镜像；未选择时使用官方镜像仓库。",
   "Select a configured Registry resource for image pulls. If none is selected, online installation uses the official registries.": "请选择已配置的 Registry 资源用于拉取镜像；未选择时在线安装使用官方镜像仓库。",

@@ -39,7 +39,7 @@ export default class Index extends ConfirmAction {
   }
 
   isDisableStatus(item) {
-    return item.status === 'running';
+    return ['Pending', 'Running'].includes(item.phase);
   }
 
   allowedCheckFunc = (item) => this.isDisableStatus(item);
@@ -49,6 +49,6 @@ export default class Index extends ConfirmAction {
   onSubmit = (data) => {
     const { id } = data;
 
-    return operationStore.stop({ id });
+    return operationStore.stop({ id }, data);
   };
 }

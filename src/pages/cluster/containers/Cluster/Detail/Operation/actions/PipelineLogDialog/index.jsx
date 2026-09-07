@@ -20,8 +20,8 @@ import { ViewAction } from 'containers/Action';
 import { rootStore } from 'stores';
 import WebsocketStore from 'stores/websocket';
 import { getToken } from 'utils/localStorage';
+import { APIVERSION } from 'utils/constants';
 import ObjectMapper from 'utils/object.mapper';
-import { findLastIndex, findLast } from 'lodash';
 
 import RightLogContent from './RightLogContent';
 import LeftSteps from './LeftSteps';
@@ -49,22 +49,35 @@ export default class PipelineLog extends ViewAction {
 
     this.store.reset();
     this.websocket = new WebsocketStore();
+    this.rawOperation = null;
+    this.taskTimer = null;
+    this.refreshing = false;
+    this.disposer = null;
   }
 
   componentDidMount() {
     this.store.list.silent = true;
+    this.loadOperation();
     this.initWebsocket();
+    this.taskTimer = setInterval(this.refreshTasks, 2000);
   }
 
   componentWillUnmount() {
     this.store.list.silent = false;
     this.websocket.close();
+    this.disposer?.();
+    if (this.taskTimer) {
+      clearInterval(this.taskTimer);
+      this.taskTimer = null;
+    }
   }
 
   initWebsocket = () => {
     const token = getToken();
     this.websocket.watch(
-      `api/core.kubeclipper.io/v1/operations?fieldSelector=metadata.name=${this.item.name}&watch=true&token=${token}`
+      `api/operations.kubeclipper.io/v1alpha1/operations?fieldSelector=metadata.name=${encodeURIComponent(
+        this.item.name
+      )}&watch=true&token=${encodeURIComponent(token)}`
     );
 
     this.disposer = reaction(
@@ -73,56 +86,72 @@ export default class PipelineLog extends ViewAction {
         message = toJS(message);
         const types = ['ADDED', 'MODIFIED', 'DELETED'];
         if (types.includes(message.type)) {
-          const result = ObjectMapper.operations(message.object);
-          this.store.status = result.status;
-
-          this.generateStatusBySteps(result.operationSteps);
-          this.store.currentOperation = result;
-          this.store.operationSteps = result.operationSteps;
+          this.updateOperation(message.object);
         }
       }
     );
   };
 
-  // 计算 step status
-  generateStatusBySteps(operationSteps) {
-    operationSteps.forEach((step, index) => {
-      if (!step.status) {
-        operationSteps[index].stepStatus = 'warning';
-      } else {
-        operationSteps[index].stepStatus = 'success';
-        for (const node of step.status) {
-          if (node.status === 'failed') {
-            if (step.errignore) {
-              operationSteps[index].stepStatus = 'warning';
-            } else {
-              operationSteps[index].stepStatus = 'failed';
-            }
-            break;
-          }
-        }
-      }
-    });
-
-    const lastIndex = findLastIndex(operationSteps, (item) => item.stepID);
-    const lastStep = findLast(operationSteps, (item) => item.stepID);
-
-    const msgPending = ['running'];
-    // const msgResolve = ['successful', 'failed'];
-
-    if (
-      lastIndex !== operationSteps.length - 1 &&
-      msgPending.includes(this.store.status)
-    ) {
-      const processSteps = operationSteps[lastIndex + 1];
-      processSteps.frontStatus = 'pending';
-      processSteps.stepStatus = 'processing';
-
-      this.activeByStep(processSteps, lastIndex + 1);
-    } else {
-      this.activeByStep(lastStep, lastIndex);
+  loadOperation = async () => {
+    try {
+      const operation = await request.get(
+        `${APIVERSION.operations}/operations/${encodeURIComponent(
+          this.item.name
+        )}`
+      );
+      await this.updateOperation(operation);
+    } catch (error) {
+      // The operation list already rendered the row. Keep the dialog usable
+      // while the watch connection retries after a transient read failure.
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
-  }
+  };
+
+  refreshTasks = async () => {
+    if (!this.rawOperation || this.refreshing) return;
+
+    this.refreshing = true;
+    try {
+      const tasks = await this.fetchTasks(this.rawOperation);
+      await this.updateOperation(this.rawOperation, tasks);
+    } catch (error) {
+      // Task creation/status updates are eventually consistent with the
+      // operation watch. The next refresh will retry without closing the log.
+      // eslint-disable-next-line no-console
+      console.log(error);
+    } finally {
+      this.refreshing = false;
+    }
+  };
+
+  fetchTasks = async (operation) => {
+    const uid = operation?.metadata?.uid;
+    if (!uid) return [];
+
+    const result = await request.get(
+      `${APIVERSION.operations}/operationtasks`,
+      { fieldSelector: `spec.operationRef.uid=${uid}` }
+    );
+    return result?.items || [];
+  };
+
+  updateOperation = async (operation, tasks) => {
+    if (!operation) return;
+
+    this.rawOperation = operation;
+    const operationTasks = tasks || (await this.fetchTasks(operation));
+    const result = ObjectMapper.operations(operation, operationTasks);
+    const { operationSteps } = result;
+
+    this.store.status = result.status;
+    this.store.currentOperation = result;
+    this.store.operationSteps = operationSteps;
+
+    const activeIndex = operationSteps.findIndex((step) => !step.isComplete);
+    const index = activeIndex === -1 ? operationSteps.length - 1 : activeIndex;
+    this.activeByStep(operationSteps[index], index);
+  };
 
   activeByStep = async (step, index) => {
     this.store.currentNodesByStep = step;

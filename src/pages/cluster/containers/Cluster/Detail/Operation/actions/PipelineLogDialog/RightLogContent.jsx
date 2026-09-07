@@ -19,7 +19,6 @@ import classNames from 'classnames';
 import {
   CaretRightOutlined,
   CaretDownOutlined,
-  ExclamationCircleFilled,
   CheckCircleFilled,
   CloseCircleFilled,
 } from '@ant-design/icons';
@@ -44,36 +43,32 @@ function LogItemContent(props) {
 }
 
 const LogItem = observer((props) => {
-  const { nodeStatus, logStore, runtime, nodes, index } = props;
-  const { operationStore } = useRootStore();
-  const step = operationStore.currentNodesByStep;
+  const { nodeStatus, taskName, logStore, runtime, nodes, index } = props;
   const inputEl = useRef();
 
-  const basicStepFinished = !!operationStore.currentNodesByStep?.status;
-  logStore.isStepFinished = basicStepFinished;
+  const taskFinished = ['Succeeded', 'Failed', 'TimedOut', 'Canceled'].includes(
+    nodeStatus
+  );
+  logStore.isStepFinished = taskFinished;
   const { logdata, isExpand, isLoading, cumulativeSize, isStepFinished } =
     logStore;
 
   const stateIcons = (errIgnore, status) => {
-    if (errIgnore && status === 'failed') {
-      return <ExclamationCircleFilled style={{ color: '#fadb14' }} />;
-    } else if (status === 'successful') {
+    if (status === 'Succeeded') {
       return <CheckCircleFilled style={{ color: '#57E39B' }} />;
-    } else if (status === 'failed') {
+    } else if (['Failed', 'TimedOut', 'Canceled'].includes(status)) {
       return <CloseCircleFilled style={{ color: '#EB354D' }} />;
     }
     return '';
   };
 
   const params = {
-    operation: operationStore.currentOperation.name,
-    node: nodes.id,
-    step: step.id,
+    taskName,
     offset: cumulativeSize,
   };
 
   useEffect(() => {
-    if (index === 0) {
+    if (index === 0 && taskName) {
       const fn = async () => {
         await logStore.fetchStepLog(params);
         inputEl.current?.scrollIntoView({ block: 'end' });
@@ -81,7 +76,7 @@ const LogItem = observer((props) => {
 
       fn();
     }
-  }, [step.id]);
+  }, [taskName]);
 
   useInterval(
     () => {
@@ -91,10 +86,12 @@ const LogItem = observer((props) => {
       };
       fn();
     },
-    isExpand && !isStepFinished ? 2000 : null
+    isExpand && !isStepFinished && taskName ? 2000 : null
   );
 
   const toggleExpand = async () => {
+    if (!taskName) return;
+
     if (!isExpand) {
       logStore.getStepLog(params);
     } else {
@@ -107,10 +104,10 @@ const LogItem = observer((props) => {
     <div className={styles.LogItem} ref={inputEl}>
       <div className={classNames(styles.LogItem__title)} onClick={toggleExpand}>
         {isExpand ? <CaretDownOutlined /> : <CaretRightOutlined />}
-        {`${nodes.ipv4} (${nodes.id})`}
+        {`${nodes.name || nodes.ipv4 || nodes.id}`}
         <span className={styles.logitem_status}>
           <span>{runtime || ''}</span>
-          {stateIcons(step.errIgnore, nodeStatus)}
+          {stateIcons(false, nodeStatus)}
         </span>
       </div>
       <LogItemContent
@@ -125,39 +122,38 @@ const LogItem = observer((props) => {
 function RightLogContent() {
   const { operationStore } = useRootStore();
   const { currentNodesByStep, activeStepIndex } = operationStore;
+  const logStores = useRef(new Map());
 
   return useMemo(() => {
-    // resolve
-    if (currentNodesByStep?.status) {
-      return (
-        <div className={styles.right}>
-          {currentNodesByStep?.status?.map(
-            ({ node, status, startAt, endAt }, index) => (
-              <LogItem
-                key={node}
-                logStore={new LogStore()}
-                nodeStatus={status}
-                runtime={formatSeconds(startAt, endAt)}
-                nodes={currentNodesByStep.nodes[index]}
-                index={index}
-              />
-            )
-          )}
-        </div>
-      );
-    }
-
-    // pending
+    const nodes = currentNodesByStep?.nodes || [];
+    const statuses = currentNodesByStep?.status || [];
     return (
       <div className={styles.right}>
-        {currentNodesByStep?.nodes?.map((item, index) => (
-          <LogItem
-            key={index}
-            logStore={new LogStore()}
-            nodes={item}
-            index={index}
-          />
-        ))}
+        {nodes.map((item, index) => {
+          const taskStatus = statuses[index] || {};
+          const taskName = taskStatus.taskName || item.taskName;
+          const storeKey =
+            taskName ||
+            `${item.uid || item.name || item.id || 'node'}-${index}`;
+          if (!logStores.current.has(storeKey)) {
+            logStores.current.set(storeKey, new LogStore());
+          }
+          return (
+            <LogItem
+              key={index}
+              logStore={logStores.current.get(storeKey)}
+              nodeStatus={taskStatus.status || 'Pending'}
+              taskName={taskName}
+              runtime={
+                taskStatus.startAt
+                  ? formatSeconds(taskStatus.startAt, taskStatus.endAt)
+                  : ''
+              }
+              nodes={item}
+              index={index}
+            />
+          );
+        })}
       </div>
     );
   }, [currentNodesByStep, activeStepIndex]);
