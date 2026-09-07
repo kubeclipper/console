@@ -67,4 +67,5 @@ jobs:
         with:
           files: |
             dist/kc-console.tar.gz
+          prerelease: true
           token: ${{ secrets.GH_TOKEN }}
