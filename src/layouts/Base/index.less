@@ -101,6 +101,11 @@
       font-size: @size-normal;
       margin-right: 20px;
     }
+    .ant-menu-submenu-title .anticon {
+      // Ant Design adds 10px to an icon immediately followed by a title span.
+      // Keep submenu titles aligned with ordinary menu items.
+      margin-right: 10px;
+    }
     & .ant-menu-item-selected {
       background-color: @primary-color;
       border-radius: @border-radius;
