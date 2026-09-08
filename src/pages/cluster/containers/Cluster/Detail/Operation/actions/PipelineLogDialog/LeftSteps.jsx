@@ -40,7 +40,7 @@ const StepItem = observer((props) => {
     }
   }, []);
 
-  const handleStepClick = () => activeByStep(step, index);
+  const handleStepClick = () => activeByStep(step, index, true);
 
   const stepItem = (
     <div
