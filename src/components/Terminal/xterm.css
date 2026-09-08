@@ -85,19 +85,16 @@
   left: 0;
   top: 0;
   bottom: 0;
-  max-width: 100%;
 }
 
 .xterm .xterm-screen {
   position: relative;
-  max-width: 100%;
 }
 
 .xterm .xterm-screen canvas {
   position: absolute;
   left: 0;
   top: 0;
-  max-width: 100%;
   box-sizing: border-box;
 }
 
@@ -144,8 +141,4 @@
 
 .xterm-cursor-pointer {
   cursor: pointer;
-}
-
-.xterm-text-layer {
-  transform: translateY(3px);
 }

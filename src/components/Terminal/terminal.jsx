@@ -85,7 +85,7 @@ export default function ContainerTerminal(props) {
   }
 
   function onTerminalResize() {
-    window.addEventListener('resize', onResize());
+    window.addEventListener('resize', resizeHandler);
     term.on('resize', resizeRemoteTerminal);
   }
 
@@ -105,7 +105,8 @@ export default function ContainerTerminal(props) {
   }
 
   function removeResizeListener() {
-    window.removeEventListener('resize', onResize());
+    window.removeEventListener('resize', resizeHandler);
+    resizeHandler.cancel();
   }
 
   function disconnect() {
@@ -118,7 +119,7 @@ export default function ContainerTerminal(props) {
     }
   }
 
-  const onResize = () => debounce(() => term.fit(), 800);
+  const resizeHandler = debounce(() => term.fit(), 800);
 
   const packStdin = (data) =>
     JSON.stringify({
