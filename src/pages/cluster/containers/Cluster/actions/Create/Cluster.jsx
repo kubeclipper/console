@@ -61,6 +61,7 @@ export default class Cluster extends BaseForm {
     await Promise.all([
       this.getBackupPoint(),
       this.registryStore.fetchList({ limit: -1 }),
+      this.store.fetchVersion({ limit: -1 }),
     ]);
     await this.initVersions();
   }
