@@ -49,32 +49,6 @@ export const uiSchemas = [
     },
   },
   {
-    name: 'nfs-provisioner',
-    schema: {
-      properties: {
-        enable: {
-          default: false,
-          priority: 0,
-          title: 'nfs-provisioner',
-          type: 'boolean',
-        },
-        reclaimPolicy: {
-          widget: 'select',
-          props: {},
-          enum: ['Retain', 'Delete'],
-          enumNames: ['Retain', 'Delete'],
-        },
-        mountOptions: {
-          widget: 'ArrayString',
-          props: {
-            isInput: true,
-            width: '100%',
-          },
-        },
-      },
-    },
-  },
-  {
     name: 'nfs-csi',
     schema: {
       properties: {
