@@ -619,5 +619,7 @@
   "Break Off": "中断",
   "Please enter a legal domain": "请输入合法的域名",
   "External Access Domain": "外部访问域名",
+  "Failed to load task logs": "任务日志加载失败",
+  "Retry loading logs": "重新加载日志",
   "WorkLoad": "工作负载"
 }
