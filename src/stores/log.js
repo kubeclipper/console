@@ -21,6 +21,8 @@ import { APIVERSION } from 'utils/constants';
 export default class LogStore extends BaseStore {
   logdata = '';
 
+  logError = '';
+
   isExpand = false;
 
   cumulativeSize = 0;
@@ -33,6 +35,7 @@ export default class LogStore extends BaseStore {
     makeObservable(this, {
       isExpand: observable,
       logdata: observable,
+      logError: observable,
     });
   }
 
@@ -42,36 +45,43 @@ export default class LogStore extends BaseStore {
       return;
     }
 
-    const res = await request.get(
-      `${APIVERSION.operations}/operationtasks/${encodeURIComponent(
-        params.taskName
-      )}/logs`,
-      { offset: params.offset || 0 }
-    );
-    const deliverySize = res.deliverySize || 0;
-    this.cumulativeSize += deliverySize;
-    this.logdata += res.content || '';
+    this.logError = '';
+    try {
+      const res = await request.get(
+        `${APIVERSION.operations}/operationtasks/${encodeURIComponent(
+          params.taskName
+        )}/logs`,
+        { offset: params.offset || 0 }
+      );
+      const deliverySize = res.deliverySize || 0;
+      this.cumulativeSize += deliverySize;
+      this.logdata += res.content || '';
 
-    if (
-      this.isStepFinished &&
-      deliverySize > 0 &&
-      this.cumulativeSize < res.logSize
-    ) {
-      params = { ...params, offset: this.cumulativeSize };
-      await this.fetchStepLog(params);
+      if (
+        this.isStepFinished &&
+        deliverySize > 0 &&
+        this.cumulativeSize < res.logSize
+      ) {
+        params = { ...params, offset: this.cumulativeSize };
+        await this.fetchStepLog(params);
+      }
+    } catch (error) {
+      this.logError =
+        error?.reason || error?.message || t('Failed to load task logs');
+    } finally {
+      this.isExpand = true;
+      this.isLoading = false;
     }
-    this.isExpand = true;
-    this.isLoading = false;
   }
 
   async getStepLog(params) {
     this.isLoading = true;
     await this.fetchStepLog(params);
-    this.isLoading = false;
   }
 
   logReset() {
     this.cumulativeSize = 0;
     this.logdata = '';
+    this.logError = '';
   }
 }

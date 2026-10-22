@@ -22,7 +22,7 @@ import {
   CheckCircleFilled,
   CloseCircleFilled,
 } from '@ant-design/icons';
-import { Spin } from 'antd';
+import { Alert, Button, Spin } from 'antd';
 import { observer } from 'mobx-react';
 import styles from './index.less';
 import { useRootStore } from 'stores';
@@ -31,12 +31,29 @@ import { formatSeconds } from 'utils';
 import { useInterval } from 'hooks';
 
 function LogItemContent(props) {
-  const { isExpand, isLoading, logdata } = props;
+  const { isExpand, isLoading, logdata, logError, onRetry } = props;
   if (isExpand) {
     if (isLoading) {
       return <Spin className={styles['spin-center']} />;
     } else {
-      return <pre className={styles['log-item-content']}>{logdata}</pre>;
+      return (
+        <div className={styles['log-item-content']}>
+          {logdata && <pre>{logdata}</pre>}
+          {logError && (
+            <Alert
+              type="error"
+              showIcon
+              message={t('Failed to load task logs')}
+              description={logError}
+              action={
+                <Button size="small" onClick={onRetry}>
+                  {t('Retry loading logs')}
+                </Button>
+              }
+            />
+          )}
+        </div>
+      );
     }
   }
   return '';
@@ -50,8 +67,14 @@ const LogItem = observer((props) => {
     nodeStatus
   );
   logStore.isStepFinished = taskFinished;
-  const { logdata, isExpand, isLoading, cumulativeSize, isStepFinished } =
-    logStore;
+  const {
+    logdata,
+    logError,
+    isExpand,
+    isLoading,
+    cumulativeSize,
+    isStepFinished,
+  } = logStore;
 
   const stateIcons = (errIgnore, status) => {
     if (status === 'Succeeded') {
@@ -93,11 +116,12 @@ const LogItem = observer((props) => {
     if (!taskName) return;
 
     if (!isExpand) {
-      logStore.getStepLog(params);
+      logStore.isExpand = true;
+      await logStore.getStepLog(params);
     } else {
       logStore.logReset();
+      logStore.isExpand = false;
     }
-    logStore.isExpand = !isExpand;
   };
 
   return (
@@ -113,6 +137,8 @@ const LogItem = observer((props) => {
       <LogItemContent
         isExpand={isExpand}
         logdata={logdata}
+        logError={logError}
+        onRetry={() => logStore.getStepLog(params)}
         isLoading={isLoading}
       />
     </div>
