@@ -15,6 +15,7 @@
  */
 
 import React from 'react';
+import { Alert, Button } from 'antd';
 import { reaction, toJS } from 'mobx';
 import { ViewAction } from 'containers/Action';
 import { rootStore } from 'stores';
@@ -45,6 +46,8 @@ export default class PipelineLog extends ViewAction {
   constructor(props) {
     super(props);
 
+    this.state = { ...this.state, operationError: '', taskError: '' };
+    this.disposed = false;
     this.store = rootStore.operationStore;
 
     this.store.reset();
@@ -64,6 +67,7 @@ export default class PipelineLog extends ViewAction {
   }
 
   componentWillUnmount() {
+    this.disposed = true;
     this.store.list.silent = false;
     this.websocket.close();
     this.disposer?.();
@@ -87,6 +91,7 @@ export default class PipelineLog extends ViewAction {
         message = toJS(message);
         const types = ['ADDED', 'MODIFIED', 'DELETED'];
         if (types.includes(message.type)) {
+          this.setState({ operationError: '' });
           this.updateOperation(message.object);
         }
       }
@@ -100,27 +105,26 @@ export default class PipelineLog extends ViewAction {
           this.item.name
         )}`
       );
+      if (this.disposed) return;
+      this.setState({ operationError: '' });
       await this.updateOperation(operation);
     } catch (error) {
-      // The operation list already rendered the row. Keep the dialog usable
-      // while the watch connection retries after a transient read failure.
-      // eslint-disable-next-line no-console
-      console.log(error);
+      if (!this.disposed)
+        this.setState({ operationError: error?.message || 'Request failed' });
     }
   };
 
   refreshTasks = async () => {
-    if (!this.rawOperation || this.refreshing) return;
-
+    if (!this.rawOperation || this.refreshing || this.disposed) return;
     this.refreshing = true;
     try {
-      const tasks = await this.fetchTasks(this.rawOperation);
-      await this.updateOperation(this.rawOperation, tasks);
+      const operation = this.rawOperation;
+      const tasks = await this.fetchTasks(operation);
+      if (this.disposed || this.rawOperation !== operation) return;
+      await this.updateOperation(operation, tasks);
     } catch (error) {
-      // Task creation/status updates are eventually consistent with the
-      // operation watch. The next refresh will retry without closing the log.
-      // eslint-disable-next-line no-console
-      console.log(error);
+      if (!this.disposed)
+        this.setState({ taskError: error?.message || 'Request failed' });
     } finally {
       this.refreshing = false;
     }
@@ -138,7 +142,7 @@ export default class PipelineLog extends ViewAction {
   };
 
   updateOperation = async (operation, tasks) => {
-    if (!operation) return;
+    if (!operation || this.disposed) return;
 
     if (
       this.rawOperation?.metadata?.uid &&
@@ -147,7 +151,16 @@ export default class PipelineLog extends ViewAction {
       this.manuallySelectedStepID = null;
     }
     this.rawOperation = operation;
-    const operationTasks = tasks || (await this.fetchTasks(operation));
+    let operationTasks;
+    try {
+      operationTasks = tasks || (await this.fetchTasks(operation));
+    } catch (error) {
+      if (!this.disposed)
+        this.setState({ taskError: error?.message || 'Request failed' });
+      return;
+    }
+    if (this.disposed || this.rawOperation !== operation) return;
+    this.setState({ taskError: '' });
     const result = ObjectMapper.operations(operation, operationTasks);
     const { operationSteps } = result;
 
@@ -185,9 +198,29 @@ export default class PipelineLog extends ViewAction {
   };
 
   renderContent = () => (
-    <div className={styles.container}>
-      <LeftSteps activeByStep={this.activeByStep} />
-      <RightLogContent />
+    <div className={styles['dialog-content']}>
+      {this.state.operationError && (
+        <Alert
+          type="error"
+          showIcon
+          message={t('Operation read failed')}
+          description={this.state.operationError}
+          action={<Button onClick={this.loadOperation}>{t('Retry')}</Button>}
+        />
+      )}
+      {this.state.taskError && (
+        <Alert
+          type="error"
+          showIcon
+          message={t('Task read failed; current content is preserved')}
+          description={this.state.taskError}
+          action={<Button onClick={this.refreshTasks}>{t('Retry')}</Button>}
+        />
+      )}
+      <div className={styles.container}>
+        <LeftSteps activeByStep={this.activeByStep} />
+        <RightLogContent />
+      </div>
     </div>
   );
 }

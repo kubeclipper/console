@@ -621,5 +621,17 @@
   "External Access Domain": "外部访问域名",
   "Failed to load task logs": "任务日志加载失败",
   "Retry loading logs": "重新加载日志",
-  "WorkLoad": "工作负载"
+  "WorkLoad": "工作负载",
+  "Log read failed; current content is preserved": "日志读取失败，已保留当前内容",
+  "Operation read failed": "操作信息读取失败",
+  "Task read failed; current content is preserved": "任务状态读取失败，已保留当前内容",
+  "Execution logs": "执行日志",
+  "No log output yet": "暂无日志输出",
+  "Execution failed": "执行失败",
+  "Task message": "任务消息",
+  "Succeeded": "成功",
+  "Running": "执行中",
+  "Pending": "等待执行",
+  "TimedOut": "已超时",
+  "Canceled": "已取消"
 }

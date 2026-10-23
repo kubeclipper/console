@@ -22,7 +22,7 @@ import {
   CheckCircleFilled,
   CloseCircleFilled,
 } from '@ant-design/icons';
-import { Alert, Button, Spin } from 'antd';
+import { Spin, Button } from 'antd';
 import { observer } from 'mobx-react';
 import styles from './index.less';
 import { useRootStore } from 'stores';
@@ -30,38 +30,34 @@ import LogStore from 'stores/log';
 import { formatSeconds } from 'utils';
 import { useInterval } from 'hooks';
 
-function LogItemContent(props) {
-  const { isExpand, isLoading, logdata, logError, onRetry } = props;
-  if (isExpand) {
-    if (isLoading) {
-      return <Spin className={styles['spin-center']} />;
-    } else {
-      return (
-        <div className={styles['log-item-content']}>
-          {logdata && <pre>{logdata}</pre>}
-          {logError && (
-            <Alert
-              type="error"
-              showIcon
-              message={t('Failed to load task logs')}
-              description={logError}
-              action={
-                <Button size="small" onClick={onRetry}>
-                  {t('Retry loading logs')}
-                </Button>
-              }
-            />
-          )}
-        </div>
-      );
-    }
-  }
-  return '';
+function LogItemContent({ isExpand, isLoading, logdata }) {
+  if (!isExpand) return null;
+  return (
+    <div className={styles['log-output']}>
+      <div className={styles['log-output-title']}>{t('Execution logs')}</div>
+      {isLoading && !logdata ? (
+        <Spin className={styles['spin-center']} />
+      ) : (
+        <pre className={styles['log-item-content']}>
+          {logdata || t('No log output yet')}
+        </pre>
+      )}
+    </div>
+  );
 }
 
 const LogItem = observer((props) => {
-  const { nodeStatus, taskName, logStore, runtime, nodes, index } = props;
-  const inputEl = useRef();
+  const {
+    nodeStatus,
+    taskName,
+    logStore,
+    runtime,
+    nodes,
+    index,
+    message,
+    reason,
+  } = props;
+  const initiallyExpanded = useRef(index === 0);
 
   const taskFinished = ['Succeeded', 'Failed', 'TimedOut', 'Canceled'].includes(
     nodeStatus
@@ -69,11 +65,11 @@ const LogItem = observer((props) => {
   logStore.isStepFinished = taskFinished;
   const {
     logdata,
-    logError,
     isExpand,
     isLoading,
     cumulativeSize,
     isStepFinished,
+    error,
   } = logStore;
 
   const stateIcons = (errIgnore, status) => {
@@ -91,21 +87,27 @@ const LogItem = observer((props) => {
   };
 
   useEffect(() => {
-    if (index === 0 && taskName) {
+    if (initiallyExpanded.current) logStore.isExpand = true;
+    return () => logStore.logReset();
+  }, [taskName, logStore]);
+
+  useEffect(() => {
+    if (logStore.isExpand && taskName) {
       const fn = async () => {
-        await logStore.fetchStepLog(params);
-        inputEl.current?.scrollIntoView({ block: 'end' });
+        await logStore.fetchStepLog({
+          taskName,
+          offset: logStore.cumulativeSize,
+        });
       };
 
       fn();
     }
-  }, [taskName]);
+  }, [taskName, nodeStatus, index, logStore]);
 
   useInterval(
     () => {
       const fn = async () => {
         await logStore.fetchStepLog(params);
-        inputEl.current?.scrollIntoView({ block: 'end' });
       };
       fn();
     },
@@ -115,30 +117,73 @@ const LogItem = observer((props) => {
   const toggleExpand = async () => {
     if (!taskName) return;
 
+    logStore.isExpand = !isExpand;
     if (!isExpand) {
-      logStore.isExpand = true;
-      await logStore.getStepLog(params);
+      logStore.getStepLog(params);
     } else {
       logStore.logReset();
-      logStore.isExpand = false;
     }
   };
 
+  const failed = ['Failed', 'TimedOut', 'Canceled'].includes(nodeStatus);
+  const statusClass = failed
+    ? 'status-failed'
+    : nodeStatus === 'Succeeded'
+    ? 'status-succeeded'
+    : 'status-running';
+
   return (
-    <div className={styles.LogItem} ref={inputEl}>
-      <div className={classNames(styles.LogItem__title)} onClick={toggleExpand}>
-        {isExpand ? <CaretDownOutlined /> : <CaretRightOutlined />}
-        {nodes.ipv4 ? `${nodes.id}(${nodes.ipv4})` : nodes.id}
-        <span className={styles.logitem_status}>
-          <span>{runtime || ''}</span>
-          {stateIcons(false, nodeStatus)}
+    <div className={styles.LogItem}>
+      <button
+        type="button"
+        className={styles.LogItem__title}
+        onClick={toggleExpand}
+        aria-expanded={isExpand}
+      >
+        <span className={styles['node-heading']}>
+          {isExpand ? <CaretDownOutlined /> : <CaretRightOutlined />}
+          <strong>{nodes.ipv4 || nodes.id}</strong>
+          {nodes.ipv4 && (
+            <span className={styles['node-id']} title={nodes.id}>
+              {nodes.id}
+            </span>
+          )}
         </span>
-      </div>
+        <span className={styles.logitem_status}>
+          <span
+            className={classNames(styles['status-badge'], styles[statusClass])}
+          >
+            {stateIcons(false, nodeStatus)} {t(nodeStatus)}
+          </span>
+          {runtime && <span className={styles.runtime}>{runtime}</span>}
+        </span>
+      </button>
+      {(message || reason) && (
+        <div role="alert" className={styles['log-item-error']}>
+          <div className={styles['error-heading']}>
+            <CloseCircleFilled />{' '}
+            {t(failed ? 'Execution failed' : 'Task message')}
+          </div>
+          <pre>{message || reason}</pre>
+        </div>
+      )}
+      {error && (
+        <div role="alert" className={styles['log-read-error']}>
+          <span>
+            {t('Log read failed; current content is preserved')}: {error}
+          </span>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => logStore.getStepLog(params)}
+          >
+            {t('Retry loading logs')}
+          </Button>
+        </div>
+      )}
       <LogItemContent
         isExpand={isExpand}
         logdata={logdata}
-        logError={logError}
-        onRetry={() => logStore.getStepLog(params)}
         isLoading={isLoading}
       />
     </div>
@@ -169,6 +214,8 @@ function RightLogContent() {
               key={index}
               logStore={logStores.current.get(storeKey)}
               nodeStatus={taskStatus.status || 'Pending'}
+              message={taskStatus.message}
+              reason={taskStatus.reason}
               taskName={taskName}
               runtime={
                 taskStatus.startAt
