@@ -100,6 +100,7 @@ export default class LogStore extends BaseStore {
 
   logReset() {
     this.generation += 1;
+    this.fetchPromise = null;
     this.cumulativeSize = 0;
     this.logdata = '';
     this.error = '';

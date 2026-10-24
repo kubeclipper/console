@@ -75,7 +75,17 @@ jest.mock('antd', () => ({
   ),
 }));
 
-describe('PipelineLog read errors and recovery', () => {
+const errorShapes = {
+  message: (message) => new Error(message),
+  reason: (reason) => ({ reason }),
+  'reason with generic message': (reason) => ({
+    reason,
+    message: 'Internal server error',
+  }),
+};
+
+describe.each(Object.keys(errorShapes))('read errors: %s', (errorShape) => {
+  const makeError = errorShapes[errorShape];
   beforeEach(() => {
     jest.useFakeTimers();
     global.t = (v) => v;
@@ -89,7 +99,7 @@ describe('PipelineLog read errors and recovery', () => {
     global.request = {
       get: jest
         .fn()
-        .mockRejectedValueOnce(new Error('operation unavailable'))
+        .mockRejectedValueOnce(makeError('operation unavailable'))
         .mockResolvedValueOnce(mockOperation)
         .mockResolvedValueOnce({ items: [] }),
     };
@@ -115,7 +125,7 @@ describe('PipelineLog read errors and recovery', () => {
         .fn()
         .mockResolvedValueOnce(mockOperation)
         .mockResolvedValueOnce({ items: [] })
-        .mockRejectedValueOnce(new Error('task unavailable'))
+        .mockRejectedValueOnce(makeError('task unavailable'))
         .mockResolvedValueOnce({ items: [] }),
     };
     let wrapper;
@@ -142,7 +152,7 @@ describe('PipelineLog read errors and recovery', () => {
         .fn()
         .mockResolvedValueOnce(mockOperation)
         .mockResolvedValueOnce({ items: [] })
-        .mockRejectedValueOnce(new Error('watch task unavailable')),
+        .mockRejectedValueOnce(makeError('watch task unavailable')),
     };
     let wrapper;
     await act(async () => {

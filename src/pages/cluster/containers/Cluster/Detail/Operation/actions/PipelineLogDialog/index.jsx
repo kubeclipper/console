@@ -110,7 +110,9 @@ export default class PipelineLog extends ViewAction {
       await this.updateOperation(operation);
     } catch (error) {
       if (!this.disposed)
-        this.setState({ operationError: error?.message || 'Request failed' });
+        this.setState({
+          operationError: error?.reason || error?.message || 'Request failed',
+        });
     }
   };
 
@@ -124,7 +126,9 @@ export default class PipelineLog extends ViewAction {
       await this.updateOperation(operation, tasks);
     } catch (error) {
       if (!this.disposed)
-        this.setState({ taskError: error?.message || 'Request failed' });
+        this.setState({
+          taskError: error?.reason || error?.message || 'Request failed',
+        });
     } finally {
       this.refreshing = false;
     }
@@ -156,7 +160,9 @@ export default class PipelineLog extends ViewAction {
       operationTasks = tasks || (await this.fetchTasks(operation));
     } catch (error) {
       if (!this.disposed)
-        this.setState({ taskError: error?.message || 'Request failed' });
+        this.setState({
+          taskError: error?.reason || error?.message || 'Request failed',
+        });
       return;
     }
     if (this.disposed || this.rawOperation !== operation) return;

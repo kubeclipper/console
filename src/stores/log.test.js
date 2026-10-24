@@ -241,4 +241,61 @@ describe('task log fetching', () => {
     });
     expect(store.logdata).toBe('中文tail');
   });
+
+  it.each(['resolve', 'reject'])(
+    'reopens while the old request is pending and ignores its late %s',
+    async (outcome) => {
+      let finishOld;
+      let rejectOld;
+      let finishNew;
+      global.request = {
+        get: jest
+          .fn()
+          .mockImplementationOnce(
+            () =>
+              new Promise((resolve, reject) => {
+                finishOld = resolve;
+                rejectOld = reject;
+              })
+          )
+          .mockImplementationOnce(
+            () =>
+              new Promise((resolve) => {
+                finishNew = resolve;
+              })
+          ),
+      };
+      const store = new LogStore();
+      const oldRead = store.fetchStepLog({ taskName: 'task-1' });
+      const oldQueuedRead = store.fetchStepLog({ taskName: 'task-1' });
+      store.logReset();
+
+      const reopened = store.getStepLog({ taskName: 'task-1' });
+      const pending = store.fetchPromise;
+      expect(request.get).toHaveBeenCalledTimes(2);
+      expect(request.get).toHaveBeenLastCalledWith(expect.any(String), {
+        offset: 0,
+        limit: 65536,
+      });
+
+      if (outcome === 'resolve') {
+        finishOld({ content: 'stale', deliverySize: 5, logSize: 5 });
+      } else {
+        rejectOld(new Error('stale request failed'));
+      }
+      await Promise.all([oldRead, oldQueuedRead]);
+      expect(store.fetchPromise).toBe(pending);
+      expect(store.isLoading).toBe(true);
+      expect(store.logdata).toBe('');
+      expect(store.error).toBe('');
+
+      finishNew({ content: 'fresh', deliverySize: 5, logSize: 5 });
+      await reopened;
+      expect(request.get).toHaveBeenCalledTimes(2);
+      expect(store.logdata).toBe('fresh');
+      expect(store.cumulativeSize).toBe(5);
+      expect(store.isLoading).toBe(false);
+      expect(store.fetchPromise).toBeNull();
+    }
+  );
 });
