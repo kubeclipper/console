@@ -621,5 +621,17 @@
   "External Access Domain": "External Access Domain",
   "Failed to load task logs": "Failed to load task logs",
   "Retry loading logs": "Retry loading logs",
-  "WorkLoad": "WorkLoad"
+  "WorkLoad": "WorkLoad",
+  "Log read failed; current content is preserved": "Log read failed; current content is preserved",
+  "Operation read failed": "Operation read failed",
+  "Task read failed; current content is preserved": "Task read failed; current content is preserved",
+  "Execution logs": "Execution logs",
+  "No log output yet": "No log output yet",
+  "Execution failed": "Execution failed",
+  "Task message": "Task message",
+  "Succeeded": "Succeeded",
+  "Running": "Running",
+  "Pending": "Pending",
+  "TimedOut": "TimedOut",
+  "Canceled": "Canceled"
 }
